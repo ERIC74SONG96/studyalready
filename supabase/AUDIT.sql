@@ -44,14 +44,14 @@ audit_tables AS (
 -- 2/ FONCTIONS attendues
 expected_fn AS (
   SELECT * FROM (VALUES
-    ('is_admin',                    '003_admin_dashboard.sql'),
-    ('send_admin_email',            '005_email_notifications.sql'),
-    ('on_new_submission',           '005_email_notifications.sql'),
-    ('on_new_profile',              '005_email_notifications.sql'),
-    ('on_auth_user_created_dossier','006_student_dossiers.sql'),
-    ('create_fwb_dossier',          '006_student_dossiers.sql'),
-    ('on_new_dossier_message',      '007_notifications_dossier.sql'),
-    ('on_new_dossier_document',     '007_notifications_dossier.sql')
+    ('is_admin',                  '003_admin_dashboard.sql'),
+    ('send_admin_email',          '005_email_notifications.sql'),
+    ('on_new_submission',         '005_email_notifications.sql'),
+    ('on_new_profile',            '005_email_notifications.sql'),
+    ('handle_new_user_dossier',   '006_student_dossiers.sql'),
+    ('create_fwb_dossier',        '006_student_dossiers.sql'),
+    ('on_new_dossier_message',    '007_notifications_dossier.sql'),
+    ('on_new_dossier_document',   '007_notifications_dossier.sql')
   ) AS t(name, migration)
 ),
 audit_fn AS (
