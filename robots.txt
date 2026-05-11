@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /php/
+Disallow: /admin.html
+Disallow: /admin-login.html
 Disallow: /assets/docs/dossier-fwb-print.html
 Disallow: /assets/docs/cv-belge-print.html
 

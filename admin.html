@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard admin | StudyAlready</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="font-sans text-slate-800 bg-slate-100 antialiased min-h-screen flex flex-col">
+
+  <header class="bg-brand-dark text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="font-display font-bold text-lg sm:text-xl">StudyAlready</a>
+        <span class="hidden sm:inline text-xs uppercase tracking-widest text-brand-gold">Admin</span>
+      </div>
+      <div class="flex items-center gap-4 text-sm">
+        <span id="adminWho" class="hidden sm:inline text-slate-300"></span>
+        <button id="logoutBtn" class="bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1.5 transition">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="adminGate" class="flex-1 flex items-center justify-center px-4 py-12 text-slate-600">
+    Vérification de votre session…
+  </div>
+
+  <main id="adminApp" class="hidden flex-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+      <!-- Stats compactes -->
+      <section class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs uppercase text-slate-500">Demandes (total)</p>
+          <p id="statTotalSubs" class="text-2xl font-display font-bold text-brand-dark mt-1">—</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs uppercase text-slate-500">Nouvelles à traiter</p>
+          <p id="statNewSubs" class="text-2xl font-display font-bold text-amber-600 mt-1">—</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs uppercase text-slate-500">Profils en attente</p>
+          <p id="statPendingProfiles" class="text-2xl font-display font-bold text-blue-600 mt-1">—</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs uppercase text-slate-500">Profils publiés</p>
+          <p id="statPublishedProfiles" class="text-2xl font-display font-bold text-emerald-600 mt-1">—</p>
+        </div>
+      </section>
+
+      <!-- Onglets -->
+      <nav class="flex gap-2 border-b border-slate-200">
+        <button data-tab="subs" class="admin-tab px-4 py-2 font-semibold text-sm border-b-2 border-brand-blue text-brand-dark">
+          Demandes
+        </button>
+        <button data-tab="profiles" class="admin-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">
+          Annuaire (profils)
+        </button>
+      </nav>
+
+      <!-- ========== TAB : Demandes (form_submissions) ========== -->
+      <section id="tabSubs" class="space-y-4">
+
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex flex-wrap gap-3 items-end">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1" for="filterFormType">Type de formulaire</label>
+            <select id="filterFormType" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              <option value="">Tous les types</option>
+              <option value="contact">Contact</option>
+              <option value="prequalification">Pré-qualification</option>
+              <option value="rejoindre-reseau">Réseau</option>
+              <option value="mise-en-relation">Mise en relation</option>
+              <option value="rapport-admission">Rapport admission</option>
+              <option value="chasseur-billet">Chasseur de billets</option>
+              <option value="departs-groupes">Départs groupés</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1" for="filterStatus">Statut</label>
+            <select id="filterStatus" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              <option value="">Tous les statuts</option>
+              <option value="new">À traiter</option>
+              <option value="in_progress">En cours</option>
+              <option value="processed">Traité</option>
+              <option value="archived">Archivé</option>
+            </select>
+          </div>
+          <div class="flex-1 min-w-[180px]">
+            <label class="block text-xs font-semibold text-slate-600 mb-1" for="filterSearch">Recherche (nom, email)</label>
+            <input id="filterSearch" type="search" placeholder="Ex. Mballa, gmail…"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+          <button id="refreshSubs" class="bg-brand-dark hover:bg-brand-blue text-white text-sm font-semibold rounded-lg px-4 py-2 transition">
+            Actualiser
+          </button>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
+                <tr>
+                  <th class="px-3 py-2 text-left">Reçu</th>
+                  <th class="px-3 py-2 text-left">Type</th>
+                  <th class="px-3 py-2 text-left">Nom</th>
+                  <th class="px-3 py-2 text-left">Email</th>
+                  <th class="px-3 py-2 text-left">WhatsApp</th>
+                  <th class="px-3 py-2 text-left">Statut</th>
+                  <th class="px-3 py-2 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="subsTbody">
+                <tr><td colspan="7" class="px-3 py-6 text-center text-slate-500">Chargement…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== TAB : Profils annuaire ========== -->
+      <section id="tabProfiles" class="hidden space-y-4">
+
+        <div class="bg-white rounded-xl border border-slate-200 p-4 flex flex-wrap gap-3 items-end">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1" for="filterProfileStatus">Statut</label>
+            <select id="filterProfileStatus" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              <option value="">Tous</option>
+              <option value="pending" selected>En attente de validation</option>
+              <option value="published">Publiés</option>
+              <option value="rejected">Rejetés</option>
+            </select>
+          </div>
+          <div class="flex-1 min-w-[180px]">
+            <label class="block text-xs font-semibold text-slate-600 mb-1" for="filterProfileSearch">Recherche (nom, université, ville)</label>
+            <input id="filterProfileSearch" type="search" placeholder="Ex. ULB, Mons, Mballa…"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" />
+          </div>
+          <button id="refreshProfiles" class="bg-brand-dark hover:bg-brand-blue text-white text-sm font-semibold rounded-lg px-4 py-2 transition">
+            Actualiser
+          </button>
+        </div>
+
+        <div id="profilesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <p class="col-span-full text-center text-slate-500 py-6">Chargement…</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal détail demande -->
+  <div id="subModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4 py-6">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-auto">
+      <div class="flex items-center justify-between border-b border-slate-200 px-5 py-3">
+        <h3 class="font-display font-bold text-brand-dark">Détail de la demande</h3>
+        <button id="subModalClose" class="text-slate-400 hover:text-slate-700 text-xl">&times;</button>
+      </div>
+      <div id="subModalBody" class="p-5 space-y-3 text-sm"></div>
+      <div id="subModalActions" class="border-t border-slate-200 px-5 py-3 flex flex-wrap gap-2 justify-end"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
