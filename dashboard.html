@@ -11,9 +11,27 @@
        au lieu de /espace-etudiant/dashboard.html (Site URL tronquée).
        On capture le hash + search (qui contiennent #access_token=...
        ou ?code=...) et on redirige vers /espace-etudiant/ qui gère la
-       création de session. */
+       création de session.
+       Protection anti-boucle : si on est passé par cette page plus de
+       2 fois en moins de 5 secondes, on s'arrête. */
     (function () {
       try {
+        var KEY = 'sa_dashboard_bridge';
+        var now = Date.now();
+        var hist = [];
+        try {
+          var raw = sessionStorage.getItem(KEY);
+          if (raw) hist = JSON.parse(raw) || [];
+        } catch (e) {}
+        hist = hist.filter(function (t) { return (now - t) < 5000; });
+        hist.push(now);
+        try { sessionStorage.setItem(KEY, JSON.stringify(hist)); } catch (e) {}
+        if (hist.length > 2) {
+          /* Trop de redirections : on reste sur cette page pour montrer
+             l'URL et stopper le clignotement. */
+          document.getElementById('loopWarn').classList.remove('hidden');
+          return;
+        }
         var hash = window.location.hash || '';
         var search = window.location.search || '';
         window.location.replace('/espace-etudiant/' + hash + search);
@@ -41,6 +59,15 @@
       Si rien ne se passe :
       <a href="/espace-etudiant/" class="text-[#1e3a8a] underline font-semibold">cliquez ici</a>.
     </p>
+    <div id="loopWarn" class="hidden mt-6 bg-amber-50 border border-amber-300 rounded-2xl p-4 text-left text-xs">
+      <p class="font-semibold text-amber-900 mb-2">Boucle de redirection détectée</p>
+      <p class="text-amber-800 mb-2">Pour éviter le clignotement, nous restons ici. Veuillez :</p>
+      <ol class="text-amber-800 list-decimal pl-5 space-y-1">
+        <li>Vider le cache de votre navigateur (Ctrl + Shift + R).</li>
+        <li>Cliquer manuellement sur <a href="/espace-etudiant/" class="text-[#1e3a8a] underline font-semibold">accéder à mon espace étudiant</a>.</li>
+        <li>Sinon, écrivez sur WhatsApp +32 465 33 94 48 avec une capture de cette page.</li>
+      </ol>
+    </div>
   </div>
 </body>
 </html>
