@@ -83,6 +83,21 @@
         statusEl.textContent = text;
       }
 
+      function setStatusHtml(html, cls) {
+        statusEl.classList.remove('hidden', 'text-red-600', 'text-green-600', 'text-slate-600');
+        statusEl.classList.add(cls || 'text-slate-600');
+        statusEl.innerHTML = html;
+      }
+
+      var params = new URLSearchParams(window.location.search || '');
+      if (params.get('raison') === 'non-admin') {
+        setStatusHtml(
+          '<strong>Accès refusé.</strong> Ce compte n’est pas enregistré comme administrateur dans Supabase (table <code class="text-xs bg-slate-100 px-1 rounded">public.admins</code>). ' +
+          'Ouvrez le SQL Editor et insérez votre <code class="text-xs bg-slate-100 px-1 rounded">user_id</code> dans cette table, puis reconnectez-vous.',
+          'text-red-600'
+        );
+      }
+
       if (!sb) {
         setStatus('Erreur : client Supabase indisponible (bloqueur de pub ?).', 'text-red-600');
         if (btn) btn.disabled = true;
@@ -90,7 +105,11 @@
       }
 
       sb.auth.getSession().then(function (r) {
-        if (r && r.data && r.data.session) window.location.replace('admin.html');
+        var session = r && r.data && r.data.session;
+        if (!session) return;
+        sb.rpc('is_admin').then(function (a) {
+          if (!a.error && a.data === true) window.location.replace('admin.html');
+        });
       });
 
       form.addEventListener('submit', function (e) {
@@ -106,36 +125,48 @@
           if (r.error) {
             btn.disabled = false;
             var msg = r.error.message || 'Identifiants invalides.';
-            if (/invalid login/i.test(msg)) msg = 'Email ou mot de passe incorrect.';
+            if (/invalid login|invalid credentials/i.test(msg)) msg = 'Email ou mot de passe incorrect.';
+            if (/email not confirmed|confirm/i.test(msg)) {
+              msg = 'Email non confirmé. Dans Supabase : Authentication → Users → votre compte → confirmez l’email, ou cochez « Auto Confirm » si vous recréez le compte.';
+            }
             setStatus(msg, 'text-red-600');
             return;
           }
-          var uid = r.data && r.data.user && r.data.user.id;
-          if (!uid) {
-            btn.disabled = false;
-            setStatus('Connexion impossible.', 'text-red-600');
-            return;
-          }
-          sb.rpc('is_admin').then(function (a) {
-            if (a.error) {
-              var msg = a.error.message || '';
-              if (/function .* does not exist/i.test(msg) || a.error.code === '42883') {
-                setStatus('La migration SQL « 003_admin_dashboard.sql » n’a pas encore été exécutée dans Supabase. Lancez-la dans SQL Editor puis réessayez.', 'text-red-600');
-              } else {
-                setStatus('Erreur vérification droits : ' + msg, 'text-red-600');
+          return sb.auth.getSession().then(function () {
+            var uid = r.data && r.data.user && r.data.user.id;
+            if (!uid) {
+              btn.disabled = false;
+              setStatus('Connexion impossible.', 'text-red-600');
+              return;
+            }
+            return sb.rpc('is_admin').then(function (a) {
+              if (a.error) {
+                var msg = a.error.message || '';
+                if (/function .* does not exist/i.test(msg) || a.error.code === '42883') {
+                  setStatus('La migration SQL « 003_admin_dashboard.sql » n’a pas encore été exécutée dans Supabase. Lancez-la dans SQL Editor puis réessayez.', 'text-red-600');
+                } else {
+                  setStatus('Erreur vérification droits : ' + msg, 'text-red-600');
+                }
+                sb.auth.signOut();
+                btn.disabled = false;
+                return;
               }
-              sb.auth.signOut();
-              btn.disabled = false;
-              return;
-            }
-            if (!a.data) {
-              setStatus('Connexion réussie, mais votre compte n’est pas (encore) dans la table « admins ». Dans Supabase, lancez : INSERT INTO public.admins (user_id, email) VALUES (\'' + uid + '\', \'' + (email || '') + '\'); puis rechargez cette page.', 'text-red-600');
-              sb.auth.signOut();
-              btn.disabled = false;
-              return;
-            }
-            setStatus('Connecté ! Redirection…', 'text-green-600');
-            window.location.replace('admin.html');
+              if (a.data !== true) {
+                setStatusHtml(
+                  'Connexion réussie, mais ce compte <strong>n’est pas administrateur</strong>. Dans Supabase → SQL Editor, exécutez par exemple :<br>' +
+                  '<code class="block mt-2 text-xs bg-slate-100 p-2 rounded break-all">' +
+                  'INSERT INTO public.admins (user_id, email, full_name) VALUES<br>' +
+                  '(\'' + uid + '\', \'' + email.replace(/'/g, "''") + '\', \'Admin\');' +
+                  '</code>',
+                  'text-red-600'
+                );
+                sb.auth.signOut();
+                btn.disabled = false;
+                return;
+              }
+              setStatus('Connecté ! Redirection…', 'text-green-600');
+              window.location.replace('admin.html');
+            });
           });
         });
       });

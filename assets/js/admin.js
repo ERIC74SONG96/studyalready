@@ -79,10 +79,24 @@
 
   sb.auth.getSession().then(function (r) {
     var session = r && r.data && r.data.session;
-    if (!session) { window.location.replace('admin-login.html'); return; }
+    if (!session) {
+      window.location.replace('admin-login.html');
+      return;
+    }
     sb.rpc('is_admin').then(function (a) {
-      if (a.error || !a.data) {
-        sb.auth.signOut().then(function () { window.location.replace('admin-login.html'); });
+      if (a.error) {
+        gate.classList.remove('hidden');
+        gate.innerHTML = '<div class="text-center max-w-md mx-auto px-4"><p class="text-red-600 font-semibold mb-2">' +
+          escapeHtml(a.error.message || 'Erreur de vérification des droits.') + '</p>' +
+          '<p class="text-sm text-slate-600 mb-3">Si le message parle d’une fonction manquante, exécutez le script SQL <code class="text-xs bg-slate-100 px-1 rounded">003_admin_dashboard.sql</code> dans Supabase.</p>' +
+          '<a href="admin-login.html" class="underline text-brand-dark">Retour à la connexion</a></div>';
+        return;
+      }
+      /* is_admin() renvoie un booléen : seul true autorise l’accès (false = pas dans public.admins). */
+      if (a.data !== true) {
+        sb.auth.signOut().then(function () {
+          window.location.replace('admin-login.html?raison=non-admin');
+        });
         return;
       }
       $('adminWho').textContent = session.user.email || '';
