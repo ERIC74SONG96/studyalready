@@ -2,6 +2,24 @@ document.addEventListener('DOMContentLoaded', function () {
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  var contactService = document.getElementById('contactService');
+  if (contactService && typeof URLSearchParams !== 'undefined') {
+    var sp = new URLSearchParams(window.location.search);
+    var svc = sp.get('service');
+    if (svc) {
+      for (var i = 0; i < contactService.options.length; i++) {
+        if (contactService.options[i].value === svc) {
+          contactService.selectedIndex = i;
+          break;
+        }
+      }
+      if (window.location.hash === '#contact') {
+        var contactSection = document.getElementById('contact');
+        if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
   var menuBtn = document.getElementById('mobileMenuBtn');
   var mobileMenu = document.getElementById('mobileMenu');
   if (menuBtn && mobileMenu) {

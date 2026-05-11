@@ -410,6 +410,16 @@
           <span class="mt-4 inline-flex items-center gap-1 text-brand-gold font-semibold text-sm">En savoir plus →</span>
         </a>
 
+        <!-- Assistance bancaire (compte courant) -->
+        <a href="services-bancaires.html" class="block bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition border border-slate-100 group">
+          <div class="w-14 h-14 rounded-xl bg-brand-cream flex items-center justify-center mb-5 group-hover:bg-brand-gold transition">
+            <svg class="w-7 h-7 text-brand-gold group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-brand-dark">Assistance bancaire</h3>
+          <p class="mt-3 text-slate-600 text-sm">Guide, prise de rendez-vous en agence, préparation du dossier pour votre <strong>compte courant</strong> en Belgique — sans ouvrir le compte à votre place.</p>
+          <span class="mt-4 inline-flex items-center gap-1 text-brand-gold font-semibold text-sm">En savoir plus →</span>
+        </a>
+
         <!-- Service 6 -->
         <div class="bg-brand-dark text-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition group relative overflow-hidden">
           <div class="absolute -right-10 -top-10 w-32 h-32 bg-brand-gold/20 rounded-full blur-2xl"></div>
@@ -417,7 +427,7 @@
             <svg class="w-7 h-7 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
           <h3 class="font-display font-bold text-xl">Pack Parcours complet</h3>
-          <p class="mt-3 text-slate-300 text-sm">Équivalence FWB (prioritaire), inscription, compte bloqué, assurance visa, logement et pack accueil à l'arrivée — une seule équipe qui connaît votre dossier de bout en bout.</p>
+          <p class="mt-3 text-slate-300 text-sm">Équivalence FWB (prioritaire), inscription, compte bloqué, assurance visa, logement, <strong class="text-white">assistance bancaire</strong> et pack accueil à l'arrivée — une seule équipe qui connaît votre dossier de bout en bout.</p>
           <a href="#contact" class="mt-5 inline-flex items-center gap-2 text-brand-gold font-semibold text-sm hover:gap-3 transition-all">
             Demander un devis →
           </a>
@@ -694,15 +704,18 @@
           </div>
           <div>
             <label class="block text-sm font-semibold mb-2">Service qui vous intéresse</label>
-            <select name="service" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+            <select name="service" id="contactService" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
               <option value="">— Choisir —</option>
-              <option>Équivalence FWB (priorité)</option>
-              <option>Pack Parcours complet</option>
-              <option>Inscription universitaire</option>
-              <option>Compte bloqué</option>
-              <option>Demande de visa</option>
-              <option>Logement</option>
-              <option>Conseil / Autre</option>
+              <option value="equivalence_fwb">Équivalence FWB (priorité)</option>
+              <option value="pack_complet">Pack Parcours complet</option>
+              <option value="inscription">Inscription universitaire</option>
+              <option value="compte_bloque">Compte bloqué (visa)</option>
+              <option value="assistance_bancaire">Assistance bancaire (compte courant)</option>
+              <option value="assurance_visa">Assurance visa &amp; santé</option>
+              <option value="pack_accueil">Pack accueil à l'arrivée</option>
+              <option value="visa">Demande de visa</option>
+              <option value="logement">Logement</option>
+              <option value="autre">Conseil / Autre</option>
             </select>
           </div>
           <div>
@@ -744,6 +757,7 @@
           <li><a href="assurance-visa.html" class="hover:text-brand-gold">Assurance visa</a></li>
           <li><a href="logement-etudiant.html" class="hover:text-brand-gold">Logement étudiant</a></li>
           <li><a href="pack-accueil.html" class="hover:text-brand-gold">Pack accueil</a></li>
+          <li><a href="services-bancaires.html" class="hover:text-brand-gold">Assistance bancaire</a></li>
           <li><a href="prequalification-dossier.html" class="hover:text-brand-gold">Pré-qualification dossier</a></li>
           <li><a href="blog/" class="hover:text-brand-gold">Blog &amp; conseils</a></li>
           <li><a href="#services" class="hover:text-brand-gold">Services</a></li>
