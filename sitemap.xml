@@ -73,6 +73,12 @@
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://www.studyalready.com/assets/docs/StudyAlready-Modele-CV-Belge.pdf</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.studyalready.com/espace-etudiant/</loc>
     <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>

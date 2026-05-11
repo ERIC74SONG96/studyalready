@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Modèle de CV étudiant — Belgique | StudyAlready</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 13mm 14mm 13mm;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI", sans-serif;
+      color: #1f2937;
+      font-size: 10pt;
+      line-height: 1.42;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    h1, h2, h3 { margin: 0; }
+    .layout {
+      display: grid;
+      grid-template-columns: 64mm 1fr;
+      gap: 0;
+      min-height: 268mm;
+    }
+    .sidebar {
+      background: #0a2540;
+      color: #ffffff;
+      padding: 14mm 8mm;
+      margin-left: -13mm;
+      margin-top: -14mm;
+      margin-bottom: -14mm;
+      min-height: 269mm;
+    }
+    .sidebar h2 {
+      color: #f5b800;
+      font-size: 10pt;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border-bottom: 1pt solid rgba(255,255,255,0.18);
+      padding-bottom: 3pt;
+      margin: 11mm 0 4mm;
+    }
+    .sidebar h2:first-of-type { margin-top: 4mm; }
+    .sidebar p, .sidebar li { font-size: 9.5pt; line-height: 1.45; }
+    .sidebar ul { margin: 0; padding: 0 0 0 13pt; }
+    .sidebar a { color: #f5b800; text-decoration: none; }
+
+    .photo-box {
+      width: 38mm;
+      height: 48mm;
+      border: 1.5pt dashed rgba(255,255,255,0.35);
+      border-radius: 4pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.55);
+      font-size: 8.5pt;
+      text-align: center;
+      margin: 0 auto 6mm;
+      padding: 4mm;
+      line-height: 1.3;
+    }
+
+    .skill-bar {
+      background: rgba(255,255,255,0.12);
+      height: 4pt;
+      border-radius: 4pt;
+      margin: 2pt 0 6pt;
+      overflow: hidden;
+    }
+    .skill-bar > span {
+      display: block;
+      height: 100%;
+      background: #f5b800;
+    }
+
+    .main {
+      padding: 4mm 0 4mm 8mm;
+    }
+    .main .name {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22pt;
+      color: #0a2540;
+      letter-spacing: -0.3px;
+      line-height: 1.05;
+    }
+    .main .tagline {
+      color: #1e3a8a;
+      font-weight: 600;
+      font-size: 11pt;
+      margin-top: 1mm;
+    }
+    .main h2 {
+      color: #0a2540;
+      font-size: 12pt;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      border-bottom: 1.2pt solid #f5b800;
+      padding-bottom: 2pt;
+      margin: 7mm 0 3mm;
+    }
+    .main p { margin: 0 0 3mm; }
+
+    .item {
+      margin-bottom: 4mm;
+      page-break-inside: avoid;
+    }
+    .item .row1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 4mm;
+    }
+    .item .title {
+      font-weight: 700;
+      color: #0a2540;
+      font-size: 10.5pt;
+    }
+    .item .meta {
+      color: #6b7280;
+      font-size: 9pt;
+      white-space: nowrap;
+    }
+    .item .place {
+      color: #1e3a8a;
+      font-style: italic;
+      font-size: 9.5pt;
+      margin-bottom: 1.5mm;
+    }
+    .item ul {
+      margin: 1mm 0 0 14pt;
+      padding: 0;
+    }
+    .item li { margin-bottom: 1.2mm; }
+
+    .placeholder { color: #9ca3af; font-style: italic; }
+
+    .availability {
+      background: #fff8e7;
+      border-left: 2.5pt solid #f5b800;
+      padding: 3mm 4mm;
+      border-radius: 0 4pt 4pt 0;
+      font-size: 9pt;
+      color: #4b5563;
+    }
+
+    .footer-note {
+      position: fixed;
+      bottom: 5mm;
+      left: 13mm;
+      right: 13mm;
+      text-align: center;
+      font-size: 7.5pt;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="photo-box">Photo<br />(optionnel<br />en Belgique)</div>
+
+      <h2>Contact</h2>
+      <p>
+        <strong>+32 ___ ___ ___</strong><br />
+        <span class="placeholder">prenom.nom@email.com</span><br />
+        <span class="placeholder">Bruxelles / Liège, Belgique</span><br />
+        <span class="placeholder">linkedin.com/in/votreprofil</span>
+      </p>
+
+      <h2>Langues</h2>
+      <p style="font-size:9.5pt;margin-bottom:1mm;">Français</p>
+      <div class="skill-bar"><span style="width:100%"></span></div>
+      <p style="font-size:9.5pt;margin-bottom:1mm;">Anglais</p>
+      <div class="skill-bar"><span style="width:75%"></span></div>
+      <p style="font-size:9.5pt;margin-bottom:1mm;">Néerlandais (à compléter)</p>
+      <div class="skill-bar"><span style="width:25%"></span></div>
+
+      <h2>Compétences clés</h2>
+      <ul>
+        <li>Service client / relation usager</li>
+        <li>Travail en équipe</li>
+        <li>Ponctualité &amp; rigueur</li>
+        <li>Bureautique : Word, Excel, Google Workspace</li>
+        <li>Caisse / encaissement (à compléter)</li>
+      </ul>
+
+      <h2>Student@work</h2>
+      <p>Compteur d'heures <strong>actif</strong> et attestation prête sur demande. Disponible pour 4 à 20 h/semaine selon emploi du temps universitaire.</p>
+
+      <h2>Centres d'intérêt</h2>
+      <ul>
+        <li>Sport / vie associative</li>
+        <li>Bénévolat étudiant</li>
+        <li>Communauté camerounaise en Belgique</li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="name">Prénom NOM</div>
+      <div class="tagline">Étudiant(e) — recherche un job étudiant (max ___ h/semaine)</div>
+
+      <h2>Profil</h2>
+      <p><span class="placeholder">Étudiant(e) à [Université / Haute École] en [filière], récemment arrivé(e) en Belgique. Sérieux(se), ponctuel(le) et orienté(e) service client. Je recherche un job étudiant compatible avec mon horaire de cours, idéalement à proximité de [ville/quartier].</span></p>
+
+      <h2>Expérience</h2>
+
+      <div class="item">
+        <div class="row1">
+          <span class="title">Vendeur(se) / Caissier(ère) — Job étudiant</span>
+          <span class="meta">Mois 20XX — Mois 20XX</span>
+        </div>
+        <div class="place">Nom de l'employeur — Ville (Belgique)</div>
+        <ul>
+          <li>Accueil et conseil client (jusqu'à __ clients/jour).</li>
+          <li>Encaissement et gestion de fond de caisse.</li>
+          <li>Mise en rayon et contrôle des dates de péremption.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="row1">
+          <span class="title">Stage / Mission ponctuelle</span>
+          <span class="meta">Mois 20XX — Mois 20XX</span>
+        </div>
+        <div class="place">Nom de la structure — Ville (Cameroun ou Belgique)</div>
+        <ul>
+          <li>Mission principale (1 ligne).</li>
+          <li>Résultat ou compétence acquise (chiffré si possible).</li>
+        </ul>
+      </div>
+
+      <h2>Formation</h2>
+
+      <div class="item">
+        <div class="row1">
+          <span class="title">[Diplôme visé en Belgique]</span>
+          <span class="meta">20XX — en cours</span>
+        </div>
+        <div class="place">[Université ou Haute École] — Belgique</div>
+      </div>
+
+      <div class="item">
+        <div class="row1">
+          <span class="title">[Baccalauréat / Diplôme camerounais]</span>
+          <span class="meta">20XX</span>
+        </div>
+        <div class="place">[Établissement] — Cameroun · <em>Équivalence FWB en cours / obtenue</em></div>
+      </div>
+
+      <h2>Disponibilités</h2>
+      <div class="availability">
+        <strong>Période :</strong> à partir du <em>JJ/MM/AAAA</em> · <strong>Disponibilité hebdomadaire :</strong> <em>___ h</em> (compatible Student@work) · <strong>Mobilité :</strong> <em>Bruxelles / Brabant wallon / autre</em>.
+      </div>
+    </main>
+  </div>
+
+  <div class="footer-note">
+    Modèle de CV étudiant en Belgique — proposé par StudyAlready (studyalready.com). À personnaliser : remplacez les exemples en italique par vos propres informations.
+  </div>
+</body>
+</html>
