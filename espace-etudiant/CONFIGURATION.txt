@@ -1,28 +1,32 @@
-ESPACE ETUDIANT — Configuration Supabase (5 à 10 minutes)
-=========================================================
+ESPACE ETUDIANT — Configuration Supabase
+========================================
 
-1) Créez un projet gratuit sur https://supabase.com (Sign up → New project).
+✅ TERMINÉ : Supabase est déjà configuré dans assets/js/config.js
+   (SUPABASE_URL + SUPABASE_ANON_KEY, projet "nevdhyekybmtvejhwhxz").
 
-2) Dans le projet : Settings → API
-   - Copiez "Project URL" → collez dans assets/js/config.js comme SUPABASE_URL
-   - Copiez "anon public" → collez comme SUPABASE_ANON_KEY
+Si l'espace étudiant affiche un bandeau d'erreur de connexion :
+  - Forcer le rechargement de la page : Ctrl + Shift + R
+  - Tester en navigation privée
+  - Vérifier que la console DevTools (F12) n'affiche pas d'erreur
+    de blocage réseau (bloqueur de pub, firewall d'école…)
 
-3) Authentication → Providers → Email
-   - Laissez "Email" activé.
-   - Pour les tests : vous pouvez désactiver temporairement "Confirm email"
-     (Authentication → Providers → Email → désactiver "Confirm email").
-     En production, réactivez la confirmation et configurez les templates d'email.
+À vérifier une fois côté Supabase (Dashboard Supabase) :
+  1) Authentication → Providers → Email
+     - "Email" activé.
+     - "Confirm email" : ACTIVÉ en production (sinon n'importe qui peut
+       créer un compte sans vérification).
+  2) Authentication → URL Configuration
+     - Site URL : https://www.studyalready.com
+     - Redirect URLs (ajoutez chacune) :
+         https://www.studyalready.com/espace-etudiant/dashboard.html
+         http://localhost:8000/espace-etudiant/dashboard.html  (tests locaux)
 
-4) Authentication → URL Configuration
-   - Site URL : https://www.studyalready.com
-   - Redirect URLs : ajoutez
-     https://www.studyalready.com/espace-etudiant/dashboard.html
-     http://localhost:8000/espace-etudiant/dashboard.html   (pour tests locaux)
+Tables utilisées par le site (déjà créées) :
+  - public.profiles            (annuaire — créer-profil.html)
+  - public.form_submissions    (tous les autres formulaires)
+  - public.admins              (dashboard admin /admin.html)
 
-5) Déployez : commit + push sur GitHub (Vercel redéploie).
-
-6) Politique de confidentialité : mentionnez le traitement des comptes (email,
-   données de profil) et le sous-traitant Supabase (UE / SCC si hors UE).
-
-Les clés "anon" sont prévues pour être publiques côté navigateur ; ne mettez
-JAMAIS la "service_role" dans le site web.
+Sécurité :
+  - La clé "anon" est PUBLIQUE par design (côté navigateur).
+  - Ne JAMAIS poser la clé "service_role" dans le site web.
+  - Toutes les tables ont des Row Level Security (RLS) actives.

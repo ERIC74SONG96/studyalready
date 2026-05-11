@@ -49,7 +49,7 @@ if (pageId === 'login') {
   var panelSignup = document.getElementById('panelSignup');
 
   if (!sb) {
-    showBanner(banner, 'warn', 'L\'espace étudiant sera actif dès que vous aurez renseigné SUPABASE_URL et SUPABASE_ANON_KEY dans assets/js/config.js (voir espace-etudiant/CONFIGURATION.txt). En attendant : contactez-nous sur WhatsApp depuis la page d\'accueil.');
+    showBanner(banner, 'warn', 'Connexion à la base de données impossible pour le moment (votre réseau bloque peut-être Supabase). Forcez le rechargement avec Ctrl + Shift + R, ou essayez en navigation privée / sur une autre connexion. Si le problème persiste, écrivez-nous sur WhatsApp.');
     if (btnLogin) btnLogin.disabled = true;
     if (btnSignup) btnSignup.disabled = true;
   } else {
@@ -149,7 +149,7 @@ if (pageId === 'dashboard') {
 
   if (!sb) {
     if (dashBanner) {
-      showBanner(dashBanner, 'warn', 'Configuration Supabase manquante — voir assets/js/config.js et espace-etudiant/CONFIGURATION.txt');
+      showBanner(dashBanner, 'warn', 'Connexion à la base de données impossible pour le moment. Forcez le rechargement (Ctrl + Shift + R) ou réessayez sur une autre connexion.');
     }
     if (nameEl) nameEl.textContent = '—';
     if (emailEl) emailEl.textContent = '';
