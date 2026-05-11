@@ -16,6 +16,12 @@
       url: 'https://www.facebook.com/profile.php?id=61589453766633',
       label: 'StudyAlready sur Facebook',
       svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8.5h2.86l.43-3.32H13.5V8.06c0-.96.27-1.61 1.64-1.61h1.76V3.48a23.5 23.5 0 0 0-2.57-.13c-2.54 0-4.28 1.55-4.28 4.4v2.46H7.18v3.32h2.87V22h3.45z"/></svg>'
+    },
+    {
+      key: 'instagram',
+      url: 'https://www.instagram.com/studyalready/',
+      label: 'StudyAlready sur Instagram',
+      svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>'
     }
   ];
 
