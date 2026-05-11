@@ -98,10 +98,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!key || key === 'REMPLACER_PAR_VOTRE_CLE') {
         var mail = (window.STUDYALREADY_CONFIG && window.STUDYALREADY_CONFIG.CONTACT_EMAIL) || 'studyalready8@gmail.com';
         var wa = 'https://wa.me/32465339448?text=' + encodeURIComponent('Bonjour StudyAlready, message depuis le formulaire du site.');
+        var w3 = 'https://web3forms.com/';
         statusEl.innerHTML =
-          'L’envoi automatique n’est pas encore activé (clé Web3Forms à renseigner dans <code class="text-xs bg-slate-100 px-1 rounded">assets/js/config.js</code>). ' +
+          'L’envoi par formulaire n’est pas encore activé : ajoutez votre <strong>clé Web3Forms</strong> (gratuit, 1 min) sur <a href="' + w3 + '" class="underline font-semibold text-brand-dark" target="_blank" rel="noopener">web3forms.com</a>, puis collez-la dans <code class="text-xs bg-slate-100 px-1 rounded">assets/js/config.js</code> à la place de <code class="text-xs bg-slate-100 px-1 rounded">REMPLACER_PAR_VOTRE_CLE</code>. ' +
           'En attendant : <a href="mailto:' + mail + '?subject=StudyAlready%20-%20contact%20site" class="underline font-semibold text-brand-dark">écrire à ' + mail + '</a> ' +
-          'ou <a href="' + wa + '" class="underline font-semibold" target="_blank" rel="noopener">WhatsApp</a>.';
+          'ou <a href="' + wa + '" class="underline font-semibold" target="_blank" rel="noopener">WhatsApp</a>. ' +
+          '<span class="block mt-2 text-xs">Le formulaire « Créer mon profil » utilise Supabase et ne nécessite pas Web3Forms si le site est à jour.</span>';
         statusEl.classList.remove('text-slate-600');
         statusEl.classList.add('text-amber-700');
         return;
@@ -181,7 +183,8 @@ document.addEventListener('DOMContentLoaded', function () {
       String(c.SUPABASE_ANON_KEY).indexOf('REMPLACER') === -1);
   }
 
-  if (!supabaseConfigured()) {
+  /* Créer profil : Supabase si le client est prêt ; sinon repli Web3Forms (ex. CDN Supabase bloqué). */
+  if (!supabaseConfigured() || !window.studyalreadySb) {
     bindWeb3Form(
       document.getElementById('creerProfilForm'),
       document.getElementById('creerProfilStatus'),

@@ -6,11 +6,13 @@
 // Collez ci-dessous la clé d'accès reçue par email.
 //
 // IMPORTANT : tant que la clé est "REMPLACER_PAR_VOTRE_CLE",
-// les formulaires afficheront un message d'erreur clair.
+// les formulaires Contact, pré-qualification, réseau, voyage, etc. afficheront un message d'aide.
+// Obtenir une clé gratuite : https://web3forms.com/ → Create Access Key → coller ci-dessous.
+// « Créer mon profil » utilise Supabase (pas Web3Forms) si le client Supabase se charge correctement.
 // ============================================================
 
 window.STUDYALREADY_CONFIG = {
-  // Clé d'accès Web3Forms (32 caractères, format UUID)
+  // Clé d'accès Web3Forms (UUID) — https://web3forms.com/
   WEB3FORMS_ACCESS_KEY: 'REMPLACER_PAR_VOTRE_CLE',
 
   // Destination par défaut (informatif — Web3Forms envoie à l'email associé à la clé)
