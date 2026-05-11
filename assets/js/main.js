@@ -12,6 +12,32 @@
   } catch (e) {}
 })();
 
+/* Filet de sécurité : si un utilisateur arrive sur n'importe quelle page
+   avec un token Supabase dans l'URL (confirmation email, magic link,
+   reset password), on le redirige vers /espace-etudiant/ qui sait gérer
+   ces tokens et l'envoie vers son dashboard.
+   Couvre le cas où la "Site URL" Supabase ne pointe pas exactement vers
+   l'espace étudiant. */
+(function handleSupabaseAuthCallback() {
+  try {
+    var hash = window.location.hash || '';
+    var search = window.location.search || '';
+    var hasToken = hash.indexOf('access_token=') !== -1 ||
+                   hash.indexOf('type=signup') !== -1 ||
+                   hash.indexOf('type=recovery') !== -1 ||
+                   hash.indexOf('type=magiclink') !== -1 ||
+                   hash.indexOf('error_description=') !== -1 ||
+                   search.indexOf('code=') !== -1;
+    if (!hasToken) return;
+    /* Si on est déjà sur la page de login de l'espace, laisser le script
+       espace-etudiant.mjs faire son travail. */
+    if (window.location.pathname.indexOf('/espace-etudiant/') !== -1) return;
+    /* Sinon, on redirige en conservant le hash (token) pour que la page
+       d'atterrissage puisse créer la session. */
+    window.location.replace('/espace-etudiant/' + hash + search);
+  } catch (e) {}
+})();
+
 /* Charge dynamiquement les scripts globaux (cookies RGPD, liens sociaux footer) */
 (function loadGlobalScripts() {
   if (window.studyalreadyGlobalLoaded) return;
