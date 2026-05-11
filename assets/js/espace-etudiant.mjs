@@ -54,8 +54,30 @@ if (pageId === 'login') {
     if (btnSignup) btnSignup.disabled = true;
   } else {
     if (banner) banner.classList.add('hidden');
+
+    /* Si l'URL contient un token de confirmation (#access_token=...),
+       Supabase JS le parse automatiquement et crée la session.
+       On affiche un retour rassurant en attendant la redirection. */
+    var hash = window.location.hash || '';
+    if (hash.indexOf('access_token=') !== -1 || hash.indexOf('type=signup') !== -1) {
+      showBanner(banner, 'ok', 'Email confirmé ! Connexion en cours…');
+    } else if (hash.indexOf('error=') !== -1 || hash.indexOf('error_description=') !== -1) {
+      showBanner(banner, 'warn',
+        'Le lien de confirmation a expiré ou est invalide. Reconnectez-vous avec votre email et mot de passe, ou recréez un compte.');
+    }
+
     sb.auth.getSession().then(function (res) {
       if (res.data && res.data.session) {
+        /* Nettoie le hash avant la redirection (évite de garder le token dans l'URL). */
+        try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
+        window.location.replace('dashboard.html');
+      }
+    });
+
+    /* Au cas où la session arrive juste après (race condition). */
+    sb.auth.onAuthStateChange(function (_evt, session) {
+      if (session) {
+        try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
         window.location.replace('dashboard.html');
       }
     });
@@ -116,10 +138,17 @@ if (pageId === 'login') {
         return;
       }
       btnSignup.disabled = true;
+      /* Force l'URL de retour vers le vrai site en production.
+         Évite le défaut Supabase qui pointe vers http://localhost:3000. */
+      var origin = (window.location && window.location.origin) || 'https://www.studyalready.com';
+      var redirectUrl = origin + '/espace-etudiant/dashboard.html';
       var r = await sb.auth.signUp({
         email: email,
         password: password,
-        options: { data: { full_name: name || '' } }
+        options: {
+          data: { full_name: name || '' },
+          emailRedirectTo: redirectUrl
+        }
       });
       btnSignup.disabled = false;
       if (r.error) {
@@ -134,7 +163,9 @@ if (pageId === 'login') {
         window.location.href = 'dashboard.html';
         return;
       }
-      showBanner(err, 'warn', 'Compte créé. Si la confirmation par email est activée dans Supabase, ouvrez le lien reçu puis connectez-vous.');
+      showBanner(err, 'warn',
+        'Compte créé ! Ouvrez l\'email de confirmation que nous venons de vous envoyer (vérifiez le dossier spam). ' +
+        'Le lien vous ramènera ici, connecté. Si vous arrivez sur une page d\'erreur, dites-le à l\'admin : la "Site URL" dans Supabase doit pointer vers ' + origin + '.');
       switchTab('login');
     });
   }
