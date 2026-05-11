@@ -34,7 +34,7 @@ ALTER TABLE private_settings ENABLE ROW LEVEL SECURITY;
 -- 3) Upserts des valeurs : remplacez les 3 lignes ci-dessous
 INSERT INTO private_settings (key, value) VALUES
   ('RESEND_API_KEY', 'REMPLACER_PAR_VOTRE_CLE_RESEND'),  -- clé Resend (re_...)
-  ('NOTIFY_TO',      'tchuisseugedeon@gmail.com'),        -- destinataire des alertes
+  ('NOTIFY_TO',      'studyalready8@gmail.com'),         -- destinataire des alertes
   ('NOTIFY_FROM',    'StudyAlready <onboarding@resend.dev>')  -- expéditeur (laisser tant que le domaine n'est pas vérifié sur Resend)
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
