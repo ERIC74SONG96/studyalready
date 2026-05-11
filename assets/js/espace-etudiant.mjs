@@ -70,7 +70,7 @@ if (pageId === 'login') {
       if (res.data && res.data.session) {
         /* Nettoie le hash avant la redirection (évite de garder le token dans l'URL). */
         try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
-        window.location.replace('dashboard.html');
+        window.location.replace('/espace-etudiant/dashboard.html');
       }
     });
 
@@ -78,7 +78,7 @@ if (pageId === 'login') {
     sb.auth.onAuthStateChange(function (_evt, session) {
       if (session) {
         try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
-        window.location.replace('dashboard.html');
+        window.location.replace('/espace-etudiant/dashboard.html');
       }
     });
   }
@@ -124,7 +124,7 @@ if (pageId === 'login') {
         showBanner(err, 'err', m);
         return;
       }
-      window.location.href = 'dashboard.html';
+      window.location.href = '/espace-etudiant/dashboard.html';
     });
   }
 
@@ -160,7 +160,7 @@ if (pageId === 'login') {
         return;
       }
       if (r.data.session) {
-        window.location.href = 'dashboard.html';
+        window.location.href = '/espace-etudiant/dashboard.html';
         return;
       }
       showBanner(err, 'warn',
@@ -186,14 +186,14 @@ if (pageId === 'dashboard') {
     if (emailEl) emailEl.textContent = '';
     if (btnLogout) {
       btnLogout.addEventListener('click', function () {
-        window.location.href = 'index.html';
+        window.location.href = '/espace-etudiant/';
       });
     }
   } else {
     sb.auth.getSession().then(function (res) {
       var s = res.data && res.data.session;
       if (!s) {
-        window.location.href = 'index.html';
+        window.location.href = '/espace-etudiant/';
         return;
       }
       var u = s.user;
@@ -206,7 +206,7 @@ if (pageId === 'dashboard') {
   if (btnLogout && sb) {
     btnLogout.addEventListener('click', async function () {
       await sb.auth.signOut();
-      window.location.href = 'index.html';
+      window.location.href = '/espace-etudiant/';
     });
   }
 }

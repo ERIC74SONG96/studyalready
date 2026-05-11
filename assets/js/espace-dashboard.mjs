@@ -80,7 +80,7 @@ async function boot() {
   /* Vérifie la session — sinon redirige vers la page de login. */
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
-    window.location.replace('index.html');
+    window.location.replace('/espace-etudiant/');
     return;
   }
   currentUser = session.user;
@@ -94,7 +94,7 @@ async function boot() {
   if ($('btnLogout')) {
     $('btnLogout').addEventListener('click', async () => {
       await sb.auth.signOut();
-      window.location.href = 'index.html';
+      window.location.href = '/espace-etudiant/';
     });
   }
 
