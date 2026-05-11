@@ -12,10 +12,10 @@
   } catch (e) {}
 })();
 
-/* Charge le bandeau cookies / consentement RGPD sur toutes les pages */
-(function loadCookieBanner() {
-  if (window.studyalreadyCookiesLoaded) return;
-  window.studyalreadyCookiesLoaded = true;
+/* Charge dynamiquement les scripts globaux (cookies RGPD, liens sociaux footer) */
+(function loadGlobalScripts() {
+  if (window.studyalreadyGlobalLoaded) return;
+  window.studyalreadyGlobalLoaded = true;
   /* Trouve le chemin relatif vers assets/js/ en se basant sur le script main.js déjà chargé. */
   var base = '';
   var scripts = document.getElementsByTagName('script');
@@ -25,10 +25,12 @@
     if (m) { base = m[1]; break; }
   }
   if (!base) base = 'assets/js/';
-  var s = document.createElement('script');
-  s.src = base + 'cookies.js';
-  s.async = true;
-  document.head.appendChild(s);
+  ['cookies.js', 'social-links.js'].forEach(function (file) {
+    var s = document.createElement('script');
+    s.src = base + file;
+    s.async = true;
+    document.head.appendChild(s);
+  });
 })();
 
 document.addEventListener('DOMContentLoaded', function () {
