@@ -26,6 +26,16 @@
       "permanent": true
     },
     { "source": "/contact", "destination": "/#contact", "permanent": false },
-    { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true }
+    { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true },
+    {
+      "source": "/auth/callback",
+      "destination": "/espace-etudiant/",
+      "permanent": false
+    },
+    {
+      "source": "/auth/v1/callback",
+      "destination": "/espace-etudiant/",
+      "permanent": false
+    }
   ]
 }
