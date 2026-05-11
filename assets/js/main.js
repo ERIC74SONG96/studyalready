@@ -12,6 +12,25 @@
   } catch (e) {}
 })();
 
+/* Charge le bandeau cookies / consentement RGPD sur toutes les pages */
+(function loadCookieBanner() {
+  if (window.studyalreadyCookiesLoaded) return;
+  window.studyalreadyCookiesLoaded = true;
+  /* Trouve le chemin relatif vers assets/js/ en se basant sur le script main.js déjà chargé. */
+  var base = '';
+  var scripts = document.getElementsByTagName('script');
+  for (var i = 0; i < scripts.length; i++) {
+    var src = scripts[i].src || '';
+    var m = src.match(/(.*\/assets\/js\/)main\.js(?:\?.*)?$/);
+    if (m) { base = m[1]; break; }
+  }
+  if (!base) base = 'assets/js/';
+  var s = document.createElement('script');
+  s.src = base + 'cookies.js';
+  s.async = true;
+  document.head.appendChild(s);
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
