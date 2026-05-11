@@ -29,9 +29,14 @@
                    hash.indexOf('error_description=') !== -1 ||
                    search.indexOf('code=') !== -1;
     if (!hasToken) return;
-    /* Si on est déjà sur la page de login de l'espace, laisser le script
-       espace-etudiant.mjs faire son travail. */
-    if (window.location.pathname.indexOf('/espace-etudiant/') !== -1) return;
+    /* Si on est déjà sur n'importe quelle page de l'espace étudiant
+       (avec ou sans slash final, ou sous-page), on laisse les scripts
+       de cet espace gérer le token. On évite ainsi toute boucle de
+       redirection entre /espace-etudiant et /espace-etudiant/. */
+    var p = window.location.pathname || '';
+    if (p === '/espace-etudiant' ||
+        p === '/espace-etudiant/' ||
+        p.indexOf('/espace-etudiant/') === 0) return;
     /* Sinon, on redirige en conservant le hash (token) pour que la page
        d'atterrissage puisse créer la session. */
     window.location.replace('/espace-etudiant/' + hash + search);
