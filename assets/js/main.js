@@ -1,3 +1,17 @@
+/* Force l’URL canonique : le certificat et le déploiement Vercel sont sur www. */
+(function enforceCanonicalHost() {
+  try {
+    if (window.location.hostname === 'studyalready.com') {
+      window.location.replace(
+        'https://www.studyalready.com' +
+        window.location.pathname +
+        window.location.search +
+        window.location.hash
+      );
+    }
+  } catch (e) {}
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -82,7 +96,12 @@ document.addEventListener('DOMContentLoaded', function () {
       var key = cfg.WEB3FORMS_ACCESS_KEY;
 
       if (!key || key === 'REMPLACER_PAR_VOTRE_CLE') {
-        statusEl.textContent = 'Formulaire non configure (cle Web3Forms manquante). Ecrivez-nous sur WhatsApp.';
+        var mail = (window.STUDYALREADY_CONFIG && window.STUDYALREADY_CONFIG.CONTACT_EMAIL) || 'studyalready8@gmail.com';
+        var wa = 'https://wa.me/32465339448?text=' + encodeURIComponent('Bonjour StudyAlready, message depuis le formulaire du site.');
+        statusEl.innerHTML =
+          'L’envoi automatique n’est pas encore activé (clé Web3Forms à renseigner dans <code class="text-xs bg-slate-100 px-1 rounded">assets/js/config.js</code>). ' +
+          'En attendant : <a href="mailto:' + mail + '?subject=StudyAlready%20-%20contact%20site" class="underline font-semibold text-brand-dark">écrire à ' + mail + '</a> ' +
+          'ou <a href="' + wa + '" class="underline font-semibold" target="_blank" rel="noopener">WhatsApp</a>.';
         statusEl.classList.remove('text-slate-600');
         statusEl.classList.add('text-amber-700');
         return;

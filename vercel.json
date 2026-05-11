@@ -19,6 +19,12 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "studyalready.com" }],
+      "destination": "https://www.studyalready.com/:path*",
+      "permanent": true
+    },
     { "source": "/contact", "destination": "/#contact", "permanent": false },
     { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true }
   ]
