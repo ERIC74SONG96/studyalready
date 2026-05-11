@@ -89,10 +89,34 @@ C'est tout — les politiques d'accès (RLS) s'appliquent automatiquement grâce
 
 ---
 
+## Notifications email pour la messagerie (recommandé)
+
+La migration `007_notifications_dossier.sql` ajoute deux triggers Resend :
+
+- email à `studyalready8@gmail.com` quand un étudiant envoie un **message** ;
+- email à `studyalready8@gmail.com` quand un étudiant téléverse un **document**.
+
+Pour l'activer :
+
+1. Assurez-vous que `005_email_notifications.sql` est exécuté et que la clé Resend est configurée dans `private_settings`.
+2. Exécutez `007_notifications_dossier.sql` dans le SQL Editor de Supabase.
+3. Testez : connectez-vous côté étudiant, envoyez un message — vous devez recevoir un email sous ~30 secondes.
+
+Pour diagnostiquer un envoi qui n'arrive pas :
+
+```sql
+SELECT id, status_code, content
+  FROM net._http_response
+  ORDER BY id DESC
+  LIMIT 5;
+```
+
+Un `status_code = 200` confirme que Resend a accepté l'email. Si vous voyez `422`, Resend est en mode test et n'envoie qu'aux adresses inscrites sur le compte Resend.
+
 ## Évolutions possibles
 
 - Ajouter d'autres types de dossiers : visa, compte bloqué, logement, pack accueil (similaire à `create_fwb_dossier`).
-- Notifications email automatiques quand l'admin envoie un message (à brancher dans `005_email_notifications.sql`).
+- Notifications email **vers l'étudiant** quand l'admin écrit (symétrique du trigger ci-dessus, en utilisant l'email du compte).
 - Lien direct depuis `admin.html` : à côté de chaque demande `form_submission`, un bouton « voir le compte étudiant ».
 - Export CSV des dossiers.
 
