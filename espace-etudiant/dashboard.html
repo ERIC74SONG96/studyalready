@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tableau de bord — Mon espace | StudyAlready</title>
-  <meta name="description" content="Votre espace personnel StudyAlready : accès rapide à la pré-qualification, aux services et au contact." />
+  <title>Mon tableau de bord | StudyAlready</title>
+  <meta name="description" content="Votre espace personnel StudyAlready : suivi de dossier, messages, documents et historique de vos demandes." />
   <link rel="canonical" href="https://www.studyalready.com/espace-etudiant/dashboard.html" />
   <meta name="robots" content="noindex,follow" />
   <link rel="icon" type="image/svg+xml" href="../assets/img/logo-icon.svg" />
@@ -19,107 +19,146 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 <body class="font-sans text-slate-800 bg-slate-50 antialiased" data-espace-page="dashboard">
-  <header class="border-b border-slate-200 bg-white">
-    <nav class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a href="../index.html" class="text-sm text-slate-600 hover:text-brand-dark">← Accueil</a>
+  <header class="border-b border-slate-200 bg-white sticky top-0 z-30">
+    <nav class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+      <a href="../index.html" class="text-sm text-slate-600 hover:text-brand-dark flex items-center gap-1">← Accueil</a>
+      <span class="font-display font-bold text-sm text-brand-dark hidden sm:inline">Mon espace étudiant</span>
       <button type="button" id="btnLogout" class="text-sm font-semibold text-red-700 hover:underline">Déconnexion</button>
     </nav>
   </header>
 
-  <main class="max-w-3xl mx-auto px-4 py-10">
-    <div id="espaceBanner" class="hidden rounded-xl p-4 text-sm mb-6"></div>
-    <div id="espaceError" class="hidden rounded-xl p-4 text-sm mb-6"></div>
+  <main class="max-w-5xl mx-auto px-4 py-8 space-y-8">
+    <div id="espaceBanner" class="hidden rounded-xl p-4 text-sm"></div>
+    <div id="espaceError" class="hidden rounded-xl p-4 text-sm"></div>
 
-    <div class="bg-gradient-to-br from-brand-dark to-brand-blue rounded-2xl p-8 text-white mb-8">
-      <p class="text-brand-gold text-xs font-semibold uppercase tracking-wider">Bienvenue</p>
-      <h1 class="mt-2 font-display text-2xl font-bold" id="dashName">…</h1>
+    <!-- En-tête de bienvenue -->
+    <section class="bg-gradient-to-br from-brand-dark to-brand-blue rounded-2xl p-6 sm:p-8 text-white shadow-lg">
+      <p class="text-brand-gold text-xs font-semibold uppercase tracking-wider">Bienvenue dans votre espace</p>
+      <h1 class="mt-2 font-display text-2xl sm:text-3xl font-bold" id="dashName">…</h1>
       <p class="mt-1 text-slate-300 text-sm" id="dashEmail">…</p>
-    </div>
+      <p class="mt-4 text-sm text-slate-200 max-w-2xl">Vous pouvez suivre l'avancement de votre dossier, échanger avec StudyAlready et retrouver vos documents en un seul endroit.</p>
+    </section>
 
-    <h2 class="font-display font-bold text-lg text-brand-dark mb-4">Vos prochaines étapes</h2>
-    <div class="grid sm:grid-cols-2 gap-4">
-      <a href="../prequalification-dossier.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">📋</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Pré-qualification dossier</h3>
-        <p class="mt-1 text-xs text-slate-600">Formulaire détaillé pour préparer votre équivalence FWB.</p>
-      </a>
-      <a href="../equivalence.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">🎓</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Guide équivalence FWB</h3>
-        <p class="mt-1 text-xs text-slate-600">Comprendre les pièces et les délais.</p>
-      </a>
-      <a href="../index.html#contact" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">✉️</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Nous écrire</h3>
-        <p class="mt-1 text-xs text-slate-600">Formulaire de contact (indiquez la même adresse email que votre compte).</p>
-      </a>
-      <a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">💬</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">WhatsApp</h3>
-        <p class="mt-1 text-xs text-slate-600">+32 465 33 94 48 — réponse rapide.</p>
-      </a>
-      <a href="../accelerateur-job.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">⚡</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Accélérateur de Job</h3>
-        <p class="mt-1 text-xs text-slate-600">Job étudiant en Belgique : recruteurs, intérim, calendrier, CV.</p>
-      </a>
-      <a href="../analyseur-admission.html" class="block rounded-xl border border-amber-200 bg-amber-50 p-5 hover:border-amber-400 shadow-sm transition">
-        <span class="text-2xl">🎯</span>
-        <h3 class="mt-2 font-semibold text-amber-900">Analyseur d'admission</h3>
-        <p class="mt-1 text-xs text-amber-900/80">Mon score d'orientation FWB + écoles à viser de façon réaliste.</p>
-      </a>
-      <a href="../preparer-voyage.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">✈️</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Préparer mon voyage</h3>
-        <p class="mt-1 text-xs text-slate-600">Comparateur de vols, bagages par compagnie, départs groupés étudiants.</p>
-      </a>
-      <a href="../communaute.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">🤝</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Communauté &amp; réseau</h3>
-        <p class="mt-1 text-xs text-slate-600">Deux parcours, mentorat, mise en relation par domaine.</p>
-      </a>
-      <a href="../rejoindre-reseau.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">🌐</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Rejoindre le réseau</h3>
-        <p class="mt-1 text-xs text-slate-600">Formulaire d'adhésion par domaine, parcours et ville.</p>
-      </a>
-      <a href="../annuaire.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">👥</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Annuaire des membres</h3>
-        <p class="mt-1 text-xs text-slate-600">Filtrer par université, filière, statut (étudiant, pro).</p>
-      </a>
-      <a href="../besoin-d-aide.html" class="block rounded-xl border border-amber-200 bg-amber-50 p-5 hover:border-amber-400 shadow-sm transition">
-        <span class="text-2xl">🆘</span>
-        <h3 class="mt-2 font-semibold text-amber-900">Besoin d'aide ?</h3>
-        <p class="mt-1 text-xs text-amber-900/80">Avocat, médecin, urgence, finance, recours académique.</p>
-      </a>
-      <a href="../creer-profil.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">🪪</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Créer mon profil public</h3>
-        <p class="mt-1 text-xs text-slate-600">Apparaître dans l'annuaire et aider les autres membres.</p>
-      </a>
-      <a href="../evenements-seminaires.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">📅</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Événements &amp; séminaires</h3>
-        <p class="mt-1 text-xs text-slate-600">Webinaires et ateliers : inscriptions et dates à venir.</p>
-      </a>
-      <a href="../pack-accueil.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">✈️</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Pack accueil arrivée</h3>
-        <p class="mt-1 text-xs text-slate-600">Aéroport, commune, SIM, transports.</p>
-      </a>
-      <a href="../assets/docs/StudyAlready-Modele-CV-Belge.pdf" download class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
-        <span class="text-2xl">📄</span>
-        <h3 class="mt-2 font-semibold text-brand-dark">Modèle CV belge (PDF)</h3>
-        <p class="mt-1 text-xs text-slate-600">Téléchargez et adaptez le modèle 1 page.</p>
-      </a>
-    </div>
+    <!-- Onglets de navigation -->
+    <nav class="flex flex-wrap gap-2 border-b border-slate-200">
+      <button data-tab="dossier" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-brand-blue text-brand-dark">📂 Mon dossier</button>
+      <button data-tab="messages" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">💬 Messages</button>
+      <button data-tab="documents" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">📎 Documents</button>
+      <button data-tab="demandes" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">📋 Mes demandes</button>
+      <button data-tab="services" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">🚀 Services</button>
+    </nav>
 
-    <p class="mt-8 text-xs text-slate-500 text-center">Le suivi détaillé de votre dossier (statuts, documents) pourra être enrichi ici plus tard. Pour toute urgence, privilégiez WhatsApp.</p>
+    <!-- Onglet : Mon dossier -->
+    <section id="paneDossier" class="esp-pane">
+      <h2 class="font-display font-bold text-xl text-brand-dark mb-4">Avancement de mon dossier</h2>
+      <div id="dossierBlock">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 text-sm text-slate-500">Chargement…</div>
+      </div>
+    </section>
+
+    <!-- Onglet : Messages -->
+    <section id="paneMessages" class="esp-pane hidden">
+      <h2 class="font-display font-bold text-xl text-brand-dark mb-4">Messages avec StudyAlready</h2>
+      <div id="messagesBlock">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 text-sm text-slate-500">Chargement…</div>
+      </div>
+      <p class="mt-3 text-xs text-slate-500">Pour les urgences, privilégiez <a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="text-brand-blue underline">WhatsApp</a>.</p>
+    </section>
+
+    <!-- Onglet : Documents -->
+    <section id="paneDocuments" class="esp-pane hidden">
+      <h2 class="font-display font-bold text-xl text-brand-dark mb-4">Mes documents</h2>
+      <div id="documentsBlock">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 text-sm text-slate-500">Chargement…</div>
+      </div>
+      <p class="mt-3 text-xs text-slate-500">Vos documents sont stockés de manière privée et chiffrée. Seul vous (avec votre compte) et l'admin StudyAlready y avez accès.</p>
+    </section>
+
+    <!-- Onglet : Mes demandes -->
+    <section id="paneDemandes" class="esp-pane hidden">
+      <h2 class="font-display font-bold text-xl text-brand-dark mb-4">Historique de mes demandes</h2>
+      <div id="submissionsBlock">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 text-sm text-slate-500">Chargement…</div>
+      </div>
+    </section>
+
+    <!-- Onglet : Services & raccourcis -->
+    <section id="paneServices" class="esp-pane hidden">
+      <h2 class="font-display font-bold text-xl text-brand-dark mb-4">Services et raccourcis</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <a href="../prequalification-dossier.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+          <span class="text-2xl">📋</span>
+          <h3 class="mt-2 font-semibold text-brand-dark">Pré-qualification dossier</h3>
+          <p class="mt-1 text-xs text-slate-600">Formulaire détaillé pour préparer votre équivalence FWB.</p>
+        </a>
+        <a href="../analyseur-admission.html" class="block rounded-xl border border-amber-200 bg-amber-50 p-5 hover:border-amber-400 shadow-sm transition">
+          <span class="text-2xl">🎯</span>
+          <h3 class="mt-2 font-semibold text-amber-900">Analyseur d'admission</h3>
+          <p class="mt-1 text-xs text-amber-900/80">Estimer mes chances et les écoles à viser.</p>
+        </a>
+        <a href="../accelerateur-job.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+          <span class="text-2xl">⚡</span>
+          <h3 class="mt-2 font-semibold text-brand-dark">Accélérateur de Job</h3>
+          <p class="mt-1 text-xs text-slate-600">Job étudiant en Belgique : recruteurs, CV.</p>
+        </a>
+        <a href="../preparer-voyage.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+          <span class="text-2xl">✈️</span>
+          <h3 class="mt-2 font-semibold text-brand-dark">Préparer mon voyage</h3>
+          <p class="mt-1 text-xs text-slate-600">Vols, bagages, départs groupés.</p>
+        </a>
+        <a href="../communaute.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+          <span class="text-2xl">🤝</span>
+          <h3 class="mt-2 font-semibold text-brand-dark">Communauté &amp; réseau</h3>
+          <p class="mt-1 text-xs text-slate-600">Mentorat, événements, annuaire.</p>
+        </a>
+        <a href="../besoin-d-aide.html" class="block rounded-xl border border-amber-200 bg-amber-50 p-5 hover:border-amber-400 shadow-sm transition">
+          <span class="text-2xl">🆘</span>
+          <h3 class="mt-2 font-semibold text-amber-900">Besoin d'aide ?</h3>
+          <p class="mt-1 text-xs text-amber-900/80">Avocat, médecin, urgence, finance.</p>
+        </a>
+        <a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="block rounded-xl border border-green-200 bg-green-50 p-5 hover:border-green-400 shadow-sm transition">
+          <span class="text-2xl">💬</span>
+          <h3 class="mt-2 font-semibold text-green-900">WhatsApp direct</h3>
+          <p class="mt-1 text-xs text-green-900/80">+32 465 33 94 48 — pour les urgences.</p>
+        </a>
+        <a href="../creer-profil.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+          <span class="text-2xl">🪪</span>
+          <h3 class="mt-2 font-semibold text-brand-dark">Créer mon profil public</h3>
+          <p class="mt-1 text-xs text-slate-600">Apparaître dans l'annuaire et aider les autres.</p>
+        </a>
+      </div>
+    </section>
+
+    <p class="text-xs text-slate-500 text-center pt-4">Vos données sont privées et conformes RGPD. Vous pouvez demander la suppression de votre compte à tout moment via <a href="mailto:studyalready8@gmail.com" class="text-brand-blue underline">studyalready8@gmail.com</a>.</p>
   </main>
 
+  <script>
+    /* Gestion des onglets — léger et autonome */
+    document.addEventListener('DOMContentLoaded', function () {
+      var tabs = document.querySelectorAll('.esp-tab');
+      var panes = document.querySelectorAll('.esp-pane');
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () {
+          var key = t.getAttribute('data-tab');
+          tabs.forEach(function (x) {
+            x.classList.remove('border-brand-blue', 'text-brand-dark');
+            x.classList.add('border-transparent', 'text-slate-500');
+          });
+          t.classList.add('border-brand-blue', 'text-brand-dark');
+          t.classList.remove('border-transparent', 'text-slate-500');
+          panes.forEach(function (p) { p.classList.add('hidden'); });
+          var pane = document.getElementById('pane' + key.charAt(0).toUpperCase() + key.slice(1));
+          if (pane) pane.classList.remove('hidden');
+        });
+      });
+    });
+  </script>
+
   <script src="../assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+  <script src="../assets/js/supabase-init.js"></script>
   <script type="module" src="../assets/js/espace-etudiant.mjs"></script>
+  <script type="module" src="../assets/js/espace-dashboard.mjs"></script>
   <script src="../assets/js/main.js"></script>
 </body>
 </html>

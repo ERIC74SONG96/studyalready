@@ -122,7 +122,9 @@
     });
     $('tabSubs').classList.toggle('hidden', name !== 'subs');
     $('tabProfiles').classList.toggle('hidden', name !== 'profiles');
+    var tabStudents = $('tabStudents'); if (tabStudents) tabStudents.classList.toggle('hidden', name !== 'students');
     if (name === 'profiles') loadProfiles();
+    if (name === 'students') loadStudents();
   }
 
   function initApp() {
@@ -136,6 +138,16 @@
     $('filterSearch').addEventListener('input', debounce(loadSubmissions, 250));
     $('filterProfileStatus').addEventListener('change', loadProfiles);
     $('filterProfileSearch').addEventListener('input', debounce(loadProfiles, 250));
+    var refreshStudents = $('refreshStudents');
+    if (refreshStudents) refreshStudents.addEventListener('click', loadStudents);
+    var filterStudentSearch = $('filterStudentSearch');
+    if (filterStudentSearch) filterStudentSearch.addEventListener('input', debounce(loadStudents, 250));
+    var studentClose = $('studentModalClose');
+    if (studentClose) studentClose.addEventListener('click', closeStudentModal);
+    var studentModal = $('studentModal');
+    if (studentModal) studentModal.addEventListener('click', function (e) {
+      if (e.target.id === 'studentModal') closeStudentModal();
+    });
     $('subModalClose').addEventListener('click', closeSubModal);
     $('subModal').addEventListener('click', function (e) {
       if (e.target.id === 'subModal') closeSubModal();
@@ -367,5 +379,285 @@
       if (r.error) { alert(r.error.message); return; }
       loadProfiles();
     });
+  }
+
+  // -------------------- Étudiants (comptes) --------------------
+
+  function loadStudents() {
+    var tbody = $('studentsTbody');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="6" class="px-3 py-6 text-center text-slate-500">Chargement…</td></tr>';
+
+    var q = sb.from('admin_students_view').select('*').order('signup_date', { ascending: false }).limit(500);
+    var searchEl = $('filterStudentSearch');
+    var search = searchEl ? searchEl.value.trim() : '';
+    if (search) {
+      var pattern = '%' + search.replace(/[%_]/g, '\\$&') + '%';
+      q = q.or('email.ilike.' + pattern + ',full_name.ilike.' + pattern);
+    }
+
+    q.then(function (r) {
+      if (r.error) {
+        var msg = r.error.message || '';
+        if (/admin_students_view/i.test(msg) || /relation .* does not exist/i.test(msg)) {
+          msg = 'La vue admin_students_view n’existe pas encore. Exécutez la migration <code class="bg-slate-100 px-1 rounded text-xs">006_student_dossiers.sql</code> dans Supabase.';
+        }
+        tbody.innerHTML = '<tr><td colspan="6" class="px-3 py-6 text-center text-red-600">' + msg + '</td></tr>';
+        return;
+      }
+      var rows = r.data || [];
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-3 py-6 text-center text-slate-500">Aucun étudiant inscrit pour le moment.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(function (row) {
+        var progress = '—';
+        if (row.total_steps) {
+          var pct = Math.round(((row.current_step || 0) / row.total_steps) * 100);
+          progress = '<div class="flex items-center gap-2"><div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">' +
+            '<div class="h-full bg-brand-gold" style="width:' + pct + '%"></div></div>' +
+            '<span class="text-xs text-slate-600">' + row.current_step + '/' + row.total_steps + '</span></div>';
+        }
+        var unread = row.unread_from_student ? '<span class="ml-1 inline-block bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5">' + row.unread_from_student + '</span>' : '';
+        return '<tr class="border-t border-slate-100 hover:bg-slate-50">' +
+          '<td class="px-3 py-2 whitespace-nowrap text-slate-600">' + escapeHtml(fmtDate(row.signup_date)) + '</td>' +
+          '<td class="px-3 py-2 font-semibold text-brand-dark">' + escapeHtml(row.full_name || '—') + unread + '</td>' +
+          '<td class="px-3 py-2 text-slate-600">' + escapeHtml(row.email || '—') + '</td>' +
+          '<td class="px-3 py-2"><span class="text-xs bg-slate-100 px-2 py-0.5 rounded">' + escapeHtml(row.dossier_type || '—') + '</span></td>' +
+          '<td class="px-3 py-2">' + progress + '</td>' +
+          '<td class="px-3 py-2 text-right"><button data-user="' + escapeHtml(row.user_id) + '" class="open-student text-brand-blue hover:underline text-xs font-semibold">Ouvrir</button></td>' +
+          '</tr>';
+      }).join('');
+      tbody.querySelectorAll('.open-student').forEach(function (b) {
+        b.addEventListener('click', function () { openStudentModal(b.getAttribute('data-user')); });
+      });
+    });
+  }
+
+  function openStudentModal(userId) {
+    var modal = $('studentModal');
+    var body = $('studentModalBody');
+    var title = $('studentModalTitle');
+    body.innerHTML = '<p class="text-slate-500">Chargement…</p>';
+    modal.classList.remove('hidden');
+
+    Promise.all([
+      sb.from('admin_students_view').select('*').eq('user_id', userId).maybeSingle(),
+      sb.from('student_dossiers').select('*').eq('user_id', userId).order('updated_at', { ascending: false }),
+      sb.from('dossier_messages').select('*').eq('user_id', userId).order('created_at', { ascending: true }),
+      sb.from('dossier_documents').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
+      sb.from('form_submissions').select('id, form_type, status, subject, created_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(20)
+    ]).then(function (rs) {
+      var info = rs[0].data || {};
+      var dossiers = rs[1].data || [];
+      var messages = rs[2].data || [];
+      var docs = rs[3].data || [];
+      var subs = rs[4].data || [];
+
+      title.textContent = (info.full_name || info.email || 'Étudiant') + ' — Dossier';
+
+      var dossiersHtml = dossiers.map(renderAdminDossierBlock).join('') ||
+        '<p class="text-sm text-slate-500">Aucun dossier ouvert pour cet étudiant.</p>';
+
+      var subsHtml = subs.length
+        ? '<ul class="text-sm divide-y divide-slate-100 border border-slate-200 rounded-lg overflow-hidden">' +
+          subs.map(function (s) {
+            return '<li class="px-3 py-2 flex items-center justify-between">' +
+              '<span><span class="text-xs bg-slate-100 px-2 py-0.5 rounded mr-2">' + escapeHtml(labelType(s.form_type)) + '</span>' +
+              escapeHtml(s.subject || '') + '</span>' +
+              '<span class="text-xs text-slate-500">' + escapeHtml(fmtDate(s.created_at)) + ' · ' + badgeStatus(s.status) + '</span>' +
+              '</li>';
+          }).join('') + '</ul>'
+        : '<p class="text-sm text-slate-500">Aucune demande envoyée depuis ce compte.</p>';
+
+      var docsHtml = docs.length
+        ? '<ul class="text-sm space-y-1.5">' + docs.map(function (d) {
+          return '<li class="flex items-center justify-between gap-2">' +
+            '<span>📄 ' + escapeHtml(d.filename) + ' <span class="text-xs text-slate-500">(' + (d.uploaded_by === 'admin' ? 'admin' : 'étudiant') + ', ' + fmtDate(d.created_at) + ')</span></span>' +
+            '<button data-doc-path="' + escapeHtml(d.storage_path) + '" class="admin-doc-download text-brand-blue hover:underline text-xs font-semibold">Télécharger</button>' +
+            '</li>';
+        }).join('') + '</ul>'
+        : '<p class="text-sm text-slate-500">Aucun document partagé.</p>';
+
+      var msgsHtml = messages.length
+        ? '<div class="space-y-2 max-h-64 overflow-y-auto bg-slate-50 p-3 rounded-lg border border-slate-200">' +
+          messages.map(function (m) {
+            var isAdmin = m.sender === 'admin';
+            return '<div class="flex ' + (isAdmin ? 'justify-end' : 'justify-start') + '">' +
+              '<div class="max-w-[80%] rounded-2xl px-3 py-2 text-sm ' + (isAdmin ? 'bg-brand-dark text-white' : 'bg-white border border-slate-200') + '">' +
+              '<p class="whitespace-pre-wrap break-words">' + escapeHtml(m.message) + '</p>' +
+              '<p class="text-[10px] mt-1 ' + (isAdmin ? 'text-slate-300' : 'text-slate-400') + '">' + escapeHtml(fmtDate(m.created_at)) + '</p>' +
+              '</div></div>';
+          }).join('') + '</div>'
+        : '<p class="text-sm text-slate-500 mb-2">Aucun message échangé pour le moment.</p>';
+
+      body.innerHTML =
+        '<div class="bg-slate-50 rounded-lg p-3 text-sm border border-slate-200">' +
+          '<p><strong>' + escapeHtml(info.full_name || '—') + '</strong>' +
+          (info.email ? ' · <a class="underline text-brand-blue" href="mailto:' + escapeHtml(info.email) + '">' + escapeHtml(info.email) + '</a>' : '') +
+          '</p>' +
+          '<p class="text-xs text-slate-500 mt-1">Inscrit le ' + escapeHtml(fmtDate(info.signup_date)) + '</p>' +
+        '</div>' +
+
+        '<div><h4 class="font-display font-bold text-brand-dark mb-2 text-sm">📂 Dossier(s) et étapes</h4>' + dossiersHtml + '</div>' +
+        (dossiers.findIndex(function(d){return d.type==='equivalence_fwb';}) === -1
+          ? '<button id="btnCreateFwb" data-user="' + escapeHtml(userId) + '" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-brand-dark text-white hover:bg-brand-blue">Créer un dossier équivalence FWB</button>'
+          : '') +
+
+        '<div><h4 class="font-display font-bold text-brand-dark mb-2 text-sm mt-4">💬 Messages</h4>' + msgsHtml +
+          '<form id="adminMessageForm" class="mt-2 flex gap-2">' +
+            '<textarea id="adminMessageInput" rows="2" placeholder="Répondre à l\'étudiant…" class="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm resize-none"></textarea>' +
+            '<button type="submit" class="bg-brand-dark hover:bg-brand-blue text-white font-semibold px-4 rounded-lg text-sm">Envoyer</button>' +
+          '</form>' +
+          '<p id="adminMessageStatus" class="text-xs text-slate-500 mt-1 hidden"></p>' +
+        '</div>' +
+
+        '<div><h4 class="font-display font-bold text-brand-dark mb-2 text-sm mt-4">📎 Documents</h4>' + docsHtml +
+          '<form id="adminUploadForm" class="mt-3 bg-slate-50 p-3 rounded-lg border border-slate-200">' +
+            '<label class="block text-xs font-semibold text-slate-600 mb-1">Téléverser un document pour cet étudiant</label>' +
+            '<div class="flex gap-2">' +
+              '<input id="adminUploadFile" type="file" accept="application/pdf,image/*,.doc,.docx" class="flex-1 text-sm border border-slate-200 rounded-lg px-2 py-1.5 bg-white" />' +
+              '<button type="submit" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold px-3 rounded-lg text-sm">Envoyer</button>' +
+            '</div>' +
+            '<p id="adminUploadStatus" class="text-xs text-slate-500 mt-2 hidden"></p>' +
+          '</form>' +
+        '</div>' +
+
+        '<div><h4 class="font-display font-bold text-brand-dark mb-2 text-sm mt-4">📋 Demandes du formulaire</h4>' + subsHtml + '</div>';
+
+      bindStudentModalActions(userId);
+    });
+  }
+
+  function renderAdminDossierBlock(d) {
+    return '<details class="mb-2 border border-slate-200 rounded-lg" open>' +
+      '<summary class="cursor-pointer px-3 py-2 bg-slate-50 text-sm font-semibold text-brand-dark flex items-center justify-between">' +
+      '<span>' + escapeHtml(d.title || d.type) + ' — ' + escapeHtml(d.status) + '</span>' +
+      '<span class="text-xs text-slate-500">' + (d.current_step || 0) + '/' + (d.total_steps || '?') + '</span>' +
+      '</summary>' +
+      '<div class="p-3 text-sm">' +
+        (d.notes ? '<p class="text-xs italic text-slate-600 mb-2">Note actuelle (visible par l\'étudiant) : ' + escapeHtml(d.notes) + '</p>' : '') +
+        '<div data-steps-for="' + escapeHtml(d.id) + '" class="space-y-1 text-xs text-slate-500">Chargement des étapes…</div>' +
+      '</div>' +
+      '</details>';
+  }
+
+  function bindStudentModalActions(userId) {
+    /* Charge les étapes pour chaque dossier */
+    document.querySelectorAll('[data-steps-for]').forEach(function (el) {
+      var dossierId = el.getAttribute('data-steps-for');
+      sb.from('dossier_steps').select('*').eq('dossier_id', dossierId).order('step_number').then(function (r) {
+        if (r.error) { el.innerHTML = '<span class="text-red-600">' + escapeHtml(r.error.message) + '</span>'; return; }
+        var rows = r.data || [];
+        el.innerHTML = rows.map(function (s) {
+          var cls = s.status === 'done' ? 'text-green-700' : s.status === 'in_progress' ? 'text-amber-700' : s.status === 'blocked' ? 'text-red-700' : 'text-slate-500';
+          var sel = ['pending','in_progress','done','blocked'].map(function (v) {
+            return '<option value="' + v + '"' + (s.status === v ? ' selected' : '') + '>' + v + '</option>';
+          }).join('');
+          return '<div class="flex items-center gap-2 py-1 border-t border-slate-100">' +
+            '<span class="' + cls + ' font-semibold">' + s.step_number + '.</span>' +
+            '<span class="flex-1">' + escapeHtml(s.title) + '</span>' +
+            '<select class="text-xs border border-slate-200 rounded px-1 py-0.5" data-step-id="' + s.id + '">' + sel + '</select>' +
+            '</div>';
+        }).join('') || '<span class="text-xs text-slate-500">Aucune étape.</span>';
+
+        el.querySelectorAll('[data-step-id]').forEach(function (selEl) {
+          selEl.addEventListener('change', function () {
+            var stepId = selEl.getAttribute('data-step-id');
+            var newStatus = selEl.value;
+            var patch = { status: newStatus, completed_at: newStatus === 'done' ? new Date().toISOString() : null };
+            sb.from('dossier_steps').update(patch).eq('id', stepId).then(function (rr) {
+              if (rr.error) { alert(rr.error.message); return; }
+              /* Rafraîchit dossier_steps + recalcule current_step côté dossier */
+              sb.from('dossier_steps').select('status, step_number').eq('dossier_id', dossierId).order('step_number').then(function (rs) {
+                var done = (rs.data || []).filter(function (x) { return x.status === 'done'; }).length;
+                sb.from('student_dossiers').update({ current_step: done, updated_at: new Date().toISOString() }).eq('id', dossierId).then(function () {
+                  loadStudents();
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+
+    /* Création d'un dossier FWB */
+    var btnFwb = $('btnCreateFwb');
+    if (btnFwb) {
+      btnFwb.addEventListener('click', function () {
+        if (!confirm('Créer un nouveau dossier équivalence FWB pour cet étudiant ?')) return;
+        sb.rpc('create_fwb_dossier', { target_user: userId }).then(function (r) {
+          if (r.error) { alert(r.error.message); return; }
+          openStudentModal(userId);
+        });
+      });
+    }
+
+    /* Envoi message admin */
+    var form = $('adminMessageForm');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var input = $('adminMessageInput');
+        var status = $('adminMessageStatus');
+        var text = (input.value || '').trim();
+        if (!text) return;
+        status.classList.remove('hidden'); status.textContent = 'Envoi…';
+        sb.from('dossier_messages').insert({
+          user_id: userId, sender: 'admin', message: text
+        }).then(function (r) {
+          if (r.error) { status.textContent = 'Erreur : ' + r.error.message; return; }
+          input.value = ''; status.textContent = 'Message envoyé.';
+          setTimeout(function () { openStudentModal(userId); }, 400);
+        });
+      });
+    }
+
+    /* Téléchargement document */
+    document.querySelectorAll('.admin-doc-download').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var path = b.getAttribute('data-doc-path');
+        b.disabled = true; b.textContent = '…';
+        sb.storage.from('dossier-documents').createSignedUrl(path, 60).then(function (r) {
+          b.disabled = false; b.textContent = 'Télécharger';
+          if (r.error) { alert(r.error.message); return; }
+          window.open(r.data.signedUrl, '_blank', 'noopener');
+        });
+      });
+    });
+
+    /* Upload document admin */
+    var upForm = $('adminUploadForm');
+    if (upForm) {
+      upForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var fileInput = $('adminUploadFile');
+        var status = $('adminUploadStatus');
+        var file = fileInput.files && fileInput.files[0];
+        if (!file) return;
+        if (file.size > 10 * 1024 * 1024) {
+          status.classList.remove('hidden'); status.textContent = 'Fichier trop volumineux (max 10 Mo).';
+          return;
+        }
+        status.classList.remove('hidden'); status.textContent = 'Téléversement…';
+        var safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        var path = userId + '/admin-' + Date.now() + '-' + safe;
+        sb.storage.from('dossier-documents').upload(path, file, { upsert: false }).then(function (up) {
+          if (up.error) { status.textContent = 'Erreur : ' + up.error.message; return; }
+          sb.from('dossier_documents').insert({
+            user_id: userId, uploaded_by: 'admin', storage_path: path,
+            filename: file.name, size_bytes: file.size, mime_type: file.type || null
+          }).then(function (ins) {
+            if (ins.error) { status.textContent = 'Erreur d\'enregistrement : ' + ins.error.message; return; }
+            fileInput.value = ''; status.textContent = 'Document envoyé.';
+            setTimeout(function () { openStudentModal(userId); }, 400);
+          });
+        });
+      });
+    }
+  }
+
+  function closeStudentModal() {
+    var m = $('studentModal'); if (m) m.classList.add('hidden');
   }
 })();

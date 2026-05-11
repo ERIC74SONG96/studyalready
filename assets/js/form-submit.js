@@ -101,7 +101,20 @@
 
       showStatus(statusEl, 'Envoi en cours…', 'text-slate-600');
 
-      sb.from('form_submissions').insert(row).then(function (res) {
+      /* Si l'étudiant est connecté à son espace, on rattache la demande
+         à son compte (user_id). Permet l'affichage dans son dashboard. */
+      var insertPromise = sb.auth && sb.auth.getSession
+        ? sb.auth.getSession().then(function (r) {
+            if (r && r.data && r.data.session && r.data.session.user) {
+              row.user_id = r.data.session.user.id;
+            }
+            return sb.from('form_submissions').insert(row);
+          }).catch(function () {
+            return sb.from('form_submissions').insert(row);
+          })
+        : sb.from('form_submissions').insert(row);
+
+      insertPromise.then(function (res) {
         if (res.error) {
           var msg = res.error.message || 'Erreur d’envoi';
           if (res.error.code === '42P01' || /relation .* does not exist/i.test(msg)) {
