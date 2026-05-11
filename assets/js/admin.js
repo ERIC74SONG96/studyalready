@@ -80,12 +80,12 @@
   sb.auth.getSession().then(function (r) {
     var session = r && r.data && r.data.session;
     if (!session) { window.location.replace('admin-login.html'); return; }
-    sb.from('admins').select('user_id, email, full_name').eq('user_id', session.user.id).maybeSingle().then(function (a) {
+    sb.rpc('is_admin').then(function (a) {
       if (a.error || !a.data) {
         sb.auth.signOut().then(function () { window.location.replace('admin-login.html'); });
         return;
       }
-      $('adminWho').textContent = a.data.full_name || a.data.email || session.user.email || '';
+      $('adminWho').textContent = session.user.email || '';
       gate.classList.add('hidden');
       app.classList.remove('hidden');
       initApp();

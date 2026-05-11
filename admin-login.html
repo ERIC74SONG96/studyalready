@@ -116,11 +116,22 @@
             setStatus('Connexion impossible.', 'text-red-600');
             return;
           }
-          sb.from('admins').select('user_id').eq('user_id', uid).maybeSingle().then(function (a) {
-            if (a.error || !a.data) {
+          sb.rpc('is_admin').then(function (a) {
+            if (a.error) {
+              var msg = a.error.message || '';
+              if (/function .* does not exist/i.test(msg) || a.error.code === '42883') {
+                setStatus('La migration SQL « 003_admin_dashboard.sql » n’a pas encore été exécutée dans Supabase. Lancez-la dans SQL Editor puis réessayez.', 'text-red-600');
+              } else {
+                setStatus('Erreur vérification droits : ' + msg, 'text-red-600');
+              }
               sb.auth.signOut();
               btn.disabled = false;
-              setStatus('Ce compte n’a pas les droits administrateur.', 'text-red-600');
+              return;
+            }
+            if (!a.data) {
+              setStatus('Connexion réussie, mais votre compte n’est pas (encore) dans la table « admins ». Dans Supabase, lancez : INSERT INTO public.admins (user_id, email) VALUES (\'' + uid + '\', \'' + (email || '') + '\'); puis rechargez cette page.', 'text-red-600');
+              sb.auth.signOut();
+              btn.disabled = false;
               return;
             }
             setStatus('Connecté ! Redirection…', 'text-green-600');
