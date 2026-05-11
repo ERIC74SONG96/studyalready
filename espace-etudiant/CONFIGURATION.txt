@@ -1,0 +1,28 @@
+ESPACE ETUDIANT — Configuration Supabase (5 à 10 minutes)
+=========================================================
+
+1) Créez un projet gratuit sur https://supabase.com (Sign up → New project).
+
+2) Dans le projet : Settings → API
+   - Copiez "Project URL" → collez dans assets/js/config.js comme SUPABASE_URL
+   - Copiez "anon public" → collez comme SUPABASE_ANON_KEY
+
+3) Authentication → Providers → Email
+   - Laissez "Email" activé.
+   - Pour les tests : vous pouvez désactiver temporairement "Confirm email"
+     (Authentication → Providers → Email → désactiver "Confirm email").
+     En production, réactivez la confirmation et configurez les templates d'email.
+
+4) Authentication → URL Configuration
+   - Site URL : https://www.studyalready.com
+   - Redirect URLs : ajoutez
+     https://www.studyalready.com/espace-etudiant/dashboard.html
+     http://localhost:8000/espace-etudiant/dashboard.html   (pour tests locaux)
+
+5) Déployez : commit + push sur GitHub (Vercel redéploie).
+
+6) Politique de confidentialité : mentionnez le traitement des comptes (email,
+   données de profil) et le sous-traitant Supabase (UE / SCC si hors UE).
+
+Les clés "anon" sont prévues pour être publiques côté navigateur ; ne mettez
+JAMAIS la "service_role" dans le site web.

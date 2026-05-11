@@ -14,5 +14,11 @@ window.STUDYALREADY_CONFIG = {
   WEB3FORMS_ACCESS_KEY: 'REMPLACER_PAR_VOTRE_CLE',
 
   // Destination par défaut (informatif — Web3Forms envoie à l'email associé à la clé)
-  CONTACT_EMAIL: 'contact@studyalready.com'
+  CONTACT_EMAIL: 'contact@studyalready.com',
+
+  // --- Espace étudiant (Supabase Auth) : https://supabase.com ---
+  // Dashboard projet → Settings → API : Project URL + anon public key
+  // Ne jamais mettre la clé "service_role" ici (réservée au serveur).
+  SUPABASE_URL: 'REMPLACER_PAR_VOTRE_URL_SUPABASE',
+  SUPABASE_ANON_KEY: 'REMPLACER_PAR_VOTRE_CLE_ANON_SUPABASE'
 };
