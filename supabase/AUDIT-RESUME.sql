@@ -29,7 +29,8 @@ expected_fn AS (
     ('handle_new_user_dossier',   '006_student_dossiers.sql'),
     ('create_fwb_dossier',        '006_student_dossiers.sql'),
     ('on_new_dossier_message',    '007_notifications_dossier.sql'),
-    ('on_new_dossier_document',   '007_notifications_dossier.sql')
+    ('on_new_dossier_document',   '007_notifications_dossier.sql'),
+    ('send_user_email',           '009_notify_student.sql')
   ) AS t(name, migration)
 ),
 res AS (
@@ -64,12 +65,12 @@ res AS (
          CASE WHEN COUNT(*) > 0 THEN 'OK' ELSE 'KO -> INSERT INTO public.admins ...' END
   FROM public.admins
   UNION ALL
-  -- 5. Cle Resend
+  -- 5. Cle Resend (MAJUSCULES - format attendu par send_admin_email)
   SELECT '5. Resend',
-         COALESCE((SELECT 'resend_api_key' FROM public.private_settings WHERE key='resend_api_key' AND value IS NOT NULL AND value <> ''),
-                  'resend_api_key absente'),
-         CASE WHEN EXISTS (SELECT 1 FROM public.private_settings WHERE key='resend_api_key' AND value IS NOT NULL AND value <> '')
-              THEN 'OK' ELSE 'KO -> ajouter la cle Resend' END
+         COALESCE((SELECT 'RESEND_API_KEY' FROM public.private_settings WHERE key='RESEND_API_KEY' AND value LIKE 're_%'),
+                  'RESEND_API_KEY absente / invalide'),
+         CASE WHEN EXISTS (SELECT 1 FROM public.private_settings WHERE key='RESEND_API_KEY' AND value LIKE 're_%')
+              THEN 'OK' ELSE 'KO -> executer 009_notify_student.sql ou inserer la cle en MAJUSCULES' END
   UNION ALL
   -- 6. Dossiers = comptes - admins
   SELECT '6. Dossiers',

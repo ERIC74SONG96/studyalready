@@ -51,7 +51,8 @@ expected_fn AS (
     ('handle_new_user_dossier',   '006_student_dossiers.sql'),
     ('create_fwb_dossier',        '006_student_dossiers.sql'),
     ('on_new_dossier_message',    '007_notifications_dossier.sql'),
-    ('on_new_dossier_document',   '007_notifications_dossier.sql')
+    ('on_new_dossier_document',   '007_notifications_dossier.sql'),
+    ('send_user_email',           '009_notify_student.sql')
   ) AS t(name, migration)
 ),
 audit_fn AS (
@@ -107,26 +108,27 @@ audit_admins AS (
     'KO -> INSERT INTO public.admins(user_id, email) SELECT id, email FROM auth.users WHERE email = ''votre.email@gmail.com'';' AS statut
   WHERE NOT EXISTS (SELECT 1 FROM public.admins)
 ),
--- 6/ Cle Resend
+-- 6/ Cle Resend (MAJUSCULES, format attendu par send_admin_email)
 audit_resend AS (
   SELECT
     '6. Configuration Resend' AS section,
     key AS element,
     CASE
-      WHEN value IS NULL OR value = '' THEN 'KO -> valeur vide'
-      WHEN left(value, 3) = 're_'      THEN 'OK (cle Resend detectee)'
-      WHEN key = 'notify_to'           THEN 'OK (' || value || ')'
+      WHEN value IS NULL OR value = ''  THEN 'KO -> valeur vide'
+      WHEN left(value, 3) = 're_'       THEN 'OK (cle Resend detectee)'
+      WHEN key = 'NOTIFY_TO'            THEN 'OK (' || value || ')'
+      WHEN key = 'NOTIFY_FROM'          THEN 'OK (' || value || ')'
       ELSE 'A verifier (' || left(value, 10) || '...)'
     END AS statut
   FROM public.private_settings
-  WHERE key IN ('resend_api_key', 'notify_to')
+  WHERE key IN ('RESEND_API_KEY', 'NOTIFY_TO', 'NOTIFY_FROM')
   UNION ALL
   SELECT
     '6. Configuration Resend' AS section,
-    '(aucune cle configuree)' AS element,
-    'KO -> verifier private_settings (migration 005)' AS statut
+    '(RESEND_API_KEY absente)' AS element,
+    'KO -> executer 009_notify_student.sql' AS statut
   WHERE NOT EXISTS (
-    SELECT 1 FROM public.private_settings WHERE key = 'resend_api_key'
+    SELECT 1 FROM public.private_settings WHERE key = 'RESEND_API_KEY'
   )
 ),
 -- 7/ Dossiers vs comptes
