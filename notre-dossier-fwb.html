@@ -37,22 +37,7 @@
 </head>
 <body class="font-sans text-slate-800 bg-white antialiased">
 
-  <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
-    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-      <a href="index.html" class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-lg bg-brand-dark flex items-center justify-center"><span class="text-brand-gold font-bold text-sm font-display">SA</span></div>
-        <span class="font-display font-bold text-lg text-brand-dark">Study<span class="text-brand-gold">Already</span></span>
-      </a>
-      <ul class="hidden sm:flex items-center gap-6 text-sm font-medium">
-        <li><a href="index.html" class="hover:text-brand-gold">Accueil</a></li>
-        <li><a href="equivalence.html" class="hover:text-brand-gold">Équivalence</a></li>
-        <li><a href="notre-dossier-fwb.html" class="text-brand-gold font-semibold">Notre dossier FWB</a></li>
-        <li><a href="prequalification-dossier.html" class="hover:text-brand-gold">Pré-qualification</a></li>
-        <li><a href="blog/" class="hover:text-brand-gold">Blog</a></li>
-        <li><a href="index.html#contact" class="hover:text-brand-gold">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
 
   <main class="pt-24">
     <!-- HERO -->
@@ -240,6 +225,18 @@
         <p class="mt-4 text-xs text-slate-500"><em>Calendrier indicatif, susceptible d'évoluer en fonction des conditions opérationnelles et réglementaires.</em></p>
       </section>
 
+      <!-- CTA — Analyseur d'admission -->
+      <section class="mb-16">
+        <div class="rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 p-8 lg:p-10 flex flex-col md:flex-row md:items-center gap-6">
+          <div class="flex-1">
+            <p class="text-xs font-bold uppercase tracking-wider text-amber-800">Outil pratique · gratuit</p>
+            <h3 class="mt-2 font-display text-xl font-bold text-brand-dark">Étudiant ou famille : testez l'admission avant de lancer le dossier.</h3>
+            <p class="mt-3 text-sm text-slate-700">Notre <strong>Analyseur d'admission</strong> donne un score d'orientation (0–100) et la liste des universités FWB ou Hautes Écoles à viser selon le profil. Utile avant de mobiliser temps et argent sur l'équivalence et le visa.</p>
+          </div>
+          <a href="analyseur-admission.html" class="shrink-0 inline-flex items-center gap-2 bg-brand-dark text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-blue shadow-md">Tester un profil →</a>
+        </div>
+      </section>
+
       <!-- 8. CONTACT -->
       <section id="contact" class="scroll-mt-24 mb-12">
         <h2 class="font-display text-2xl sm:text-3xl font-bold text-brand-dark">8. Contact &amp; dialogue</h2>
@@ -254,7 +251,7 @@
             <div>
               <p class="text-xs uppercase tracking-wider text-slate-300 font-semibold">Contact direct</p>
               <p class="mt-1 text-sm text-slate-300">WhatsApp : <a href="https://wa.me/32465339448" class="underline hover:text-brand-gold">+32 465 33 94 48</a></p>
-              <p class="text-sm text-slate-300">Email : <a href="mailto:contact@studyalready.com" class="underline hover:text-brand-gold">contact@studyalready.com</a></p>
+              <p class="text-sm text-slate-300">Email : <a href="mailto:studyalready8@gmail.com" class="underline hover:text-brand-gold">studyalready8@gmail.com</a></p>
               <p class="text-sm text-slate-300">Site : <a href="https://www.studyalready.com" class="underline hover:text-brand-gold">studyalready.com</a></p>
             </div>
           </div>
@@ -301,6 +298,7 @@
     <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>
   </a>
 
+  <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

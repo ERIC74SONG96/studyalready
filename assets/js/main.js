@@ -20,13 +20,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  var menuBtn = document.getElementById('mobileMenuBtn');
-  var mobileMenu = document.getElementById('mobileMenu');
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('hidden'); });
-    mobileMenu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () { mobileMenu.classList.add('hidden'); });
-    });
+  if (!document.getElementById('site-header')) {
+    var menuBtn = document.getElementById('mobileMenuBtn');
+    var mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('hidden'); });
+      mobileMenu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () { mobileMenu.classList.add('hidden'); });
+      });
+    }
   }
 
   var header = document.getElementById('header');
@@ -144,5 +146,47 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('prequalificationStatus'),
     'Merci ! Votre pre-qualification a bien ete envoyee. Reponse sous 48 h ouvrees.',
     '[StudyAlready] Pre-qualification'
+  );
+
+  bindWeb3Form(
+    document.getElementById('rejoindreReseauForm'),
+    document.getElementById('rejoindreReseauStatus'),
+    'Merci ! Vous etes bien inscrit(e) au reseau StudyAlready. On revient vers vous pour les prochaines invitations.',
+    '[StudyAlready] Reseau - Nouvelle adhesion'
+  );
+
+  bindWeb3Form(
+    document.getElementById('creerProfilForm'),
+    document.getElementById('creerProfilStatus'),
+    'Merci ! Votre profil a ete soumis pour validation. Reponse sous 48 h.',
+    '[StudyAlready] Annuaire - Nouveau profil'
+  );
+
+  bindWeb3Form(
+    document.getElementById('miseEnRelationForm'),
+    document.getElementById('miseEnRelationStatus'),
+    'Merci ! Votre message a ete transmis. Le membre vous repondra s\'il le souhaite.',
+    '[StudyAlready] Annuaire - Mise en relation'
+  );
+
+  bindWeb3Form(
+    document.getElementById('rapportAdmissionForm'),
+    document.getElementById('rapportAdmissionStatus'),
+    'Merci ! Votre demande de rapport a bien ete envoyee. Reponse personnalisee sous 48 h.',
+    '[StudyAlready] Analyseur admission - Demande de rapport'
+  );
+
+  bindWeb3Form(
+    document.getElementById('chasseurBilletForm'),
+    document.getElementById('chasseurBilletStatus'),
+    'Merci ! Votre demande de devis Chasseur de billets est bien recue. Reponse sous 48 h.',
+    '[StudyAlready] Voyage - Chasseur de billets'
+  );
+
+  bindWeb3Form(
+    document.getElementById('departsGroupesForm'),
+    document.getElementById('departsGroupesStatus'),
+    'Merci ! Vous etes signale(e) pour ce depart groupe. On vous ajoute au groupe WhatsApp des confirmation des autres etudiants.',
+    '[StudyAlready] Voyage - Depart groupe'
   );
 });

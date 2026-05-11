@@ -98,18 +98,18 @@ Puis re-uploader le `.htaccess` modifié.
 
 ### Étape 5 — Créer les emails
 Dans le panel LWS → **Emails / Comptes mail** :
-- `contact@studyalready.com` (boîte principale)
-- `no-reply@studyalready.com` (pour les envois automatiques des formulaires)
+- `studyalready8@gmail.com` (boîte principale actuelle)
+- `no-reply@studyalready.com` (réservé aux envois automatiques si vous activez un jour le domaine personnalisé)
 
 Ces deux adresses sont déjà configurées dans `php/contact.php` et `php/prequalification.php` — aucune modification nécessaire si vous gardez ces noms.
 
 ### Étape 6 — Tester les formulaires
 1. Aller sur `https://studyalready.com`.
 2. Envoyer un test depuis le formulaire de contact.
-3. Vérifier la réception sur `contact@studyalready.com`.
+3. Vérifier la réception sur `studyalready8@gmail.com`.
 4. Refaire un test avec `https://studyalready.com/prequalification-dossier.html`.
 
-Si pas de réception : vérifier dans le panel LWS que la fonction PHP `mail()` est activée et que `no-reply@studyalready.com` existe bien (sinon le serveur peut refuser l'expéditeur).
+Si pas de réception : sur Vercel la fonction PHP `mail()` n'est pas dispo — préférer Web3Forms (déjà câblé dans `assets/js/main.js`). Avec PHP/LWS, vérifier que `no-reply@…` existe sur votre domaine.
 
 ### Étape 7 — Soumettre à Google
 1. [Google Search Console](https://search.google.com/search-console) → ajouter `studyalready.com` (vérification via DNS LWS ou balise HTML).

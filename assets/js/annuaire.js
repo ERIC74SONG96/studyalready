@@ -1,0 +1,194 @@
+(function () {
+  'use strict';
+
+  var UNIVERSITE_COLORS = {
+    'ULB': '#c8102e',
+    'UCLouvain': '#1d3a8a',
+    'ULiège': '#a30b1f',
+    'UMons': '#e30613',
+    'UNamur': '#5a2d82',
+    'USL-B': '#0a6e3a',
+    'HE Léonard de Vinci': '#0e8a6b',
+    'HEH': '#0b6cb0',
+    'HELHa': '#7a1f7a',
+    'HE2B': '#0a2540',
+    'EPHEC': '#005a9c',
+    'ICHEC': '#003366',
+    'Autre': '#94a3b8'
+  };
+
+  function colorFor(univ) {
+    return UNIVERSITE_COLORS[univ] || '#94a3b8';
+  }
+
+  function initialsOf(prenom, initialNom) {
+    var p = (prenom || '?').trim().charAt(0).toUpperCase();
+    var n = (initialNom || '').replace(/[^A-Za-zÀ-ÿ]/g, '').charAt(0).toUpperCase();
+    return n ? (p + n) : p;
+  }
+
+  function badgeStatut(statut) {
+    if (statut === 'Diplômé·e / Professionnel·le') return 'bg-amber-100 text-amber-800';
+    if (statut === 'Stagiaire') return 'bg-violet-100 text-violet-800';
+    return 'bg-sky-100 text-sky-800';
+  }
+
+  function escapeHTML(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderCard(m) {
+    var color = colorFor(m.universite);
+    var initiales = initialsOf(m.prenom, m.initial_nom);
+    var specHTML = (m.specialites || []).slice(0, 3).map(function (s) {
+      return '<span class="inline-block text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 mr-1 mb-1">' + escapeHTML(s) + '</span>';
+    }).join('');
+
+    var linkedinHTML = '';
+    if (m.linkedin) {
+      linkedinHTML = '<a href="' + escapeHTML(m.linkedin) + '" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-1 border border-slate-300 text-brand-dark font-semibold px-3 py-2 rounded-full text-xs hover:border-brand-gold">LinkedIn</a>';
+    }
+    var msgHref = 'mise-en-relation.html?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
+
+    return '' +
+      '<article class="relative bg-white rounded-2xl border border-slate-200 hover:border-brand-gold transition shadow-sm overflow-hidden flex flex-col">' +
+        '<div class="h-1.5 w-full" style="background-color:' + color + '"></div>' +
+        '<div class="p-5 flex-1 flex flex-col">' +
+          '<div class="flex items-start gap-3">' +
+            '<div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold font-display shrink-0" style="background-color:' + color + '">' + escapeHTML(initiales) + '</div>' +
+            '<div class="min-w-0">' +
+              '<h3 class="font-display font-bold text-brand-dark leading-tight truncate">' + escapeHTML(m.prenom + ' ' + (m.initial_nom || '')) + '</h3>' +
+              '<p class="text-xs text-slate-500 truncate">' + escapeHTML(m.filiere || '') + ' · ' + escapeHTML(m.universite || '') + '</p>' +
+              '<p class="text-xs text-slate-400 truncate">' + escapeHTML((m.annee || '') + (m.ville ? ' · ' + m.ville : '')) + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="mt-3"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide ' + badgeStatut(m.statut) + '">' + escapeHTML(m.statut || '') + '</span></div>' +
+          '<p class="mt-3 text-sm text-slate-600 line-clamp-3 flex-1">' + escapeHTML(m.bio || '') + '</p>' +
+          (specHTML ? '<div class="mt-3">' + specHTML + '</div>' : '') +
+          '<div class="mt-4 flex gap-2 flex-wrap">' +
+            '<a href="' + msgHref + '" class="inline-flex items-center justify-center gap-1 bg-brand-dark text-white font-semibold px-3 py-2 rounded-full text-xs hover:bg-brand-blue">Envoyer un message</a>' +
+            linkedinHTML +
+          '</div>' +
+        '</div>' +
+      '</article>';
+  }
+
+  function unique(values) {
+    var seen = {};
+    var out = [];
+    for (var i = 0; i < values.length; i++) {
+      var v = values[i];
+      if (v && !seen[v]) { seen[v] = true; out.push(v); }
+    }
+    return out;
+  }
+
+  function fillSelect(selectEl, values, allLabel) {
+    if (!selectEl) return;
+    var html = '<option value="">' + allLabel + '</option>';
+    for (var i = 0; i < values.length; i++) {
+      html += '<option value="' + escapeHTML(values[i]) + '">' + escapeHTML(values[i]) + '</option>';
+    }
+    selectEl.innerHTML = html;
+  }
+
+  function matches(m, filters) {
+    if (filters.universite && m.universite !== filters.universite) return false;
+    if (filters.domaine && m.domaine !== filters.domaine) return false;
+    if (filters.statut && m.statut !== filters.statut) return false;
+    if (filters.q) {
+      var q = filters.q.toLowerCase();
+      var hay = [m.prenom, m.initial_nom, m.filiere, m.universite, m.ville, m.bio, (m.specialites || []).join(' ')].join(' ').toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  }
+
+  function init() {
+    var grid = document.getElementById('annuaireGrid');
+    var emptyEl = document.getElementById('annuaireEmpty');
+    var countEl = document.getElementById('annuaireCount');
+    var noteEl = document.getElementById('annuaireNote');
+    var fUniv = document.getElementById('filterUniversite');
+    var fDom = document.getElementById('filterDomaine');
+    var fStatut = document.getElementById('filterStatut');
+    var fQ = document.getElementById('filterQ');
+    var btnReset = document.getElementById('filterReset');
+
+    if (!grid) return;
+
+    grid.innerHTML = '<p class="col-span-full text-center text-sm text-slate-500 py-8">Chargement de l\'annuaire…</p>';
+
+    fetch('assets/data/membres.json', { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('Impossible de charger l\'annuaire (' + r.status + ').');
+      return r.json();
+    }).then(function (data) {
+      var membres = (data && data.membres) || [];
+
+      var universites = unique(membres.map(function (m) { return m.universite; })).sort();
+      var domaines = unique(membres.map(function (m) { return m.domaine; })).sort();
+      var statuts = unique(membres.map(function (m) { return m.statut; }));
+
+      fillSelect(fUniv, universites, 'Toutes les universités');
+      fillSelect(fDom, domaines, 'Tous les domaines');
+      fillSelect(fStatut, statuts, 'Tous les statuts');
+
+      try {
+        var sp = new URLSearchParams(window.location.search);
+        var qDom = sp.get('domaine');
+        var qUniv = sp.get('universite');
+        var qStat = sp.get('statut');
+        var qSearch = sp.get('q');
+        if (qDom && fDom) fDom.value = qDom;
+        if (qUniv && fUniv) fUniv.value = qUniv;
+        if (qStat && fStatut) fStatut.value = qStat;
+        if (qSearch && fQ) fQ.value = qSearch;
+      } catch (e) {}
+
+      function render() {
+        var filters = {
+          universite: fUniv ? fUniv.value : '',
+          domaine: fDom ? fDom.value : '',
+          statut: fStatut ? fStatut.value : '',
+          q: fQ ? fQ.value.trim() : ''
+        };
+        var filtered = membres.filter(function (m) { return matches(m, filters); });
+        if (filtered.length === 0) {
+          grid.innerHTML = '';
+          if (emptyEl) emptyEl.classList.remove('hidden');
+        } else {
+          if (emptyEl) emptyEl.classList.add('hidden');
+          grid.innerHTML = filtered.map(renderCard).join('');
+        }
+        if (countEl) countEl.textContent = filtered.length + ' membre' + (filtered.length > 1 ? 's' : '');
+      }
+
+      [fUniv, fDom, fStatut].forEach(function (el) { if (el) el.addEventListener('change', render); });
+      if (fQ) fQ.addEventListener('input', render);
+      if (btnReset) btnReset.addEventListener('click', function () {
+        if (fUniv) fUniv.value = '';
+        if (fDom) fDom.value = '';
+        if (fStatut) fStatut.value = '';
+        if (fQ) fQ.value = '';
+        render();
+      });
+
+      if (noteEl && data._note) noteEl.textContent = data._note;
+      render();
+    }).catch(function (err) {
+      grid.innerHTML = '<p class="col-span-full text-center text-sm text-red-600 py-8">' + escapeHTML(err.message || 'Erreur de chargement.') + '</p>';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

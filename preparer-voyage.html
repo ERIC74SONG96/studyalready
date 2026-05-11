@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Préparer mon voyage Cameroun → Belgique | StudyAlready</title>
+  <meta name="description" content="Comparateur de vols Yaoundé/Douala → Bruxelles, conseils bagages par compagnie (Brussels Airlines, Air France, Royal Air Maroc, Ethiopian, Turkish), service Chasseur de billets et départs groupés étudiants." />
+  <link rel="canonical" href="https://www.studyalready.com/preparer-voyage.html" />
+  <meta name="robots" content="index,follow" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased">
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
+
+  <!-- HERO -->
+  <section class="pt-28 pb-14 bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <p class="text-brand-gold uppercase text-xs font-semibold tracking-widest">Voyage &amp; logistique</p>
+      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight">Préparer mon voyage vers la Belgique.</h1>
+      <p class="mt-5 text-slate-200 text-lg max-w-3xl">Une fois votre visa en main, on s'occupe de la <strong class="text-white">dernière ligne droite</strong> : comparer les vols, comprendre les règles bagages, voyager en groupe avec d'autres étudiants StudyAlready.</p>
+      <div class="mt-6 flex flex-wrap gap-3 text-xs">
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1">Comparateur gratuit</span>
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1">Chasseur de billets</span>
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1">Départs groupés</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="py-6 bg-amber-50 border-y border-amber-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-sm text-amber-950">
+      <p><strong>Important :</strong> StudyAlready <strong>n'est pas une agence de voyage agréée (IATA)</strong>. Nous ne vendons pas de billets. Nous proposons : (1) un <strong>comparateur</strong> qui redirige vers Skyscanner, (2) un service de <strong>conseil rémunéré</strong> pour vous aider à choisir le meilleur trajet, et (3) la coordination de <strong>départs groupés</strong> entre étudiants. L'achat final s'effectue toujours auprès de la compagnie ou de l'agence de voyage de votre choix.</p>
+    </div>
+  </section>
+
+  <!-- 1. COMPARATEUR DE VOLS -->
+  <section id="comparateur" class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex items-start gap-4 mb-8">
+        <span class="text-3xl">✈️</span>
+        <div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-brand-dark">1. Comparateur de vols</h2>
+          <p class="mt-1 text-sm text-slate-600">Recherche en temps réel via Skyscanner. Gratuit. Aucune donnée stockée chez nous.</p>
+        </div>
+      </div>
+
+      <form id="formComparateur" class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-5">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="selFrom" class="text-sm font-semibold text-brand-dark">Aéroport de départ</label>
+            <select id="selFrom" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white"></select>
+          </div>
+          <div>
+            <label for="selTo" class="text-sm font-semibold text-brand-dark">Aéroport d'arrivée</label>
+            <select id="selTo" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white"></select>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="inpDepart" class="text-sm font-semibold text-brand-dark">Date de départ</label>
+            <input type="date" id="inpDepart" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white" />
+          </div>
+          <div>
+            <label for="inpReturn" class="text-sm font-semibold text-brand-dark">Date de retour <span class="text-xs text-slate-400 font-normal">(facultatif)</span></label>
+            <input type="date" id="inpReturn" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white" />
+          </div>
+        </div>
+
+        <label class="flex items-center gap-2 text-sm text-slate-600">
+          <input type="checkbox" id="chkAllerSimple" />
+          <span>Aller simple uniquement (recommandé pour la rentrée FWB)</span>
+        </label>
+
+        <div class="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-200">
+          <button type="submit" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full hover:bg-yellow-400">Rechercher sur Skyscanner →</button>
+          <p class="text-xs text-slate-500 ml-auto">Ouvre une nouvelle fenêtre. StudyAlready peut recevoir une commission si vous achetez (sans surcoût pour vous).</p>
+        </div>
+      </form>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-4 text-sm">
+        <div class="rounded-xl border border-slate-200 p-4">
+          <p class="font-display font-bold text-brand-dark">Astuce 1 — Réservez tôt</p>
+          <p class="mt-1 text-xs text-slate-600">Les meilleurs prix Yaoundé → Bruxelles pour la rentrée de septembre se trouvent entre <strong>mai et juin</strong>.</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 p-4">
+          <p class="font-display font-bold text-brand-dark">Astuce 2 — Évitez les vendredis</p>
+          <p class="mt-1 text-xs text-slate-600">Voler un <strong>mardi ou mercredi</strong> coûte souvent 80–150 € de moins que le week-end.</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 p-4">
+          <p class="font-display font-bold text-brand-dark">Astuce 3 — Comparez les escales</p>
+          <p class="mt-1 text-xs text-slate-600">Une escale à <strong>Casablanca</strong> ou <strong>Istanbul</strong> peut diviser le prix, mais allonger le trajet de 4–8 h.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. CONSEILS BAGAGES -->
+  <section id="bagages" class="py-16 bg-slate-50 border-y border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex items-start gap-4 mb-8">
+        <span class="text-3xl">🧳</span>
+        <div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-brand-dark">2. Conseils bagages par compagnie</h2>
+          <p class="mt-1 text-sm text-slate-600">Politiques indicatives, susceptibles d'évoluer — <strong>vérifiez toujours</strong> avant le départ sur le site officiel de la compagnie.</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <article class="bg-white rounded-2xl border border-slate-200 p-6">
+          <p class="font-display font-bold text-brand-dark">Brussels Airlines</p>
+          <p class="text-xs text-slate-500 mb-3">Vol direct Bruxelles ⇄ Yaoundé / Douala</p>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li><strong>Cabine :</strong> 8 kg + 1 accessoire</li>
+            <li><strong>Soute (Eco Light) :</strong> 0 (à acheter en supplément)</li>
+            <li><strong>Soute (Eco Classic) :</strong> 1 × 23 kg</li>
+            <li><strong>Excédent :</strong> ~50 € / pièce supplémentaire</li>
+          </ul>
+          <p class="mt-3 text-[11px] text-slate-400">Source : brusselsairlines.com</p>
+        </article>
+
+        <article class="bg-white rounded-2xl border border-slate-200 p-6">
+          <p class="font-display font-bold text-brand-dark">Air France / KLM</p>
+          <p class="text-xs text-slate-500 mb-3">Via Paris-CDG ou Amsterdam</p>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li><strong>Cabine :</strong> 12 kg (1 valise + 1 sac)</li>
+            <li><strong>Soute (Eco) :</strong> 1 × 23 kg incluse vers le Cameroun</li>
+            <li><strong>Étudiants :</strong> 2e bagage offert sur certaines liaisons Afrique → demandez à l'agent</li>
+            <li><strong>Excédent :</strong> ~75 € / pièce</li>
+          </ul>
+          <p class="mt-3 text-[11px] text-slate-400">Source : airfrance.fr</p>
+        </article>
+
+        <article class="bg-white rounded-2xl border border-slate-200 p-6">
+          <p class="font-display font-bold text-brand-dark">Royal Air Maroc</p>
+          <p class="text-xs text-slate-500 mb-3">Via Casablanca · souvent moins cher</p>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li><strong>Cabine :</strong> 10 kg</li>
+            <li><strong>Soute (Eco) :</strong> 2 × 23 kg vers Afrique de l'Ouest/Centrale</li>
+            <li><strong>Étudiants :</strong> 1 bagage supplémentaire avec attestation d'inscription belge (selon disponibilités)</li>
+            <li><strong>Excédent :</strong> à partir de ~30 €/kg</li>
+          </ul>
+          <p class="mt-3 text-[11px] text-slate-400">Source : royalairmaroc.com</p>
+        </article>
+
+        <article class="bg-white rounded-2xl border border-slate-200 p-6">
+          <p class="font-display font-bold text-brand-dark">Ethiopian Airlines</p>
+          <p class="text-xs text-slate-500 mb-3">Via Addis-Abeba</p>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li><strong>Cabine :</strong> 7 kg</li>
+            <li><strong>Soute (Eco) :</strong> 2 × 23 kg</li>
+            <li><strong>Étudiants :</strong> +10 kg de franchise sur certains itinéraires</li>
+            <li><strong>Excédent :</strong> ~50 €/pièce ou au kilo</li>
+          </ul>
+          <p class="mt-3 text-[11px] text-slate-400">Source : ethiopianairlines.com</p>
+        </article>
+
+        <article class="bg-white rounded-2xl border border-slate-200 p-6">
+          <p class="font-display font-bold text-brand-dark">Turkish Airlines</p>
+          <p class="text-xs text-slate-500 mb-3">Via Istanbul</p>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li><strong>Cabine :</strong> 8 kg</li>
+            <li><strong>Soute (Eco) :</strong> 2 × 23 kg vers l'Europe depuis le Cameroun</li>
+            <li><strong>Étudiants :</strong> +10 kg avec dossier (Student Programme)</li>
+            <li><strong>Excédent :</strong> ~60 €/pièce</li>
+          </ul>
+          <p class="mt-3 text-[11px] text-slate-400">Source : turkishairlines.com</p>
+        </article>
+
+        <article class="bg-white rounded-2xl border border-slate-200 p-6">
+          <p class="font-display font-bold text-brand-dark">Qatar Airways</p>
+          <p class="text-xs text-slate-500 mb-3">Via Doha (souvent confort + bagages généreux)</p>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li><strong>Cabine :</strong> 7 kg</li>
+            <li><strong>Soute (Eco) :</strong> 2 × 23 kg standard</li>
+            <li><strong>Étudiants :</strong> 30 kg supplémentaires (Student Club) sur certaines routes</li>
+            <li><strong>Excédent :</strong> ~80 €/pièce</li>
+          </ul>
+          <p class="mt-3 text-[11px] text-slate-400">Source : qatarairways.com</p>
+        </article>
+      </div>
+
+      <div class="mt-8 p-5 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-950">
+        <p class="font-bold">À mettre dans votre bagage cabine (toujours)</p>
+        <p class="mt-1">Originaux du visa, passeport, attestation d'inscription FWB, attestation de logement, attestation d'assurance, 1 jeu de change, médicaments éventuels, chargeur, un peu d'argent liquide en euros. <strong>Jamais</strong> en soute.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CHASSEUR DE BILLETS -->
+  <section id="chasseur" class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex items-start gap-4 mb-8">
+        <span class="text-3xl">🎯</span>
+        <div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-brand-dark">3. Service « Chasseur de billets »</h2>
+          <p class="mt-1 text-sm text-slate-600">On compare pour vous · meilleurs prix · franchise bagages adaptée · moins d'escales.</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2">
+          <p class="text-slate-700">Vous n'avez pas le temps de scruter 8 sites ? Vos parents préfèrent qu'un humain vérifie le trajet ? Nous prenons en charge la recherche du billet le plus optimisé, en tenant compte :</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700">
+            <li class="flex gap-2"><span class="text-brand-gold font-bold">·</span>du <strong>meilleur rapport prix / nombre d'escales</strong></li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold">·</span>de la <strong>franchise bagages étudiant</strong> (souvent un 2e bagage gratuit)</li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold">·</span>des <strong>dates compatibles</strong> avec la rentrée FWB et votre arrivée en logement</li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold">·</span>des <strong>règles de transit</strong> (visa Schengen / certificat dérive nécessaire ?)</li>
+          </ul>
+          <p class="mt-5 text-sm text-slate-700">Vous recevez sous 48 h une <strong>fiche comparative</strong> (3 options minimum, motivée). L'achat reste à votre charge, directement auprès de la compagnie ou de l'agence — vous gardez le contrôle.</p>
+        </div>
+
+        <div class="rounded-2xl border-2 border-brand-gold/40 bg-brand-cream p-6">
+          <p class="text-xs font-bold uppercase tracking-wider text-brand-dark/70">Forfait conseil</p>
+          <p class="mt-2 font-display text-4xl font-bold text-brand-dark"><span id="chasseurTarifAffiche">30 €</span></p>
+          <p class="mt-1 text-xs text-slate-600">Par dossier — 1 passager · révision incluse</p>
+          <ul class="mt-4 space-y-2 text-sm text-slate-700">
+            <li>✓ Analyse 3 itinéraires</li>
+            <li>✓ Comparatif bagages</li>
+            <li>✓ Réponse sous 48 h</li>
+            <li>✓ Suivi par WhatsApp jusqu'à l'achat</li>
+          </ul>
+          <p class="mt-4 text-[11px] text-slate-500">Tarif famille / groupe (≥ 2 voyageurs) : à devis personnalisé.</p>
+        </div>
+      </div>
+
+      <form id="chasseurBilletForm" class="mt-10 bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-5">
+        <input type="hidden" name="form_origin" value="chasseur-billet" />
+
+        <h3 class="font-display text-lg font-bold text-brand-dark">Demander un devis Chasseur de billets</h3>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Nom complet</label>
+            <input type="text" name="nom" required autocomplete="name" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Email</label>
+            <input type="email" name="email" required autocomplete="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">WhatsApp</label>
+            <input type="tel" name="whatsapp" required inputmode="tel" placeholder="+237 …" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Nombre de voyageurs</label>
+            <input type="number" name="nb_voyageurs" required min="1" max="10" value="1" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Ville de départ</label>
+            <input type="text" name="ville_depart" required placeholder="Yaoundé, Douala…" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Ville d'arrivée</label>
+            <input type="text" name="ville_arrivee" required placeholder="Bruxelles, Charleroi…" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Période souhaitée</label>
+            <input type="text" name="periode" required placeholder="ex : 1re quinzaine de septembre 2026" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Budget maximum</label>
+            <input type="text" name="budget" placeholder="ex : 900 € / 600 000 FCFA" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold text-brand-dark">Contraintes particulières</label>
+          <textarea name="contraintes" rows="3" placeholder="Bagages volumineux, vol direct préférable, transit Schengen à éviter, etc." class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300"></textarea>
+        </div>
+
+        <label class="flex items-start gap-3 text-xs text-slate-600">
+          <input type="checkbox" name="consentement" required class="mt-1" />
+          <span>J'accepte d'être recontacté(e) par StudyAlready pour traiter cette demande et je comprends que StudyAlready ne vend pas le billet — l'achat reste à ma charge. Voir la <a href="politique-confidentialite.html" class="underline">politique de confidentialité</a>.</span>
+        </label>
+
+        <div id="chasseurBilletStatus" class="text-sm hidden"></div>
+
+        <button type="submit" class="bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full hover:bg-yellow-400">Envoyer ma demande de devis</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 4. DÉPARTS GROUPÉS -->
+  <section id="departs-groupes" class="py-16 bg-brand-cream border-y border-amber-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex items-start gap-4 mb-8">
+        <span class="text-3xl">👥</span>
+        <div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-brand-dark">4. Départs groupés étudiants</h2>
+          <p class="mt-1 text-sm text-slate-600">Voyager en groupe rassure les parents, divise les coûts et crée du lien dès l'aéroport.</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5 mb-8 text-sm">
+        <div class="bg-white rounded-xl p-5 border border-amber-200">
+          <p class="font-display font-bold text-brand-dark">Tarif de groupe</p>
+          <p class="mt-1 text-slate-600">Dès 10 étudiants confirmés sur la même date, nous négocions un tarif spécifique avec la compagnie aérienne.</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-amber-200">
+          <p class="font-display font-bold text-brand-dark">Accueil organisé</p>
+          <p class="mt-1 text-slate-600">Un référent StudyAlready vous attend à Bruxelles (ou Charleroi) et vous oriente vers votre logement.</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-amber-200">
+          <p class="font-display font-bold text-brand-dark">Réseau dès J-1</p>
+          <p class="mt-1 text-slate-600">Vous rencontrez votre promo avant même la rentrée — groupe WhatsApp dédié à votre fenêtre de départ.</p>
+        </div>
+      </div>
+
+      <form id="departsGroupesForm" class="bg-white border border-amber-200 rounded-2xl p-6 sm:p-8 space-y-5">
+        <input type="hidden" name="form_origin" value="departs-groupes" />
+
+        <h3 class="font-display text-lg font-bold text-brand-dark">Je me signale pour un départ groupé</h3>
+        <p class="text-xs text-slate-500">Aucun engagement à ce stade : on vous met en contact avec les autres étudiants de votre fenêtre de départ.</p>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Nom complet</label>
+            <input type="text" name="nom" required autocomplete="name" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Email</label>
+            <input type="email" name="email" required autocomplete="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">WhatsApp</label>
+            <input type="tel" name="whatsapp" required inputmode="tel" placeholder="+237 …" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label for="selFenetreDepart" class="text-sm font-semibold text-brand-dark">Fenêtre de départ visée</label>
+            <select id="selFenetreDepart" name="fenetre_depart" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+              <option value="">— Choisir —</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Ville de départ (Cameroun)</label>
+            <input type="text" name="ville_depart" required placeholder="Yaoundé, Douala…" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Ville d'arrivée (Belgique)</label>
+            <input type="text" name="ville_arrivee" required placeholder="Bruxelles, Charleroi…" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Établissement visé</label>
+            <input type="text" name="etablissement" placeholder="UCLouvain, EPHEC, ULB…" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold text-brand-dark">Visa déjà obtenu ?</label>
+            <select name="visa_status" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+              <option value="oui">Oui, visa délivré</option>
+              <option value="en_cours">En cours de demande</option>
+              <option value="pas_encore">Pas encore</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm font-semibold text-brand-dark">Commentaire libre</label>
+          <textarea name="commentaire" rows="3" placeholder="Compagnie aérienne envisagée, contraintes familiales, etc." class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300"></textarea>
+        </div>
+
+        <label class="flex items-start gap-3 text-xs text-slate-600">
+          <input type="checkbox" name="consentement" required class="mt-1" />
+          <span>J'accepte que mon prénom et ma ville soient partagés avec les autres étudiants inscrits sur la même fenêtre de départ, dans un groupe WhatsApp animé par StudyAlready. Voir la <a href="politique-confidentialite.html" class="underline">politique de confidentialité</a>.</span>
+        </label>
+
+        <div id="departsGroupesStatus" class="text-sm hidden"></div>
+
+        <button type="submit" class="bg-brand-dark text-white font-bold px-6 py-3 rounded-full hover:bg-brand-blue">Rejoindre le départ groupé</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 5. AGENCES PARTENAIRES (placeholder) -->
+  <section id="partenaires" class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="text-3xl">🤝</span>
+        <div>
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-brand-dark">5. Nos agences partenaires au Cameroun</h2>
+          <p class="mt-1 text-sm text-slate-600">Si vous préférez acheter physiquement (cash, échelonné, paiement Mobile Money), nous référençons des agences de confiance.</p>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+        <p class="font-display font-bold text-brand-dark">Section en cours de constitution</p>
+        <p class="mt-2 text-sm text-slate-600 max-w-2xl mx-auto">Nous référençons actuellement des agences de voyage à <strong>Yaoundé</strong> et <strong>Douala</strong> avec lesquelles nous travaillons en partenariat. Vous gagnez un point de contact local fiable ; StudyAlready perçoit une commission sur le billet vendu (sans surcoût pour vous).</p>
+        <p class="mt-4 text-xs text-slate-500">Vous tenez une agence et souhaitez devenir partenaire ? <a href="index.html?service=communaute_seminaires#contact" class="underline font-semibold text-brand-dark">Écrivez-nous</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <h2 class="font-display text-2xl font-bold text-brand-dark">Questions fréquentes</h2>
+      <div class="mt-8 space-y-4">
+        <details class="group bg-white rounded-xl p-5 border border-slate-200 hover:border-brand-gold transition">
+          <summary class="font-semibold text-brand-dark cursor-pointer flex justify-between items-center">StudyAlready vend-il directement des billets d'avion ?<span class="text-brand-gold group-open:rotate-180 transition text-sm">▼</span></summary>
+          <p class="mt-3 text-sm text-slate-600">Non. Vendre des billets nécessite un agrément IATA. Nous proposons (a) un comparateur en affiliation, (b) du conseil rémunéré, (c) une mise en relation avec des agences agréées au Cameroun. L'achat se fait toujours auprès du transporteur ou de l'agence officielle.</p>
+        </details>
+        <details class="group bg-white rounded-xl p-5 border border-slate-200 hover:border-brand-gold transition">
+          <summary class="font-semibold text-brand-dark cursor-pointer flex justify-between items-center">Le forfait Chasseur de billets est-il remboursé si je trouve moins cher seul ?<span class="text-brand-gold group-open:rotate-180 transition text-sm">▼</span></summary>
+          <p class="mt-3 text-sm text-slate-600">Le forfait rémunère notre <strong>temps d'analyse</strong>, pas une garantie de prix. Si vous trouvez réellement moins cher avec les mêmes critères (bagages, escales, dates), nous l'indiquons dans le rapport — vous restez libre d'acheter ce que vous voulez.</p>
+        </details>
+        <details class="group bg-white rounded-xl p-5 border border-slate-200 hover:border-brand-gold transition">
+          <summary class="font-semibold text-brand-dark cursor-pointer flex justify-between items-center">Quand faut-il acheter son billet pour la rentrée FWB ?<span class="text-brand-gold group-open:rotate-180 transition text-sm">▼</span></summary>
+          <p class="mt-3 text-sm text-slate-600">Pour une rentrée en <strong>septembre</strong>, idéalement entre mai et juin (visa délivré). Pour le <strong>quadrimestre 2 (février)</strong>, achetez en novembre/décembre. Évitez le dernier moment : les prix explosent à 3 semaines du départ.</p>
+        </details>
+        <details class="group bg-white rounded-xl p-5 border border-slate-200 hover:border-brand-gold transition">
+          <summary class="font-semibold text-brand-dark cursor-pointer flex justify-between items-center">Que faire si mon visa n'est pas encore délivré et que je veux réserver ?<span class="text-brand-gold group-open:rotate-180 transition text-sm">▼</span></summary>
+          <p class="mt-3 text-sm text-slate-600">Privilégiez un billet <strong>modifiable</strong> (option flex) ou une <strong>réservation sans paiement</strong> (hold) si la compagnie le permet, et conservez la confirmation pour l'ajouter à votre dossier visa. <strong>Ne payez jamais</strong> un billet non remboursable sans visa.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="py-16 bg-brand-dark text-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <h2 class="font-display text-2xl font-bold">Besoin d'un humain pour le voyage ?</h2>
+      <p class="mt-3 text-slate-300">Le visa est dans la poche, mais vous hésitez encore sur les dates ou la compagnie ? Parlons-en sur WhatsApp.</p>
+      <div class="mt-6 flex flex-wrap gap-3 justify-center">
+        <a href="https://wa.me/32465339448?text=Bonjour%20StudyAlready%2C%20j%27aimerais%20de%20l%27aide%20pour%20pr%C3%A9parer%20mon%20voyage%20Cameroun%20%E2%86%92%20Belgique." target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full hover:bg-yellow-400">Discuter sur WhatsApp</a>
+        <a href="pack-accueil.html" class="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:border-brand-gold">Pack accueil Belgique</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-brand-dark text-slate-300 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 grid md:grid-cols-4 gap-8 text-sm border-t border-white/10 pt-10">
+      <div>
+        <p class="font-display font-bold text-white text-lg">StudyAlready</p>
+        <p class="mt-2 text-xs text-slate-400">Cameroun → Belgique. Préparation, équivalence, communauté, vie en Belgique.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Avant le départ</p>
+        <ul class="space-y-2">
+          <li><a href="analyseur-admission.html" class="hover:text-brand-gold">Analyseur d'admission</a></li>
+          <li><a href="equivalence.html" class="hover:text-brand-gold">Équivalence FWB</a></li>
+          <li><a href="assurance-visa.html" class="hover:text-brand-gold">Visa &amp; assurance</a></li>
+          <li><a href="preparer-voyage.html" class="hover:text-brand-gold">Préparer mon voyage</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Arrivée en Belgique</p>
+        <ul class="space-y-2">
+          <li><a href="pack-accueil.html" class="hover:text-brand-gold">Pack accueil</a></li>
+          <li><a href="logement-etudiant.html" class="hover:text-brand-gold">Logement étudiant</a></li>
+          <li><a href="services-bancaires.html" class="hover:text-brand-gold">Assistance bancaire</a></li>
+          <li><a href="besoin-d-aide.html" class="hover:text-brand-gold">Besoin d'aide ?</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Contact</p>
+        <ul class="space-y-2">
+          <li><a href="mailto:studyalready8@gmail.com" class="hover:text-brand-gold">studyalready8@gmail.com</a></li>
+          <li><a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="hover:text-brand-gold">WhatsApp Belgique</a></li>
+          <li><a href="mentions-legales.html" class="hover:text-brand-gold">Mentions légales</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-500 mt-10">© <span id="year"></span> StudyAlready — Comparateur en affiliation · pas une agence de voyage IATA.</p>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/preparer-voyage.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

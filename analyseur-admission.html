@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analyseur d'admission FWB | StudyAlready</title>
+  <meta name="description" content="Évaluez en 2 minutes vos chances d'admission dans les universités et Hautes Écoles de la Fédération Wallonie-Bruxelles. Score d'orientation transparent, recommandations d'établissements, rapport personnalisé." />
+  <link rel="canonical" href="https://www.studyalready.com/analyseur-admission.html" />
+  <meta name="robots" content="index,follow" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    @media print {
+      header, footer, #formAnalyse, .no-print { display: none !important; }
+      body { background: #fff !important; }
+      #resultatAnalyse { box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased">
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
+
+  <section class="pt-28 pb-14 bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <p class="text-brand-gold uppercase text-xs font-semibold tracking-widest">Outil d'orientation · Phase pilote</p>
+      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight">Analyseur d'admission FWB.</h1>
+      <p class="mt-5 text-slate-200 text-lg max-w-3xl">En 2 minutes, obtenez un <strong class="text-white">score d'orientation</strong> sur 100, basé sur votre moyenne, votre parcours, votre domaine et votre niveau de français — et la liste des universités ou Hautes Écoles à viser <strong class="text-white">de façon réaliste</strong>.</p>
+      <div class="mt-6 flex flex-wrap gap-3 text-xs">
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1">100 % gratuit</span>
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1">Aucune création de compte</span>
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1">Algorithme transparent</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-8 bg-amber-50 border-y border-amber-200 no-print">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-sm text-amber-950">
+      <p><strong>À lire avant de commencer :</strong> ce score est un <strong>indicateur d'orientation interne</strong> StudyAlready, construit à partir de notre expérience des dossiers FWB. Il n'a <strong>aucune valeur officielle</strong>. Seuls la Fédération Wallonie-Bruxelles (équivalence) et chaque établissement décident de l'admission. Pour une réponse personnalisée par un humain, demandez la <a href="prequalification-dossier.html" class="underline font-bold">pré-qualification de dossier</a>.</p>
+    </div>
+  </section>
+
+  <section class="py-12 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <form id="formAnalyse" class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-10 space-y-8">
+
+        <div>
+          <h2 class="font-display text-xl font-bold text-brand-dark">1. Votre parcours académique</h2>
+          <p class="text-xs text-slate-500">Indiquez les informations de votre dernier diplôme obtenu (ou en cours).</p>
+
+          <div class="mt-5 grid sm:grid-cols-2 gap-5">
+            <div>
+              <label for="selTypeDiplome" class="text-sm font-semibold text-brand-dark">Type de diplôme</label>
+              <select id="selTypeDiplome" name="type_diplome" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+                <option value="">— Choisir —</option>
+                <option value="bac_cm">Baccalauréat / GCE A-Level (Cameroun)</option>
+                <option value="bts">BTS / DUT</option>
+                <option value="licence">Licence (Bac+3)</option>
+                <option value="master">Master (Bac+5)</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="selBaseMoyenne" class="text-sm font-semibold text-brand-dark">Échelle de notation</label>
+              <select id="selBaseMoyenne" name="base_moyenne" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+                <option value="20">Sur 20 (système français/belge)</option>
+                <option value="100">Sur 100 (%)</option>
+                <option value="4">Sur 4 (GPA US)</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="inpMoyenne" class="text-sm font-semibold text-brand-dark">Moyenne générale</label>
+              <input type="number" id="inpMoyenne" name="moyenne" required step="0.01" min="0" max="100" placeholder="ex : 13.5" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white" />
+              <p class="mt-1 text-[11px] text-slate-500">Moyenne globale du diplôme indiqué ci-dessus.</p>
+            </div>
+
+            <div>
+              <label for="selRedoublements" class="text-sm font-semibold text-brand-dark">Années de redoublement</label>
+              <select id="selRedoublements" name="redoublements" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+                <option value="0">0 — parcours sans faute</option>
+                <option value="1">1 redoublement</option>
+                <option value="2">2 redoublements</option>
+                <option value="3">3 ou plus</option>
+              </select>
+              <p class="mt-1 text-[11px] text-slate-500">Le parcours régulier est très valorisé par la FWB.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="font-display text-xl font-bold text-brand-dark">2. Avez-vous déjà étudié dans le supérieur en Belgique ?</h2>
+          <p class="text-xs text-slate-500">Important pour la règle de finançabilité (FWB).</p>
+
+          <div class="mt-5 grid sm:grid-cols-2 gap-5">
+            <div>
+              <label for="selDejaInscrit" class="text-sm font-semibold text-brand-dark">Avez-vous déjà été inscrit(e) ?</label>
+              <select id="selDejaInscrit" name="deja_inscrit" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+                <option value="non">Non, jamais</option>
+                <option value="oui_belgique">Oui, en Belgique</option>
+                <option value="oui_ailleurs">Oui, dans un autre pays</option>
+              </select>
+            </div>
+            <div id="blocEchecsBelgique" class="hidden">
+              <label for="selEchecsBelgique" class="text-sm font-semibold text-brand-dark">Échecs / années non validées en Belgique</label>
+              <select id="selEchecsBelgique" name="echecs_belgique" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+                <option value="0">Aucun</option>
+                <option value="1">1 année</option>
+                <option value="2">2 années</option>
+                <option value="3">3 ou plus</option>
+              </select>
+              <p class="mt-1 text-[11px] text-slate-500">Au-delà de 2 échecs, la finançabilité peut être perdue.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="font-display text-xl font-bold text-brand-dark">3. Votre projet d'études</h2>
+          <p class="text-xs text-slate-500">Le domaine choisi influence la sélectivité (examen d'entrée, quotas…).</p>
+
+          <div class="mt-5 grid sm:grid-cols-2 gap-5">
+            <div>
+              <label for="selDomaine" class="text-sm font-semibold text-brand-dark">Domaine d'études visé</label>
+              <select id="selDomaine" name="domaine" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+                <option value="">— Choisir —</option>
+              </select>
+            </div>
+            <div>
+              <label for="selLangue" class="text-sm font-semibold text-brand-dark">Votre niveau de français</label>
+              <select id="selLangue" name="langue" required class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300 bg-white">
+                <option value="">— Choisir —</option>
+                <option value="maternelle">Langue maternelle</option>
+                <option value="c1">Courant (C1 et +)</option>
+                <option value="b2">B2 (minimum exigé)</option>
+                <option value="b1">B1 ou en cours d'apprentissage</option>
+              </select>
+              <p class="mt-1 text-[11px] text-slate-500">La majorité des établissements FWB exigent au moins le niveau B2.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 items-center pt-2 border-t border-slate-200">
+          <button type="submit" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full hover:bg-yellow-400">Analyser mon profil →</button>
+          <button type="button" id="btnResetAnalyse" class="inline-flex items-center gap-2 border border-slate-300 text-brand-dark font-semibold px-5 py-3 rounded-full text-sm hover:border-brand-gold">Réinitialiser</button>
+          <p class="text-xs text-slate-500 ml-auto">Aucune donnée n'est envoyée tant que vous ne cliquez pas sur « Recevoir le rapport ».</p>
+        </div>
+      </form>
+
+      <div id="resultatAnalyse" class="hidden mt-10"></div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-slate-50 no-print">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <h2 class="font-display text-2xl font-bold text-brand-dark">Comment fonctionne le score ?</h2>
+      <p class="mt-2 text-sm text-slate-600 max-w-3xl">Nous croisons quatre dimensions, pondérées selon ce que la FWB et les universités regardent réellement dans les dossiers étrangers.</p>
+
+      <div class="mt-8 grid md:grid-cols-2 lg:grid-cols-4 gap-5 text-sm">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+          <p class="font-display font-bold text-brand-dark">Moyenne académique</p>
+          <p class="text-xs text-slate-500 mt-1">50 points sur 100</p>
+          <p class="mt-2 text-slate-600">Une moyenne ≥ 14/20 ouvre quasiment toutes les portes ; entre 10 et 12, on privilégie les Hautes Écoles.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+          <p class="font-display font-bold text-brand-dark">Régularité du parcours</p>
+          <p class="text-xs text-slate-500 mt-1">30 points</p>
+          <p class="mt-2 text-slate-600">La FWB valorise les parcours sans redoublement. À partir de 2 échecs, la finançabilité devient un sujet sérieux.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+          <p class="font-display font-bold text-brand-dark">Adéquation domaine</p>
+          <p class="text-xs text-slate-500 mt-1">± 10 points</p>
+          <p class="mt-2 text-slate-600">Médecine, dentaire, ingénieur civil : examens d'entrée à passer en plus. Les Hautes Écoles en gestion ou informatique sont plus accessibles.</p>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+          <p class="font-display font-bold text-brand-dark">Niveau de français</p>
+          <p class="text-xs text-slate-500 mt-1">10 points</p>
+          <p class="mt-2 text-slate-600">B2 est le minimum dans la plupart des cas. Une attestation TCF / DELF rassure les commissions d'admission.</p>
+        </div>
+      </div>
+
+      <p class="mt-8 text-xs text-slate-500 max-w-3xl"><strong>Limites :</strong> ce score n'évalue ni les épreuves d'admission (médecine, ingénieur civil, certains arts), ni les pièces administratives (équivalence, visa). Il ne remplace pas l'avis d'un conseiller StudyAlready ni la décision officielle de l'établissement.</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white border-t border-slate-200 no-print">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <h2 class="font-display text-2xl font-bold text-brand-dark">Et après l'analyse ?</h2>
+      <p class="mt-3 text-slate-600">Si votre profil est validé, nous pouvons construire votre dossier d'équivalence, votre dossier FWB et préparer le visa avec vous.</p>
+      <div class="mt-6 flex flex-wrap gap-3 justify-center">
+        <a href="prequalification-dossier.html" class="inline-flex items-center gap-2 bg-brand-dark text-white font-semibold px-6 py-3 rounded-full hover:bg-brand-blue">Pré-qualification humaine</a>
+        <a href="notre-dossier-fwb.html" class="inline-flex items-center gap-2 border border-slate-300 text-brand-dark font-semibold px-6 py-3 rounded-full hover:border-brand-gold">Notre dossier FWB</a>
+        <a href="communaute.html" class="inline-flex items-center gap-2 border border-slate-300 text-brand-dark font-semibold px-6 py-3 rounded-full hover:border-brand-gold">Rejoindre la communauté</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL: Recevoir le rapport par email -->
+  <div id="modalRapport" class="hidden fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 no-print">
+    <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden">
+      <div class="p-5 sm:p-6 border-b border-slate-200 flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-brand-gold">Rapport détaillé</p>
+          <h3 class="font-display text-xl font-bold text-brand-dark mt-1">Recevez votre analyse complète</h3>
+          <p class="text-xs text-slate-500 mt-1">Un conseiller StudyAlready reçoit votre profil et vous adresse un retour personnalisé sous 48 h.</p>
+        </div>
+        <button type="button" id="btnFermerModal" aria-label="Fermer" class="text-slate-400 hover:text-brand-dark text-2xl leading-none">×</button>
+      </div>
+      <form id="rapportAdmissionForm" class="p-5 sm:p-6 space-y-4">
+        <input type="hidden" name="form_origin" value="analyseur-admission" />
+        <input type="hidden" name="rapport_score" id="rapportScore" />
+        <input type="hidden" name="rapport_profil" id="rapportProfil" />
+        <input type="hidden" name="rapport_reco" id="rapportReco" />
+
+        <div>
+          <label for="rapportNom" class="text-sm font-semibold text-brand-dark">Nom complet</label>
+          <input type="text" id="rapportNom" name="nom" required autocomplete="name" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="rapportEmail" class="text-sm font-semibold text-brand-dark">Email</label>
+            <input type="email" id="rapportEmail" name="email" required autocomplete="email" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <div>
+            <label for="rapportWhatsapp" class="text-sm font-semibold text-brand-dark">WhatsApp</label>
+            <input type="tel" id="rapportWhatsapp" name="whatsapp" required inputmode="tel" autocomplete="tel" placeholder="+237 …" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+        </div>
+        <div>
+          <label for="rapportPays" class="text-sm font-semibold text-brand-dark">Pays de résidence actuel</label>
+          <input type="text" id="rapportPays" name="pays" required placeholder="Cameroun, Belgique, France…" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-300" />
+        </div>
+
+        <label class="flex items-start gap-3 text-xs text-slate-600">
+          <input type="checkbox" name="consentement_rapport" required class="mt-1" />
+          <span>J'accepte que StudyAlready utilise ces informations pour me transmettre une analyse personnalisée et me recontacter. Voir la <a href="politique-confidentialite.html" class="underline">politique de confidentialité</a>.</span>
+        </label>
+
+        <div id="rapportAdmissionStatus" class="text-sm hidden"></div>
+
+        <button type="submit" class="w-full bg-brand-gold text-brand-dark font-bold py-3 rounded-full hover:bg-yellow-400">Envoyer ma demande de rapport</button>
+        <p class="text-[11px] text-slate-400 text-center">Vos données sont transmises uniquement à StudyAlready (RGPD).</p>
+      </form>
+    </div>
+  </div>
+
+  <footer class="bg-brand-dark text-slate-300 py-12 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 grid md:grid-cols-4 gap-8 text-sm">
+      <div>
+        <p class="font-display font-bold text-white text-lg">StudyAlready</p>
+        <p class="mt-2 text-xs text-slate-400">Cameroun → Belgique. Préparation, équivalence, communauté, vie en Belgique.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Admission</p>
+        <ul class="space-y-2">
+          <li><a href="analyseur-admission.html" class="hover:text-brand-gold">Analyseur d'admission</a></li>
+          <li><a href="equivalence.html" class="hover:text-brand-gold">Équivalence FWB</a></li>
+          <li><a href="notre-dossier-fwb.html" class="hover:text-brand-gold">Notre dossier FWB</a></li>
+          <li><a href="prequalification-dossier.html" class="hover:text-brand-gold">Pré-qualification</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Communauté</p>
+        <ul class="space-y-2">
+          <li><a href="communaute.html" class="hover:text-brand-gold">Communauté</a></li>
+          <li><a href="annuaire.html" class="hover:text-brand-gold">Annuaire</a></li>
+          <li><a href="rejoindre-reseau.html" class="hover:text-brand-gold">Rejoindre le réseau</a></li>
+          <li><a href="evenements-seminaires.html" class="hover:text-brand-gold">Événements</a></li>
+          <li><a href="besoin-d-aide.html" class="hover:text-brand-gold">Besoin d'aide ?</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold text-white mb-3">Contact</p>
+        <ul class="space-y-2">
+          <li><a href="mailto:studyalready8@gmail.com" class="hover:text-brand-gold">studyalready8@gmail.com</a></li>
+          <li><a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="hover:text-brand-gold">WhatsApp Belgique</a></li>
+          <li><a href="index.html#contact" class="hover:text-brand-gold">Formulaire de contact</a></li>
+          <li><a href="mentions-legales.html" class="hover:text-brand-gold">Mentions légales</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-500 mt-10">© <span id="year"></span> StudyAlready — Outil d'orientation à valeur indicative.</p>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/analyseur-admission.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

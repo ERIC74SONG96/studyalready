@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-const DESTINATAIRE = 'contact@studyalready.com';
+const DESTINATAIRE = 'studyalready8@gmail.com';
 const EXPEDITEUR   = 'no-reply@studyalready.com';
 const SUJET_PREFIX = '[StudyAlready] Pré-qualification dossier — ';
 
@@ -182,7 +182,7 @@ $headers[] = 'Content-Type: text/plain; charset=UTF-8';
 $envoyé = @mail(DESTINATAIRE, $sujet, $corps, implode("\r\n", $headers));
 
 if (!$envoyé) {
-    reponse(500, "Impossible d'envoyer le formulaire. Écrivez à contact@studyalready.com.");
+    reponse(500, "Impossible d'envoyer le formulaire. Écrivez à studyalready8@gmail.com.");
 }
 
 reponse(200, 'Votre pré-qualification a bien été envoyée. Nous revenons vers vous sous 48 h ouvrées.', true);

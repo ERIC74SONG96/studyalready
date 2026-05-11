@@ -72,15 +72,49 @@
         <span class="font-display font-bold text-lg text-brand-dark">Study<span class="text-brand-gold">Already</span></span>
       </a>
 
-      <ul class="hidden lg:flex items-center gap-7 text-sm font-medium">
+      <ul class="hidden lg:flex items-center gap-6 text-sm font-medium">
         <li><a href="#accueil" class="hover:text-brand-gold transition">Accueil</a></li>
         <li><a href="equivalence.html" class="hover:text-brand-gold transition">Équivalence</a></li>
-        <li><a href="notre-dossier-fwb.html" class="hover:text-brand-gold transition">Notre dossier FWB</a></li>
-        <li><a href="#services" class="hover:text-brand-gold transition">Services</a></li>
-        <li><a href="#universites" class="hover:text-brand-gold transition">Universités</a></li>
+
+        <li class="relative group">
+          <button type="button" aria-haspopup="true" class="hover:text-brand-gold transition inline-flex items-center gap-1">
+            Services
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="hidden group-hover:block group-focus-within:block absolute top-full left-0 pt-3 z-50">
+            <div class="w-64 bg-white border border-slate-200 rounded-xl shadow-lg py-2">
+              <a href="analyseur-admission.html" class="block px-4 py-2 hover:bg-amber-50 text-amber-800 font-semibold">Analyseur d'admission</a>
+              <a href="notre-dossier-fwb.html" class="block px-4 py-2 hover:bg-slate-50">Notre dossier FWB</a>
+              <a href="compte-bloque.html" class="block px-4 py-2 hover:bg-slate-50">Compte bloqué</a>
+              <a href="assurance-visa.html" class="block px-4 py-2 hover:bg-slate-50">Assurance visa &amp; santé</a>
+              <a href="logement-etudiant.html" class="block px-4 py-2 hover:bg-slate-50">Logement étudiant</a>
+              <a href="pack-accueil.html" class="block px-4 py-2 hover:bg-slate-50">Pack accueil</a>
+              <a href="preparer-voyage.html" class="block px-4 py-2 hover:bg-slate-50">Préparer mon voyage</a>
+              <a href="services-bancaires.html" class="block px-4 py-2 hover:bg-slate-50">Assistance bancaire</a>
+              <a href="accelerateur-job.html" class="block px-4 py-2 hover:bg-slate-50">Accélérateur de Job</a>
+              <a href="prequalification-dossier.html" class="block px-4 py-2 hover:bg-slate-50 text-brand-dark font-semibold border-t border-slate-100 mt-1">Pré-qualification détaillée</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="relative group">
+          <button type="button" aria-haspopup="true" class="hover:text-brand-gold transition inline-flex items-center gap-1">
+            Communauté
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="hidden group-hover:block group-focus-within:block absolute top-full left-0 pt-3 z-50">
+            <div class="w-64 bg-white border border-slate-200 rounded-xl shadow-lg py-2">
+              <a href="communaute.html" class="block px-4 py-2 hover:bg-slate-50">Vision &amp; deux parcours</a>
+              <a href="annuaire.html" class="block px-4 py-2 hover:bg-slate-50">Annuaire des membres</a>
+              <a href="besoin-d-aide.html" class="block px-4 py-2 hover:bg-amber-50 text-amber-800 font-semibold">Besoin d'aide ?</a>
+              <a href="evenements-seminaires.html" class="block px-4 py-2 hover:bg-slate-50">Événements &amp; séminaires</a>
+              <a href="rejoindre-reseau.html" class="block px-4 py-2 hover:bg-slate-50 text-brand-dark font-semibold border-t border-slate-100 mt-1">Rejoindre le réseau</a>
+              <a href="creer-profil.html" class="block px-4 py-2 hover:bg-slate-50">Créer mon profil public</a>
+            </div>
+          </div>
+        </li>
+
         <li><a href="blog/" class="hover:text-brand-gold transition">Blog</a></li>
-        <li><a href="prequalification-dossier.html" class="hover:text-brand-gold transition" title="Formulaire détaillé de pré-qualification">Pré-qualif.</a></li>
-        <li><a href="#faq" class="hover:text-brand-gold transition">FAQ</a></li>
         <li><a href="espace-etudiant/" class="hover:text-brand-gold transition">Mon espace</a></li>
       </ul>
 
@@ -94,18 +128,47 @@
       </button>
     </nav>
 
-    <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-3 text-sm font-medium">
+    <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-slate-200 px-4 py-3 text-sm font-medium max-h-[80vh] overflow-y-auto">
       <a href="#accueil" class="block py-2">Accueil</a>
       <a href="equivalence.html" class="block py-2">Équivalence (guide)</a>
-      <a href="notre-dossier-fwb.html" class="block py-2">Notre dossier FWB</a>
-      <a href="#services" class="block py-2">Services</a>
-      <a href="#universites" class="block py-2">Universités</a>
-      <a href="blog/" class="block py-2">Blog</a>
-      <a href="prequalification-dossier.html" class="block py-2">Pré-qualification dossier (détaillé)</a>
-      <a href="#faq" class="block py-2">FAQ</a>
-      <a href="accelerateur-job.html" class="block py-2">Accélérateur de Job</a>
-      <a href="espace-etudiant/" class="block py-2">Mon espace étudiant</a>
-      <a href="#contact" class="block py-2 text-brand-gold font-semibold">Dossier d'équivalence →</a>
+
+      <details class="border-t border-slate-100 mt-1">
+        <summary class="py-2 cursor-pointer list-none flex items-center justify-between">
+          Services
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="pl-3 pb-2 space-y-1 text-slate-600">
+          <a href="analyseur-admission.html" class="block py-1.5 text-amber-800 font-semibold">Analyseur d'admission</a>
+          <a href="notre-dossier-fwb.html" class="block py-1.5">Notre dossier FWB</a>
+          <a href="compte-bloque.html" class="block py-1.5">Compte bloqué</a>
+          <a href="assurance-visa.html" class="block py-1.5">Assurance visa &amp; santé</a>
+          <a href="logement-etudiant.html" class="block py-1.5">Logement étudiant</a>
+          <a href="pack-accueil.html" class="block py-1.5">Pack accueil</a>
+          <a href="preparer-voyage.html" class="block py-1.5">Préparer mon voyage</a>
+          <a href="services-bancaires.html" class="block py-1.5">Assistance bancaire</a>
+          <a href="accelerateur-job.html" class="block py-1.5">Accélérateur de Job</a>
+          <a href="prequalification-dossier.html" class="block py-1.5 text-brand-dark font-semibold">Pré-qualification détaillée</a>
+        </div>
+      </details>
+
+      <details class="border-t border-slate-100">
+        <summary class="py-2 cursor-pointer list-none flex items-center justify-between">
+          Communauté
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="pl-3 pb-2 space-y-1 text-slate-600">
+          <a href="communaute.html" class="block py-1.5">Vision &amp; deux parcours</a>
+          <a href="annuaire.html" class="block py-1.5">Annuaire des membres</a>
+          <a href="besoin-d-aide.html" class="block py-1.5 text-amber-800 font-semibold">Besoin d'aide ?</a>
+          <a href="evenements-seminaires.html" class="block py-1.5">Événements &amp; séminaires</a>
+          <a href="rejoindre-reseau.html" class="block py-1.5 text-brand-gold font-semibold">Rejoindre le réseau</a>
+          <a href="creer-profil.html" class="block py-1.5">Créer mon profil public</a>
+        </div>
+      </details>
+
+      <a href="blog/" class="block py-2 border-t border-slate-100">Blog</a>
+      <a href="espace-etudiant/" class="block py-2 border-t border-slate-100">Mon espace étudiant</a>
+      <a href="#contact" class="block py-3 border-t border-slate-100 text-brand-gold font-semibold">Dossier d'équivalence →</a>
     </div>
   </header>
 
@@ -156,6 +219,15 @@
           </div>
         </div>
         <p class="mt-3 text-xs text-slate-400">Inscription, visa et logement restent disponibles en complément de l'équivalence.</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl">
+          <a href="#parcours-etudiants" class="inline-flex items-center justify-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold px-5 py-3 rounded-full text-sm shadow-md transition">
+            Je souhaite étudier en Belgique
+          </a>
+          <a href="#parcours-etudiants" class="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 border border-white/30 text-white font-semibold px-5 py-3 rounded-full text-sm transition">
+            Je suis déjà étudiant en Belgique
+          </a>
+        </div>
+        <p class="mt-2 text-xs text-slate-400"><a href="communaute.html" class="underline hover:text-brand-gold">Vision communauté, séminaires &amp; networking</a></p>
       </div>
 
       <!-- Carte visuelle / illustration -->
@@ -219,6 +291,49 @@
             <span class="font-bold text-sm">Confiance</span>
           </div>
           <p class="text-xs mt-1 text-slate-600">Transparence sur les délais, les originaux et la décision FWB — en français.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== DOUBLE PARCOURS ============== -->
+  <section id="parcours-etudiants" class="py-16 lg:py-20 bg-white border-b border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">Deux parcours, une communauté</span>
+        <h2 class="mt-3 font-display text-2xl lg:text-3xl font-bold text-brand-dark">Choisissez l'entrée qui vous ressemble.</h2>
+        <p class="mt-3 text-slate-600 text-sm">StudyAlready accompagne aussi bien les projets préparés depuis le Cameroun que la vie étudiante déjà en Fédération Wallonie-Bruxelles — avec des <a href="evenements-seminaires.html" class="text-brand-dark font-semibold underline hover:text-brand-blue">séminaires</a> et un <a href="communaute.html" class="text-brand-dark font-semibold underline hover:text-brand-blue">réseau</a> qui relie les deux.</p>
+      </div>
+      <div class="mt-10 grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div class="rounded-2xl border-2 border-brand-gold/40 bg-brand-cream/80 p-8 lg:p-10 flex flex-col h-full">
+          <p class="text-xs font-bold uppercase tracking-wider text-brand-dark/70">Parcours A — Hors Belgique</p>
+          <h3 class="mt-2 font-display text-xl font-bold text-brand-dark">Je souhaite étudier en Belgique</h3>
+          <p class="mt-3 text-sm text-slate-600 flex-1">Équivalence FWB, visa, compte bloqué, assurances, pré-qualification et coaching de départ jusqu'à votre arrivée.</p>
+          <ul class="mt-6 space-y-2 text-sm text-slate-700">
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="analyseur-admission.html" class="font-bold text-amber-800 underline hover:text-amber-900">Analyseur d'admission</a> (2 min, gratuit)</span></li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="equivalence.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Simulateur &amp; guide équivalence</a></span></li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="prequalification-dossier.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Pré-qualification dossier</a></span></li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="notre-dossier-fwb.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Notre dossier FWB</a> · <a href="assurance-visa.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Visa &amp; assurances</a></span></li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="preparer-voyage.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Préparer mon voyage</a> (comparateur, bagages, départs groupés)</span></li>
+          </ul>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a href="analyseur-admission.html" class="inline-flex justify-center items-center bg-brand-gold text-brand-dark font-bold px-5 py-3 rounded-full text-sm hover:bg-yellow-400">Tester mes chances →</a>
+            <a href="#contact" class="inline-flex justify-center items-center bg-brand-dark text-white font-bold px-5 py-3 rounded-full text-sm hover:bg-brand-blue">Parler de mon projet</a>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8 lg:p-10 flex flex-col h-full">
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Parcours B — Déjà en Belgique</p>
+          <h3 class="mt-2 font-display text-xl font-bold text-brand-dark">Je suis déjà étudiant en Belgique</h3>
+          <p class="mt-3 text-sm text-slate-600 flex-1">Jobs et talents, logement, banque, pack accueil, renouvellement de titre de séjour (orientation) et vie du réseau.</p>
+          <ul class="mt-6 space-y-2 text-sm text-slate-700">
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="accelerateur-job.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Accélérateur de Job</a> · <a href="espace-etudiant/" class="font-medium text-brand-dark underline hover:text-brand-blue">Mon espace</a></span></li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="logement-etudiant.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Logement</a> · <a href="pack-accueil.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Pack accueil</a></span></li>
+            <li class="flex gap-2"><span class="text-brand-gold font-bold shrink-0">·</span><span><a href="besoin-d-aide.html" class="font-medium text-amber-800 underline hover:text-brand-blue">Besoin d'aide ?</a> · <a href="evenements-seminaires.html" class="font-medium text-brand-dark underline hover:text-brand-blue">Séminaires</a></span></li>
+          </ul>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a href="annuaire.html" class="inline-flex justify-center items-center bg-brand-gold text-brand-dark font-bold px-5 py-3 rounded-full text-sm hover:bg-yellow-400">Explorer l'annuaire</a>
+            <a href="rejoindre-reseau.html" class="inline-flex justify-center items-center border border-slate-300 text-brand-dark font-semibold px-5 py-3 rounded-full text-sm hover:border-brand-gold">Rejoindre le réseau</a>
+          </div>
         </div>
       </div>
     </div>
@@ -528,10 +643,10 @@
         <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">
           Ils nous ont fait confiance.
         </h2>
-        <p class="mt-4 text-slate-600 text-sm italic">Témoignages illustratifs en attendant les retours de nos premiers étudiants.</p>
+        <p class="mt-4 text-slate-600 text-sm italic">Témoignages illustratifs en attendant les retours de nos premiers étudiants — du parcours « visa » comme du parcours « déjà sur place ».</p>
       </div>
 
-      <div class="mt-12 grid md:grid-cols-3 gap-6">
+      <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100">
           <div class="flex text-yellow-400 mb-3">★★★★★</div>
           <p class="text-slate-700 text-sm leading-relaxed">"Grâce à StudyAlready, mon dossier d'équivalence a été accepté du premier coup. Je suis aujourd'hui en 2e année à l'ULiège."</p>
@@ -562,6 +677,17 @@
             <div>
               <div class="font-semibold text-brand-dark text-sm">Junior K.</div>
               <div class="text-xs text-slate-500">Bafoussam → Mons</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100">
+          <div class="flex text-yellow-400 mb-3">★★★★★</div>
+          <p class="text-slate-700 text-sm leading-relaxed">"En Belgique depuis un an, le réseau m'a aidée à comprendre Student@work et à éviter les pièges des contrats étudiants."</p>
+          <div class="mt-5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-dark text-brand-gold flex items-center justify-center font-bold">S.</div>
+            <div>
+              <div class="font-semibold text-brand-dark text-sm">Stéphanie E.</div>
+              <div class="text-xs text-slate-500">Déjà en FWB — Bruxelles</div>
             </div>
           </div>
         </div>
@@ -662,7 +788,7 @@
             <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
               <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             </div>
-            <a href="mailto:contact@studyalready.com" class="hover:text-brand-gold">contact@studyalready.com</a>
+            <a href="mailto:studyalready8@gmail.com" class="hover:text-brand-gold">studyalready8@gmail.com</a>
           </div>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
@@ -729,6 +855,9 @@
               <option value="pack_accueil">Pack accueil à l'arrivée</option>
               <option value="visa">Demande de visa</option>
               <option value="logement">Logement</option>
+              <option value="titre_sejour">Renouvellement titre de séjour (orientation)</option>
+              <option value="communaute_seminaires">Communauté / séminaires / networking</option>
+              <option value="communaute_alumni">Mentorat ou intervention (anciens)</option>
               <option value="autre">Conseil / Autre</option>
             </select>
           </div>
@@ -765,14 +894,22 @@
       <div>
         <h4 class="text-white font-semibold mb-3">Navigation</h4>
         <ul class="space-y-2 text-sm">
+          <li><a href="analyseur-admission.html" class="hover:text-brand-gold font-semibold text-amber-300">Analyseur d'admission</a></li>
           <li><a href="equivalence.html" class="hover:text-brand-gold">Guide équivalence FWB</a></li>
           <li><a href="notre-dossier-fwb.html" class="hover:text-brand-gold">Notre dossier FWB</a></li>
           <li><a href="compte-bloque.html" class="hover:text-brand-gold">Compte bloqué</a></li>
           <li><a href="assurance-visa.html" class="hover:text-brand-gold">Assurance visa</a></li>
           <li><a href="logement-etudiant.html" class="hover:text-brand-gold">Logement étudiant</a></li>
           <li><a href="pack-accueil.html" class="hover:text-brand-gold">Pack accueil</a></li>
+          <li><a href="preparer-voyage.html" class="hover:text-brand-gold">Préparer mon voyage</a></li>
           <li><a href="services-bancaires.html" class="hover:text-brand-gold">Assistance bancaire</a></li>
           <li><a href="accelerateur-job.html" class="hover:text-brand-gold">Accélérateur de Job</a></li>
+          <li><a href="communaute.html" class="hover:text-brand-gold">Communauté &amp; réseau</a></li>
+          <li><a href="annuaire.html" class="hover:text-brand-gold">Annuaire (membres)</a></li>
+          <li><a href="besoin-d-aide.html" class="hover:text-brand-gold font-semibold text-amber-300">Besoin d'aide ?</a></li>
+          <li><a href="evenements-seminaires.html" class="hover:text-brand-gold">Événements &amp; séminaires</a></li>
+          <li><a href="rejoindre-reseau.html" class="hover:text-brand-gold">Rejoindre le réseau</a></li>
+          <li><a href="creer-profil.html" class="hover:text-brand-gold">Créer mon profil</a></li>
           <li><a href="espace-etudiant/" class="hover:text-brand-gold">Mon espace étudiant</a></li>
           <li><a href="prequalification-dossier.html" class="hover:text-brand-gold">Pré-qualification dossier</a></li>
           <li><a href="blog/" class="hover:text-brand-gold">Blog &amp; conseils</a></li>

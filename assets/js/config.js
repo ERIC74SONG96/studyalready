@@ -14,11 +14,22 @@ window.STUDYALREADY_CONFIG = {
   WEB3FORMS_ACCESS_KEY: 'REMPLACER_PAR_VOTRE_CLE',
 
   // Destination par défaut (informatif — Web3Forms envoie à l'email associé à la clé)
-  CONTACT_EMAIL: 'contact@studyalready.com',
+  CONTACT_EMAIL: 'studyalready8@gmail.com',
 
   // --- Espace étudiant (Supabase Auth) : https://supabase.com ---
   // Dashboard projet → Settings → API : Project URL + anon public key
   // Ne jamais mettre la clé "service_role" ici (réservée au serveur).
   SUPABASE_URL: 'REMPLACER_PAR_VOTRE_URL_SUPABASE',
-  SUPABASE_ANON_KEY: 'REMPLACER_PAR_VOTRE_CLE_ANON_SUPABASE'
+  SUPABASE_ANON_KEY: 'REMPLACER_PAR_VOTRE_CLE_ANON_SUPABASE',
+
+  // --- Affiliation voyage ---
+  // Skyscanner : inscription via TravelPayouts (https://www.travelpayouts.com/)
+  // ou directement Skyscanner Partners. Renseignez votre "associate ID"
+  // ci-dessous quand il sera disponible. Laissez vide en attendant.
+  SKYSCANNER_ASSOCIATE_ID: '',
+  SKYSCANNER_MARKET: 'FR', // Marché Skyscanner (FR, BE…)
+  SKYSCANNER_LOCALE: 'fr-FR', // Langue
+
+  // Tarif indicatif du service "Chasseur de billets"
+  CHASSEUR_BILLETS_TARIF_EUR: 30
 };
