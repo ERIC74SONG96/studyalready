@@ -30,6 +30,7 @@
             '<div class="w-64 bg-white border border-slate-200 rounded-xl shadow-lg py-2">' +
               link(P + 'analyseur-admission.html', 'Analyseur d\'admission', 'block px-4 py-2 hover:bg-amber-50 text-amber-800 font-semibold') +
               link(P + 'notre-dossier-fwb.html', 'Notre dossier FWB', 'block px-4 py-2 hover:bg-slate-50') +
+              link(P + 'inscription-universitaire.html', 'Inscription universitaire', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'compte-bloque.html', 'Compte bloqué', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'assurance-visa.html', 'Assurance visa &amp; santé', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'logement-etudiant.html', 'Logement étudiant', 'block px-4 py-2 hover:bg-slate-50') +
@@ -85,6 +86,7 @@
         '<div class="pl-3 pb-2 space-y-1 text-slate-600">' +
           '<a href="' + P + 'analyseur-admission.html" class="block py-1.5 text-amber-800 font-semibold">Analyseur d\'admission</a>' +
           '<a href="' + P + 'notre-dossier-fwb.html" class="block py-1.5">Notre dossier FWB</a>' +
+          '<a href="' + P + 'inscription-universitaire.html" class="block py-1.5">Inscription universitaire</a>' +
           '<a href="' + P + 'compte-bloque.html" class="block py-1.5">Compte bloqué</a>' +
           '<a href="' + P + 'assurance-visa.html" class="block py-1.5">Assurance visa &amp; santé</a>' +
           '<a href="' + P + 'logement-etudiant.html" class="block py-1.5">Logement étudiant</a>' +
