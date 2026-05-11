@@ -1,0 +1,57 @@
+# StudyAlready - Configuration Apache pour LWS
+# Sécurité, performance et bonnes pratiques
+
+# ============== ENCODAGE ==============
+AddDefaultCharset UTF-8
+
+# ============== FORCER HTTPS (à activer après installation du certificat SSL) ==============
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ============== REDIRIGER WWW VERS NON-WWW (au choix) ==============
+# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+# RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+# ============== PAGES PROPRES (nécessite mod_rewrite) ==============
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Retire l'extension .html pour les URLs courtes
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^([^\.]+)$ $1.html [NC,L]
+</IfModule>
+
+# ============== EN-TÊTES DE SÉCURITÉ ==============
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# ============== CACHE NAVIGATEUR (performance) ==============
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                 "access plus 1 month"
+    ExpiresByType application/javascript   "access plus 1 month"
+    ExpiresByType image/jpeg               "access plus 6 months"
+    ExpiresByType image/png                "access plus 6 months"
+    ExpiresByType image/svg+xml            "access plus 6 months"
+    ExpiresByType image/webp               "access plus 6 months"
+    ExpiresByType font/woff2               "access plus 1 year"
+    ExpiresByType text/html                "access plus 1 hour"
+</IfModule>
+
+# ============== COMPRESSION GZIP ==============
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# ============== INTERDIRE L'ACCÈS AUX FICHIERS SENSIBLES ==============
+<FilesMatch "^\.(htaccess|env|git)">
+    Require all denied
+</FilesMatch>
+
+# ============== PAGE D'ERREUR PERSONNALISÉE ==============
+ErrorDocument 404 /index.html

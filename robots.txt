@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /php/
+Disallow: /assets/docs/dossier-fwb-print.html
+
+Sitemap: https://www.studyalready.com/sitemap.xml

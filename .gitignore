@@ -1,0 +1,36 @@
+# StudyAlready - Fichiers à ignorer par Git
+
+# Fichiers Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.lnk
+
+# Fichiers macOS
+.DS_Store
+
+# Editeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs et temporaires
+*.log
+*.tmp
+*.bak
+
+# Cursor
+.cursor/
+
+# Logs PHP
+error_log
+
+# Téléchargements locaux (ne doivent pas être versionnés)
+# downloads/    <-- DECOMMENTER si vous ne voulez pas versionner les PNG locaux
+
+# Secrets / config locale (au cas où vous en créez plus tard)
+.env
+.env.local
+config.local.php

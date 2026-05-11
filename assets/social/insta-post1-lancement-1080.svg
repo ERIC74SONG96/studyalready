@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a2540"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <circle cx="100" cy="100" r="220" fill="#f5b800" opacity="0.12"/>
+  <circle cx="980" cy="980" r="280" fill="#f5b800" opacity="0.08"/>
+
+  <g transform="translate(60 60)">
+    <rect width="96" height="96" rx="20" fill="#f5b800"/>
+    <text x="48" y="78" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="50" font-weight="800" fill="#0a2540">SA</text>
+  </g>
+  <text x="180" y="125" font-family="Poppins, Arial, sans-serif" font-size="42" font-weight="800">
+    <tspan fill="#ffffff">Study</tspan><tspan fill="#f5b800">Already</tspan>
+  </text>
+
+  <text x="60" y="270" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" fill="#f5b800" letter-spacing="6">NOUVEAU - LANCEMENT 2026</text>
+
+  <text x="60" y="400" font-family="Poppins, Arial, sans-serif" font-size="100" font-weight="800" fill="#ffffff">Étudier</text>
+  <text x="60" y="510" font-family="Poppins, Arial, sans-serif" font-size="100" font-weight="800" fill="#ffffff">en Belgique,</text>
+  <text x="60" y="620" font-family="Poppins, Arial, sans-serif" font-size="100" font-weight="800" fill="#f5b800">depuis le</text>
+  <text x="60" y="730" font-family="Poppins, Arial, sans-serif" font-size="100" font-weight="800" fill="#f5b800">Cameroun.</text>
+
+  <rect x="60" y="790" width="120" height="6" fill="#f5b800"/>
+
+  <text x="60" y="870" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="500" fill="#cbd5e1">Inscription, visa, Équivalence, compte bloquÉ...</text>
+
+  <g transform="translate(60 920)">
+    <rect width="400" height="80" rx="40" fill="#f5b800"/>
+    <text x="200" y="53" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="30" font-weight="800" fill="#0a2540">DÉcouvrir l'agence</text>
+  </g>
+
+  <g transform="translate(820 920)">
+    <rect width="60" height="40" fill="#007a5e"/>
+    <rect x="60" width="60" height="40" fill="#ce1126"/>
+    <rect x="120" width="60" height="40" fill="#fcd116"/>
+    <text x="195" y="30" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" fill="#ffffff">→</text>
+    <rect y="50" width="40" height="40" fill="#000000"/>
+    <rect x="40" y="50" width="40" height="40" fill="#fcd116"/>
+    <rect x="80" y="50" width="40" height="40" fill="#ef3340"/>
+  </g>
+</svg>

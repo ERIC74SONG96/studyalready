@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <title>StudyAlready — Équivalence de diplôme FWB depuis le Cameroun | Suivi jusqu'aux originaux</title>
+  <meta name="description" content="StudyAlready se concentre sur l'équivalence de diplôme auprès de la Fédération Wallonie-Bruxelles (FWB) : constitution du dossier, suivi rigoureux et accompagnement jusqu'à la récupération de vos originaux et de la décision d'équivalence. Basé en Belgique, proche des étudiants camerounais." />
+  <meta name="keywords" content="équivalence diplôme FWB, Fédération Wallonie-Bruxelles, diplôme Cameroun Belgique, reconnaissance diplôme, originaux équivalence, étudiants camerounais, StudyAlready, demande équivalence" />
+  <meta name="author" content="StudyAlready" />
+  <meta name="theme-color" content="#0a2540" />
+
+  <!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+  <meta property="og:title" content="StudyAlready — Équivalence FWB &amp; confiance jusqu'aux originaux" />
+  <meta property="og:description" content="Dossier d'équivalence FWB depuis le Cameroun : préparation, suivi et accompagnement jusqu'à la récupération de vos originaux et de votre décision d'équivalence." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.studyalready.com" />
+  <meta property="og:image" content="https://www.studyalready.com/assets/img/og-cover.svg" />
+  <meta property="og:locale" content="fr_BE" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="StudyAlready — Équivalence FWB depuis le Cameroun" />
+  <meta name="twitter:description" content="Équivalence de diplôme FWB : dossier, suivi et récupération des originaux et de la décision — avec une vision de partenariat et d'accueil au Cameroun." />
+  <meta name="twitter:image" content="https://www.studyalready.com/assets/img/og-cover.svg" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <link rel="apple-touch-icon" href="assets/img/logo-icon.svg" />
+
+  <!-- Tailwind CSS via CDN (pas besoin d'installation) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0a2540',
+              blue: '#1e3a8a',
+              gold: '#f5b800',
+              cream: '#fff8e7'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Polices Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body class="font-sans text-slate-800 bg-white antialiased">
+
+  <!-- ============== NAVIGATION ============== -->
+  <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <a href="#accueil" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg bg-brand-dark flex items-center justify-center">
+          <span class="text-brand-gold font-bold text-sm font-display">SA</span>
+        </div>
+        <span class="font-display font-bold text-lg text-brand-dark">Study<span class="text-brand-gold">Already</span></span>
+      </a>
+
+      <ul class="hidden lg:flex items-center gap-7 text-sm font-medium">
+        <li><a href="#accueil" class="hover:text-brand-gold transition">Accueil</a></li>
+        <li><a href="equivalence.html" class="hover:text-brand-gold transition">Équivalence</a></li>
+        <li><a href="notre-dossier-fwb.html" class="hover:text-brand-gold transition">Notre dossier FWB</a></li>
+        <li><a href="#services" class="hover:text-brand-gold transition">Services</a></li>
+        <li><a href="#universites" class="hover:text-brand-gold transition">Universités</a></li>
+        <li><a href="blog/" class="hover:text-brand-gold transition">Blog</a></li>
+        <li><a href="prequalification-dossier.html" class="hover:text-brand-gold transition" title="Formulaire détaillé de pré-qualification">Pré-qualif.</a></li>
+        <li><a href="#faq" class="hover:text-brand-gold transition">FAQ</a></li>
+      </ul>
+
+      <a href="#contact" class="hidden sm:inline-flex items-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark font-semibold px-5 py-2.5 rounded-full text-sm transition shadow-sm">
+        Dossier d'équivalence
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+
+      <button id="mobileMenuBtn" class="lg:hidden text-brand-dark" aria-label="Menu">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </nav>
+
+    <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-3 text-sm font-medium">
+      <a href="#accueil" class="block py-2">Accueil</a>
+      <a href="equivalence.html" class="block py-2">Équivalence (guide)</a>
+      <a href="notre-dossier-fwb.html" class="block py-2">Notre dossier FWB</a>
+      <a href="#services" class="block py-2">Services</a>
+      <a href="#universites" class="block py-2">Universités</a>
+      <a href="blog/" class="block py-2">Blog</a>
+      <a href="prequalification-dossier.html" class="block py-2">Pré-qualification dossier (détaillé)</a>
+      <a href="#faq" class="block py-2">FAQ</a>
+      <a href="#contact" class="block py-2 text-brand-gold font-semibold">Dossier d'équivalence →</a>
+    </div>
+  </header>
+
+  <!-- ============== HERO ============== -->
+  <section id="accueil" class="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
+    <!-- Décor de fond -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-20 -left-20 w-72 h-72 bg-brand-gold rounded-full blur-3xl"></div>
+      <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase">
+          <span class="w-2 h-2 bg-brand-gold rounded-full animate-pulse"></span>
+          Équivalence FWB · Diplômes Cameroun
+        </span>
+        <h1 class="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
+          Votre <span class="text-brand-gold">équivalence de diplôme</span> en Belgique, avec un suivi jusqu'aux originaux.
+        </h1>
+        <p class="mt-6 text-lg text-slate-200 max-w-xl">
+          Beaucoup d'étudiants au Cameroun peinent à <strong class="text-white">récupérer leurs originaux</strong> ou leur <strong class="text-white">décision d'équivalence</strong> auprès de la Fédération Wallonie-Bruxelles (FWB). StudyAlready place l'équivalence au centre : dossier irréprochable, suivi transparent, et accompagnement jusqu'à ce que vous ayez en main vos documents et votre équivalence. Nous préparons aussi une collaboration structurée avec la FWB et des <strong class="text-white">bureaux d'accueil au Cameroun</strong> pour sécuriser le dépôt et la confiance.
+        </p>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a href="#contact" class="inline-flex items-center justify-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold px-7 py-4 rounded-full shadow-lg transition">
+            Parler de mon dossier d'équivalence
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+          <a href="#equivalence" class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-7 py-4 rounded-full transition">
+            Notre mission &amp; vision FWB
+          </a>
+        </div>
+
+        <!-- Chiffres clés -->
+        <div class="mt-12 grid grid-cols-3 gap-6 max-w-md">
+          <div>
+            <div class="text-3xl font-display font-bold text-brand-gold">FWB</div>
+            <div class="text-xs text-slate-300 mt-1">Dossier ciblé &amp; calendrier</div>
+          </div>
+          <div>
+            <div class="text-3xl font-display font-bold text-brand-gold">A→Z</div>
+            <div class="text-xs text-slate-300 mt-1">Jusqu'aux originaux &amp; décision</div>
+          </div>
+          <div>
+            <div class="text-3xl font-display font-bold text-brand-gold">CM→BE</div>
+            <div class="text-xs text-slate-300 mt-1">Belgique + vision Cameroun</div>
+          </div>
+        </div>
+        <p class="mt-3 text-xs text-slate-400">Inscription, visa et logement restent disponibles en complément de l'équivalence.</p>
+      </div>
+
+      <!-- Carte visuelle / illustration -->
+      <div class="relative">
+        <div class="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-2xl">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-brand-gold flex items-center justify-center text-brand-dark font-bold text-xl">SA</div>
+              <div>
+                <div class="font-semibold">Mon dossier</div>
+                <div class="text-xs text-slate-300">Étudiant — Yaoundé</div>
+              </div>
+            </div>
+            <span class="text-xs bg-green-500/20 text-green-300 px-3 py-1 rounded-full border border-green-400/30">En cours</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="text-sm font-medium">Dossier FWB complet</div>
+                <div class="text-xs text-slate-300">Pièces, traductions, cohérence avec l'ARES</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-brand-gold flex items-center justify-center">
+                <svg class="w-4 h-4 text-brand-dark animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2" opacity="0.3"/><path stroke-linecap="round" stroke-width="2" d="M12 2a10 10 0 0110 10"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="text-sm font-medium">Suivi FWB &amp; relances</div>
+                <div class="text-xs text-slate-300">Veille sur le traitement du dossier</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                <span class="text-xs text-white font-bold">3</span>
+              </div>
+              <div class="flex-1">
+                <div class="text-sm font-medium">Récupération des originaux</div>
+                <div class="text-xs text-slate-300">Accompagnement jusqu'à la remise en main propre</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 opacity-70">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                <span class="text-xs text-white font-bold">4</span>
+              </div>
+              <div class="flex-1">
+                <div class="text-sm font-medium">Décision d'équivalence</div>
+                <div class="text-xs text-slate-300">Remise &amp; explications des prochaines étapes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badge flottant -->
+        <div class="absolute -bottom-6 -left-6 bg-white text-brand-dark rounded-2xl shadow-xl p-4 max-w-[200px] hidden sm:block">
+          <div class="flex items-center gap-2 text-yellow-500">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span class="font-bold text-sm">Confiance</span>
+          </div>
+          <p class="text-xs mt-1 text-slate-600">Transparence sur les délais, les originaux et la décision FWB — en français.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== ÉQUIVALENCE & VISION ============== -->
+  <section id="equivalence" class="py-20 lg:py-28 bg-brand-cream border-y border-amber-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">Notre priorité</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">
+          L'équivalence FWB : là où tout se joue pour vos études en Fédération Wallonie-Bruxelles.
+        </h2>
+        <p class="mt-6 text-slate-700 leading-relaxed text-lg">
+          La reconnaissance de votre diplôme camerounais par la <strong>Fédération Wallonie-Bruxelles (FWB)</strong> est souvent l'étape la plus sensible. Nous la traitons comme le <strong>cœur de votre projet</strong> : pas seulement « envoyer un formulaire », mais construire un dossier cohérent, suivre son instruction et vous tenir informés à chaque étape.
+        </p>
+        <p class="mt-6">
+          <a href="equivalence.html" class="inline-flex items-center gap-2 bg-brand-dark text-white font-semibold px-5 py-3 rounded-full text-sm hover:bg-brand-blue transition shadow-md">
+            Lire le guide complet : équivalence diplôme Cameroun → FWB
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+        </p>
+      </div>
+
+      <div class="mt-14 grid lg:grid-cols-2 gap-10 items-start">
+        <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+          <h3 class="font-display font-bold text-xl text-brand-dark flex items-center gap-2">
+            <span class="text-2xl" aria-hidden="true">⚠️</span>
+            Ce que nous voyons trop souvent au Cameroun
+          </h3>
+          <ul class="mt-5 space-y-4 text-slate-600">
+            <li class="flex gap-3"><span class="text-brand-gold shrink-0">•</span> Difficultés à <strong class="text-brand-dark">récupérer les originaux</strong> après instruction du dossier, ou manque de clarté sur où et quand les retirer.</li>
+            <li class="flex gap-3"><span class="text-brand-gold shrink-0">•</span> Retards ou incompréhensions sur la <strong class="text-brand-dark">décision d'équivalence</strong> (niveau reconnu, conditions, suite à donner).</li>
+            <li class="flex gap-3"><span class="text-brand-gold shrink-0">•</span> Stress lié à la distance : envoyer des documents précieux sans savoir qui pilote réellement le dossier de l'autre côté.</li>
+          </ul>
+        </div>
+
+        <div class="bg-brand-dark text-white rounded-2xl p-8 shadow-lg">
+          <h3 class="font-display font-bold text-xl flex items-center gap-2">
+            <span class="text-2xl" aria-hidden="true">✓</span>
+            Notre engagement StudyAlready
+          </h3>
+          <ul class="mt-5 space-y-4 text-slate-200">
+            <li class="flex gap-3"><span class="text-brand-gold shrink-0 font-bold">1</span> Préparer un <strong class="text-white">dossier FWB complet et conforme</strong> aux exigences en vigueur (pièces, traductions, logique avec votre projet d'études).</li>
+            <li class="flex gap-3"><span class="text-brand-gold shrink-0 font-bold">2</span> Assurer un <strong class="text-white">suivi rigoureux</strong> côté Belgique — nous sommes sur le terrain pour relancer, clarifier et coordonner avec les interlocuteurs compétents.</li>
+            <li class="flex gap-3"><span class="text-brand-gold shrink-0 font-bold">3</span> Vous accompagner jusqu'à ce que vous puissiez <strong class="text-white">récupérer vos originaux en toute confiance</strong> et comprendre votre <strong class="text-white">décision d'équivalence</strong> (prochaines étapes : université, inscription, etc.).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 bg-white rounded-2xl p-8 lg:p-10 border border-brand-gold/40 shadow-sm">
+        <h3 class="font-display font-bold text-2xl text-brand-dark">Vision : collaborer avec la FWB &amp; accueillir les dossiers au Cameroun</h3>
+        <p class="mt-4 text-slate-600 leading-relaxed">
+          Notre ambition est de <strong>travailler avec la Fédération Wallonie-Bruxelles</strong> dans un cadre clair — pour que les étudiants au Cameroun puissent, à terme, <strong>déposer leur dossier d'équivalence dans des bureaux StudyAlready</strong> près de chez eux, avec la même exigence de qualité qu'à Bruxelles. L'objectif : réduire les allers-retours inutiles, sécuriser la chaîne documentaire et <strong>restaurer la confiance</strong> jusqu'au moment où vous tenez vos originaux et votre équivalence entre les mains.
+        </p>
+        <p class="mt-4 text-sm text-slate-500 border-l-4 border-brand-gold pl-4">
+          <strong class="text-brand-dark">Transparence :</strong> StudyAlready n'est pas aujourd'hui un guichet officiel de la FWB. Nous préparons les dossiers, assurons le suivi et construisons les relations nécessaires. Toute avancée concrète vers un partenariat ou un point d'accueil agréé sera communiquée clairement sur ce site et sur nos réseaux. Consultez aussi notre <a href="engagement-ethique.html" class="text-brand-blue font-semibold underline hover:text-brand-dark">engagement éthique public</a>.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="notre-dossier-fwb.html" class="inline-flex items-center gap-2 bg-brand-dark text-white font-semibold px-5 py-3 rounded-full text-sm hover:bg-brand-blue transition shadow-md">
+            Lire notre dossier institutionnel
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+          <a href="assets/docs/StudyAlready-Dossier-FWB.pdf" download class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-3 rounded-full text-sm hover:bg-yellow-500 transition shadow-md">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M4 4h16v16H4z"/></svg>
+            Télécharger le PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== À PROPOS ============== -->
+  <section id="apropos" class="py-20 lg:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">À propos</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">
+          Une équipe tournée vers l'équivalence — et vers la confiance des familles.
+        </h2>
+        <p class="mt-6 text-slate-600 leading-relaxed">
+          StudyAlready est née d'un constat : derrière chaque projet d'études en Belgique, il y a souvent <strong>des mois d'incertitude</strong> autour de l'équivalence et des documents officiels. Nous sommes basés en Belgique, au plus près des procédures FWB, tout en restant connectés au quotidien des étudiants camerounais par WhatsApp et visio.
+        </p>
+        <ul class="mt-6 space-y-3 text-slate-700">
+          <li class="flex gap-3"><span class="text-brand-gold font-bold">✓</span> Une expertise ciblée sur la <strong>demande d'équivalence FWB</strong> et la cohérence avec votre parcours</li>
+          <li class="flex gap-3"><span class="text-brand-gold font-bold">✓</span> Un suivi jusqu'à la <strong>récupération des originaux</strong> et de la <strong>décision</strong>, pas seulement « l'envoi du dossier »</li>
+          <li class="flex gap-3"><span class="text-brand-gold font-bold">✓</span> Une feuille de route vers un <strong>partenariat avec la FWB</strong> et des <strong>points d'accueil au Cameroun</strong> (en construction)</li>
+          <li class="flex gap-3"><span class="text-brand-gold font-bold">✓</span> Tarifs expliqués par étape, en français, adaptés au contexte camerounais</li>
+        </ul>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-brand-cream rounded-2xl p-6">
+          <div class="text-4xl mb-2">🇨🇲</div>
+          <h3 class="font-display font-bold text-brand-dark">Cameroun</h3>
+          <p class="text-sm text-slate-600 mt-2">Vision : bureaux d'accueil pour le dépôt &amp; le suivi.</p>
+        </div>
+        <div class="bg-brand-dark text-white rounded-2xl p-6">
+          <div class="text-4xl mb-2">🇧🇪</div>
+          <h3 class="font-display font-bold">Présence</h3>
+          <p class="text-sm text-slate-300 mt-2">Opérationnel sur le terrain en Belgique.</p>
+        </div>
+        <div class="bg-brand-dark text-white rounded-2xl p-6">
+          <div class="text-4xl mb-2">🎓</div>
+          <h3 class="font-display font-bold">FWB</h3>
+          <p class="text-sm text-slate-300 mt-2">Équivalence &amp; reconnaissance des diplômes.</p>
+        </div>
+        <div class="bg-brand-cream rounded-2xl p-6">
+          <div class="text-4xl mb-2">🤝</div>
+          <h3 class="font-display font-bold text-brand-dark">Suivi</h3>
+          <p class="text-sm text-slate-600 mt-2">Un conseiller dédié de A à Z.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SERVICES ============== -->
+  <section id="services" class="py-20 lg:py-28 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">Nos services</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">
+          L'équivalence en premier — le reste en soutien.
+        </h2>
+        <p class="mt-4 text-slate-600">La plupart de nos étudiants commencent par la FWB. Les autres services (université, visa, logement, compte bloqué) s'enchaînent une fois le niveau d'études reconnu.</p>
+      </div>
+
+      <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Service prioritaire : Équivalence FWB -->
+        <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition border-2 border-brand-gold ring-4 ring-brand-gold/10 group sm:col-span-2 lg:col-span-2">
+          <div class="flex flex-wrap items-center gap-3 mb-4">
+            <span class="text-xs font-bold uppercase tracking-wider bg-brand-gold text-brand-dark px-3 py-1 rounded-full">Priorité</span>
+            <span class="text-xs font-semibold text-slate-500">Fédération Wallonie-Bruxelles</span>
+          </div>
+          <div class="w-14 h-14 rounded-xl bg-brand-dark flex items-center justify-center mb-5">
+            <svg class="w-7 h-7 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-2xl text-brand-dark">Équivalence de diplôme (FWB)</h3>
+          <p class="mt-3 text-slate-600 text-sm leading-relaxed max-w-2xl">
+            Constitution du dossier complet, vérification des pièces et des traductions, stratégie par rapport à votre filière, suivi de l'instruction et <strong>accompagnement jusqu'à la récupération de vos originaux</strong> et de la <strong>décision d'équivalence</strong>. Nous travaillons à des modalités de dépôt plus simples pour les étudiants au Cameroun, dans le respect des règles de la FWB.
+          </p>
+          <a href="#contact" class="mt-5 inline-flex items-center gap-2 text-brand-gold font-bold text-sm hover:gap-3 transition-all">
+            Demander une analyse de mon dossier →
+          </a>
+        </div>
+
+        <!-- Inscription universitaire -->
+        <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition border border-slate-100 group">
+          <div class="w-14 h-14 rounded-xl bg-brand-cream flex items-center justify-center mb-5 group-hover:bg-brand-gold transition">
+            <svg class="w-7 h-7 text-brand-gold group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-brand-dark">Inscription universitaire</h3>
+          <p class="mt-3 text-slate-600 text-sm">Après équivalence (ou en parallèle selon les cas), sélection des formations en FWB et montage du dossier d'admission.</p>
+        </div>
+
+        <!-- Compte bloqué -->
+        <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition border border-slate-100 group">
+          <div class="w-14 h-14 rounded-xl bg-brand-cream flex items-center justify-center mb-5 group-hover:bg-brand-gold transition">
+            <svg class="w-7 h-7 text-brand-gold group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-brand-dark">Compte bloqué</h3>
+          <p class="mt-3 text-slate-600 text-sm">Mise en relation et accompagnement pour l'ouverture du compte bloqué exigé par l'Office des Étrangers.</p>
+          <span class="mt-3 inline-block text-xs bg-brand-gold/20 text-brand-dark px-2 py-1 rounded font-semibold">Bientôt en propre</span>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition border border-slate-100 group">
+          <div class="w-14 h-14 rounded-xl bg-brand-cream flex items-center justify-center mb-5 group-hover:bg-brand-gold transition">
+            <svg class="w-7 h-7 text-brand-gold group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-brand-dark">Demande de visa</h3>
+          <p class="mt-3 text-slate-600 text-sm">Préparation complète du dossier visa D (étudiant), assistance pour le rendez-vous à l'ambassade.</p>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition border border-slate-100 group">
+          <div class="w-14 h-14 rounded-xl bg-brand-cream flex items-center justify-center mb-5 group-hover:bg-brand-gold transition">
+            <svg class="w-7 h-7 text-brand-gold group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-brand-dark">Logement étudiant</h3>
+          <p class="mt-3 text-slate-600 text-sm">Recherche de kot ou résidence étudiante dans votre ville d'études : Bruxelles, Liège, Louvain-la-Neuve, Mons...</p>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="bg-brand-dark text-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition group relative overflow-hidden">
+          <div class="absolute -right-10 -top-10 w-32 h-32 bg-brand-gold/20 rounded-full blur-2xl"></div>
+          <div class="w-14 h-14 rounded-xl bg-brand-gold flex items-center justify-center mb-5">
+            <svg class="w-7 h-7 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl">Pack Parcours complet</h3>
+          <p class="mt-3 text-slate-300 text-sm">Équivalence FWB (prioritaire), inscription, compte bloqué, visa et logement — une seule équipe qui connaît votre dossier de bout en bout.</p>
+          <a href="#contact" class="mt-5 inline-flex items-center gap-2 text-brand-gold font-semibold text-sm hover:gap-3 transition-all">
+            Demander un devis →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PROCESSUS ============== -->
+  <section id="processus" class="py-20 lg:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">Notre méthode</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">
+          De la première analyse à la remise de votre équivalence.
+        </h2>
+      </div>
+
+      <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="relative">
+          <div class="bg-brand-cream rounded-2xl p-6 h-full">
+            <div class="text-5xl font-display font-extrabold text-brand-gold">01</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-brand-dark">Analyse &amp; liste des pièces</h3>
+            <p class="mt-2 text-sm text-slate-600">Nous passons en revue votre diplôme, relevés, traductions et objectif d'études pour anticiper les questions de la FWB.</p>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-brand-cream rounded-2xl p-6 h-full">
+            <div class="text-5xl font-display font-extrabold text-brand-gold">02</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-brand-dark">Dossier FWB irréprochable</h3>
+            <p class="mt-2 text-sm text-slate-600">Montage du dossier, cohérence des originaux / copies certifiées selon les cas, relecture avant dépôt.</p>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-brand-cream rounded-2xl p-6 h-full">
+            <div class="text-5xl font-display font-extrabold text-brand-gold">03</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-brand-dark">Dépôt &amp; suivi en Belgique</h3>
+            <p class="mt-2 text-sm text-slate-600">Instruction du dossier auprès de la FWB, relances et veille — avec pour ambition des points d'accueil au Cameroun.</p>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="bg-brand-cream rounded-2xl p-6 h-full">
+            <div class="text-5xl font-display font-extrabold text-brand-gold">04</div>
+            <h3 class="mt-4 font-display font-bold text-lg text-brand-dark">Originaux &amp; décision d'équivalence</h3>
+            <p class="mt-2 text-sm text-slate-600">Nous vous accompagnons jusqu'à la récupération de vos originaux et de la décision, puis vers l'université ou le visa si besoin.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== UNIVERSITÉS ============== -->
+  <section id="universites" class="py-20 lg:py-28 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">Universités belges</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">
+          Des établissements de la FWB, une fois votre niveau reconnu.
+        </h2>
+        <p class="mt-4 text-slate-600">Une fois votre niveau reconnu par la FWB, ces établissements de la Fédération Wallonie-Bruxelles deviennent des options concrètes pour votre inscription.</p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center font-display font-bold text-brand-dark hover:shadow-lg transition">ULB</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center font-display font-bold text-brand-dark hover:shadow-lg transition">UCLouvain</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center font-display font-bold text-brand-dark hover:shadow-lg transition">ULiège</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center font-display font-bold text-brand-dark hover:shadow-lg transition">UMons</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center font-display font-bold text-brand-dark hover:shadow-lg transition">UNamur</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center font-display font-bold text-brand-dark hover:shadow-lg transition">USL-B</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center text-sm text-slate-600 hover:shadow-lg transition">HE Léonard de Vinci</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center text-sm text-slate-600 hover:shadow-lg transition">HEH</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center text-sm text-slate-600 hover:shadow-lg transition">HELHa</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center text-sm text-slate-600 hover:shadow-lg transition">HE2B</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center text-sm text-slate-600 hover:shadow-lg transition">EPHEC</div>
+        <div class="bg-white rounded-xl p-5 flex items-center justify-center text-center text-sm text-slate-600 hover:shadow-lg transition">ICHEC</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== TÉMOIGNAGES ============== -->
+  <section id="temoignages" class="py-20 lg:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">Témoignages</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">
+          Ils nous ont fait confiance.
+        </h2>
+        <p class="mt-4 text-slate-600 text-sm italic">Témoignages illustratifs en attendant les retours de nos premiers étudiants.</p>
+      </div>
+
+      <div class="mt-12 grid md:grid-cols-3 gap-6">
+        <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100">
+          <div class="flex text-yellow-400 mb-3">★★★★★</div>
+          <p class="text-slate-700 text-sm leading-relaxed">"Grâce à StudyAlready, mon dossier d'équivalence a été accepté du premier coup. Je suis aujourd'hui en 2e année à l'ULiège."</p>
+          <div class="mt-5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-dark text-brand-gold flex items-center justify-center font-bold">A.</div>
+            <div>
+              <div class="font-semibold text-brand-dark text-sm">Aurélien N.</div>
+              <div class="text-xs text-slate-500">Yaoundé → Liège</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100">
+          <div class="flex text-yellow-400 mb-3">★★★★★</div>
+          <p class="text-slate-700 text-sm leading-relaxed">"J'avais peur de perdre mes originaux dans les démarches. StudyAlready m'a expliqué chaque étape et m'a aidée jusqu'à récupérer ma décision FWB sans mauvaise surprise."</p>
+          <div class="mt-5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-dark text-brand-gold flex items-center justify-center font-bold">M.</div>
+            <div>
+              <div class="font-semibold text-brand-dark text-sm">Mireille T.</div>
+              <div class="text-xs text-slate-500">Douala → Bruxelles</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-7 border border-slate-100">
+          <div class="flex text-yellow-400 mb-3">★★★★★</div>
+          <p class="text-slate-700 text-sm leading-relaxed">"Un service vraiment humain. Ils répondent rapidement, expliquent tout, et tiennent leurs engagements."</p>
+          <div class="mt-5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-dark text-brand-gold flex items-center justify-center font-bold">J.</div>
+            <div>
+              <div class="font-semibold text-brand-dark text-sm">Junior K.</div>
+              <div class="text-xs text-slate-500">Bafoussam → Mons</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FAQ ============== -->
+  <section id="faq" class="py-20 lg:py-28 bg-slate-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">FAQ</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold text-brand-dark">Vos questions, nos réponses.</h2>
+      </div>
+
+      <div class="mt-12 space-y-4">
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            StudyAlready est-il un service officiel de la FWB ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm"><strong>Non.</strong> Nous sommes un bureau d'accompagnement indépendant : nous préparons votre dossier, vous conseillons et assurons le suivi. Seule la <strong>Fédération Wallonie-Bruxelles</strong> instruit la demande et délivre la décision d'équivalence. Notre ambition est de collaborer dans un cadre transparent avec la FWB — sans jamais usurper son rôle institutionnel.</p>
+        </details>
+
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            Combien coûte un accompagnement StudyAlready ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm">Nos tarifs varient selon les services. L'accompagnement <strong>équivalence FWB</strong> est décomposé par phase (analyse, montage du dossier, suivi, clôture avec les originaux). Premier échange gratuit et devis transparent, adapté au pouvoir d'achat au Cameroun.</p>
+        </details>
+
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            Combien de temps prennent les démarches ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm">L'équivalence FWB compte souvent pour plusieurs mois d'instruction (la FWB indique par exemple un délai d'environ quatre mois à partir d'un dossier complet — variable selon les périodes). Pour un parcours jusqu'au visa et au départ, prévoyez en pratique souvent <strong>6 à 9 mois</strong> au total, en intégrant la récupération des originaux et la suite administrative.</p>
+        </details>
+
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            Faut-il payer avant que le dossier ne soit accepté ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm">Nous fonctionnons par étapes facturées. Vous payez chaque service lorsqu'il commence, jamais l'intégralité d'avance.</p>
+        </details>
+
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            Quelle est la différence avec un agent au Cameroun ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm">Un interlocuteur au Cameroun peut aider à rassembler des copies : nous, nous sommes <strong>en Belgique</strong> pour suivre l'instruction du dossier auprès de la FWB, relancer si nécessaire et vous expliquer la <strong>récupération des originaux</strong> et de la <strong>décision</strong>. C'est complémentaire, pas concurrent — l'important est que vous sachiez qui fait quoi, à chaque étape.</p>
+        </details>
+
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            Comment se passe la récupération des originaux après la FWB ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm">Nous vous expliquons à l'avance ce que la procédure implique, les délais habituels et les précautions à prendre. L'objectif est que vous sachiez <strong>quand</strong>, <strong>où</strong> et <strong>comment</strong> récupérer vos documents, avec un accompagnement jusqu'à la remise effective — sans vous laisser seul face aux imprévus.</p>
+        </details>
+
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            Quand pourrez-vous accueillir les dossiers au Cameroun ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm">C'est une <strong>ambition structurante</strong> : des bureaux d'accueil StudyAlready pour le dépôt et le suivi, dans le cadre d'un dialogue avec la FWB. Dès qu'un dispositif concret sera validé, nous l'annoncerons clairement sur le site et les réseaux. En attendant, le dossier se prépare avec vous à distance et se finalise côté Belgique selon les règles en vigueur.</p>
+        </details>
+
+        <details class="group bg-white rounded-xl p-5 cursor-pointer border border-slate-100 hover:border-brand-gold transition">
+          <summary class="flex items-center justify-between font-semibold text-brand-dark">
+            Travaillez-vous aussi avec les universités flamandes (KU Leuven, UGent...) ?
+            <span class="text-brand-gold group-open:rotate-180 transition">▼</span>
+          </summary>
+          <p class="mt-3 text-slate-600 text-sm">Notre cœur de métier est la <strong>FWB</strong> (francophone). Pour les universités flamandes, les règles d'équivalence et d'admission diffèrent : contactez-nous, nous étudions la faisabilité au cas par cas.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CONTACT ============== -->
+  <section id="contact" class="py-20 lg:py-28 bg-gradient-to-br from-brand-dark to-brand-blue text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12">
+      <div>
+        <span class="text-brand-gold font-semibold uppercase text-sm tracking-wider">Contact</span>
+        <h2 class="mt-3 font-display text-3xl lg:text-4xl font-bold">Parlons de votre équivalence FWB.</h2>
+        <p class="mt-4 text-slate-300">Décrivez votre diplôme et votre objectif : nous revenons vers vous sous 48 h. Premier échange gratuit et sans engagement.</p>
+        <p class="mt-3 text-sm text-brand-gold/90">
+          <a href="prequalification-dossier.html" class="font-semibold underline hover:text-brand-gold">Formulaire détaillé de pré-qualification</a>
+          <span class="text-slate-400"> — 8 à 12 min, idéal avant un premier rendez-vous.</span>
+        </p>
+
+        <div class="mt-8 space-y-4 text-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <a href="mailto:contact@studyalready.com" class="hover:text-brand-gold">contact@studyalready.com</a>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>
+            </div>
+            <a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="hover:text-brand-gold">+32 465 33 94 48 (WhatsApp Belgique)</a>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
+              <svg class="w-5 h-5 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <span>Bruxelles, Belgique — bientôt à Yaoundé</span>
+          </div>
+        </div>
+
+        <!-- Réseaux sociaux -->
+        <div class="mt-8">
+          <div class="text-sm text-slate-300 mb-3">Suivez-nous</div>
+          <div class="flex gap-3">
+            <a href="#" target="_blank" rel="noopener" aria-label="Facebook" class="w-10 h-10 bg-white/10 hover:bg-brand-gold hover:text-brand-dark rounded-lg flex items-center justify-center transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="Instagram" class="w-10 h-10 bg-white/10 hover:bg-brand-gold hover:text-brand-dark rounded-lg flex items-center justify-center transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="TikTok" class="w-10 h-10 bg-white/10 hover:bg-brand-gold hover:text-brand-dark rounded-lg flex items-center justify-center transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V7.41a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.84z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="YouTube" class="w-10 h-10 bg-white/10 hover:bg-brand-gold hover:text-brand-dark rounded-lg flex items-center justify-center transition">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulaire -->
+      <div class="bg-white rounded-2xl p-8 text-slate-800 shadow-2xl">
+        <form id="contactForm" action="php/contact.php" method="POST" class="space-y-5">
+          <div>
+            <label class="block text-sm font-semibold mb-2">Nom complet *</label>
+            <input type="text" name="nom" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none" placeholder="Aurélien Ngono" />
+          </div>
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-semibold mb-2">Email *</label>
+              <input type="email" name="email" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="vous@exemple.com" />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2">WhatsApp</label>
+              <input type="tel" name="telephone" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="+237 ..." />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-2">Service qui vous intéresse</label>
+            <select name="service" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Choisir —</option>
+              <option>Équivalence FWB (priorité)</option>
+              <option>Pack Parcours complet</option>
+              <option>Inscription universitaire</option>
+              <option>Compte bloqué</option>
+              <option>Demande de visa</option>
+              <option>Logement</option>
+              <option>Conseil / Autre</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-2">Votre message *</label>
+            <textarea name="message" required rows="4" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Diplôme obtenu, année, filière souhaitée en Belgique, inquiétudes sur les originaux ou l'équivalence..."></textarea>
+          </div>
+
+          <!-- Honeypot anti-spam (champ caché) -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+          <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-4 rounded-lg transition shadow-lg">
+            Envoyer ma demande
+          </button>
+          <p id="formStatus" class="text-sm text-center hidden"></p>
+          <p class="text-xs text-slate-500 text-center">En envoyant ce formulaire, vous acceptez d'être recontacté concernant votre projet. Données traitées conformément à notre <a href="politique-confidentialite.html" class="text-brand-dark underline font-medium">politique de confidentialité</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="bg-slate-900 text-slate-300 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-lg bg-brand-dark border border-brand-gold/30 flex items-center justify-center">
+            <span class="text-brand-gold font-bold text-sm font-display">SA</span>
+          </div>
+          <span class="font-display font-bold text-lg text-white">Study<span class="text-brand-gold">Already</span></span>
+        </div>
+        <p class="mt-4 text-sm max-w-md">Spécialistes de l'<strong class="text-white">équivalence FWB</strong> pour les diplômes camerounais : dossier, suivi et accompagnement jusqu'aux originaux et à la décision. Inscription, visa et logement en prolongement du même parcours.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-3">Navigation</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="equivalence.html" class="hover:text-brand-gold">Guide équivalence FWB</a></li>
+          <li><a href="notre-dossier-fwb.html" class="hover:text-brand-gold">Notre dossier FWB</a></li>
+          <li><a href="prequalification-dossier.html" class="hover:text-brand-gold">Pré-qualification dossier</a></li>
+          <li><a href="blog/" class="hover:text-brand-gold">Blog &amp; conseils</a></li>
+          <li><a href="#services" class="hover:text-brand-gold">Services</a></li>
+          <li><a href="#universites" class="hover:text-brand-gold">Universités</a></li>
+          <li><a href="#faq" class="hover:text-brand-gold">FAQ</a></li>
+          <li><a href="#contact" class="hover:text-brand-gold">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-3">Légal</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="mentions-legales.html" class="hover:text-brand-gold">Mentions légales</a></li>
+          <li><a href="politique-confidentialite.html" class="hover:text-brand-gold">Politique de confidentialité</a></li>
+          <li><a href="conditions-generales.html" class="hover:text-brand-gold">Conditions générales</a></li>
+          <li><a href="engagement-ethique.html" class="hover:text-brand-gold">Engagement éthique</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-slate-800 mt-10 pt-6 text-center text-sm">
+      © <span id="year"></span> StudyAlready — Tous droits réservés. Fait avec passion pour les étudiants camerounais.
+    </div>
+  </footer>
+
+  <!-- Bouton WhatsApp flottant -->
+  <a href="https://wa.me/32465339448?text=Bonjour%20StudyAlready%2C%20je%20souhaite%20des%20informations%20sur%20l%27%C3%A9quivalence%20FWB%20%28dipl%C3%B4me%20Cameroun%29%20et%20la%20r%C3%A9cup%C3%A9ration%20des%20originaux." target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp"
+     class="fixed bottom-6 right-6 z-40 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-2xl flex items-center justify-center transition hover:scale-110">
+    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

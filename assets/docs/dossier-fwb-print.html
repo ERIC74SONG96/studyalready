@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>StudyAlready — Dossier de présentation FWB</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI", sans-serif;
+      color: #1f2937;
+      font-size: 11pt;
+      line-height: 1.55;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    h1, h2, h3, h4, .display { font-family: Georgia, "Times New Roman", serif; }
+    h1 { font-size: 26pt; line-height: 1.15; color: #0a2540; margin: 0 0 6pt; letter-spacing: -0.5px; }
+    h2 { font-size: 16pt; color: #0a2540; margin: 22pt 0 10pt; border-bottom: 1.5pt solid #f5b800; padding-bottom: 4pt; page-break-after: avoid; }
+    h3 { font-size: 12.5pt; color: #0a2540; margin: 14pt 0 4pt; page-break-after: avoid; }
+    p { margin: 0 0 8pt; }
+    ul, ol { margin: 0 0 10pt 18pt; padding: 0; }
+    li { margin-bottom: 3pt; }
+    strong { color: #0a2540; }
+    a { color: #1e3a8a; text-decoration: none; }
+    .muted { color: #64748b; }
+    .gold { color: #b8860b; }
+
+    /* COVER */
+    .cover {
+      page-break-after: always;
+      padding: 40mm 0 0;
+      position: relative;
+      min-height: 240mm;
+    }
+    .cover::before {
+      content: "";
+      position: absolute;
+      top: 0; left: -16mm; right: -16mm;
+      height: 130mm;
+      background: linear-gradient(135deg, #0a2540 0%, #1e3a8a 60%, #0a2540 100%);
+      z-index: -1;
+    }
+    .cover-logo {
+      color: #f5b800;
+      font-family: Georgia, serif;
+      font-weight: bold;
+      font-size: 16pt;
+      letter-spacing: 0.5px;
+      margin-bottom: 30mm;
+    }
+    .cover-logo .light { color: #ffffff; }
+    .cover h1 { color: #ffffff; font-size: 32pt; line-height: 1.15; }
+    .cover .sub { color: #cbd5e1; font-size: 12pt; margin-top: 4mm; max-width: 150mm; }
+    .cover-tagline {
+      display: inline-block;
+      background: #f5b800;
+      color: #0a2540;
+      font-weight: bold;
+      font-size: 9pt;
+      padding: 3pt 9pt;
+      border-radius: 30pt;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 10mm;
+    }
+    .cover-meta {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding-top: 8mm;
+      border-top: 1pt solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9pt;
+      color: #64748b;
+    }
+    .cover-meta strong { color: #0a2540; }
+
+    /* SECTIONS */
+    section { page-break-inside: auto; }
+    section.no-break { page-break-inside: avoid; }
+
+    .lead { font-size: 12pt; color: #334155; }
+
+    .pillar {
+      border-left: 3pt solid #f5b800;
+      background: #fff8e7;
+      padding: 8pt 12pt;
+      margin: 6pt 0;
+      border-radius: 0 4pt 4pt 0;
+    }
+    .pillar .label {
+      font-size: 8pt;
+      font-weight: bold;
+      color: #b8860b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pillar p { margin: 2pt 0 0; }
+
+    /* PHASES */
+    .phase {
+      page-break-inside: avoid;
+      display: flex;
+      gap: 8pt;
+      margin: 8pt 0;
+      padding: 10pt;
+      border: 1pt solid #e2e8f0;
+      border-radius: 4pt;
+    }
+    .phase .num {
+      width: 18pt; height: 18pt;
+      border-radius: 9pt;
+      background: #0a2540; color: #f5b800;
+      font-weight: bold;
+      display: inline-block;
+      text-align: center;
+      line-height: 18pt;
+      font-size: 10pt;
+      flex-shrink: 0;
+    }
+    .phase h3 { margin: 0 0 4pt; }
+    .phase p { font-size: 10pt; color: #475569; }
+
+    /* GRID 2 col */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt; margin: 6pt 0; }
+    .card-mini { background: #f8fafc; border: 1pt solid #e2e8f0; border-radius: 3pt; padding: 8pt 10pt; }
+    .card-mini strong { display: block; margin-bottom: 2pt; }
+
+    /* TIMELINE */
+    .timeline-row {
+      page-break-inside: avoid;
+      display: flex; gap: 10pt; align-items: flex-start; margin: 5pt 0;
+    }
+    .timeline-row .date {
+      width: 80pt; flex-shrink: 0;
+      font-size: 8.5pt;
+      font-weight: bold;
+      color: #b8860b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding-top: 2pt;
+    }
+    .timeline-row .body {
+      flex: 1;
+      border-left: 1.5pt solid #cbd5e1;
+      padding-left: 10pt;
+      font-size: 10pt;
+    }
+
+    /* CONTACT BOX */
+    .contact-box {
+      page-break-inside: avoid;
+      background: #0a2540;
+      color: #ffffff;
+      padding: 14pt 16pt;
+      border-radius: 6pt;
+      margin-top: 10pt;
+    }
+    .contact-box h3 { color: #f5b800; margin: 0 0 8pt; font-size: 13pt; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; font-size: 10pt; }
+    .contact-grid .label { color: #94a3b8; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; }
+    .contact-box a { color: #f5b800; }
+
+    /* DISCLAIMER */
+    .disclaimer {
+      page-break-inside: avoid;
+      background: #fef3c7;
+      border-left: 3pt solid #f59e0b;
+      padding: 8pt 12pt;
+      margin: 14pt 0 6pt;
+      font-size: 9.5pt;
+      color: #78350f;
+      border-radius: 0 4pt 4pt 0;
+    }
+
+    /* FOOTER repeat (simulé via fixed) */
+    .doc-footer {
+      text-align: center;
+      font-size: 8.5pt;
+      color: #94a3b8;
+      margin-top: 20pt;
+      padding-top: 8pt;
+      border-top: 1pt solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================== -->
+  <!-- COVER PAGE                                       -->
+  <!-- ============================================== -->
+  <div class="cover">
+    <div class="cover-logo">
+      Study<span class="light">Already</span>
+    </div>
+    <span class="cover-tagline">Document institutionnel · Mai 2026</span>
+    <h1>Notre dossier <span style="color:#f5b800;">FWB</span></h1>
+    <p class="sub">Constat, vision et engagements de StudyAlready pour accompagner les étudiants camerounais vers la Fédération Wallonie-Bruxelles.</p>
+
+    <div class="cover-meta">
+      <div>
+        <strong>StudyAlready</strong> · Bureau de liaison en Belgique
+      </div>
+      <div>
+        studyalready.com
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- 1. SYNTHÈSE                                     -->
+  <!-- ============================================== -->
+  <section>
+    <h2>1. Synthèse</h2>
+    <p class="lead"><strong>StudyAlready</strong> est un bureau d'accompagnement basé en Belgique, dédié aux étudiants camerounais qui souhaitent poursuivre leurs études en Fédération Wallonie-Bruxelles (FWB). Notre travail commence avant le dossier d'équivalence et se poursuit <em>jusqu'à la remise des originaux et de la décision officielle</em>.</p>
+    <p>Notre singularité tient en trois points :</p>
+    <ul>
+      <li><strong>Une présence physique en Belgique</strong>, indispensable pour le suivi et la récupération des documents auprès de la FWB ;</li>
+      <li><strong>Un engagement éthique public</strong> qui interdit toute usurpation du rôle de la FWB ou de promesses d'issue ;</li>
+      <li><strong>Une vision à moyen terme</strong> : ouvrir un (ou plusieurs) bureau d'accueil au Cameroun pour sécuriser le dépôt des dossiers et la confiance des familles, dans un cadre de dialogue ouvert avec la Fédération.</li>
+    </ul>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 2. CONSTAT                                      -->
+  <!-- ============================================== -->
+  <section>
+    <h2>2. Le constat</h2>
+    <p>Beaucoup d'étudiants camerounais formulent chaque année une demande d'équivalence auprès de la FWB. Sur le terrain, plusieurs difficultés reviennent :</p>
+    <ul>
+      <li><strong>Dossiers incomplets ou mal traduits</strong>, allongeant les délais d'instruction.</li>
+      <li><strong>Absence d'interlocuteur identifié</strong> côté belge, rendant l'attente angoissante pour les familles.</li>
+      <li><strong>Difficulté à récupérer les originaux</strong> du diplôme et la décision d'équivalence depuis Yaoundé, Douala ou Bafoussam.</li>
+      <li><strong>Risque d'intermédiaires opportunistes</strong> qui promettent l'impossible et instrumentalisent la lenteur des démarches.</li>
+    </ul>
+    <p>Cette situation pèse à la fois sur les familles camerounaises et — indirectement — sur l'image de l'enseignement supérieur belge. Il existe une attente claire pour un acteur <strong>identifié, sérieux, éthique et continu</strong> entre les deux pays.</p>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 3. QUI EST STUDYALREADY                         -->
+  <!-- ============================================== -->
+  <section>
+    <h2>3. Qui est StudyAlready</h2>
+    <p>StudyAlready est un projet entrepreneurial né en Belgique, fondé par un porteur de projet ayant lui-même vécu le chemin entre le Cameroun et la Fédération Wallonie-Bruxelles. Notre mission :</p>
+    <ul>
+      <li><strong>Préparer des dossiers d'équivalence FWB irréprochables.</strong></li>
+      <li><strong>Assurer le suivi en Belgique</strong>, y compris la récupération des originaux.</li>
+      <li>Compléter l'accompagnement par les services connexes : inscription, visa, logement.</li>
+      <li>Travailler dans une <strong>transparence totale</strong> sur ce qui dépend de nous et ce qui ne dépend pas de nous.</li>
+    </ul>
+    <p>Notre présence numérique (site, blog éditorial, présence sociale) est conçue comme un <em>service public d'information</em> : aider les étudiants à comprendre la procédure officielle, même s'ils ne deviennent jamais nos clients.</p>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 4. VISION                                       -->
+  <!-- ============================================== -->
+  <section>
+    <h2>4. Notre vision en 3 phases</h2>
+
+    <div class="phase">
+      <span class="num">1</span>
+      <div>
+        <h3>Bureau de liaison en Belgique <span class="muted" style="font-size:9pt;">(en cours)</span></h3>
+        <p>Aujourd'hui : présence physique en Belgique, accompagnement à distance des familles camerounaises, dossiers FWB, suivi des originaux, communication transparente via le site et les réseaux. C'est la <strong>fondation</strong> de tout le reste.</p>
+      </div>
+    </div>
+
+    <div class="phase">
+      <span class="num">2</span>
+      <div>
+        <h3>Bureau(x) d'accueil au Cameroun</h3>
+        <p>Étape clé. Ouverture d'un point d'accueil physique (Yaoundé en priorité, puis Douala) où les étudiants peuvent : déposer un pré-dossier, obtenir des conseils, sécuriser leurs documents, suivre l'état d'avancement. <strong>Objectif</strong> : qu'aucun étudiant n'ait plus l'impression d'envoyer ses originaux « dans le vide ».</p>
+      </div>
+    </div>
+
+    <div class="phase">
+      <span class="num">3</span>
+      <div>
+        <h3>Dialogue structuré avec la FWB</h3>
+        <p>À mesure que la phase 2 se déploie, ouvrir un canal <strong>officiel et continu</strong> avec la Fédération Wallonie-Bruxelles : remontée des cas problématiques, harmonisation des bonnes pratiques de dossier côté Cameroun, formats d'information mutuelle. <strong>Nous ne remplaçons pas la FWB</strong> ; nous lui proposons d'être un point d'entrée fiable côté camerounais.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 5. ENGAGEMENTS                                  -->
+  <!-- ============================================== -->
+  <section class="no-break">
+    <h2>5. Nos engagements publics</h2>
+    <p>Sept engagements publiés sur <a href="https://www.studyalready.com/engagement-ethique.html">studyalready.com/engagement-ethique</a> :</p>
+    <div class="grid2">
+      <div class="pillar"><span class="label">01</span><p><strong>Transparence absolue</strong> sur notre statut : nous ne sommes ni la FWB, ni un service officiel.</p></div>
+      <div class="pillar"><span class="label">02</span><p><strong>Aucune fausse promesse</strong> sur l'équivalence ou l'admission.</p></div>
+      <div class="pillar"><span class="label">03</span><p><strong>Protection des données</strong> conformément au RGPD européen.</p></div>
+      <div class="pillar"><span class="label">04</span><p><strong>Tarification claire</strong>, refus de toute pratique frauduleuse.</p></div>
+      <div class="pillar"><span class="label">05</span><p><strong>Indépendance</strong> vis-à-vis des établissements partenaires.</p></div>
+      <div class="pillar"><span class="label">06</span><p><strong>Non-discrimination</strong> : tous les profils sont accueillis.</p></div>
+    </div>
+    <div class="pillar" style="margin-top:6pt;"><span class="label">07</span><p><strong>Reddition de comptes</strong> : une adresse de contact dédiée pour signaler tout manquement.</p></div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 6. BÉNÉFICES                                    -->
+  <!-- ============================================== -->
+  <section class="no-break">
+    <h2>6. Ce que la FWB peut y gagner</h2>
+    <div class="grid2">
+      <div class="card-mini">
+        <strong>Moins de dossiers incomplets</strong>
+        <span style="font-size:9.5pt; color:#475569;">Une instance de pré-tri sérieuse en amont = moins d'allers-retours administratifs.</span>
+      </div>
+      <div class="card-mini">
+        <strong>Un point de contact fiable côté Cameroun</strong>
+        <span style="font-size:9.5pt; color:#475569;">Identifié, contactable, traçable — sans pour autant être délégataire d'un pouvoir public.</span>
+      </div>
+      <div class="card-mini">
+        <strong>Recul du marché des intermédiaires opaques</strong>
+        <span style="font-size:9.5pt; color:#475569;">Un acteur éthique visible, c'est moins de place pour ceux qui promettent l'impossible.</span>
+      </div>
+      <div class="card-mini">
+        <strong>Une meilleure expérience étudiante</strong>
+        <span style="font-size:9.5pt; color:#475569;">Des étudiants mieux préparés, mieux orientés, qui réussissent mieux leur intégration en FWB.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 7. ROADMAP                                      -->
+  <!-- ============================================== -->
+  <section>
+    <h2>7. Feuille de route indicative</h2>
+    <div class="timeline-row">
+      <span class="date">2026 — T2/T3</span>
+      <div class="body"><strong>Lancement public.</strong> Site, blog éditorial, premières demandes accompagnées, structuration juridique en Belgique.</div>
+    </div>
+    <div class="timeline-row">
+      <span class="date">2026 — T4</span>
+      <div class="body"><strong>Renforcement opérationnel.</strong> Référencement, partenariats avec établissements belges, premiers dossiers FWB traités intégralement avec suivi des originaux.</div>
+    </div>
+    <div class="timeline-row">
+      <span class="date">2027</span>
+      <div class="body"><strong>Préparation du bureau d'accueil au Cameroun.</strong> Étude de faisabilité (Yaoundé), formalisation juridique locale, recrutement initial.</div>
+    </div>
+    <div class="timeline-row">
+      <span class="date">2028 +</span>
+      <div class="body"><strong>Ouverture physique au Cameroun &amp; dialogue FWB.</strong> Mise en service du point d'accueil et démarche formelle de dialogue avec la Fédération Wallonie-Bruxelles, dans le respect strict de son rôle régalien.</div>
+    </div>
+    <p class="muted" style="font-size:9pt; margin-top:6pt;"><em>Calendrier indicatif, susceptible d'évoluer en fonction des conditions opérationnelles et réglementaires.</em></p>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 8. CONTACT                                      -->
+  <!-- ============================================== -->
+  <section class="no-break">
+    <h2>8. Contact &amp; dialogue</h2>
+    <p>Ce dossier est <strong>ouvert au dialogue</strong>. Si vous représentez une institution (Fédération Wallonie-Bruxelles, établissement d'enseignement, ambassade, association d'étudiants), nous serons honorés d'échanger.</p>
+
+    <div class="contact-box">
+      <h3>StudyAlready · Bureau de liaison en Belgique</h3>
+      <div class="contact-grid">
+        <div>
+          <div class="label">Présence physique</div>
+          <p>Belgique (Bruxelles &amp; environs)<br/>
+          Coordonnées complètes : <em>mentions légales du site</em></p>
+        </div>
+        <div>
+          <div class="label">Contact direct</div>
+          <p>WhatsApp : <a href="https://wa.me/32465339448">+32 465 33 94 48</a><br/>
+          Email : <a href="mailto:contact@studyalready.com">contact@studyalready.com</a><br/>
+          Web : <a href="https://www.studyalready.com">studyalready.com</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Important.</strong> StudyAlready est une initiative privée et indépendante. Elle n'est ni un service officiel de la Fédération Wallonie-Bruxelles, ni un délégataire d'une autorité publique belge ou camerounaise. Toute décision d'équivalence relève exclusivement de la FWB ; toute décision d'admission relève des établissements d'enseignement.
+    </div>
+  </section>
+
+  <div class="doc-footer">
+    StudyAlready — Dossier institutionnel · Document évolutif · Version mai 2026 · studyalready.com
+  </div>
+
+</body>
+</html>
