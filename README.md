@@ -109,7 +109,7 @@ Ces deux adresses sont déjà configurées dans `php/contact.php` et `php/prequa
 3. Vérifier la réception sur `studyalready8@gmail.com`.
 4. Refaire un test avec `https://studyalready.com/prequalification-dossier.html`.
 
-Si pas de réception : sur Vercel la fonction PHP `mail()` n'est pas dispo — préférer Web3Forms (déjà câblé dans `assets/js/main.js`). Avec PHP/LWS, vérifier que `no-reply@…` existe sur votre domaine.
+Les soumissions de formulaire sont stockées dans la base **Supabase** (tables `profiles` et `form_submissions`). Pour les consulter : Supabase Dashboard → Table Editor → `form_submissions`. Aucune dépendance à un service tiers d'email.
 
 ### Étape 7 — Soumettre à Google
 1. [Google Search Console](https://search.google.com/search-console) → ajouter `studyalready.com` (vérification via DNS LWS ou balise HTML).

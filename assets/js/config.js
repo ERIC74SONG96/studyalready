@@ -1,38 +1,32 @@
 // ============================================================
-// CONFIGURATION FORMULAIRES — STUDYALREADY
+// CONFIGURATION — STUDYALREADY
 // ============================================================
-// Service utilisé : Web3Forms (gratuit, illimité)
-// Inscription en 1 minute sur https://web3forms.com/
-// Collez ci-dessous la clé d'accès reçue par email.
+// Tous les formulaires écrivent dans Supabase (cloud, région UE).
+// Lecture du tableau de bord : https://supabase.com → Table Editor
+// Tables utilisées :
+//   - profiles           (créer-profil → annuaire)
+//   - form_submissions   (tous les autres formulaires : contact,
+//                         pré-qualification, réseau, mise en relation,
+//                         rapport admission, voyage…)
 //
-// IMPORTANT : tant que la clé est "REMPLACER_PAR_VOTRE_CLE",
-// les formulaires Contact, pré-qualification, réseau, voyage, etc. afficheront un message d'aide.
-// Obtenir une clé gratuite : https://web3forms.com/ → Create Access Key → coller ci-dessous.
-// « Créer mon profil » utilise Supabase (pas Web3Forms) si le client Supabase se charge correctement.
+// ⚠ Ne jamais coller ici la clé `service_role` (réservée au serveur).
 // ============================================================
 
 window.STUDYALREADY_CONFIG = {
-  // Clé d'accès Web3Forms (UUID) — https://web3forms.com/
-  WEB3FORMS_ACCESS_KEY: 'REMPLACER_PAR_VOTRE_CLE',
-
-  // Destination par défaut (informatif — Web3Forms envoie à l'email associé à la clé)
+  // Email de contact (affiché dans les liens mailto de secours)
   CONTACT_EMAIL: 'studyalready8@gmail.com',
 
-  // --- Espace étudiant (Supabase Auth) : https://supabase.com ---
-  // Dashboard projet → Settings → API : Project URL + anon public key
-  // Ne jamais mettre la clé "service_role" ici (réservée au serveur).
-  // Projet Supabase (région EU recommandée dans le dashboard)
+  // --- Supabase (cloud, projet UE) ---
   SUPABASE_URL: 'https://nevdhyekybmtvejhwhxz.supabase.co',
   SUPABASE_ANON_KEY:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldmRoeWVreWJtdHZlamh3aHh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MTA4MzUsImV4cCI6MjA5NDA4NjgzNX0.drps-e29P2HfISCRsqglnbsi3YjYqw3_jIj2F4WYBOc',
 
   // --- Affiliation voyage ---
-  // Skyscanner : inscription via TravelPayouts (https://www.travelpayouts.com/)
-  // ou directement Skyscanner Partners. Renseignez votre "associate ID"
-  // ci-dessous quand il sera disponible. Laissez vide en attendant.
+  // Skyscanner (via TravelPayouts) : renseignez votre "associate ID"
+  // quand il sera disponible. Laissez vide en attendant.
   SKYSCANNER_ASSOCIATE_ID: '',
-  SKYSCANNER_MARKET: 'FR', // Marché Skyscanner (FR, BE…)
-  SKYSCANNER_LOCALE: 'fr-FR', // Langue
+  SKYSCANNER_MARKET: 'FR',
+  SKYSCANNER_LOCALE: 'fr-FR',
 
   // Tarif indicatif du service "Chasseur de billets"
   CHASSEUR_BILLETS_TARIF_EUR: 30

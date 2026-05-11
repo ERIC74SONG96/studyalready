@@ -82,142 +82,51 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (e) { revealAll(); }
   } else { revealAll(); }
 
-  var WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-
-  function bindWeb3Form(form, statusEl, successMessage, subjectPrefix) {
-    if (!form || !statusEl) return;
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      statusEl.classList.remove('hidden', 'text-red-600', 'text-green-600', 'text-amber-700');
-      statusEl.classList.add('text-slate-600');
-      statusEl.textContent = 'Envoi en cours...';
-
-      var cfg = window.STUDYALREADY_CONFIG || {};
-      var key = cfg.WEB3FORMS_ACCESS_KEY;
-
-      if (!key || key === 'REMPLACER_PAR_VOTRE_CLE') {
-        var mail = (window.STUDYALREADY_CONFIG && window.STUDYALREADY_CONFIG.CONTACT_EMAIL) || 'studyalready8@gmail.com';
-        var wa = 'https://wa.me/32465339448?text=' + encodeURIComponent('Bonjour StudyAlready, message depuis le formulaire du site.');
-        var w3 = 'https://web3forms.com/';
-        statusEl.innerHTML =
-          'L’envoi par formulaire n’est pas encore activé : ajoutez votre <strong>clé Web3Forms</strong> (gratuit, 1 min) sur <a href="' + w3 + '" class="underline font-semibold text-brand-dark" target="_blank" rel="noopener">web3forms.com</a>, puis collez-la dans <code class="text-xs bg-slate-100 px-1 rounded">assets/js/config.js</code> à la place de <code class="text-xs bg-slate-100 px-1 rounded">REMPLACER_PAR_VOTRE_CLE</code>. ' +
-          'En attendant : <a href="mailto:' + mail + '?subject=StudyAlready%20-%20contact%20site" class="underline font-semibold text-brand-dark">écrire à ' + mail + '</a> ' +
-          'ou <a href="' + wa + '" class="underline font-semibold" target="_blank" rel="noopener">WhatsApp</a>. ' +
-          '<span class="block mt-2 text-xs">Le formulaire « Créer mon profil » utilise Supabase et ne nécessite pas Web3Forms si le site est à jour.</span>';
-        statusEl.classList.remove('text-slate-600');
-        statusEl.classList.add('text-amber-700');
-        return;
-      }
-
-      sendForm(form, statusEl, key, subjectPrefix, successMessage);
+  /* Tous les formulaires « email » passent désormais par Supabase (table form_submissions).
+     « Créer mon profil » a son propre handler (table profiles, validation manuelle). */
+  var SA = window.StudyAlreadyForms;
+  if (SA && typeof SA.bind === 'function') {
+    SA.bind({
+      formId: 'contactForm',
+      statusId: 'formStatus',
+      formType: 'contact',
+      successMessage: 'Merci ! Votre message est bien arrivé. Réponse sous 48 h.'
+    });
+    SA.bind({
+      formId: 'prequalificationForm',
+      statusId: 'prequalificationStatus',
+      formType: 'prequalification',
+      successMessage: 'Merci ! Votre pré-qualification est enregistrée. Réponse sous 48 h ouvrées.'
+    });
+    SA.bind({
+      formId: 'rejoindreReseauForm',
+      statusId: 'rejoindreReseauStatus',
+      formType: 'rejoindre-reseau',
+      successMessage: 'Merci ! Vous êtes bien inscrit·e au réseau StudyAlready.'
+    });
+    SA.bind({
+      formId: 'miseEnRelationForm',
+      statusId: 'miseEnRelationStatus',
+      formType: 'mise-en-relation',
+      successMessage: 'Merci ! Votre message a été transmis. Le membre vous répondra s’il le souhaite.'
+    });
+    SA.bind({
+      formId: 'rapportAdmissionForm',
+      statusId: 'rapportAdmissionStatus',
+      formType: 'rapport-admission',
+      successMessage: 'Merci ! Votre demande de rapport est bien reçue. Réponse personnalisée sous 48 h.'
+    });
+    SA.bind({
+      formId: 'chasseurBilletForm',
+      statusId: 'chasseurBilletStatus',
+      formType: 'chasseur-billet',
+      successMessage: 'Merci ! Votre demande de devis Chasseur de billets est bien reçue. Réponse sous 48 h.'
+    });
+    SA.bind({
+      formId: 'departsGroupesForm',
+      statusId: 'departsGroupesStatus',
+      formType: 'departs-groupes',
+      successMessage: 'Merci ! Vous êtes signalé·e pour ce départ groupé. On revient vers vous dès que d’autres étudiants confirment leur date.'
     });
   }
-
-  function sendForm(form, statusEl, key, subjectPrefix, successMessage) {
-    var formData = new FormData(form);
-    formData.set('access_key', key);
-    if (subjectPrefix && !formData.get('subject')) {
-      var who = formData.get('nom') || formData.get('nom_complet') || 'visiteur';
-      formData.set('subject', subjectPrefix + ' - ' + who);
-    }
-    if (!formData.get('from_name')) formData.set('from_name', 'StudyAlready');
-    formData.set('botcheck', '');
-    submitWeb3(formData, statusEl, form, successMessage);
-  }
-
-  function submitWeb3(formData, statusEl, form, successMessage) {
-    var opts = { method: 'POST', body: formData };
-    opts.headers = { Accept: 'application/json' };
-    fetch(WEB3FORMS_ENDPOINT, opts).then(function (resp) {
-      return resp.json().then(function (d) { return { ok: resp.ok, data: d }; });
-    }).then(function (r) {
-      handleResponse(r, statusEl, form, successMessage);
-    }).catch(function (err) {
-      handleError(err, statusEl);
-    });
-  }
-
-  function handleResponse(r, statusEl, form, successMessage) {
-    if (r.ok && r.data && r.data.success) {
-      statusEl.textContent = successMessage;
-      statusEl.classList.remove('text-slate-600', 'text-amber-700');
-      statusEl.classList.add('text-green-600');
-      form.reset();
-    } else {
-      var msg = (r.data && r.data.message) ? r.data.message : 'Envoi non confirme.';
-      handleError(new Error(msg), statusEl);
-    }
-  }
-
-  function handleError(err, statusEl) {
-    statusEl.textContent = (err && err.message) ? err.message : 'Erreur lors de l envoi.';
-    statusEl.classList.remove('text-slate-600', 'text-amber-700');
-    statusEl.classList.add('text-red-600');
-  }
-
-  bindWeb3Form(
-    document.getElementById('contactForm'),
-    document.getElementById('formStatus'),
-    'Merci ! Votre message a bien ete envoye. Reponse sous 48 h.',
-    '[StudyAlready] Contact'
-  );
-
-  bindWeb3Form(
-    document.getElementById('prequalificationForm'),
-    document.getElementById('prequalificationStatus'),
-    'Merci ! Votre pre-qualification a bien ete envoyee. Reponse sous 48 h ouvrees.',
-    '[StudyAlready] Pre-qualification'
-  );
-
-  bindWeb3Form(
-    document.getElementById('rejoindreReseauForm'),
-    document.getElementById('rejoindreReseauStatus'),
-    'Merci ! Vous etes bien inscrit(e) au reseau StudyAlready. On revient vers vous pour les prochaines invitations.',
-    '[StudyAlready] Reseau - Nouvelle adhesion'
-  );
-
-  function supabaseConfigured() {
-    var c = window.STUDYALREADY_CONFIG || {};
-    return !!(c.SUPABASE_URL && c.SUPABASE_ANON_KEY &&
-      String(c.SUPABASE_URL).indexOf('REMPLACER') === -1 &&
-      String(c.SUPABASE_ANON_KEY).indexOf('REMPLACER') === -1);
-  }
-
-  /* Créer profil : Supabase si le client est prêt ; sinon repli Web3Forms (ex. CDN Supabase bloqué). */
-  if (!supabaseConfigured() || !window.studyalreadySb) {
-    bindWeb3Form(
-      document.getElementById('creerProfilForm'),
-      document.getElementById('creerProfilStatus'),
-      'Merci ! Votre profil a ete soumis pour validation. Reponse sous 48 h.',
-      '[StudyAlready] Annuaire - Nouveau profil'
-    );
-  }
-
-  bindWeb3Form(
-    document.getElementById('miseEnRelationForm'),
-    document.getElementById('miseEnRelationStatus'),
-    'Merci ! Votre message a ete transmis. Le membre vous repondra s\'il le souhaite.',
-    '[StudyAlready] Annuaire - Mise en relation'
-  );
-
-  bindWeb3Form(
-    document.getElementById('rapportAdmissionForm'),
-    document.getElementById('rapportAdmissionStatus'),
-    'Merci ! Votre demande de rapport a bien ete envoyee. Reponse personnalisee sous 48 h.',
-    '[StudyAlready] Analyseur admission - Demande de rapport'
-  );
-
-  bindWeb3Form(
-    document.getElementById('chasseurBilletForm'),
-    document.getElementById('chasseurBilletStatus'),
-    'Merci ! Votre demande de devis Chasseur de billets est bien recue. Reponse sous 48 h.',
-    '[StudyAlready] Voyage - Chasseur de billets'
-  );
-
-  bindWeb3Form(
-    document.getElementById('departsGroupesForm'),
-    document.getElementById('departsGroupesStatus'),
-    'Merci ! Vous etes signale(e) pour ce depart groupe. On vous ajoute au groupe WhatsApp des confirmation des autres etudiants.',
-    '[StudyAlready] Voyage - Depart groupe'
-  );
 });
