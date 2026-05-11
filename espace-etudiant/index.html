@@ -19,6 +19,20 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 <body class="font-sans text-slate-800 bg-slate-50 antialiased" data-espace-page="login">
+  <!-- Loader affiché tant qu'on ne sait pas si l'utilisateur a une session.
+       Évite de faire clignoter le formulaire de login pour un utilisateur déjà connecté. -->
+  <div id="sessionLoader" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-50">
+    <div class="text-center">
+      <div class="inline-flex w-12 h-12 rounded-xl bg-brand-dark items-center justify-center mb-3">
+        <span class="text-brand-gold font-bold font-display">SA</span>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-sm text-slate-600">
+        <span class="inline-block w-4 h-4 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></span>
+        Chargement…
+      </div>
+    </div>
+  </div>
+
   <header class="border-b border-slate-200 bg-white">
     <nav class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
       <a href="../index.html" class="flex items-center gap-2 text-sm text-slate-600 hover:text-brand-dark">
@@ -85,8 +99,8 @@
     </p>
   </main>
 
-  <script src="../assets/js/config.js?v=20260512d"></script>
-  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260512d"></script>
-  <script src="../assets/js/main.js?v=20260512d"></script>
+  <script src="../assets/js/config.js?v=20260512e"></script>
+  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260512e"></script>
+  <script src="../assets/js/main.js?v=20260512e"></script>
 </body>
 </html>

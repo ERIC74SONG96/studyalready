@@ -47,8 +47,14 @@ if (pageId === 'login') {
   var tabSignup = document.getElementById('tabSignup');
   var panelLogin = document.getElementById('panelLogin');
   var panelSignup = document.getElementById('panelSignup');
+  var loader = document.getElementById('sessionLoader');
+
+  function hideLoader() {
+    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+  }
 
   if (!sb) {
+    hideLoader();
     showBanner(banner, 'warn', 'Connexion à la base de données impossible pour le moment (votre réseau bloque peut-être Supabase). Forcez le rechargement avec Ctrl + Shift + R, ou essayez en navigation privée / sur une autre connexion. Si le problème persiste, écrivez-nous sur WhatsApp.');
     if (btnLogin) btnLogin.disabled = true;
     if (btnSignup) btnSignup.disabled = true;
@@ -64,14 +70,22 @@ if (pageId === 'login') {
     } else if (hash.indexOf('error=') !== -1 || hash.indexOf('error_description=') !== -1) {
       showBanner(banner, 'warn',
         'Le lien de confirmation a expiré ou est invalide. Reconnectez-vous avec votre email et mot de passe, ou recréez un compte.');
+      hideLoader();
     }
 
     sb.auth.getSession().then(function (res) {
       if (res.data && res.data.session) {
-        /* Nettoie le hash avant la redirection (évite de garder le token dans l'URL). */
+        /* Utilisateur déjà connecté : on laisse le loader affiche et on
+           redirige immediatement, l'utilisateur ne voit jamais le formulaire. */
         try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
         window.location.replace('/espace-etudiant/dashboard.html');
+      } else {
+        /* Pas de session : on revele le formulaire de connexion. */
+        hideLoader();
       }
+    }, function () {
+      /* En cas d'erreur de la requete getSession, on revele quand meme la page. */
+      hideLoader();
     });
 
     /* Au cas où la session arrive juste après (race condition). */
@@ -81,6 +95,10 @@ if (pageId === 'login') {
         window.location.replace('/espace-etudiant/dashboard.html');
       }
     });
+
+    /* Filet de securite : si pour une raison X getSession ne repond pas, on
+       affiche la page apres 2.5s pour ne pas laisser l'utilisateur bloque. */
+    setTimeout(hideLoader, 2500);
   }
 
   function switchTab(which) {
