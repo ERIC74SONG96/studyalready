@@ -170,7 +170,7 @@
       </form>
 
       <div class="mt-8 rounded-2xl bg-white border border-slate-200 p-5 text-sm text-slate-600">
-        <p><strong class="text-brand-dark">À savoir.</strong> L'annuaire actuel charge les profils depuis un fichier statique côté site. Pour une vraie messagerie interne, un compte sécurisé et un index temps réel des profils, une base de données (Supabase déjà préparée pour <a href="espace-etudiant/" class="underline">Mon espace</a>) sera activée comme prochaine étape. Cela ne change rien à votre inscription d'aujourd'hui : nous l'intégrerons quand l'infrastructure sera prête.</p>
+        <p><strong class="text-brand-dark">À savoir.</strong> Votre profil est enregistré dans <strong>Supabase</strong> (Europe) avec le statut « en attente de validation ». Après modération, nous le passons en « publié » : il apparaît alors dans l'<a href="annuaire.html" class="underline">annuaire</a> avec les profils d'exemple. L'email n'est jamais affiché publiquement.</p>
       </div>
     </div>
   </section>
@@ -187,6 +187,9 @@
   </footer>
 
   <script src="assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/creer-profil-supabase.js"></script>
   <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

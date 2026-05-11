@@ -19,8 +19,10 @@ window.STUDYALREADY_CONFIG = {
   // --- Espace étudiant (Supabase Auth) : https://supabase.com ---
   // Dashboard projet → Settings → API : Project URL + anon public key
   // Ne jamais mettre la clé "service_role" ici (réservée au serveur).
-  SUPABASE_URL: 'REMPLACER_PAR_VOTRE_URL_SUPABASE',
-  SUPABASE_ANON_KEY: 'REMPLACER_PAR_VOTRE_CLE_ANON_SUPABASE',
+  // Projet Supabase (région EU recommandée dans le dashboard)
+  SUPABASE_URL: 'https://nevdhyekybmtvejhwhxz.supabase.co',
+  SUPABASE_ANON_KEY:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldmRoeWVreWJtdHZlamh3aHh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MTA4MzUsImV4cCI6MjA5NDA4NjgzNX0.drps-e29P2HfISCRsqglnbsi3YjYqw3_jIj2F4WYBOc',
 
   // --- Affiliation voyage ---
   // Skyscanner : inscription via TravelPayouts (https://www.travelpayouts.com/)

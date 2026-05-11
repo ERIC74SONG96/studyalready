@@ -51,7 +51,8 @@
     }).join('');
 
     var linkedinHTML = '';
-    if (m.linkedin) {
+    var showLi = m.linkedin && (m.afficher_linkedin === true || typeof m.afficher_linkedin === 'undefined');
+    if (showLi) {
       linkedinHTML = '<a href="' + escapeHTML(m.linkedin) + '" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-1 border border-slate-300 text-brand-dark font-semibold px-3 py-2 rounded-full text-xs hover:border-brand-gold">LinkedIn</a>';
     }
     var msgHref = 'mise-en-relation.html?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
@@ -110,6 +111,39 @@
     return true;
   }
 
+  function normalizeMember(m) {
+    if (!m) return m;
+    var out = Object.assign({}, m);
+    var spec = out.specialites;
+    if (typeof spec === 'string') {
+      out.specialites = spec.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    } else if (!Array.isArray(out.specialites)) {
+      out.specialites = [];
+    }
+    return out;
+  }
+
+  function fetchSupabaseProfiles() {
+    var sb = window.studyalreadySb;
+    if (!sb) return Promise.resolve([]);
+    return sb.rpc('get_annuaire_profiles').then(function (res) {
+      if (res.error) {
+        console.warn('StudyAlready annuaire Supabase:', res.error.message);
+        return [];
+      }
+      var raw = res.data;
+      var arr = [];
+      if (Array.isArray(raw)) arr = raw;
+      else if (raw && typeof raw === 'string') {
+        try { arr = JSON.parse(raw); } catch (e) { arr = []; }
+      }
+      return (arr || []).map(normalizeMember);
+    }).catch(function (e) {
+      console.warn('StudyAlready annuaire Supabase:', e);
+      return [];
+    });
+  }
+
   function init() {
     var grid = document.getElementById('annuaireGrid');
     var emptyEl = document.getElementById('annuaireEmpty');
@@ -125,11 +159,17 @@
 
     grid.innerHTML = '<p class="col-span-full text-center text-sm text-slate-500 py-8">Chargement de l\'annuaire…</p>';
 
-    fetch('assets/data/membres.json', { cache: 'no-cache' }).then(function (r) {
-      if (!r.ok) throw new Error('Impossible de charger l\'annuaire (' + r.status + ').');
-      return r.json();
-    }).then(function (data) {
-      var membres = (data && data.membres) || [];
+    Promise.all([
+      fetch('assets/data/membres.json', { cache: 'no-cache' }).then(function (r) {
+        if (!r.ok) throw new Error('Impossible de charger l\'annuaire (' + r.status + ').');
+        return r.json();
+      }),
+      fetchSupabaseProfiles()
+    ]).then(function (pair) {
+      var data = pair[0];
+      var remote = pair[1] || [];
+      var demos = ((data && data.membres) || []).map(function (m) { return normalizeMember(m); });
+      var membres = remote.concat(demos);
 
       var universites = unique(membres.map(function (m) { return m.universite; })).sort();
       var domaines = unique(membres.map(function (m) { return m.domaine; })).sort();
@@ -179,7 +219,9 @@
         render();
       });
 
-      if (noteEl && data._note) noteEl.textContent = data._note;
+      if (noteEl && data._note) {
+        noteEl.textContent = data._note + (remote.length ? ' Profils publiés en ligne : ' + remote.length + '.' : '');
+      }
       render();
     }).catch(function (err) {
       grid.innerHTML = '<p class="col-span-full text-center text-sm text-red-600 py-8">' + escapeHTML(err.message || 'Erreur de chargement.') + '</p>';

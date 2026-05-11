@@ -174,12 +174,21 @@ document.addEventListener('DOMContentLoaded', function () {
     '[StudyAlready] Reseau - Nouvelle adhesion'
   );
 
-  bindWeb3Form(
-    document.getElementById('creerProfilForm'),
-    document.getElementById('creerProfilStatus'),
-    'Merci ! Votre profil a ete soumis pour validation. Reponse sous 48 h.',
-    '[StudyAlready] Annuaire - Nouveau profil'
-  );
+  function supabaseConfigured() {
+    var c = window.STUDYALREADY_CONFIG || {};
+    return !!(c.SUPABASE_URL && c.SUPABASE_ANON_KEY &&
+      String(c.SUPABASE_URL).indexOf('REMPLACER') === -1 &&
+      String(c.SUPABASE_ANON_KEY).indexOf('REMPLACER') === -1);
+  }
+
+  if (!supabaseConfigured()) {
+    bindWeb3Form(
+      document.getElementById('creerProfilForm'),
+      document.getElementById('creerProfilStatus'),
+      'Merci ! Votre profil a ete soumis pour validation. Reponse sous 48 h.',
+      '[StudyAlready] Annuaire - Nouveau profil'
+    );
+  }
 
   bindWeb3Form(
     document.getElementById('miseEnRelationForm'),
