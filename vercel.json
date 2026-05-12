@@ -26,6 +26,11 @@
       "permanent": true
     },
     {
+      "source": "/communaute/rejoindre",
+      "destination": "/rejoindre-reseau.html?vue=communaute",
+      "permanent": false
+    },
+    {
       "source": "/communaute/inscription",
       "destination": "/espace-etudiant/?vue=communaute&tab=inscription",
       "permanent": false

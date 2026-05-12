@@ -10,6 +10,16 @@
     return '<a href="' + href + '" class="' + (extraClass || '') + '">' + label + '</a>';
   }
 
+  /* En-tête réduit pour rejoindre-reseau.html quand vue=communaute (sessionStorage sa_espace_vue). */
+  var minimalRejoindreHeaderHTML =
+    '<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">' +
+      '<span class="flex items-center gap-2 min-w-0">' +
+        '<span class="inline-flex w-9 h-9 rounded-lg bg-brand-dark items-center justify-center shrink-0"><span class="text-brand-gold font-bold text-sm font-display">SA</span></span>' +
+        '<span class="font-display font-bold text-lg text-brand-dark truncate">StudyAlready <span class="text-slate-500 font-semibold text-sm">· Communauté</span></span>' +
+      '</span>' +
+      '<a href="' + P + 'espace-etudiant/" class="text-sm font-semibold text-brand-blue hover:underline shrink-0">Mon espace</a>' +
+    '</nav>';
+
   var headerHTML =
     '<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">' +
       '<a href="' + P + 'index.html" class="flex items-center gap-2">' +
@@ -123,7 +133,13 @@
   function init() {
     var host = document.getElementById('site-header');
     if (!host) return;
-    host.innerHTML = headerHTML;
+    var path = (window.location && window.location.pathname) || '';
+    var isRejoindre = /rejoindre-reseau\.html/i.test(path);
+    var communauteChrome = false;
+    try {
+      communauteChrome = isRejoindre && sessionStorage.getItem('sa_espace_vue') === 'communaute';
+    } catch (e) {}
+    host.innerHTML = communauteChrome ? minimalRejoindreHeaderHTML : headerHTML;
 
     var btn = document.getElementById('mobileMenuBtn');
     var menu = document.getElementById('mobileMenu');
