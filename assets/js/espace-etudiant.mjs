@@ -49,8 +49,60 @@ if (pageId === 'login') {
   var panelSignup = document.getElementById('panelSignup');
   var loader = document.getElementById('sessionLoader');
 
+  function switchTab(which) {
+    if (which === 'login') {
+      tabLogin.classList.add('bg-brand-dark', 'text-white');
+      tabLogin.classList.remove('bg-slate-100', 'text-slate-700');
+      tabSignup.classList.remove('bg-brand-dark', 'text-white');
+      tabSignup.classList.add('bg-slate-100', 'text-slate-700');
+      panelLogin.classList.remove('hidden');
+      panelSignup.classList.add('hidden');
+    } else {
+      tabSignup.classList.add('bg-brand-dark', 'text-white');
+      tabSignup.classList.remove('bg-slate-100', 'text-slate-700');
+      tabLogin.classList.remove('bg-brand-dark', 'text-white');
+      tabLogin.classList.add('bg-slate-100', 'text-slate-700');
+      panelSignup.classList.remove('hidden');
+      panelLogin.classList.add('hidden');
+    }
+    if (err) { err.textContent = ''; err.classList.add('hidden'); }
+  }
+
+  function applyEspaceUrlMode() {
+    try {
+      var p = new URLSearchParams(window.location.search);
+      if (p.get('vue') === 'communaute') {
+        sessionStorage.setItem('sa_espace_vue', 'communaute');
+      }
+      if (sessionStorage.getItem('sa_espace_vue') === 'communaute') {
+        var navM = document.getElementById('espaceNavMarketing');
+        var navC = document.getElementById('espaceNavCommunaute');
+        if (navM) navM.classList.add('hidden');
+        if (navC) navC.classList.remove('hidden');
+        var sd = document.getElementById('espaceSubtitleDefault');
+        var sc = document.getElementById('espaceSubtitleCommunaute');
+        if (sd) sd.classList.add('hidden');
+        if (sc) sc.classList.remove('hidden');
+        var fn = document.getElementById('espaceFooterCommunauteNote');
+        if (fn) fn.classList.remove('hidden');
+      }
+      var openSignup = p.get('tab') === 'inscription' || p.get('inscription') === '1' || p.get('signup') === '1';
+      if (openSignup) {
+        switchTab('signup');
+      }
+      var h = window.location.hash || '';
+      var hasAuthHash = h.indexOf('access_token=') !== -1 || h.indexOf('type=signup') !== -1 || h.indexOf('error=') !== -1;
+      if (!hasAuthHash && window.location.search) {
+        try {
+          window.history.replaceState(null, '', window.location.pathname + h);
+        } catch (e2) {}
+      }
+    } catch (e) {}
+  }
+
   function hideLoader() {
     if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+    applyEspaceUrlMode();
   }
 
   if (!sb) {
@@ -99,25 +151,6 @@ if (pageId === 'login') {
     /* Filet de securite : si pour une raison X getSession ne repond pas, on
        affiche la page apres 2.5s pour ne pas laisser l'utilisateur bloque. */
     setTimeout(hideLoader, 2500);
-  }
-
-  function switchTab(which) {
-    if (which === 'login') {
-      tabLogin.classList.add('bg-brand-dark', 'text-white');
-      tabLogin.classList.remove('bg-slate-100', 'text-slate-700');
-      tabSignup.classList.remove('bg-brand-dark', 'text-white');
-      tabSignup.classList.add('bg-slate-100', 'text-slate-700');
-      panelLogin.classList.remove('hidden');
-      panelSignup.classList.add('hidden');
-    } else {
-      tabSignup.classList.add('bg-brand-dark', 'text-white');
-      tabSignup.classList.remove('bg-slate-100', 'text-slate-700');
-      tabLogin.classList.remove('bg-brand-dark', 'text-white');
-      tabLogin.classList.add('bg-slate-100', 'text-slate-700');
-      panelSignup.classList.remove('hidden');
-      panelLogin.classList.add('hidden');
-    }
-    if (err) { err.textContent = ''; err.classList.add('hidden'); }
   }
 
   if (tabLogin && tabSignup) {
@@ -190,6 +223,20 @@ if (pageId === 'login') {
 }
 
 if (pageId === 'dashboard') {
+  var commVue = sessionStorage.getItem('sa_espace_vue') === 'communaute';
+  if (commVue) {
+    var dashAccueil = document.getElementById('dashLinkAccueil');
+    var dashNavCom = document.getElementById('dashNavCommunaute');
+    if (dashAccueil) dashAccueil.classList.add('hidden');
+    if (dashNavCom) dashNavCom.classList.remove('hidden');
+    var dashTabSvc = document.getElementById('dashTabServices');
+    if (dashTabSvc) dashTabSvc.classList.add('hidden');
+    var dashPaneSvc = document.getElementById('paneServices');
+    if (dashPaneSvc) dashPaneSvc.classList.add('hidden');
+    var dashComNote = document.getElementById('dashCommunauteNote');
+    if (dashComNote) dashComNote.classList.remove('hidden');
+  }
+
   var dashBanner = document.getElementById('espaceBanner');
   var dashErr = document.getElementById('espaceError');
   var btnLogout = document.getElementById('btnLogout');

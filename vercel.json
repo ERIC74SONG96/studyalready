@@ -25,6 +25,11 @@
       "destination": "https://www.studyalready.com/:path*",
       "permanent": true
     },
+    {
+      "source": "/communaute/inscription",
+      "destination": "/espace-etudiant/?vue=communaute&tab=inscription",
+      "permanent": false
+    },
     { "source": "/contact", "destination": "/#contact", "permanent": false },
     { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true },
     {

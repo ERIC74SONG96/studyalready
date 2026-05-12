@@ -35,10 +35,13 @@
 
   <header class="border-b border-slate-200 bg-white">
     <nav class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
-      <a href="../index.html" class="flex items-center gap-2 text-sm text-slate-600 hover:text-brand-dark">
-        ← Site StudyAlready
-      </a>
-      <a href="dashboard.html" class="text-sm font-semibold text-brand-blue hover:underline">Mon tableau de bord</a>
+      <div class="flex items-center gap-2 min-w-0">
+        <a id="espaceNavMarketing" href="../index.html" class="flex items-center gap-2 text-sm text-slate-600 hover:text-brand-dark shrink-0">
+          ← Site StudyAlready
+        </a>
+        <span id="espaceNavCommunaute" class="hidden text-sm font-semibold text-brand-dark truncate">StudyAlready · Communauté</span>
+      </div>
+      <a href="dashboard.html" class="text-sm font-semibold text-brand-blue hover:underline shrink-0">Mon tableau de bord</a>
     </nav>
   </header>
 
@@ -48,7 +51,8 @@
         <span class="text-brand-gold font-bold font-display">SA</span>
       </div>
       <h1 class="font-display text-2xl font-bold text-brand-dark">Mon espace étudiant</h1>
-      <p class="mt-2 text-sm text-slate-600">Un compte pour centraliser vos échanges avec StudyAlready (équivalence FWB, services, suivi).</p>
+      <p id="espaceSubtitleDefault" class="mt-2 text-sm text-slate-600">Un compte pour centraliser vos échanges avec StudyAlready (équivalence FWB, services, suivi).</p>
+      <p id="espaceSubtitleCommunaute" class="hidden mt-2 text-sm text-slate-600">Créez un compte pour rejoindre la communauté et compléter votre profil — sans passer par les pages du site principal.</p>
     </div>
 
     <div id="espaceBanner" class="hidden rounded-xl p-4 text-sm mb-6"></div>
@@ -97,10 +101,13 @@
     <p class="mt-6 text-center text-sm text-slate-600">
       Besoin d'aide ? <a href="https://wa.me/32465339448?text=Bonjour%20StudyAlready%2C%20j%27ai%20une%20question%20sur%20mon%20compte%20%C3%A9tudiant" class="text-brand-blue font-semibold underline" target="_blank" rel="noopener">WhatsApp</a>
     </p>
+    <p id="espaceFooterCommunauteNote" class="hidden mt-4 text-center text-xs text-slate-500 max-w-md mx-auto">
+      Le site principal (tarifs, équivalence FWB, etc.) reste disponible sur <a href="../index.html" class="text-brand-blue underline">studyalready.com</a> si vous en avez besoin plus tard.
+    </p>
   </main>
 
-  <script src="../assets/js/config.js?v=20260512e"></script>
-  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260512e"></script>
-  <script src="../assets/js/main.js?v=20260512e"></script>
+  <script src="../assets/js/config.js?v=20260512f"></script>
+  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260512f"></script>
+  <script src="../assets/js/main.js?v=20260512f"></script>
 </body>
 </html>
