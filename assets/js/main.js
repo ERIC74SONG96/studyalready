@@ -107,32 +107,56 @@ document.addEventListener('DOMContentLoaded', function () {
     onScroll();
   }
 
-  var fadeEls = document.querySelectorAll('section h2, section .grid > *');
+  /* Animation légère au scroll : ne pas cibler les sections .no-scroll-fade ni leur contenu. */
+  var fadeEls = document.querySelectorAll(
+    'section:not(.no-scroll-fade) h2, section:not(.no-scroll-fade) .grid > *'
+  );
   var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function revealAll() { fadeEls.forEach(function (el) { el.classList.add('fade-in', 'visible'); }); }
+  function revealAllFadeTargets() {
+    fadeEls.forEach(function (el) {
+      el.classList.add('fade-in', 'visible');
+    });
+  }
 
-  if (fadeEls.length === 0) {}
-  else if (prefersReducedMotion) {}
-  else if ('IntersectionObserver' in window) {
-    fadeEls.forEach(function (el) { el.classList.add('fade-in'); });
+  function revealAnyStragglerFadeIns() {
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(function (el) {
+      el.classList.add('visible');
+    });
+  }
+
+  if (fadeEls.length === 0) {
+    /* pas d'éléments à animer */
+  } else if (prefersReducedMotion) {
+    revealAllFadeTargets();
+  } else if ('IntersectionObserver' in window) {
+    fadeEls.forEach(function (el) {
+      el.classList.add('fade-in');
+    });
     try {
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0, rootMargin: '0px 0px 8% 0px' });
-      fadeEls.forEach(function (el) { observer.observe(el); });
-      window.setTimeout(function () {
-        fadeEls.forEach(function (el) {
-          if (el.classList.contains('fade-in') && !el.classList.contains('visible')) el.classList.add('visible');
-        });
-      }, 4000);
-    } catch (e) { revealAll(); }
-  } else { revealAll(); }
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.01, rootMargin: '0px 0px 35% 0px' }
+      );
+      fadeEls.forEach(function (el) {
+        observer.observe(el);
+      });
+      /* Sécurité : ne jamais laisser du contenu en opacity:0 si l'observer ne s'est pas déclenché (viewport, scroll, etc.) */
+      window.setTimeout(revealAnyStragglerFadeIns, 1200);
+      window.setTimeout(revealAnyStragglerFadeIns, 4500);
+    } catch (e) {
+      revealAllFadeTargets();
+    }
+  } else {
+    revealAllFadeTargets();
+  }
 
   /* Tous les formulaires « email » passent désormais par Supabase (table form_submissions).
      « Créer mon profil » a son propre handler (table profiles, validation manuelle). */

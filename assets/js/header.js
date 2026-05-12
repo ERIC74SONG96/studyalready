@@ -28,6 +28,7 @@
           '</button>' +
           '<div class="hidden group-hover:block group-focus-within:block absolute top-full left-0 pt-3 z-50">' +
             '<div class="w-64 bg-white border border-slate-200 rounded-xl shadow-lg py-2">' +
+              link(P + 'tarifs-packs.html', 'Tarifs &amp; packs', 'block px-4 py-2 hover:bg-brand-cream text-brand-dark font-semibold') +
               link(P + 'analyseur-admission.html', 'Analyseur d\'admission', 'block px-4 py-2 hover:bg-amber-50 text-amber-800 font-semibold') +
               link(P + 'notre-dossier-fwb.html', 'Notre dossier FWB', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'inscription-universitaire.html', 'Inscription universitaire', 'block px-4 py-2 hover:bg-slate-50') +
@@ -84,6 +85,7 @@
           '<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
         '</summary>' +
         '<div class="pl-3 pb-2 space-y-1 text-slate-600">' +
+          '<a href="' + P + 'tarifs-packs.html" class="block py-1.5 text-brand-dark font-semibold">Tarifs &amp; packs</a>' +
           '<a href="' + P + 'analyseur-admission.html" class="block py-1.5 text-amber-800 font-semibold">Analyseur d\'admission</a>' +
           '<a href="' + P + 'notre-dossier-fwb.html" class="block py-1.5">Notre dossier FWB</a>' +
           '<a href="' + P + 'inscription-universitaire.html" class="block py-1.5">Inscription universitaire</a>' +
