@@ -2,6 +2,7 @@
  * Mur des offres job étudiant — lecture publique, publication réservée aux comptes connectés.
  * Fichier renommé (student-jobs.mjs) pour éviter le cache navigateur/CDN sur l’ancien nom.
  * Requiert les migrations 010 + 014 (lien) + 015 (catégories) et le bucket Storage public `job-offers`.
+ * Client Supabase : d’abord `/assets/js/vendor/supabase-js-2.49.4.mjs`, puis CDN en secours (rebuild : tools/build-supabase-vendor.ps1).
  */
 
 const BUCKET = 'job-offers';
@@ -23,7 +24,13 @@ function getSupabaseConfig() {
 }
 
 async function loadSupabaseCreateClient() {
+  /** Bundle ESM hébergé sur le site (évite dépendance aux CDN publics). Rebuild : tools/build-supabase-vendor.ps1 */
+  const localVendor =
+    typeof window !== 'undefined' && window.location && window.location.origin
+      ? new URL('/assets/js/vendor/supabase-js-2.49.4.mjs', window.location.origin).href
+      : '/assets/js/vendor/supabase-js-2.49.4.mjs';
   const urls = [
+    localVendor,
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm',
     'https://esm.sh/@supabase/supabase-js@2.49.4',
     'https://unpkg.com/@supabase/supabase-js@2.49.4/+esm',

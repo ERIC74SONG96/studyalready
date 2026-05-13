@@ -20,6 +20,7 @@ Desktop.ini
 *.log
 *.tmp
 *.bak
+_bundle_tmp/
 
 # Cursor
 .cursor/
