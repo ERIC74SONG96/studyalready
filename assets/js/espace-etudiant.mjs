@@ -17,7 +17,7 @@ function getSupabase() {
   return createClient(String(url).trim(), String(key).trim());
 }
 
-/** Supprime les clés localStorage du projet (filet si deux clients Supabase se battaient). */
+/** Supprime les clés localStorage du projet (préfixe sb-<ref>-). */
 function clearSupabaseAuthStorageForUrl(supabaseUrl) {
   if (!supabaseUrl || typeof localStorage === 'undefined') return;
   try {
@@ -31,6 +31,33 @@ function clearSupabaseAuthStorageForUrl(supabaseUrl) {
     }
   } catch (e) {}
 }
+
+/** Supprime toutes les clés GoTrue connues (filet si URL projet ≠ parsing hostname). */
+function clearAllGoTrueAuthLocalStorage() {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var k = localStorage.key(i);
+      if (!k || k.indexOf('sb-') !== 0) continue;
+      if (k.indexOf('auth-token') !== -1 || k.indexOf('auth-code') !== -1) localStorage.removeItem(k);
+    }
+  } catch (e) {}
+}
+
+/* Après navigation post-déconnexion : purge synchrone AVANT createClient(),
+   sinon la session peut être relue depuis localStorage encore présent. */
+(function espaceEarlyPostLogoutCleanup() {
+  if (typeof window === 'undefined') return;
+  var path = window.location.pathname || '';
+  if (path.indexOf('espace-etudiant') === -1) return;
+  var qs = window.location.search || '';
+  if (qs.indexOf('logout=') === -1) return;
+  clearSupabaseAuthStorageForUrl(getConfig().SUPABASE_URL);
+  clearAllGoTrueAuthLocalStorage();
+  try {
+    window.history.replaceState(null, '', path + (window.location.hash || ''));
+  } catch (eR) {}
+})();
 
 /**
  * Après une session valide (connexion sur Mon espace, lien email, etc.) :
@@ -343,7 +370,7 @@ if (pageId === 'dashboard') {
     btnLogout.addEventListener('click', function () {
       if (btnLogout.disabled) return;
       btnLogout.disabled = true;
-      var loc = '/espace-etudiant/';
+      var loc = '/espace-etudiant/?logout=' + String(Date.now());
       function go() {
         try {
           if (typeof window !== 'undefined') window.__saEspaceAuthRedirect = false;
@@ -356,14 +383,20 @@ if (pageId === 'dashboard') {
       }
       Promise.resolve()
         .then(function () {
-          return sb.auth.signOut({ scope: 'global' });
-        })
-        .catch(function () {
           return sb.auth.signOut({ scope: 'local' });
         })
         .catch(function () {})
         .then(function () {
+          if (typeof window !== 'undefined' && window.studyalreadySb && window.studyalreadySb.auth) {
+            return window.studyalreadySb.auth.signOut({ scope: 'local' }).catch(function () {});
+          }
+        })
+        .then(function () {
           clearSupabaseAuthStorageForUrl(getConfig().SUPABASE_URL);
+          clearAllGoTrueAuthLocalStorage();
+          try {
+            sb.auth.signOut({ scope: 'global' });
+          } catch (eG) {}
           go();
         });
     });
