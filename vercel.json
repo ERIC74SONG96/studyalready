@@ -76,6 +76,7 @@
       "destination": "/espace-etudiant/?vue=communaute&tab=inscription",
       "permanent": false
     },
+    { "source": "/jobs-etudiants", "destination": "/jobs-etudiants.html", "permanent": false },
     { "source": "/contact", "destination": "/#contact", "permanent": false },
     { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true },
     {

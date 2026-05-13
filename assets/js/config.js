@@ -5,6 +5,7 @@
 // Lecture du tableau de bord : https://supabase.com → Table Editor
 // Tables utilisées :
 //   - profiles           (créer-profil → annuaire)
+//   - student_job_posts  (jobs-etudiants.html — annonces + Storage bucket job-offers)
 //   - form_submissions   (tous les autres formulaires : contact,
 //                         pré-qualification, réseau, mise en relation,
 //                         rapport admission, voyage…)

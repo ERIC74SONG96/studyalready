@@ -69,6 +69,7 @@
               link(P + 'annuaire.html', 'Annuaire des membres', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'besoin-d-aide.html', 'Besoin d\'aide ?', 'block px-4 py-2 hover:bg-amber-50 text-amber-800 font-semibold') +
               link(P + 'evenements-seminaires.html', 'Événements &amp; séminaires', 'block px-4 py-2 hover:bg-slate-50') +
+              link(P + 'jobs-etudiants.html', 'Offres job étudiant', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'rejoindre-reseau.html', 'Rejoindre le réseau', 'block px-4 py-2 hover:bg-slate-50 text-brand-dark font-semibold border-t border-slate-100 mt-1') +
               link(P + 'creer-profil.html', 'Créer mon profil public', 'block px-4 py-2 hover:bg-slate-50') +
             '</div>' +
@@ -126,6 +127,7 @@
           '<a href="' + P + 'annuaire.html" class="block py-1.5">Annuaire des membres</a>' +
           '<a href="' + P + 'besoin-d-aide.html" class="block py-1.5 text-amber-800 font-semibold">Besoin d\'aide ?</a>' +
           '<a href="' + P + 'evenements-seminaires.html" class="block py-1.5">Événements &amp; séminaires</a>' +
+          '<a href="' + P + 'jobs-etudiants.html" class="block py-1.5">Offres job étudiant</a>' +
           '<a href="' + P + 'rejoindre-reseau.html" class="block py-1.5 text-brand-gold font-semibold">Rejoindre le réseau</a>' +
           '<a href="' + P + 'creer-profil.html" class="block py-1.5">Créer mon profil public</a>' +
         '</div>' +

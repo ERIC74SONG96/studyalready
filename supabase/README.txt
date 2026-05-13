@@ -6,3 +6,5 @@ StudyAlready — Supabase (cloud)
 4. Les clés API (URL + anon) sont dans assets/js/config.js — ne commitez jamais la clé service_role.
 
 Les profils « published » apparaissent dans l’annuaire via la fonction get_annuaire_profiles (sans exposer l’email).
+
+Offres job étudiant (jobs-etudiants.html) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
