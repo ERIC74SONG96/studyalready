@@ -51,7 +51,7 @@
 
   <div id="jobsConfigBanner" class="hidden max-w-6xl mx-auto px-4 sm:px-6 mt-6 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-sm p-4">
     <p class="font-medium">Configuration Supabase indisponible sur cette page.</p>
-    <p class="mt-2">Vérifiez que le fichier <code class="bg-white/80 px-1 rounded">/assets/js/config.js</code> se charge (connexion stable, pas de bloqueur de scripts). Essayez aussi <strong>https://www.studyalready.com/offres-etudiants.html</strong> et un rechargement forcé.</p>
+    <p class="mt-2">Vérifiez que le fichier <code class="bg-white/80 px-1 rounded">/assets/js/config.js</code> se charge (connexion stable, pas de bloqueur de scripts). Vous pouvez aussi ouvrir <a class="underline font-semibold text-brand-blue" href="https://www.studyalready.com/offres-etudiants.html">cette page en version www</a> puis utiliser le bouton «&nbsp;Actualiser&nbsp;» de votre navigateur.</p>
   </div>
 
   <section id="types-partage" class="py-10 bg-white border-b border-slate-200">
@@ -186,7 +186,7 @@
   <script src="/assets/js/config.js?v=20260515sections"></script>
   <script src="/assets/js/header.js?v=20260515sections"></script>
   <script src="/assets/js/main.js?v=20260515sections"></script>
-  <script type="module" src="/assets/js/student-jobs.mjs?v=20260512unified"></script>
+  <script type="module" src="/assets/js/student-jobs.mjs?v=20260512comfort"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     setTimeout(function () {
@@ -199,8 +199,8 @@
       list.innerHTML =
         '<p class="text-sm text-amber-950 bg-amber-50 border border-amber-200 rounded-lg p-4">' +
         (scriptOk
-          ? 'Le chargement des offres est anormalement lent ou bloqué. Patientez puis rechargez (Ctrl+F5). Si rien ne change : F12 → Console, puis contact@studyalready.com .'
-          : 'Le fichier <code class="bg-white/80 px-1 rounded">student-jobs.mjs</code> ne s’est pas exécuté (404, réseau ou script désactivé). Vérifiez l’onglet Réseau (F12).') +
+          ? 'Le chargement des offres est plus lent que d’habitude. Attendez quelques secondes, puis utilisez le bouton «&nbsp;Actualiser&nbsp;» de votre navigateur. Si le problème continue : <a class="underline font-semibold text-brand-blue" href="mailto:contact@studyalready.com">contact@studyalready.com</a>.'
+          : 'Une partie de la page ne s’est pas lancée (réseau ou script bloqué). Rouvrez la page depuis <a class="underline font-semibold text-brand-blue" href="https://www.studyalready.com/">l’accueil</a>, ou écrivez-nous : <a class="underline font-semibold text-brand-blue" href="mailto:contact@studyalready.com">contact@studyalready.com</a>.') +
         '</p>';
     }, 9000);
   </script>

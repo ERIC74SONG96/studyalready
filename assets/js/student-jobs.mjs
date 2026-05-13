@@ -557,6 +557,11 @@ async function initPage() {
       try {
         sb = await ensureSb();
       } catch (e) {
+        window.__saJobsSdkAttempts = (window.__saJobsSdkAttempts || 0) + 1;
+        if (window.__saJobsSdkAttempts < 2) {
+          await new Promise((r) => setTimeout(r, 1600));
+          return initPage();
+        }
         if (banner) banner.classList.add('hidden');
         const detail = e && e.message ? String(e.message) : String(e);
         const err = $('jobsLoadError');
@@ -586,6 +591,9 @@ async function initPage() {
       return;
     }
     if (banner) banner.classList.add('hidden');
+    try {
+      window.__saJobsSdkAttempts = 0;
+    } catch (_) {}
 
     if (!__jobsAuthListenerBound) {
       __jobsAuthListenerBound = true;
@@ -650,7 +658,15 @@ async function initPage() {
     scrollToJobIfHash();
     const err = $('jobsLoadError');
     if (err) err.classList.add('hidden');
+    try {
+      window.__saJobsListAttempts = 0;
+    } catch (_) {}
   } catch (e) {
+    window.__saJobsListAttempts = (window.__saJobsListAttempts || 0) + 1;
+    if (window.__saJobsListAttempts < 2) {
+      await new Promise((r) => setTimeout(r, 2000));
+      return initPage();
+    }
     const err = $('jobsLoadError');
     if (err) {
       const detail = e && e.message ? e.message : String(e);
@@ -659,7 +675,7 @@ async function initPage() {
         detail;
       if (/source_url|external_image_url|offer_category|does not exist|42703/i.test(detail)) {
         text +=
-          '\n\n→ Colonnes manquantes : exécutez les migrations SQL du dossier supabase/migrations (014 lien + image, 015 catégories) dans le SQL Editor Supabase, puis rechargez.';
+          '\n\n→ Colonnes manquantes : exécutez les migrations SQL du dossier supabase/migrations (014 lien + image, 015 catégories) dans le SQL Editor Supabase, puis actualisez cette page.';
       }
       err.textContent = text;
       err.classList.remove('hidden');
@@ -667,7 +683,7 @@ async function initPage() {
     const jl = $('jobsList');
     if (jl) {
       jl.innerHTML =
-        '<p class="text-center text-sm text-slate-600 py-8">Impossible d’afficher les annonces pour le moment. Détail au-dessus ou dans la console du navigateur (F12).</p>';
+        '<p class="text-center text-sm text-slate-600 py-8">Impossible d’afficher les annonces pour le moment. Le détail figure au-dessus ; vous pouvez aussi réessayer plus tard ou nous écrire : contact@studyalready.com</p>';
     }
     cachedJobRows = [];
   }

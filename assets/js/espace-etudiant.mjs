@@ -444,7 +444,7 @@ if (pageId === 'login') {
 
   if (!sb) {
     hideLoader();
-    showBanner(banner, 'warn', 'Connexion à la base de données impossible pour le moment (votre réseau bloque peut-être Supabase). Forcez le rechargement avec Ctrl + Shift + R, ou essayez en navigation privée / sur une autre connexion. Si le problème persiste, écrivez-nous sur WhatsApp.');
+    showBanner(banner, 'warn', 'Connexion à la base de données impossible pour le moment (votre réseau bloque peut-être Supabase). Patientez quelques secondes puis actualisez la page, ou essayez une autre connexion internet. Si le problème persiste, écrivez-nous sur WhatsApp.');
     if (btnLogin) btnLogin.disabled = true;
     if (btnSignupNext) btnSignupNext.disabled = true;
     if (btnSignupSubmit) btnSignupSubmit.disabled = true;
@@ -774,7 +774,7 @@ if (pageId === 'dashboard') {
 
   if (!sb) {
     if (dashBanner) {
-      showBanner(dashBanner, 'warn', 'Connexion à la base de données impossible pour le moment. Forcez le rechargement (Ctrl + Shift + R) ou réessayez sur une autre connexion.');
+      showBanner(dashBanner, 'warn', 'Connexion à la base de données impossible pour le moment. Patientez puis actualisez la page, ou réessayez sur une autre connexion internet.');
     }
     if (nameEl) nameEl.textContent = '—';
     if (emailEl) emailEl.textContent = '';

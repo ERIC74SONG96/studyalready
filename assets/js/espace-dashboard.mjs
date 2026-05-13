@@ -200,7 +200,7 @@ async function boot() {
   if (!sb) {
     if (banner) {
       banner.className = 'rounded-xl p-4 text-sm mb-6 bg-amber-50 border border-amber-200 text-amber-900';
-      banner.textContent = 'Connexion à la base de données impossible. Forcez le rechargement (Ctrl + Shift + R).';
+      banner.textContent = 'Connexion à la base de données impossible. Patientez puis actualisez la page, ou réessayez dans un instant.';
       banner.classList.remove('hidden');
     }
     return;
