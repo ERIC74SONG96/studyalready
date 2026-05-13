@@ -75,7 +75,7 @@
           '</div>' +
         '</li>' +
 
-        '<li>' + link(P + 'blog/', 'Blog', 'hover:text-brand-gold transition') + '</li>' +
+        '<li>' + link('/blog', 'Blog', 'hover:text-brand-gold transition') + '</li>' +
         '<li class="sa-espace-nav-link">' + link(P + 'espace-etudiant/', 'Mon espace', 'hover:text-brand-gold transition') + '</li>' +
         '<li class="hidden" data-sa-profile-slot data-sa-dashboard-href="' + P + 'espace-etudiant/dashboard.html"></li>' +
       '</ul>' +
@@ -131,7 +131,7 @@
         '</div>' +
       '</details>' +
 
-      '<a href="' + P + 'blog/" class="block py-2 border-t border-slate-100">Blog</a>' +
+      '<a href="/blog" class="block py-2 border-t border-slate-100">Blog</a>' +
       '<a href="' + P + 'espace-etudiant/" class="sa-espace-nav-link block py-2 border-t border-slate-100">Espace personnel</a>' +
       '<div class="hidden" data-sa-profile-slot data-sa-profile-variant="mobile" data-sa-dashboard-href="' + P + 'espace-etudiant/dashboard.html"></div>' +
       '<a href="' + P + 'index.html#contact" class="block py-3 border-t border-slate-100 text-brand-gold font-semibold">Contact →</a>' +
