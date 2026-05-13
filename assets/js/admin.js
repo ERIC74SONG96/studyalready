@@ -6,6 +6,15 @@
   'use strict';
 
   var c = window.STUDYALREADY_CONFIG || {};
+  if (!c.SUPABASE_URL || !c.SUPABASE_ANON_KEY ||
+      String(c.SUPABASE_URL).indexOf('REMPLACER') !== -1 ||
+      String(c.SUPABASE_ANON_KEY).indexOf('REMPLACER') !== -1) {
+    if (gate) {
+      gate.classList.remove('hidden');
+      gate.innerHTML = '<div class="text-center max-w-md mx-auto px-4"><p class="text-red-600 font-semibold mb-2">Configuration Supabase absente ou invalide.</p><p class="text-sm text-slate-600 mb-3">Vérifiez <code class="text-xs bg-slate-100 px-1 rounded">assets/js/config.js</code> (SUPABASE_URL et SUPABASE_ANON_KEY).</p><a href="admin-login.html" class="underline text-brand-dark">Retour</a></div>';
+    }
+    return;
+  }
   var sb = (window.supabase && typeof window.supabase.createClient === 'function')
     ? window.supabase.createClient(c.SUPABASE_URL, c.SUPABASE_ANON_KEY, {
         auth: { persistSession: true, autoRefreshToken: true }
@@ -76,25 +85,14 @@
   }
 
   // -------------------- Auth gate --------------------
-  /* INITIAL_SESSION évite la course getSession() : session parfois « null » un
-     instant puis présente → boucle admin.html ↔ admin-login.html (clignotement). */
+  /* Plusieurs lectures getSession() espacées : avec le bundle UMD, INITIAL_SESSION
+     peut ne pas se déclencher comme attendu → écran bloqué sur « Vérification… ». */
 
   var gateDecided = false;
-  var gateFallbackTimer = setTimeout(function () {
-    if (gateDecided) return;
-    sb.auth.getSession().then(function (r) {
-      if (gateDecided) return;
-      var session = r && r.data && r.data.session;
-      runAdminGate(session);
-    });
-  }, 4500);
 
   function runAdminGate(session) {
     if (gateDecided) return;
     gateDecided = true;
-    try {
-      clearTimeout(gateFallbackTimer);
-    } catch (e0) {}
     if (!session) {
       window.location.replace('admin-login.html');
       return;
@@ -108,7 +106,6 @@
           '<a href="admin-login.html" class="underline text-brand-dark">Retour à la connexion</a></div>';
         return;
       }
-      /* is_admin() renvoie un booléen : seul true autorise l’accès (false = pas dans public.admins). */
       if (a.data !== true) {
         sb.auth.signOut().then(function () {
           window.location.replace('admin-login.html?raison=non-admin');
@@ -122,13 +119,66 @@
     });
   }
 
-  sb.auth.onAuthStateChange(function (event, session) {
-    if (event !== 'INITIAL_SESSION') return;
-    runAdminGate(session);
-  });
+  function probeSession(retryIndex) {
+    sb.auth.getSession().then(function (r) {
+      if (gateDecided) return;
+      var session = r && r.data && r.data.session;
+      if (session) {
+        runAdminGate(session);
+        return;
+      }
+      if (retryIndex >= 2) {
+        runAdminGate(null);
+        return;
+      }
+      var waitMs = retryIndex === 0 ? 400 : 900;
+      setTimeout(function () {
+        probeSession(retryIndex + 1);
+      }, waitMs);
+    });
+  }
+
+  probeSession(0);
+
+  function clearAdminAuthLocalStorage() {
+    try {
+      for (var i = localStorage.length - 1; i >= 0; i--) {
+        var k = localStorage.key(i);
+        if (!k || k.indexOf('sb-') !== 0) continue;
+        if (k.indexOf('auth-token') !== -1 || k.indexOf('auth-code') !== -1) localStorage.removeItem(k);
+      }
+    } catch (e) {}
+  }
 
   $('logoutBtn').addEventListener('click', function () {
-    sb.auth.signOut().then(function () { window.location.replace('admin-login.html'); });
+    var lo = $('logoutBtn');
+    if (lo) lo.disabled = true;
+    Promise.resolve()
+      .then(function () {
+        return sb.auth.signOut({ scope: 'local' });
+      })
+      .catch(function () {})
+      .then(function () {
+        var u = c.SUPABASE_URL;
+        if (u) {
+          try {
+            var host = String(u).replace(/^https?:\/\//i, '').split('/')[0];
+            var ref = host.split('.')[0];
+            if (ref) {
+              var prefix = 'sb-' + ref + '-';
+              for (var j = localStorage.length - 1; j >= 0; j--) {
+                var k2 = localStorage.key(j);
+                if (k2 && k2.indexOf(prefix) === 0) localStorage.removeItem(k2);
+              }
+            }
+          } catch (e2) {}
+        }
+        clearAdminAuthLocalStorage();
+        try {
+          sb.auth.signOut({ scope: 'global' });
+        } catch (e3) {}
+        window.location.replace('admin-login.html');
+      });
   });
 
   // -------------------- Onglets --------------------

@@ -61,8 +61,8 @@
     </div>
   </main>
 
-  <script src="assets/js/config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js?v=20260515b"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
   <script>
     (function () {
       'use strict';
@@ -105,14 +105,23 @@
       }
 
       var loginJumpDone = false;
-      var loginFbTimer = setTimeout(function () {
+
+      function tryAdminOnce(retryIndex) {
         if (loginJumpDone) return;
         sb.auth.getSession().then(function (r) {
           if (loginJumpDone) return;
           var session = r && r.data && r.data.session;
-          tryAdminAutoJump(session);
+          if (session) {
+            tryAdminAutoJump(session);
+            return;
+          }
+          if (retryIndex >= 2) return;
+          var waitMs = retryIndex === 0 ? 400 : 900;
+          setTimeout(function () {
+            tryAdminOnce(retryIndex + 1);
+          }, waitMs);
         });
-      }, 5000);
+      }
 
       function tryAdminAutoJump(session) {
         if (loginJumpDone || !session) return;
@@ -120,18 +129,12 @@
           if (loginJumpDone) return;
           if (!a.error && a.data === true) {
             loginJumpDone = true;
-            try {
-              clearTimeout(loginFbTimer);
-            } catch (eFb) {}
             window.location.replace('admin.html');
           }
         });
       }
 
-      sb.auth.onAuthStateChange(function (event, session) {
-        if (event !== 'INITIAL_SESSION') return;
-        tryAdminAutoJump(session);
-      });
+      tryAdminOnce(0);
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
