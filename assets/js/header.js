@@ -53,6 +53,7 @@
               link(P + 'preparer-voyage.html', 'Préparer mon voyage', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'services-bancaires.html', 'Assistance bancaire', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'accelerateur-job.html', 'Accélérateur de Job', 'block px-4 py-2 hover:bg-slate-50') +
+              link(P + 'jobs-etudiants.html', 'Mur des offres job', 'block px-4 py-2 hover:bg-emerald-50 text-emerald-900 font-semibold') +
               link(P + 'prequalification-dossier.html', 'Pré-qualification détaillée', 'block px-4 py-2 hover:bg-slate-50 text-brand-dark font-semibold border-t border-slate-100 mt-1') +
             '</div>' +
           '</div>' +
@@ -76,6 +77,7 @@
           '</div>' +
         '</li>' +
 
+        '<li>' + link(P + 'jobs-etudiants.html', 'Jobs étudiants', 'hover:text-brand-gold transition') + '</li>' +
         '<li>' + link('/blog', 'Blog', 'hover:text-brand-gold transition') + '</li>' +
         '<li class="sa-espace-nav-link">' + link(P + 'espace-etudiant/', 'Mon espace', 'hover:text-brand-gold transition') + '</li>' +
         '<li class="hidden" data-sa-profile-slot data-sa-dashboard-href="' + P + 'espace-etudiant/dashboard.html"></li>' +
@@ -113,6 +115,7 @@
           '<a href="' + P + 'preparer-voyage.html" class="block py-1.5">Préparer mon voyage</a>' +
           '<a href="' + P + 'services-bancaires.html" class="block py-1.5">Assistance bancaire</a>' +
           '<a href="' + P + 'accelerateur-job.html" class="block py-1.5">Accélérateur de Job</a>' +
+          '<a href="' + P + 'jobs-etudiants.html" class="block py-1.5 text-emerald-900 font-semibold">Mur des offres job</a>' +
           '<a href="' + P + 'prequalification-dossier.html" class="block py-1.5 text-brand-dark font-semibold">Pré-qualification détaillée</a>' +
         '</div>' +
       '</details>' +
@@ -133,7 +136,8 @@
         '</div>' +
       '</details>' +
 
-      '<a href="/blog" class="block py-2 border-t border-slate-100">Blog</a>' +
+      '<a href="' + P + 'jobs-etudiants.html" class="block py-2 border-t border-slate-100 font-semibold text-brand-dark">Jobs étudiants</a>' +
+      '<a href="/blog" class="block py-2">Blog</a>' +
       '<a href="' + P + 'espace-etudiant/" class="sa-espace-nav-link block py-2 border-t border-slate-100">Espace personnel</a>' +
       '<div class="hidden" data-sa-profile-slot data-sa-profile-variant="mobile" data-sa-dashboard-href="' + P + 'espace-etudiant/dashboard.html"></div>' +
       '<a href="' + P + 'index.html#contact" class="block py-3 border-t border-slate-100 text-brand-gold font-semibold">Contact →</a>' +
