@@ -9,4 +9,4 @@ Les profils « published » apparaissent dans l’annuaire via la fonction get_a
 
 Offres job étudiant (jobs-etudiants.html) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
 
-Contexte inscription / personnalisation : migration 011_user_site_context.sql (table public.user_site_context).
+Contexte inscription / personnalisation : migration 011_user_site_context.sql (table public.user_site_context). Si la table est vide alors que des comptes existent déjà, exécuter une fois 012_backfill_user_site_context.sql dans le SQL Editor.
