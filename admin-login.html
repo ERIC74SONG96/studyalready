@@ -69,7 +69,7 @@
       var c = window.STUDYALREADY_CONFIG || {};
       var sb = (window.supabase && typeof window.supabase.createClient === 'function')
         ? window.supabase.createClient(c.SUPABASE_URL, c.SUPABASE_ANON_KEY, {
-            auth: { persistSession: true, autoRefreshToken: true, storageKey: 'studyalready-admin' }
+            auth: { persistSession: true, autoRefreshToken: true }
           })
         : null;
 

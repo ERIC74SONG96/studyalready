@@ -83,6 +83,15 @@ async function boot() {
     window.location.replace('/espace-etudiant/');
     return;
   }
+  try {
+    const { data: isAdm, error: admErr } = await sb.rpc('is_admin');
+    if (!admErr && isAdm === true) {
+      window.location.replace('/admin.html');
+      return;
+    }
+  } catch (_e) {
+    /* reste sur l'espace étudiant */
+  }
   currentUser = session.user;
 
   /* En-tête (déjà géré par espace-etudiant.mjs, on remplit aussi par sécurité) */

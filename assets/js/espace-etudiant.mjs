@@ -17,6 +17,26 @@ function getSupabase() {
   return createClient(String(url).trim(), String(key).trim());
 }
 
+/**
+ * Après une session valide : si l'utilisateur est dans public.admins,
+ * redirige vers le dashboard admin ; sinon vers l'espace étudiant.
+ */
+function redirectAfterAuth(sb) {
+  if (!sb) return Promise.resolve();
+  try {
+    window.history.replaceState(null, '', window.location.pathname);
+  } catch (e) {}
+  return sb.rpc('is_admin').then(function (a) {
+    if (!a.error && a.data === true) {
+      window.location.replace('/admin.html');
+    } else {
+      window.location.replace('/espace-etudiant/dashboard.html');
+    }
+  }).catch(function () {
+    window.location.replace('/espace-etudiant/dashboard.html');
+  });
+}
+
 function showBanner(el, type, text) {
   if (!el) return;
   el.classList.remove('hidden', 'bg-amber-50', 'border-amber-200', 'text-amber-900', 'bg-red-50', 'border-red-200', 'text-red-800', 'bg-green-50', 'border-green-200', 'text-green-800');
@@ -127,12 +147,8 @@ if (pageId === 'login') {
 
     sb.auth.getSession().then(function (res) {
       if (res.data && res.data.session) {
-        /* Utilisateur déjà connecté : on laisse le loader affiche et on
-           redirige immediatement, l'utilisateur ne voit jamais le formulaire. */
-        try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
-        window.location.replace('/espace-etudiant/dashboard.html');
+        redirectAfterAuth(sb);
       } else {
-        /* Pas de session : on revele le formulaire de connexion. */
         hideLoader();
       }
     }, function () {
@@ -143,8 +159,7 @@ if (pageId === 'login') {
     /* Au cas où la session arrive juste après (race condition). */
     sb.auth.onAuthStateChange(function (_evt, session) {
       if (session) {
-        try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
-        window.location.replace('/espace-etudiant/dashboard.html');
+        redirectAfterAuth(sb);
       }
     });
 
@@ -175,7 +190,7 @@ if (pageId === 'login') {
         showBanner(err, 'err', m);
         return;
       }
-      window.location.href = '/espace-etudiant/dashboard.html';
+      redirectAfterAuth(sb);
     });
   }
 
@@ -211,7 +226,7 @@ if (pageId === 'login') {
         return;
       }
       if (r.data.session) {
-        window.location.href = '/espace-etudiant/dashboard.html';
+        redirectAfterAuth(sb);
         return;
       }
       showBanner(err, 'warn',
