@@ -88,7 +88,7 @@ const PERSONA_WELCOME = {
 const PERSONA_DOSSIER_NOTE = {
   cameroun: '',
   belgique_etudiant:
-    'Si vous n\'êtes pas encore accompagné(e) sur un dossier formel, l\'essentiel pour vous se trouve souvent dans l\'onglet « Services » (job, communauté, guides).',
+    'Si vous n\'êtes pas encore accompagné(e) sur un dossier formel, l\'essentiel pour vous se trouve souvent dans l\'onglet « Services » (job, bourses, communauté, guides).',
   travailleur:
     'Les étapes ci-dessous correspondent surtout aux parcours « dossier » (équivalence, visa, etc.). Sinon, privilégiez « Services » pour le blog, le réseau et les guides.',
   visiteur:

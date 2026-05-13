@@ -9,4 +9,6 @@ Les profils « published » apparaissent dans l’annuaire via la fonction get_a
 
 Offres job étudiant (offres-etudiants.html ; jobs-etudiants.html redirige) — migrations 014 (lien + image) et 015 (catégories) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
 
+Bourses & aides aux études (bourses-belgique.html ; /bourses redirige) : exécuter migrations/016_student_scholarship_posts.sql puis créer dans Storage un bucket PUBLIC nommé « scholarship-offers ». La fonction public.is_admin() (migration 003) permet aux admins de supprimer toute fiche ; sans 003, la politique « delete admin » n’est pas créée.
+
 Contexte inscription / personnalisation : migration 011_user_site_context.sql (table public.user_site_context). Si la table est vide alors que des comptes existent déjà, exécuter une fois 012_backfill_user_site_context.sql dans le SQL Editor.

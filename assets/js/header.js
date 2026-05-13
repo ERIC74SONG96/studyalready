@@ -34,7 +34,7 @@
         '<li>' + link(P + 'index.html', 'Accueil', 'hover:text-brand-gold transition') + '</li>' +
         '<li>' + link(P + 'qui-sommes-nous.html', 'Qui sommes-nous ?', 'hover:text-brand-gold transition') + '</li>' +
         '<li>' + link(P + 'equivalence.html', 'Équivalence', 'hover:text-brand-gold transition') + '</li>' +
-        '<li>' + link('/blog#bourses', 'Bourses', 'hover:text-brand-gold transition') + '</li>' +
+        '<li>' + link(P + 'bourses-belgique.html', 'Bourses', 'hover:text-brand-gold transition') + '</li>' +
 
         '<li class="relative group">' +
           '<button type="button" aria-haspopup="true" class="hover:text-brand-gold transition inline-flex items-center gap-1">' +
@@ -55,6 +55,7 @@
               link(P + 'services-bancaires.html', 'Assistance bancaire', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'accelerateur-job.html', 'Accélérateur de Job', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'offres-etudiants.html', 'Mur des offres job', 'block px-4 py-2 hover:bg-emerald-50 text-emerald-900 font-semibold') +
+              link(P + 'bourses-belgique.html', 'Mur des bourses (Belgique)', 'block px-4 py-2 hover:bg-violet-50 text-violet-900 font-semibold') +
               link(P + 'prequalification-dossier.html', 'Pré-qualification détaillée', 'block px-4 py-2 hover:bg-slate-50 text-brand-dark font-semibold border-t border-slate-100 mt-1') +
             '</div>' +
           '</div>' +
@@ -98,7 +99,7 @@
       '<a href="' + P + 'index.html" class="block py-2">Accueil</a>' +
       '<a href="' + P + 'qui-sommes-nous.html" class="block py-2">Qui sommes-nous ?</a>' +
       '<a href="' + P + 'equivalence.html" class="block py-2">Équivalence (guide)</a>' +
-      '<a href="/blog#bourses" class="block py-2">Bourses</a>' +
+      '<a href="' + P + 'bourses-belgique.html" class="block py-2">Bourses</a>' +
 
       '<details class="border-t border-slate-100 mt-1">' +
         '<summary class="py-2 cursor-pointer list-none flex items-center justify-between">' +
@@ -118,6 +119,7 @@
           '<a href="' + P + 'services-bancaires.html" class="block py-1.5">Assistance bancaire</a>' +
           '<a href="' + P + 'accelerateur-job.html" class="block py-1.5">Accélérateur de Job</a>' +
           '<a href="' + P + 'offres-etudiants.html" class="block py-1.5 text-emerald-900 font-semibold">Mur des offres job</a>' +
+          '<a href="' + P + 'bourses-belgique.html" class="block py-1.5 text-violet-900 font-semibold">Mur des bourses (Belgique)</a>' +
           '<a href="' + P + 'prequalification-dossier.html" class="block py-1.5 text-brand-dark font-semibold">Pré-qualification détaillée</a>' +
         '</div>' +
       '</details>' +
