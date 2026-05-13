@@ -403,11 +403,67 @@ function ensureJobsListOfferOpenBinding() {
   });
 }
 
-/** Texte affiché sous le titre : vide si ce n’est que le lien auto « Lien vers l’offre » (carte déjà cliquable). */
+/** Retire les lignes techniques « Lien : https… » / « Image : https… » (legacy) quand l’offre s’ouvre déjà au clic. */
+function stripRedundantLinkImageLines(desc, jobHref) {
+  const u = normalizeUrl(trimCapturedUrl(jobHref));
+  if (!u) return String(desc || '').trim();
+  const lines = descriptionForUrlParsing(String(desc || '')).split(/\r?\n/);
+  /** Puces courantes, deux-points ASCII ou pleine chasse (copier-coller messagers). */
+  const bol = String.raw`^\s*(?:[-*•·]\s*)?`;
+  const col = String.raw`(?:\s*:\s*|\s*：\s*)`;
+  const httpInLine = String.raw`(https?:\/\/\S+)`;
+  /** Lien / URL sur une seule ligne (texte après l’URL autorisé : commentaires, « (Randstad) », etc.). */
+  const legacyLinkLine = new RegExp(
+    bol + String.raw`Liens?` + String.raw`\s*(?:vers[^:\n\uFF1A]{0,56})?` + col + httpInLine,
+    'i',
+  );
+  const legacyLinkLoffre = new RegExp(
+    bol +
+      String.raw`Lien\s+vers\s+l['\u2019]offre` +
+      col +
+      httpInLine,
+    'i',
+  );
+  const legacyImageLine = new RegExp(
+    bol +
+      String.raw`(?:Image|Photo|Visuel|Miniature|Vignette|Aper[cç]u)` +
+      col +
+      httpInLine,
+    'i',
+  );
+  const urlFieldLine = new RegExp(bol + String.raw`URL` + col + httpInLine, 'i');
+  const lienHeadNoUrl = new RegExp(
+    bol + String.raw`Liens?` + String.raw`\s*(?:vers[^:\n\uFF1A]{0,56})?` + col + String.raw`\s*$`,
+    'i',
+  );
+  const kept = [];
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
+    if (!t) continue;
+    if (legacyImageLine.test(t)) continue;
+    if (legacyLinkLoffre.test(t) || legacyLinkLine.test(t)) continue;
+    if (urlFieldLine.test(t)) continue;
+    if (lienHeadNoUrl.test(t) && !/https?:\/\//i.test(t) && i + 1 < lines.length) {
+      const next = lines[i + 1].trim();
+      if (/^https?:\/\/\S+/i.test(next)) {
+        i++;
+        continue;
+      }
+    }
+    kept.push(lines[i]);
+  }
+  return kept.join('\n').trim();
+}
+
+/** Texte sous le titre : sans doublons d’URL déjà ouverte par la carte. */
 function descriptionBlockForList(r, externalHref) {
-  const raw = String((r && r.description) || '').trim();
+  let raw = String((r && r.description) || '').trim();
   if (!raw) return '';
   const u = String(externalHref || '').trim();
+  if (u) {
+    raw = stripRedundantLinkImageLines(raw, u);
+  }
+  if (!raw) return '';
   if (!u) {
     return `<div class="mt-3 text-sm text-slate-700 whitespace-pre-wrap">${escapeHtml(raw)}</div>`;
   }
@@ -420,14 +476,15 @@ function descriptionBlockForList(r, externalHref) {
       .join('\n')
       .trim();
   const nDesc = norm(raw);
+  const nu = normalizeUrl(trimCapturedUrl(u));
   const variants = [
-    norm(`Lien vers l'offre :\n${u}`),
-    norm(`Lien vers l'offre:\n${u}`),
-    norm(`Lien vers l’offre :\n${u}`),
-    norm(`Lien vers l’offre:\n${u}`),
-    norm(`Lien vers l'offre : ${u}`),
-    norm(`Lien vers l'offre: ${u}`),
-    norm(u),
+    norm(`Lien vers l'offre :\n${nu}`),
+    norm(`Lien vers l'offre:\n${nu}`),
+    norm(`Lien vers l’offre :\n${nu}`),
+    norm(`Lien vers l’offre:\n${nu}`),
+    norm(`Lien vers l'offre : ${nu}`),
+    norm(`Lien vers l'offre: ${nu}`),
+    norm(nu),
   ];
   for (let i = 0; i < variants.length; i++) {
     if (variants[i] && variants[i] === nDesc) return '';

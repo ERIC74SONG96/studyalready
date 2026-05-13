@@ -183,10 +183,30 @@
     <p>© <span id="year"></span> StudyAlready</p>
   </footer>
 
-  <script src="/assets/js/config.js?v=20260515sections"></script>
-  <script src="/assets/js/header.js?v=20260515sections"></script>
-  <script src="/assets/js/main.js?v=20260515sections"></script>
-  <script type="module" src="/assets/js/student-jobs.mjs?v=20260512cardclean"></script>
+  <script src="/assets/js/config.js?v=20260516jobspage"></script>
+  <script src="/assets/js/header.js?v=20260516jobspage"></script>
+  <script src="/assets/js/main.js?v=20260516jobspage"></script>
+  <script>
+    (function () {
+      function assetVersionFromConfigScript() {
+        try {
+          var scripts = document.getElementsByTagName('script');
+          for (var i = 0; i < scripts.length; i++) {
+            var src = scripts[i].src || '';
+            if (src.indexOf('/assets/js/config.js') === -1) continue;
+            var m = src.match(/[?&]v=([^&]+)/);
+            if (m) return decodeURIComponent(m[1]);
+          }
+        } catch (e) {}
+        return '20260516jobspage';
+      }
+      var v = assetVersionFromConfigScript();
+      var s = document.createElement('script');
+      s.type = 'module';
+      s.src = '/assets/js/student-jobs.mjs?v=' + encodeURIComponent(v);
+      document.body.appendChild(s);
+    })();
+  </script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     setTimeout(function () {
