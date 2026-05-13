@@ -79,6 +79,19 @@
       </div>
     </header>
 
+    <div id="blogArticleGate" class="not-prose max-w-3xl mx-auto px-4 sm:px-6 pt-10 pb-4">
+      <div class="rounded-2xl border-2 border-brand-gold/40 bg-brand-cream/90 p-6 sm:p-8 text-center shadow-sm">
+        <p class="text-brand-dark font-display font-bold text-xl">La suite de l'article est réservée aux membres</p>
+        <p class="mt-3 text-slate-700 text-sm max-w-lg mx-auto">Connectez-vous à votre espace StudyAlready <strong>ou créez un compte gratuit</strong> pour lire l'article en entier et accéder aux services utiles.</p>
+        <div class="mt-6 flex flex-wrap gap-3 justify-center">
+          <a href="/espace-etudiant/" class="inline-flex items-center justify-center bg-brand-dark hover:bg-brand-blue text-white font-bold px-6 py-3 rounded-full text-sm transition">Se connecter</a>
+          <a href="/espace-etudiant/?inscription=1" class="inline-flex items-center justify-center bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold px-6 py-3 rounded-full text-sm transition">Créer un compte</a>
+        </div>
+        <p class="mt-4 text-xs text-slate-500">Une fois connecté·e, actualisez cette page (F5) si le texte ne s'affiche pas tout de suite.</p>
+      </div>
+    </div>
+
+    <div id="blogArticleFull" class="hidden">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-14 prose prose-slate prose-headings:font-display prose-headings:text-brand-dark prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-12 prose-h3:text-xl prose-h3:font-bold prose-strong:text-brand-dark prose-a:text-brand-blue prose-a:font-semibold hover:prose-a:underline max-w-none">
 
       <nav class="not-prose bg-slate-50 border-l-4 border-brand-gold rounded-r-xl p-5 mb-10" aria-label="Sommaire">
@@ -181,6 +194,7 @@
         </div>
       </aside>
     </div>
+    </div>
   </article>
 
   <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
@@ -204,7 +218,9 @@
     <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>
   </a>
 
-  <script src="../assets/js/header.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script src="/assets/js/sa-nav-session.js"></script>
+  <script src="/assets/js/blog-article-gate.js"></script>
+  <script src="/assets/js/header.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

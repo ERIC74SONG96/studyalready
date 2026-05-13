@@ -93,6 +93,7 @@
     } catch (e) {}
   }
 
+  window.__saHasPersistedSession = hasSaPersistedSession;
   window.__saRefreshProfileNav = refreshSaProfileNav;
 
   function boot() {
