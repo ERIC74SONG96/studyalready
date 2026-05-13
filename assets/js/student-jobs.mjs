@@ -74,6 +74,28 @@ const escapeHtml = (s) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
+function escapeAttr(s) {
+  return String(s == null ? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/'/g, '&#39;');
+}
+
+/** Retire ponctuation / guillemets souvent collés à la fin d’une URL capturée dans du texte. */
+function trimCapturedUrl(s) {
+  let t = String(s || '').trim();
+  t = t.replace(/[)\].,;»\s]+$/g, '');
+  t = t.replace(/["'`\u2019\u201c\u201d]+$/g, '');
+  return t.trim();
+}
+
+function descriptionForUrlParsing(desc) {
+  return String(desc || '')
+    .replace(/\\n/g, '\n')
+    .replace(/\r\n/g, '\n');
+}
+
 function fmtDate(iso) {
   if (!iso) return '';
   try {
@@ -146,6 +168,82 @@ function normalizeUrl(raw) {
   } catch {
     return '';
   }
+}
+
+function extractAllHttpUrls(text) {
+  const s = String(text || '');
+  const re = /https?:\/\/[^\s<>"')\]]+/gi;
+  const m = s.match(re);
+  if (!m || !m.length) return [];
+  return m.map((x) => trimCapturedUrl(x)).filter(Boolean);
+}
+
+function isLikelyImageOnlyUrl(u) {
+  if (!u) return true;
+  const p = String(u).split('?')[0].toLowerCase();
+  return /\.(jpe?g|png|gif|webp|svg|ico)(\s|$)?$/i.test(p);
+}
+
+/** Parmi plusieurs URL dans le texte, préfère une page offre plutôt qu’une image seule. */
+function pickPreferredJobUrl(urls) {
+  const norm = [];
+  const seen = {};
+  for (let i = 0; i < urls.length; i++) {
+    const u = normalizeUrl(trimCapturedUrl(urls[i]));
+    if (!u || u.length < 12 || seen[u]) continue;
+    seen[u] = 1;
+    norm.push(u);
+  }
+  const nonImg = norm.filter((u) => !isLikelyImageOnlyUrl(u));
+  if (nonImg.length) return nonImg[0];
+  return norm[0] || '';
+}
+
+/** URL de l’offre externe : colonne dédiée, contact, lignes « Lien : … », ou première URL https pertinente dans le texte. */
+function resolveJobExternalHref(row) {
+  const fromCol = normalizeUrl(trimCapturedUrl(row && row.source_url));
+  if (fromCol) return fromCol;
+
+  const hint = String((row && row.contact_hint) || '').trim();
+  if (/^https?:\/\//i.test(hint)) {
+    const firstTok = hint.split(/\s/)[0];
+    const u = normalizeUrl(trimCapturedUrl(firstTok));
+    if (u && u.length >= 12) return u;
+  }
+
+  const desc = descriptionForUrlParsing((row && row.description) || '');
+  const lines = desc.split(/\r?\n/);
+  const lineRes = [
+    /^Lien\s*(?:vers[^:\n]{0,56})?\s*:\s*(https?:\/\/\S+)/i,
+    /^Lien\s+vers\s+l['\u2019]offre\s*:\s*(https?:\/\/\S+)/i,
+    /^URL\s*:\s*(https?:\/\/\S+)/i,
+    /^Site\s*(?:web)?\s*:\s*(https?:\/\/\S+)/i,
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
+    if (/^https?:\/\//i.test(t)) {
+      const first = t.split(/\s/)[0];
+      const u = normalizeUrl(trimCapturedUrl(first));
+      if (u && u.length >= 12 && !isLikelyImageOnlyUrl(u)) return u;
+    }
+    for (let r = 0; r < lineRes.length; r++) {
+      const m = t.match(lineRes[r]);
+      if (m) {
+        const u = normalizeUrl(trimCapturedUrl(m[1]));
+        if (u) return u;
+      }
+    }
+    if (/^Lien/i.test(t) && /:\s*$/.test(t) && !/https?:\/\//i.test(t) && i + 1 < lines.length) {
+      const nxt = lines[i + 1].trim();
+      const um = nxt.match(/^(https?:\/\/[^\s<>"')\]]+)/i);
+      if (um) {
+        const u = normalizeUrl(trimCapturedUrl(um[1]));
+        if (u) return u;
+      }
+    }
+  }
+
+  return pickPreferredJobUrl(extractAllHttpUrls(desc));
 }
 
 function safeHttpsUrl(u) {
@@ -250,9 +348,48 @@ function publicImageUrl(sb, path) {
   return data?.publicUrl || '';
 }
 
+/** Cible « élément » du clic (les clics sur le texte ont souvent un #text comme target, sans .closest). */
+function clickEventTargetElement(ev) {
+  var t = ev.target;
+  if (!t) return null;
+  if (t.nodeType === 1) return t;
+  return t.parentElement || null;
+}
+
+/** Ouverture offre : clic explicite (évite les bugs pointer-events / empilement CSS). */
+function ensureJobsListOfferOpenBinding() {
+  const host = $('jobsList');
+  if (!host || host.dataset.saOfferOpenBound === '1') return;
+  host.dataset.saOfferOpenBound = '1';
+  host.addEventListener('click', function (ev) {
+    if (ev.type !== 'click' || ev.button !== 0) return;
+    var el = clickEventTargetElement(ev);
+    if (!el || !el.closest) return;
+    var art = el.closest('article[data-sa-job-url]');
+    if (!art) return;
+    var url = art.getAttribute('data-sa-job-url');
+    if (!url || !/^https?:\/\//i.test(url)) return;
+    if (el.closest('button.jobs-del') || el.closest('button.jobs-copylink')) return;
+    var a = el.closest('a[href]');
+    if (a) {
+      var h = a.getAttribute('href') || '';
+      if (a.classList.contains('jobs-share-wa') || a.classList.contains('jobs-share-fb') || a.classList.contains('jobs-share-mail')) return;
+      if (h.indexOf('mailto:') === 0) return;
+    }
+    ev.preventDefault();
+    var w = window.open(url, '_blank', 'noopener,noreferrer');
+    if (!w) {
+      try {
+        window.location.href = url;
+      } catch (e2) {}
+    }
+  });
+}
+
 function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup) {
   const host = $('jobsList');
   if (!host) return;
+  ensureJobsListOfferOpenBinding();
   const lookup = allRowsForLookup || rowsToShow;
   if (!rowsToShow.length) {
     let emptyMsg = isLoggedIn
@@ -272,43 +409,76 @@ function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup)
       const imgUrl = storageUrl || extImg;
       const own = currentUserId && r.user_id === currentUserId;
       const del = own
-        ? `<button type="button" class="jobs-del text-xs font-semibold text-red-700 hover:underline" data-id="${escapeHtml(r.id)}">Supprimer</button>`
+        ? `<button type="button" class="jobs-del cursor-pointer text-xs font-semibold text-red-700 hover:underline" data-id="${escapeHtml(r.id)}">Supprimer</button>`
+        : '';
+      const jobHref = resolveJobExternalHref(r);
+      const imgInner = imgUrl
+        ? `<img src="${escapeHtml(imgUrl)}" alt="" class="w-full max-h-72 object-contain" loading="lazy" referrerpolicy="no-referrer" />`
         : '';
       const imgBlock = imgUrl
-        ? `<div class="mt-3 rounded-lg overflow-hidden border border-slate-200 bg-slate-100"><img src="${escapeHtml(imgUrl)}" alt="" class="w-full max-h-72 object-contain" loading="lazy" referrerpolicy="no-referrer" /></div>`
+        ? `<div class="mt-3 rounded-lg overflow-hidden border border-slate-200 bg-slate-100">${imgInner}</div>`
         : '';
-      const rawSrc = String(r.source_url || '').trim();
-      const sourceHref = /^https?:\/\//i.test(rawSrc) ? rawSrc : '';
-      const sourceBlock = sourceHref
-        ? `<p class="mt-2 text-sm"><a href="${escapeHtml(sourceHref)}" class="text-brand-blue font-semibold underline" target="_blank" rel="noopener noreferrer">Voir l’offre sur le site d’origine</a></p>`
+      const titleHtml = `<h3 class="mt-1 font-display font-bold text-lg text-brand-dark leading-snug">${escapeHtml(r.title)}</h3>`;
+      const ctaHit = jobHref
+        ? `<p class="mt-2"><span class="inline-flex items-center gap-2 rounded-lg bg-brand-gold text-brand-dark font-bold text-sm px-4 py-2.5 shadow-sm">Voir l’offre / postuler →</span></p>`
+        : '';
+      const sourceHit = jobHref
+        ? `<p class="mt-2 text-sm"><span class="text-brand-blue font-semibold underline">Ouvrir sur le site de l’employeur</span></p>`
         : '';
       const contact = r.contact_hint
         ? `<p class="mt-2 text-sm text-brand-blue font-medium whitespace-pre-wrap">${escapeHtml(r.contact_hint)}</p>`
         : '';
       const { wa, fb, mail, pageUrl } = shareLinksForPost(r.id, r.title || 'Offre');
       const shareBlock =
-        `<div class="mt-4 pt-3 border-t border-slate-100 relative z-10">` +
+        `<div class="mt-4 pt-3 border-t border-slate-100">` +
         `<p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Partager cette annonce</p>` +
         `<div class="mt-2 flex flex-wrap gap-2">` +
-        `<a href="${wa}" target="_blank" rel="noopener noreferrer" class="jobs-share-wa inline-flex items-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2">WhatsApp</a>` +
-        `<a href="${fb}" target="_blank" rel="noopener noreferrer" class="jobs-share-fb inline-flex items-center gap-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2">Facebook</a>` +
-        `<a href="${mail}" class="jobs-share-mail inline-flex items-center gap-1 rounded-lg bg-slate-600 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-2">E-mail</a>` +
-        `<button type="button" class="jobs-copylink inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2" data-url="${escapeHtml(pageUrl)}">Copier le lien</button>` +
+        `<a href="${wa}" target="_blank" rel="noopener noreferrer" class="cursor-pointer jobs-share-wa inline-flex items-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2">WhatsApp</a>` +
+        `<a href="${fb}" target="_blank" rel="noopener noreferrer" class="cursor-pointer jobs-share-fb inline-flex items-center gap-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2">Facebook</a>` +
+        `<a href="${mail}" class="cursor-pointer jobs-share-mail inline-flex items-center gap-1 rounded-lg bg-slate-600 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-2">E-mail</a>` +
+        `<button type="button" class="cursor-pointer jobs-copylink inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2" data-url="${escapeHtml(pageUrl)}">Copier le lien</button>` +
         `</div></div>`;
       const cat = normalizeOfferCategory(r.offer_category);
       const catLabel = OFFER_CATEGORY_LABELS[cat] || 'Communauté';
       const badge = `<span class="inline-block mt-1.5 text-[10px] font-bold uppercase tracking-wide text-brand-blue bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">${escapeHtml(catLabel)}</span>`;
 
+      const descBlock = `<div class="mt-3 text-sm text-slate-700 whitespace-pre-wrap">${escapeHtml(r.description || '')}</div>`;
+
+      const metaLine =
+        `<p class="text-xs text-slate-500">${escapeHtml(fmtDate(r.created_at))} · ${escapeHtml(r.author_label || 'Membre')}</p>`;
+
+      if (jobHref) {
+        const ariaCard = escapeAttr('Ouvrir cette offre sur le site de l’annonceur (nouvel onglet)');
+        return (
+          `<article id="job-${escapeHtml(r.id)}" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm scroll-mt-28 cursor-pointer group hover:border-brand-gold/50 hover:shadow-md transition sa-job-offer-card" data-post-id="${escapeHtml(r.id)}" data-sa-job-url="${escapeAttr(jobHref)}" aria-label="${ariaCard}">` +
+          `<div class="flex flex-wrap items-start justify-between gap-2">` +
+          `<div class="min-w-0 flex-1">` +
+          metaLine +
+          badge +
+          titleHtml +
+          `</div>` +
+          `<div class="shrink-0">${del}</div></div>` +
+          ctaHit +
+          descBlock +
+          imgBlock +
+          sourceHit +
+          contact +
+          shareBlock +
+          `</article>`
+        );
+      }
+
       return (
-        `<article id="job-${escapeHtml(r.id)}" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm scroll-mt-28" data-post-id="${escapeHtml(r.id)}">` +
+        `<article id="job-${escapeHtml(r.id)}" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm scroll-mt-28 cursor-default" data-post-id="${escapeHtml(r.id)}">` +
         `<div class="flex flex-wrap items-start justify-between gap-2">` +
-        `<div><p class="text-xs text-slate-500">${escapeHtml(fmtDate(r.created_at))} · ${escapeHtml(r.author_label || 'Membre')}</p>` +
+        `<div class="min-w-0 flex-1">` +
+        metaLine +
         badge +
-        `<h3 class="mt-1 font-display font-bold text-lg text-brand-dark">${escapeHtml(r.title)}</h3></div>` +
+        titleHtml +
+        `</div>` +
         `<div class="shrink-0">${del}</div></div>` +
-        `<div class="mt-3 text-sm text-slate-700 whitespace-pre-wrap">${escapeHtml(r.description || '')}</div>` +
+        descBlock +
         imgBlock +
-        sourceBlock +
         contact +
         shareBlock +
         `</article>`

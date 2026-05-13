@@ -315,7 +315,47 @@ if (pageId === 'login') {
     }
   }
 
+  function isRecoveryHash(h) {
+    h = h || (typeof window !== 'undefined' ? window.location.hash : '') || '';
+    return h.indexOf('type=recovery') !== -1 || h.indexOf('type%3Drecovery') !== -1;
+  }
+
+  function getEspacePasswordResetRedirectTo() {
+    try {
+      var u = new URL(window.location.href);
+      u.hash = '';
+      u.search = '';
+      return u.href;
+    } catch (eU) {
+      var o = (window.location && window.location.origin) || 'https://www.studyalready.com';
+      return o + '/espace-etudiant/';
+    }
+  }
+
+  function showPasswordRecoveryUI() {
+    try {
+      window.__saEspacePasswordRecovery = true;
+    } catch (eF) {}
+    var tabBar = document.getElementById('espaceTabBar');
+    if (tabBar) tabBar.classList.add('hidden');
+    if (panelLogin) panelLogin.classList.add('hidden');
+    if (panelSignup) panelSignup.classList.add('hidden');
+    if (personaBlockOuter) personaBlockOuter.classList.add('hidden');
+    var pr = document.getElementById('panelRecovery');
+    if (pr) pr.classList.remove('hidden');
+    hideLoader();
+  }
+
   function switchTab(which) {
+    var prRec = document.getElementById('panelRecovery');
+    var tbBar = document.getElementById('espaceTabBar');
+    if (prRec) prRec.classList.add('hidden');
+    if (tbBar) tbBar.classList.remove('hidden');
+    try {
+      window.__saEspacePasswordRecovery = false;
+    } catch (eRec) {}
+    var fbox = document.getElementById('forgotPasswordBox');
+    if (fbox) fbox.classList.add('hidden');
     if (which === 'login') {
       tabLogin.classList.add('bg-brand-dark', 'text-white');
       tabLogin.classList.remove('bg-slate-100', 'text-slate-700');
@@ -357,7 +397,11 @@ if (pageId === 'login') {
         if (fn) fn.classList.remove('hidden');
       }
       var openSignup = p.get('tab') === 'inscription' || p.get('inscription') === '1' || p.get('signup') === '1';
-      if (openSignup) {
+      var skipSignupForRecovery = false;
+      try {
+        skipSignupForRecovery = window.__saEspaceRecoveryFlow === true;
+      } catch (eSf) {}
+      if (openSignup && !skipSignupForRecovery) {
         switchTab('signup');
       }
       var pm = p.get('persona') || p.get('profil');
@@ -367,7 +411,12 @@ if (pageId === 'login') {
         } catch (eP) {}
       }
       var h = window.location.hash || '';
-      var hasAuthHash = h.indexOf('access_token=') !== -1 || h.indexOf('type=signup') !== -1 || h.indexOf('error=') !== -1;
+      var hasAuthHash =
+        h.indexOf('access_token=') !== -1 ||
+        h.indexOf('type=signup') !== -1 ||
+        h.indexOf('type=recovery') !== -1 ||
+        h.indexOf('type%3Drecovery') !== -1 ||
+        h.indexOf('error=') !== -1;
       if (!hasAuthHash && window.location.search) {
         try {
           window.history.replaceState(null, '', window.location.pathname + h);
@@ -399,6 +448,10 @@ if (pageId === 'login') {
     if (btnLogin) btnLogin.disabled = true;
     if (btnSignupNext) btnSignupNext.disabled = true;
     if (btnSignupSubmit) btnSignupSubmit.disabled = true;
+    var btnSendResetNoSb = document.getElementById('btnSendReset');
+    if (btnSendResetNoSb) btnSendResetNoSb.disabled = true;
+    var btnRecoverySaveNoSb = document.getElementById('btnRecoverySave');
+    if (btnRecoverySaveNoSb) btnRecoverySaveNoSb.disabled = true;
   } else {
     if (banner) banner.classList.add('hidden');
 
@@ -406,7 +459,13 @@ if (pageId === 'login') {
        Supabase JS le parse automatiquement et crée la session.
        On affiche un retour rassurant en attendant la redirection. */
     var hash = window.location.hash || '';
-    if (hash.indexOf('access_token=') !== -1 || hash.indexOf('type=signup') !== -1) {
+    var recoveryHashAtLoad = isRecoveryHash(hash);
+    try {
+      if (recoveryHashAtLoad) window.__saEspaceRecoveryFlow = true;
+    } catch (eRf) {}
+    if (recoveryHashAtLoad && hash.indexOf('access_token=') !== -1) {
+      showBanner(banner, 'ok', 'Lien de réinitialisation accepté. Indiquez votre nouveau mot de passe ci-dessous.');
+    } else if (hash.indexOf('access_token=') !== -1 || hash.indexOf('type=signup') !== -1) {
       showBanner(banner, 'ok', 'Email confirmé ! Connexion en cours…');
     } else if (hash.indexOf('error=') !== -1 || hash.indexOf('error_description=') !== -1) {
       showBanner(banner, 'warn',
@@ -430,12 +489,22 @@ if (pageId === 'login') {
     var fallbackMs = hashAuthPending ? 9000 : 2800;
 
     sb.auth.onAuthStateChange(function (event, session) {
+      if (event === 'PASSWORD_RECOVERY') {
+        clearAuthRevealTimer();
+        authBootstrapDone = true;
+        showPasswordRecoveryUI();
+        return;
+      }
       if (event === 'INITIAL_SESSION') {
         if (authBootstrapDone) return;
         /* Hash OAuth : la session peut arriver un tick après INITIAL null. */
         if (hashAuthPending && !session) return;
         authBootstrapDone = true;
         clearAuthRevealTimer();
+        if (session && recoveryHashAtLoad) {
+          showPasswordRecoveryUI();
+          return;
+        }
         if (session) redirectAfterAuth(sb);
         else hideLoader();
         return;
@@ -449,6 +518,22 @@ if (pageId === 'login') {
         clearAuthRevealTimer();
         if (hashAuthPending && !authBootstrapDone) {
           authBootstrapDone = true;
+        }
+        try {
+          if (window.__saEspacePasswordRecovery) {
+            if (event === 'USER_UPDATED') {
+              try {
+                window.__saEspacePasswordRecovery = false;
+              } catch (ePu) {}
+              redirectAfterAuth(sb);
+            }
+            return;
+          }
+        } catch (ePw) {}
+        if (recoveryHashAtLoad) {
+          authBootstrapDone = true;
+          showPasswordRecoveryUI();
+          return;
         }
         redirectAfterAuth(sb);
       }
@@ -485,6 +570,76 @@ if (pageId === 'login') {
         showBanner(err, 'err', m);
         return;
       }
+      redirectAfterAuth(sb);
+    });
+  }
+
+  var btnForgotToggle = document.getElementById('btnForgotToggle');
+  var btnSendReset = document.getElementById('btnSendReset');
+  var btnRecoverySave = document.getElementById('btnRecoverySave');
+
+  if (btnForgotToggle) {
+    btnForgotToggle.addEventListener('click', function () {
+      var bx = document.getElementById('forgotPasswordBox');
+      if (!bx) return;
+      bx.classList.toggle('hidden');
+    });
+  }
+
+  if (btnSendReset && sb) {
+    btnSendReset.addEventListener('click', async function () {
+      var emailEl = document.getElementById('loginEmail');
+      var email = emailEl ? String(emailEl.value || '').trim() : '';
+      if (!email) {
+        showBanner(err, 'err', 'Indiquez votre adresse e-mail pour recevoir le lien.');
+        return;
+      }
+      btnSendReset.disabled = true;
+      var r = await sb.auth.resetPasswordForEmail(email, { redirectTo: getEspacePasswordResetRedirectTo() });
+      btnSendReset.disabled = false;
+      if (r.error) {
+        var em = r.error.message || 'Envoi impossible pour le moment.';
+        showBanner(err, 'err', em);
+        return;
+      }
+      var fmsg = document.getElementById('forgotPasswordMsg');
+      if (fmsg) {
+        fmsg.textContent =
+          'Si un compte existe pour cette adresse, un e-mail avec un lien vient d’être envoyé. Vérifiez aussi les indésirables.';
+        fmsg.classList.remove('hidden');
+      }
+      showBanner(banner, 'ok', 'Si cette adresse correspond à un compte, consultez votre boîte mail (et le dossier spam).');
+      if (err) {
+        err.textContent = '';
+        err.classList.add('hidden');
+      }
+    });
+  }
+
+  if (btnRecoverySave && sb) {
+    btnRecoverySave.addEventListener('click', async function () {
+      var el1 = document.getElementById('recoveryPassword');
+      var el2 = document.getElementById('recoveryPassword2');
+      var p1 = el1 ? String(el1.value || '') : '';
+      var p2 = el2 ? String(el2.value || '') : '';
+      if (p1.length < 8) {
+        showBanner(err, 'err', 'Le mot de passe doit compter au moins 8 caractères.');
+        return;
+      }
+      if (p1 !== p2) {
+        showBanner(err, 'err', 'Les deux saisies ne correspondent pas.');
+        return;
+      }
+      btnRecoverySave.disabled = true;
+      var r = await sb.auth.updateUser({ password: p1 });
+      btnRecoverySave.disabled = false;
+      if (r.error) {
+        showBanner(err, 'err', r.error.message || 'Mise à jour impossible.');
+        return;
+      }
+      try {
+        window.__saEspacePasswordRecovery = false;
+      } catch (eRecDone) {}
       redirectAfterAuth(sb);
     });
   }

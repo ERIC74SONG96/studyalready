@@ -121,7 +121,10 @@ function resolvePersona(user) {
 }
 
 function displayNameForUser(user, persona) {
-  const meta = (user.user_metadata && user.user_metadata.full_name) || '';
+  const um = (user && user.user_metadata) || {};
+  const pseudo = String(um.pseudo || '').trim();
+  if (pseudo) return pseudo;
+  const meta = um.full_name || '';
   const t = String(meta).trim();
   if (t) return t;
   if (persona === 'visiteur') return 'Invité(e)';
@@ -225,6 +228,8 @@ async function boot() {
 
   if ($('dashName')) $('dashName').textContent = displayNameForUser(currentUser, dashboardPersona);
   if ($('dashEmail')) $('dashEmail').textContent = currentUser.email || '';
+  const um0 = currentUser.user_metadata || {};
+  if ($('dashPseudoInput')) $('dashPseudoInput').value = String(um0.pseudo || '').trim();
   applyPersonaDashboardUi(dashboardPersona);
 
   /* Déconnexion : gérée uniquement par espace-etudiant.mjs (évite deux
@@ -240,6 +245,7 @@ async function boot() {
 
   bindMessageForm();
   bindUploadForm();
+  bindPseudoForm();
 }
 
 /* ---------- DOSSIER ET ÉTAPES ---------- */
@@ -439,6 +445,75 @@ function renderMessage(m) {
       </div>
     </div>
   `;
+}
+
+function bindPseudoForm() {
+  const inp = $('dashPseudoInput');
+  const btn = $('dashPseudoSave');
+  const help = $('dashPseudoHelp');
+  const errBox = $('espaceError');
+  if (!inp || !btn || !sb) return;
+
+  function hideErr() {
+    if (!errBox) return;
+    errBox.textContent = '';
+    errBox.className = 'hidden rounded-xl p-4 text-sm';
+    errBox.classList.add('hidden');
+  }
+
+  function showErr(msg) {
+    if (!errBox) return;
+    errBox.textContent = msg;
+    errBox.className =
+      'rounded-xl p-4 text-sm mb-6 bg-red-50 border border-red-200 text-red-800';
+    errBox.classList.remove('hidden');
+  }
+
+  btn.addEventListener('click', async () => {
+    hideErr();
+    const raw = String(inp.value || '').trim();
+    if (raw.length > 32) {
+      if (help) {
+        help.textContent = '32 caractères maximum.';
+        help.classList.remove('hidden', 'text-emerald-200');
+        help.classList.add('text-amber-200');
+      }
+      return;
+    }
+    if (/[\n\r\t<>]/.test(raw)) {
+      if (help) {
+        help.textContent = 'Caractères non autorisés (retours à la ligne ou chevrons).';
+        help.classList.remove('hidden', 'text-emerald-200');
+        help.classList.add('text-amber-200');
+      }
+      return;
+    }
+    btn.disabled = true;
+    const payload = raw.length ? raw : '';
+    const { data, error } = await sb.auth.updateUser({
+      data: { pseudo: payload },
+    });
+    btn.disabled = false;
+    if (error) {
+      showErr(error.message || 'Enregistrement impossible.');
+      if (help) help.classList.add('hidden');
+      return;
+    }
+    if (data && data.user) currentUser = data.user;
+    if ($('dashName')) $('dashName').textContent = displayNameForUser(currentUser, dashboardPersona);
+    try {
+      if (typeof window !== 'undefined' && window.__saRefreshProfileNav) {
+        window.__saRefreshProfileNav();
+      }
+    } catch (_e) {}
+    if (help) {
+      help.textContent = raw.length
+        ? 'Pseudo enregistré. Il apparaît dans le menu du site (rechargez une page ouverte si besoin).'
+        : 'Pseudo effacé : le menu utilisera de nouveau votre nom ou votre e-mail.';
+      help.classList.remove('hidden', 'text-amber-200');
+      help.classList.add('text-emerald-200');
+    }
+  });
 }
 
 function bindMessageForm() {
