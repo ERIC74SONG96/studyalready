@@ -118,3 +118,148 @@ textarea:focus-visible {
     bottom: 24px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Articles blog — typographie hors plugin « typography » du CDN Tailwind
+   (les classes prose ne sont pas actives sans @tailwindcss/typography).
+   -------------------------------------------------------------------------- */
+
+.sa-blog-article-body {
+  box-sizing: border-box;
+  max-width: 40rem; /* ~64 car., lecture confortable */
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #334155;
+}
+
+.sa-blog-article-body > p {
+  margin: 0 0 1.25rem;
+}
+
+.sa-blog-article-body h2 {
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: #0a2540;
+  margin: 3rem 0 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #e2e8f0;
+  scroll-margin-top: 6.5rem;
+}
+
+.sa-blog-article-body h3 {
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0a2540;
+  margin: 2rem 0 0.65rem;
+}
+
+.sa-blog-article-body ul,
+.sa-blog-article-body ol {
+  margin: 1rem 0 1.25rem;
+  padding-left: 1.35rem;
+}
+
+.sa-blog-article-body li {
+  margin: 0.45rem 0;
+}
+
+.sa-blog-article-body ul li::marker {
+  color: #f5b800;
+}
+
+.sa-blog-article-body ol li::marker {
+  color: #f5b800;
+  font-weight: 700;
+}
+
+.sa-blog-article-body a {
+  color: #1e40af;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sa-blog-article-body a:hover {
+  color: #1e3a8a;
+}
+
+.sa-blog-article-body strong {
+  color: #0a2540;
+  font-weight: 600;
+}
+
+.sa-blog-article-body em {
+  font-style: italic;
+}
+
+.sa-blog-article-body sup {
+  font-size: 0.72em;
+  vertical-align: super;
+}
+
+/* Encadrés « À retenir » / crème dans le flux article */
+.sa-blog-article-body .not-prose {
+  box-sizing: border-box;
+}
+
+/* Sommaire */
+.sa-blog-sommaire {
+  margin: 0 0 2.75rem;
+  padding: 1.25rem 1.35rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+@media (min-width: 640px) {
+  .sa-blog-sommaire {
+    padding: 1.5rem 1.75rem;
+  }
+}
+
+.sa-blog-sommaire-title {
+  margin: 0 0 1rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1e40af;
+}
+
+.sa-blog-sommaire-ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style-type: decimal;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #475569;
+}
+
+.sa-blog-sommaire-ol li {
+  margin: 0.45rem 0;
+  padding-left: 0.25rem;
+}
+
+.sa-blog-sommaire-ol a {
+  color: #1e40af;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sa-blog-sommaire-ol a:hover {
+  text-decoration: underline;
+}
+
+/* Chapô hors grille typographique (optionnel sur les articles) */
+.sa-blog-lead {
+  margin: 0 0 2.5rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: #475569;
+}
