@@ -17,7 +17,10 @@
         '<span class="inline-flex w-9 h-9 rounded-lg bg-brand-dark items-center justify-center shrink-0"><span class="text-brand-gold font-bold text-sm font-display">SA</span></span>' +
         '<span class="font-display font-bold text-lg text-brand-dark truncate">StudyAlready <span class="text-slate-500 font-semibold text-sm">· Communauté</span></span>' +
       '</span>' +
-      '<a href="' + P + 'espace-etudiant/" class="text-sm font-semibold text-brand-blue hover:underline shrink-0">Mon espace</a>' +
+      '<span class="flex items-center gap-3 shrink-0">' +
+        '<a href="' + P + 'espace-etudiant/dashboard.html" class="sa-profile-nav hidden text-sm font-semibold text-brand-dark hover:underline">Mon profil</a>' +
+        '<a href="' + P + 'espace-etudiant/" class="text-sm font-semibold text-brand-blue hover:underline">Mon espace</a>' +
+      '</span>' +
     '</nav>';
 
   var headerHTML =
@@ -74,6 +77,9 @@
 
         '<li>' + link(P + 'blog/', 'Blog', 'hover:text-brand-gold transition') + '</li>' +
         '<li>' + link(P + 'espace-etudiant/', 'Mon espace', 'hover:text-brand-gold transition') + '</li>' +
+        '<li class="sa-profile-nav hidden lg:flex items-center">' +
+          '<a href="' + P + 'espace-etudiant/dashboard.html" class="inline-flex items-center gap-2 rounded-full border border-brand-dark bg-white px-4 py-2 text-sm font-semibold text-brand-dark hover:bg-brand-cream transition" title="Ouvrir mon tableau de bord">Mon profil</a>' +
+        '</li>' +
       '</ul>' +
 
       '<a href="' + P + 'index.html#contact" class="hidden sm:inline-flex items-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark font-semibold px-5 py-2.5 rounded-full text-sm transition shadow-sm">' +
@@ -129,6 +135,7 @@
 
       '<a href="' + P + 'blog/" class="block py-2 border-t border-slate-100">Blog</a>' +
       '<a href="' + P + 'espace-etudiant/" class="block py-2 border-t border-slate-100">Espace personnel</a>' +
+      '<a href="' + P + 'espace-etudiant/dashboard.html" class="sa-profile-nav hidden block py-2 border-t border-slate-100 font-semibold text-brand-dark">Mon profil</a>' +
       '<a href="' + P + 'index.html#contact" class="block py-3 border-t border-slate-100 text-brand-gold font-semibold">Contact →</a>' +
     '</div>';
 
@@ -158,6 +165,26 @@
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+
+    (function loadSaNavSession() {
+      if (window.__saRefreshProfileNav) {
+        window.__saRefreshProfileNav();
+        return;
+      }
+      if (window.__saNavSessionScriptLoading) return;
+      window.__saNavSessionScriptLoading = true;
+      var scr = document.createElement('script');
+      scr.async = true;
+      scr.src = P + 'assets/js/sa-nav-session.js';
+      scr.onload = function () {
+        window.__saNavSessionScriptLoading = false;
+        if (window.__saRefreshProfileNav) window.__saRefreshProfileNav();
+      };
+      scr.onerror = function () {
+        window.__saNavSessionScriptLoading = false;
+      };
+      document.head.appendChild(scr);
+    })();
   }
 
   if (document.readyState === 'loading') {

@@ -61,7 +61,8 @@ function clearAllGoTrueAuthLocalStorage() {
 
 /**
  * Après une session valide (connexion sur Mon espace, lien email, etc.) :
- * administrateurs → /admin.html ; sinon → tableau de bord (/espace-etudiant/dashboard.html).
+ * administrateurs → /admin.html ; sinon → accueil du site (l’utilisateur ouvre son tableau
+ * de bord via « Mon profil » dans la navigation).
  */
 function redirectAfterAuth(sb) {
   if (!sb) return Promise.resolve();
@@ -72,14 +73,20 @@ function redirectAfterAuth(sb) {
   try {
     window.history.replaceState(null, '', window.location.pathname);
   } catch (e) {}
+  var home = '/index.html';
+  try {
+    if (window.location && window.location.origin) {
+      home = window.location.origin + '/index.html';
+    }
+  } catch (e0) {}
   return sb.rpc('is_admin').then(function (a) {
     if (!a.error && a.data === true) {
       window.location.replace('/admin.html');
     } else {
-      window.location.replace('/espace-etudiant/dashboard.html');
+      window.location.replace(home);
     }
   }).catch(function () {
-    window.location.replace('/espace-etudiant/dashboard.html');
+    window.location.replace(home);
   });
 }
 

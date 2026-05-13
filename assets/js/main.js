@@ -14,8 +14,9 @@
 
 /* Filet de sécurité : si un utilisateur arrive sur n'importe quelle page
    avec un token Supabase dans l'URL (confirmation email, magic link,
-   reset password), on le redirige vers /espace-etudiant/ qui sait gérer
-   ces tokens et l'envoie vers son dashboard.
+   reset password), on le redirige vers /espace-etudiant/ qui gère la
+   session puis renvoie vers l'accueil (l'utilisateur ouvre son tableau
+   de bord via « Mon profil »).
    Couvre le cas où la "Site URL" Supabase ne pointe pas exactement vers
    l'espace personnel (/espace-etudiant/). */
 (function handleSupabaseAuthCallback() {
