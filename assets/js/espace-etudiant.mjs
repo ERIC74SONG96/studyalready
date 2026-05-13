@@ -2,7 +2,7 @@
  * Espace personnel StudyAlready — authentification Supabase (client uniquement).
  * Charger après assets/js/config.js. data-espace-page="login" | "dashboard"
  */
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
+import { createClient } from '/assets/js/vendor/supabase-js-2.49.4.mjs';
 import { syncUserSiteContextRow } from './user-site-context.mjs';
 
 function getConfig() {

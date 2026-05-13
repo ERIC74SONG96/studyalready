@@ -5,7 +5,7 @@
  * ses messages, ses documents et l'historique de ses demandes.
  * Une seule instance Supabase partagée via window.__saEspaceSb (voir espace-etudiant.mjs).
  */
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
+import { createClient } from '/assets/js/vendor/supabase-js-2.49.4.mjs';
 import { syncUserSiteContextRow } from './user-site-context.mjs';
 
 const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};

@@ -2,8 +2,9 @@
  * Mur des offres job étudiant — lecture publique, publication réservée aux comptes connectés.
  * Fichier renommé (student-jobs.mjs) pour éviter le cache navigateur/CDN sur l’ancien nom.
  * Requiert les migrations 010 + 014 (lien) + 015 (catégories) et le bucket Storage public `job-offers`.
- * Client Supabase : d’abord `/assets/js/vendor/supabase-js-2.49.4.mjs`, puis CDN en secours (rebuild : tools/build-supabase-vendor.ps1).
+ * Client Supabase : `sa-supabase-loader.mjs` (vendor local puis CDN).
  */
+import { loadSupabaseCreateClient } from './sa-supabase-loader.mjs';
 
 const BUCKET = 'job-offers';
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
@@ -21,31 +22,6 @@ function getSupabaseConfig() {
     return null;
   }
   return { url: String(url).trim(), key: String(key).trim() };
-}
-
-async function loadSupabaseCreateClient() {
-  /** Bundle ESM hébergé sur le site (évite dépendance aux CDN publics). Rebuild : tools/build-supabase-vendor.ps1 */
-  const localVendor =
-    typeof window !== 'undefined' && window.location && window.location.origin
-      ? new URL('/assets/js/vendor/supabase-js-2.49.4.mjs', window.location.origin).href
-      : '/assets/js/vendor/supabase-js-2.49.4.mjs';
-  const urls = [
-    localVendor,
-    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm',
-    'https://esm.sh/@supabase/supabase-js@2.49.4',
-    'https://unpkg.com/@supabase/supabase-js@2.49.4/+esm',
-  ];
-  let lastErr = null;
-  for (let i = 0; i < urls.length; i++) {
-    try {
-      const mod = await import(urls[i]);
-      if (mod && typeof mod.createClient === 'function') return mod.createClient;
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-  const msg = lastErr && lastErr.message ? String(lastErr.message) : 'import';
-  throw new Error('Tous les miroirs CDN ont échoué (' + msg + ').');
 }
 
 async function ensureSb() {
