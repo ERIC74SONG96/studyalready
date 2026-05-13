@@ -104,12 +104,33 @@
         return;
       }
 
-      sb.auth.getSession().then(function (r) {
-        var session = r && r.data && r.data.session;
-        if (!session) return;
-        sb.rpc('is_admin').then(function (a) {
-          if (!a.error && a.data === true) window.location.replace('admin.html');
+      var loginJumpDone = false;
+      var loginFbTimer = setTimeout(function () {
+        if (loginJumpDone) return;
+        sb.auth.getSession().then(function (r) {
+          if (loginJumpDone) return;
+          var session = r && r.data && r.data.session;
+          tryAdminAutoJump(session);
         });
+      }, 5000);
+
+      function tryAdminAutoJump(session) {
+        if (loginJumpDone || !session) return;
+        sb.rpc('is_admin').then(function (a) {
+          if (loginJumpDone) return;
+          if (!a.error && a.data === true) {
+            loginJumpDone = true;
+            try {
+              clearTimeout(loginFbTimer);
+            } catch (eFb) {}
+            window.location.replace('admin.html');
+          }
+        });
+      }
+
+      sb.auth.onAuthStateChange(function (event, session) {
+        if (event !== 'INITIAL_SESSION') return;
+        tryAdminAutoJump(session);
       });
 
       form.addEventListener('submit', function (e) {

@@ -76,9 +76,25 @@
   }
 
   // -------------------- Auth gate --------------------
+  /* INITIAL_SESSION évite la course getSession() : session parfois « null » un
+     instant puis présente → boucle admin.html ↔ admin-login.html (clignotement). */
 
-  sb.auth.getSession().then(function (r) {
-    var session = r && r.data && r.data.session;
+  var gateDecided = false;
+  var gateFallbackTimer = setTimeout(function () {
+    if (gateDecided) return;
+    sb.auth.getSession().then(function (r) {
+      if (gateDecided) return;
+      var session = r && r.data && r.data.session;
+      runAdminGate(session);
+    });
+  }, 4500);
+
+  function runAdminGate(session) {
+    if (gateDecided) return;
+    gateDecided = true;
+    try {
+      clearTimeout(gateFallbackTimer);
+    } catch (e0) {}
     if (!session) {
       window.location.replace('admin-login.html');
       return;
@@ -104,6 +120,11 @@
       app.classList.remove('hidden');
       initApp();
     });
+  }
+
+  sb.auth.onAuthStateChange(function (event, session) {
+    if (event !== 'INITIAL_SESSION') return;
+    runAdminGate(session);
   });
 
   $('logoutBtn').addEventListener('click', function () {

@@ -86,21 +86,14 @@ async function boot() {
     window.location.replace('/espace-etudiant/');
     return;
   }
-  try {
-    const { data: isAdm, error: admErr } = await sb.rpc('is_admin');
-    if (!admErr && isAdm === true) {
-      window.location.replace('/admin.html');
-      return;
-    }
-  } catch (_e) {
-    /* reste sur l'espace étudiant */
-  }
   currentUser = session.user;
 
   /* En-tête (déjà géré par espace-etudiant.mjs, on remplit aussi par sécurité) */
   const meta = (currentUser.user_metadata && currentUser.user_metadata.full_name) || '';
   if ($('dashName')) $('dashName').textContent = meta || 'Étudiant(e)';
   if ($('dashEmail')) $('dashEmail').textContent = currentUser.email || '';
+
+  /* Pas de redirection vers admin.html : « Mon espace » = parcours étudiant uniquement. */
 
   /* Déconnexion : gérée uniquement par espace-etudiant.mjs (évite deux
      instances Supabase + double signOut en parallèle). */
