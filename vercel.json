@@ -18,6 +18,18 @@
       ]
     },
     {
+      "source": "/jobs-etudiants.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/offres-etudiants.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
       "source": "/assets/js/(.*)",
       "headers": [
         {
@@ -33,9 +45,27 @@
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/assets/img/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
+      ]
+    },
+    {
+      "source": "/assets/social/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
+      ]
+    },
+    {
+      "source": "/assets/docs/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
+    },
+    {
+      "source": "/assets/data/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, s-maxage=300, stale-while-revalidate=86400" }
       ]
     }
   ],
@@ -76,7 +106,7 @@
       "destination": "/espace-etudiant/?vue=communaute&tab=inscription",
       "permanent": false
     },
-    { "source": "/jobs-etudiants", "destination": "/jobs-etudiants.html", "permanent": false },
+    { "source": "/jobs-etudiants", "destination": "/offres-etudiants.html", "permanent": false },
     { "source": "/contact", "destination": "/#contact", "permanent": false },
     { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true },
     {
