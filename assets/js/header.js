@@ -34,6 +34,7 @@
         '<li>' + link(P + 'index.html', 'Accueil', 'hover:text-brand-gold transition') + '</li>' +
         '<li>' + link(P + 'qui-sommes-nous.html', 'Qui sommes-nous ?', 'hover:text-brand-gold transition') + '</li>' +
         '<li>' + link(P + 'equivalence.html', 'Équivalence', 'hover:text-brand-gold transition') + '</li>' +
+        '<li>' + link('/blog#bourses', 'Bourses', 'hover:text-brand-gold transition') + '</li>' +
 
         '<li class="relative group">' +
           '<button type="button" aria-haspopup="true" class="hover:text-brand-gold transition inline-flex items-center gap-1">' +
@@ -97,6 +98,7 @@
       '<a href="' + P + 'index.html" class="block py-2">Accueil</a>' +
       '<a href="' + P + 'qui-sommes-nous.html" class="block py-2">Qui sommes-nous ?</a>' +
       '<a href="' + P + 'equivalence.html" class="block py-2">Équivalence (guide)</a>' +
+      '<a href="/blog#bourses" class="block py-2">Bourses</a>' +
 
       '<details class="border-t border-slate-100 mt-1">' +
         '<summary class="py-2 cursor-pointer list-none flex items-center justify-between">' +
