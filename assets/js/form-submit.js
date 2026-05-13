@@ -56,10 +56,22 @@
   }
 
   function fallbackMessage() {
+    var em =
+      (typeof window !== 'undefined' &&
+        window.STUDYALREADY_CONFIG &&
+        window.STUDYALREADY_CONFIG.CONTACT_EMAIL) ||
+      'contact@studyalready.com';
+    var subj = encodeURIComponent('StudyAlready - contact site');
     return (
       'L’envoi automatique est temporairement indisponible. ' +
       'En attendant, écrivez-nous : ' +
-      '<a href="mailto:studyalready8@gmail.com?subject=StudyAlready%20-%20contact%20site" class="underline font-semibold text-brand-dark">studyalready8@gmail.com</a> ' +
+      '<a href="mailto:' +
+      escapeHtml(em) +
+      '?subject=' +
+      subj +
+      '" class="underline font-semibold text-brand-dark">' +
+      escapeHtml(em) +
+      '</a> ' +
       'ou <a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="underline font-semibold">WhatsApp</a>.'
     );
   }

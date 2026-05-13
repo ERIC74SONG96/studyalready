@@ -47,7 +47,7 @@ C'est tout — les politiques d'accès (RLS) s'appliquent automatiquement grâce
 ### 3. Tester côté étudiant
 
 1. Ouvrez `https://www.studyalready.com/espace-etudiant/` en navigation privée.
-2. Onglet « Créer un compte » → renseignez un email à vous (pas `studyalready8@gmail.com`).
+2. Onglet « Créer un compte » → renseignez un email à vous (pas `contact@studyalready.com`).
 3. Si la confirmation email est activée dans Supabase Auth, cliquez sur le lien reçu.
 4. Connectez-vous → vous arrivez sur le dashboard.
 5. Vous devez voir un dossier **« Mon parcours StudyAlready »** avec 4 étapes (la 1ʳᵉ marquée terminée, la 2ᵉ en cours).
@@ -93,8 +93,8 @@ C'est tout — les politiques d'accès (RLS) s'appliquent automatiquement grâce
 
 La migration `007_notifications_dossier.sql` ajoute deux triggers Resend :
 
-- email à `studyalready8@gmail.com` quand un étudiant envoie un **message** ;
-- email à `studyalready8@gmail.com` quand un étudiant téléverse un **document**.
+- email à `contact@studyalready.com` quand un étudiant envoie un **message** ;
+- email à `contact@studyalready.com` quand un étudiant téléverse un **document**.
 
 Pour l'activer :
 

@@ -98,7 +98,7 @@ Puis re-uploader le `.htaccess` modifié.
 
 ### Étape 5 — Créer les emails
 Dans le panel LWS → **Emails / Comptes mail** :
-- `studyalready8@gmail.com` (boîte principale actuelle)
+- `contact@studyalready.com` (boîte principale actuelle)
 - `no-reply@studyalready.com` (réservé aux envois automatiques si vous activez un jour le domaine personnalisé)
 
 Ces deux adresses sont déjà configurées dans `php/contact.php` et `php/prequalification.php` — aucune modification nécessaire si vous gardez ces noms.
@@ -106,7 +106,7 @@ Ces deux adresses sont déjà configurées dans `php/contact.php` et `php/prequa
 ### Étape 6 — Tester les formulaires
 1. Aller sur `https://studyalready.com`.
 2. Envoyer un test depuis le formulaire de contact.
-3. Vérifier la réception sur `studyalready8@gmail.com`.
+3. Vérifier la réception sur `contact@studyalready.com`.
 4. Refaire un test avec `https://studyalready.com/prequalification-dossier.html`.
 
 Les soumissions de formulaire sont stockées dans la base **Supabase** (tables `profiles` et `form_submissions`). Pour les consulter : Supabase Dashboard → Table Editor → `form_submissions`. Aucune dépendance à un service tiers d'email.

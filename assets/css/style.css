@@ -74,3 +74,47 @@ textarea:focus-visible {
   outline: 2px solid #f5b800;
   outline-offset: 2px;
 }
+
+/* Bouton WhatsApp flottant (main.js — hors chemins contenant « admin ») */
+.sa-float-wa {
+  position: fixed;
+  right: 14px;
+  bottom: 88px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 9999px;
+  background: #128c7e;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.sa-float-wa:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+.sa-float-wa__inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sa-float-wa__icon {
+  display: flex;
+  line-height: 0;
+}
+.sa-float-wa__label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  opacity: 0.95;
+}
+@media (min-width: 640px) {
+  .sa-float-wa {
+    bottom: 24px;
+  }
+}

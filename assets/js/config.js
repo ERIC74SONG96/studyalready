@@ -14,7 +14,7 @@
 
 window.STUDYALREADY_CONFIG = {
   // Email de contact (affiché dans les liens mailto de secours)
-  CONTACT_EMAIL: 'studyalready8@gmail.com',
+  CONTACT_EMAIL: 'contact@studyalready.com',
 
   // --- Supabase (cloud, projet UE) ---
   SUPABASE_URL: 'https://nevdhyekybmtvejhwhxz.supabase.co',

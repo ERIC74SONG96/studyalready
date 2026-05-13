@@ -29,6 +29,7 @@
 
       '<ul class="hidden lg:flex items-center gap-6 text-sm font-medium">' +
         '<li>' + link(P + 'index.html', 'Accueil', 'hover:text-brand-gold transition') + '</li>' +
+        '<li>' + link(P + 'qui-sommes-nous.html', 'Qui sommes-nous ?', 'hover:text-brand-gold transition') + '</li>' +
         '<li>' + link(P + 'equivalence.html', 'Équivalence', 'hover:text-brand-gold transition') + '</li>' +
 
         '<li class="relative group">' +
@@ -87,6 +88,7 @@
 
     '<div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-slate-200 px-4 py-3 text-sm font-medium max-h-[80vh] overflow-y-auto">' +
       '<a href="' + P + 'index.html" class="block py-2">Accueil</a>' +
+      '<a href="' + P + 'qui-sommes-nous.html" class="block py-2">Qui sommes-nous ?</a>' +
       '<a href="' + P + 'equivalence.html" class="block py-2">Équivalence (guide)</a>' +
 
       '<details class="border-t border-slate-100 mt-1">' +

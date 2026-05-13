@@ -5,7 +5,7 @@
 -- Réutilise la fonction public.send_admin_email() définie dans
 -- la migration 005 (Resend + pg_net).
 --
--- Déclenche un email à studyalready8@gmail.com :
+-- Déclenche un email à contact@studyalready.com :
 --   - quand un étudiant envoie un message via son dashboard ;
 --   - quand un étudiant téléverse un document.
 --
@@ -180,7 +180,7 @@ CREATE TRIGGER trg_dossier_document_notify
 -- Test rapide (après exécution) :
 --   1. Connectez-vous comme étudiant sur /espace-etudiant/
 --   2. Onglet "Messages" → envoyez un message court
---   3. Sous 30 secondes, un email arrive sur studyalready8@gmail.com
+--   3. Sous 30 secondes, un email arrive sur contact@studyalready.com
 --   4. Pareil pour un upload dans l'onglet "Documents"
 --
 -- Vérifier les requêtes envoyées :

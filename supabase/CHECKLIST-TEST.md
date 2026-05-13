@@ -64,7 +64,7 @@ Aller dans **Supabase → Storage** :
 
 ## 8. Test email admin
 
-- [ ] Vérifier votre boîte mail (`studyalready8@gmail.com`)
+- [ ] Vérifier votre boîte mail (`contact@studyalready.com`)
 - [ ] Vous recevez un email automatique « Nouvelle demande StudyAlready » avec les infos du test 7
 - [ ] Si pas reçu après 1 minute, exécuter cette requête dans Supabase SQL :
   ```sql
@@ -80,7 +80,7 @@ Aller dans **Supabase → Storage** :
 
 - [ ] Sur le dashboard étudiant, onglet « Messages »
 - [ ] Envoyer un message test
-- [ ] Vérifier la boîte `studyalready8@gmail.com` → email « Nouveau message d'un étudiant »
+- [ ] Vérifier la boîte `contact@studyalready.com` → email « Nouveau message d'un étudiant »
 
 ## 10. Test dashboard admin
 
