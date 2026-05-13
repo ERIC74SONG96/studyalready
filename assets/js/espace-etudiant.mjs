@@ -125,8 +125,14 @@ if (pageId === 'login') {
   }
 
   function hideLoader() {
-    if (loader && loader.parentNode) {
-      loader.parentNode.removeChild(loader);
+    if (typeof window !== 'undefined' && window.__saEspaceAuthRedirect) return;
+    if (!loader || !loader.parentNode) return;
+    loader.parentNode.removeChild(loader);
+    try {
+      requestAnimationFrame(function () {
+        applyEspaceUrlMode();
+      });
+    } catch (e3) {
       applyEspaceUrlMode();
     }
   }
@@ -159,30 +165,45 @@ if (pageId === 'login') {
       }
     }
 
-    sb.auth.getSession().then(function (res) {
-      if (res.data && res.data.session) {
-        clearAuthRevealTimer();
-        redirectAfterAuth(sb);
-      } else {
-        clearAuthRevealTimer();
-        hideLoader();
-      }
-    }, function () {
-      clearAuthRevealTimer();
-      hideLoader();
-    });
+    /* Un seul flux d’amorçage : INITIAL_SESSION (Supabase v2). Évite la course
+       getSession + onAuthStateChange + timer qui retiraient le loader trop tôt. */
+    var authBootstrapDone = false;
+    var hashAuthPending =
+      hash.indexOf('access_token=') !== -1 || hash.indexOf('type=signup') !== -1;
+    var fallbackMs = hashAuthPending ? 9000 : 2800;
 
-    sb.auth.onAuthStateChange(function (_evt, session) {
-      if (session) {
+    sb.auth.onAuthStateChange(function (event, session) {
+      if (event === 'INITIAL_SESSION') {
+        if (authBootstrapDone) return;
+        /* Hash OAuth : la session peut arriver un tick après INITIAL null. */
+        if (hashAuthPending && !session) return;
+        authBootstrapDone = true;
         clearAuthRevealTimer();
+        if (session) redirectAfterAuth(sb);
+        else hideLoader();
+        return;
+      }
+      if (
+        session &&
+        (event === 'SIGNED_IN' ||
+          event === 'TOKEN_REFRESHED' ||
+          event === 'USER_UPDATED')
+      ) {
+        clearAuthRevealTimer();
+        if (hashAuthPending && !authBootstrapDone) {
+          authBootstrapDone = true;
+        }
         redirectAfterAuth(sb);
       }
     });
 
     authRevealTimer = setTimeout(function () {
       authRevealTimer = null;
+      if (authBootstrapDone) return;
+      authBootstrapDone = true;
+      clearAuthRevealTimer();
       hideLoader();
-    }, 2500);
+    }, fallbackMs);
   }
 
   if (tabLogin && tabSignup) {
