@@ -33,8 +33,8 @@ function clearSupabaseAuthStorageForUrl(supabaseUrl) {
 }
 
 /**
- * Après une session valide sur l'espace étudiant : toujours le tableau de bord étudiant.
- * L'administration reste sur admin-login.html / admin.html (lien dédié).
+ * Après une session valide (connexion sur Mon espace, lien email, etc.) :
+ * administrateurs → /admin.html ; sinon → tableau de bord étudiant.
  */
 function redirectAfterAuth(sb) {
   if (!sb) return Promise.resolve();
@@ -45,12 +45,15 @@ function redirectAfterAuth(sb) {
   try {
     window.history.replaceState(null, '', window.location.pathname);
   } catch (e) {}
-  try {
+  return sb.rpc('is_admin').then(function (a) {
+    if (!a.error && a.data === true) {
+      window.location.replace('/admin.html');
+    } else {
+      window.location.replace('/espace-etudiant/dashboard.html');
+    }
+  }).catch(function () {
     window.location.replace('/espace-etudiant/dashboard.html');
-  } catch (e2) {
-    window.location.href = '/espace-etudiant/dashboard.html';
-  }
-  return Promise.resolve();
+  });
 }
 
 function showBanner(el, type, text) {
