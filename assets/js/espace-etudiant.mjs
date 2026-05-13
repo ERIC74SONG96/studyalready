@@ -17,6 +17,21 @@ function getSupabase() {
   return createClient(String(url).trim(), String(key).trim());
 }
 
+/** Supprime les clés localStorage du projet (filet si deux clients Supabase se battaient). */
+function clearSupabaseAuthStorageForUrl(supabaseUrl) {
+  if (!supabaseUrl || typeof localStorage === 'undefined') return;
+  try {
+    var host = String(supabaseUrl).replace(/^https?:\/\//i, '').split('/')[0];
+    var ref = host.split('.')[0];
+    if (!ref) return;
+    var prefix = 'sb-' + ref + '-';
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf(prefix) === 0) localStorage.removeItem(k);
+    }
+  } catch (e) {}
+}
+
 /**
  * Après une session valide : si l'utilisateur est dans public.admins,
  * redirige vers le dashboard admin ; sinon vers l'espace étudiant.
@@ -60,6 +75,9 @@ function page() {
 }
 
 var sb = getSupabase();
+if (typeof window !== 'undefined') {
+  window.__saEspaceSb = sb;
+}
 var pageId = page();
 
 if (pageId === 'login') {
@@ -338,12 +356,14 @@ if (pageId === 'dashboard') {
       }
       Promise.resolve()
         .then(function () {
-          return sb.auth.signOut({ scope: 'local' });
-        })
-        .then(function () {
-          go();
+          return sb.auth.signOut({ scope: 'global' });
         })
         .catch(function () {
+          return sb.auth.signOut({ scope: 'local' });
+        })
+        .catch(function () {})
+        .then(function () {
+          clearSupabaseAuthStorageForUrl(getConfig().SUPABASE_URL);
           go();
         });
     });

@@ -3,18 +3,21 @@
  *
  * Charge le dossier de l'utilisateur connecté, ses étapes,
  * ses messages, ses documents et l'historique de ses demandes.
- * Dépend de assets/js/config.js pour les clés Supabase et
- * de l'auth déjà gérée par espace-etudiant.mjs.
+ * Une seule instance Supabase partagée via window.__saEspaceSb (voir espace-etudiant.mjs).
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
 
 const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};
+/* Une seule instance avec espace-etudiant.mjs : sinon signOut() sur l’une laisse
+   l’autre réécrire la session dans localStorage (déconnexion « impossible »). */
 const sb =
-  cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY &&
-  String(cfg.SUPABASE_URL).indexOf('REMPLACER') === -1 &&
-  String(cfg.SUPABASE_ANON_KEY).indexOf('REMPLACER') === -1
-    ? createClient(String(cfg.SUPABASE_URL).trim(), String(cfg.SUPABASE_ANON_KEY).trim())
-    : null;
+  typeof window !== 'undefined' && window.__saEspaceSb
+    ? window.__saEspaceSb
+    : cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY &&
+        String(cfg.SUPABASE_URL).indexOf('REMPLACER') === -1 &&
+        String(cfg.SUPABASE_ANON_KEY).indexOf('REMPLACER') === -1
+      ? createClient(String(cfg.SUPABASE_URL).trim(), String(cfg.SUPABASE_ANON_KEY).trim())
+      : null;
 
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (s) =>
