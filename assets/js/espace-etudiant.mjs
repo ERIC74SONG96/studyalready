@@ -307,7 +307,7 @@ if (pageId === 'login') {
       tabLogin.classList.add('bg-slate-100', 'text-slate-700');
       panelSignup.classList.remove('hidden');
       panelLogin.classList.add('hidden');
-      if (personaBlockOuter) personaBlockOuter.classList.add('hidden');
+      if (personaBlockOuter) personaBlockOuter.classList.remove('hidden');
       resetSignupWizard();
     }
     if (err) { err.textContent = ''; err.classList.add('hidden'); }
