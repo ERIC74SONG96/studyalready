@@ -81,7 +81,7 @@ const PERSONA_WELCOME = {
   travailleur:
     'Accès rapide à nos guides et services sur place en Belgique. Utilisez les messages pour une question ciblée ou un accompagnement professionnel.',
   visiteur:
-    'Centralisez vos demandes passées par le site et les liens utiles. Pour un parcours dossier complet (FWB, visa, etc.), contactez-nous via le site ou WhatsApp — nous activerons le suivi adapté si besoin.',
+    'Centralisez vos demandes passées par le site et les liens utiles. Le blog, les guides et les raccourcis utiles sont dans l\'onglet Services. Pour un parcours dossier complet (FWB, visa, etc.), contactez-nous via le site ou WhatsApp — nous activerons le suivi adapté si besoin.',
 };
 
 const PERSONA_DOSSIER_NOTE = {
@@ -91,7 +91,7 @@ const PERSONA_DOSSIER_NOTE = {
   travailleur:
     'Les étapes ci-dessous correspondent surtout aux parcours « dossier » (équivalence, visa, etc.). Si vous n\'avez pas ce type de suivi avec nous, privilégiez l\'onglet « Services ».',
   visiteur:
-    'Ce bloc détaille un parcours accompagné. S\'il est vide, c\'est normal : utilisez « Mes demandes » pour vos formulaires et « Services » pour explorer le site.',
+    'Ce bloc détaille un parcours accompagné. S\'il est vide, c\'est normal : utilisez « Mes demandes » pour vos formulaires et « Services » pour le blog, les guides et le reste du site.',
 };
 
 const DEFAULT_TAB_BY_PERSONA = {
