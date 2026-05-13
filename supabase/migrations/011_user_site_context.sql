@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public.user_site_context (
 CREATE INDEX IF NOT EXISTS idx_user_site_context_location ON public.user_site_context (signup_location);
 CREATE INDEX IF NOT EXISTS idx_user_site_context_persona ON public.user_site_context (espace_persona);
 
-COMMENT ON TABLE public.user_site_context IS 'Lieu déclaré à l''inscription (Belgique / hors) et persona StudyAlready — source pour accueil personnalisé, emails, règles métier.';
+COMMENT ON TABLE public.user_site_context IS 'Lieu déclaré à l''inscription (Belgique / hors) et persona StudyAlready — source pour accueil personnalisé, emails, règles métier. Données déclaratives : pas de vérification obligatoire du lieu.';
 
 ALTER TABLE public.user_site_context ENABLE ROW LEVEL SECURITY;
 

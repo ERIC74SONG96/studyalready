@@ -1,6 +1,6 @@
 /**
- * Table public.user_site_context : lieu d'inscription (belgique / hors) + mode étudiant/pro + persona.
- * Sert de source structurée pour personnalisation (accueil, contenus, notifications).
+ * Table public.user_site_context : déclaration à l'inscription (Belgique / hors + mode étudiant/pro + persona).
+ * Aucune vérification documentaire imposée — personnalisation de l'UI et ciblage des contenus.
  */
 const PERSONAS = ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'];
 
