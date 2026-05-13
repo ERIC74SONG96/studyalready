@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var mobileMenu = document.getElementById('mobileMenu');
     if (menuBtn && mobileMenu) {
       menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('hidden'); });
-      mobileMenu.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', function () { mobileMenu.classList.add('hidden'); });
+      mobileMenu.addEventListener('click', function (ev) {
+        if (ev.target.closest('a')) mobileMenu.classList.add('hidden');
       });
     }
   }
