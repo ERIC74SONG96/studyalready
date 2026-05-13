@@ -1,6 +1,19 @@
 ESPACE ETUDIANT — Configuration Supabase
 ========================================
 
+⚠ NE PAS OUVRIR LE SITE EN file:/// (double-clic sur le dossier dans l’explorateur)
+  Le navigateur affiche alors une « liste de fichiers » au lieu de la page, et
+  la connexion Supabase + les redirections (/admin.html, etc.) ne fonctionnent pas.
+
+  À la place :
+  - Production : https://www.studyalready.com/espace-etudiant/
+  - En local : lancer un petit serveur HTTP à la racine du projet StudyAlready, ex. :
+      cd Desktop\Studyalready
+      npx --yes serve -p 8000
+    puis ouvrir http://localhost:8000/espace-etudiant/
+    (ou ouvrir directement …/espace-etudiant/index.html dans la barre d’adresse
+     après avoir démarré le serveur — jamais file:///C:/…)
+
 ✅ TERMINÉ : Supabase est déjà configuré dans assets/js/config.js
    (SUPABASE_URL + SUPABASE_ANON_KEY, projet "nevdhyekybmtvejhwhxz").
 
