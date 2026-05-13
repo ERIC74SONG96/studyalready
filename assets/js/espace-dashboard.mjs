@@ -75,7 +75,7 @@ const PERSONA_BADGE = {
 
 const PERSONA_WELCOME = {
   cameroun:
-    'Suivez l\'avancement de votre dossier (équivalence FWB, visa, pièces), échangez avec StudyAlready par message et déposez vos documents en un seul endroit.',
+    'Suivez l\'avancement de votre dossier (équivalence FWB, visa, pièces), échangez avec StudyAlready par message et déposez vos documents ici. L\'onglet Services regroupe aussi le blog, les guides et les liens utiles pendant votre préparation.',
   belgique_etudiant:
     'Cet espace met l\'accent sur la vie pratique en Belgique : emploi étudiant, blog, réseau et liens utiles. Le suivi d\'étapes détaillé ci-dessous apparaît surtout si StudyAlready vous accompagne sur un dossier FWB ou équivalent.',
   travailleur:

@@ -34,7 +34,7 @@
   </div>
 
   <header class="border-b border-slate-200 bg-white">
-    <nav class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
+    <nav class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
       <div class="flex items-center gap-2 min-w-0">
         <a id="espaceNavMarketing" href="../index.html" class="flex items-center gap-2 text-sm text-slate-600 hover:text-brand-dark shrink-0">
           ← Site StudyAlready
@@ -45,7 +45,7 @@
     </nav>
   </header>
 
-  <main class="max-w-lg mx-auto px-4 py-10">
+  <main class="max-w-3xl mx-auto px-4 py-10">
     <div class="text-center mb-8">
       <div class="inline-flex w-12 h-12 rounded-xl bg-brand-dark items-center justify-center mb-3">
         <span class="text-brand-gold font-bold font-display">SA</span>
@@ -65,7 +65,7 @@
         <div class="mt-3 space-y-2.5 text-sm text-slate-800" id="personaChoices">
           <label class="flex items-start gap-2.5 cursor-pointer rounded-lg border border-transparent hover:border-slate-200 hover:bg-white p-2 -m-2 transition">
             <input type="radio" name="espace_persona" value="cameroun" class="mt-0.5 text-brand-blue shrink-0" checked />
-            <span><strong class="text-brand-dark">Parcours depuis le Cameroun</strong> — équivalence FWB, visa, dossier et suivi avec StudyAlready.</span>
+            <span><strong class="text-brand-dark">Parcours depuis le Cameroun</strong> — équivalence FWB, visa, dossier et suivi avec StudyAlready ; accès aussi au <strong>blog</strong>, aux guides et aux services utiles.</span>
           </label>
           <label class="flex items-start gap-2.5 cursor-pointer rounded-lg border border-transparent hover:border-slate-200 hover:bg-white p-2 -m-2 transition">
             <input type="radio" name="espace_persona" value="belgique_etudiant" class="mt-0.5 text-brand-blue shrink-0" />
@@ -123,40 +123,54 @@
           <p class="text-xs text-slate-500">Étape suivante : indiquer si vous êtes <strong>déjà en Belgique</strong> ou non — vous verrez l’aperçu de votre futur tableau de bord.</p>
         </div>
 
-        <div id="signupStep2" class="hidden space-y-4">
+        <div id="signupStep2" class="hidden">
           <button type="button" id="btnSignupBack" class="text-xs text-brand-blue font-semibold underline">← Modifier mes informations</button>
-          <p class="text-sm font-semibold text-brand-dark">Où vous trouvez-vous <span class="text-slate-500 font-normal">(pour adapter l’interface)</span> ?</p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button type="button" id="btnLocBelgique" class="signup-loc-card text-left rounded-xl border-2 border-slate-200 bg-slate-50 hover:border-brand-gold p-4 transition focus:outline-none focus:ring-2 focus:ring-brand-gold">
-              <span class="text-xl" aria-hidden="true">🇧🇪</span>
-              <span class="mt-2 block font-bold text-brand-dark">J’habite en Belgique</span>
-              <span class="mt-1 block text-xs text-slate-600">Études, job, infos pratiques, réseau…</span>
-            </button>
-            <button type="button" id="btnLocHors" class="signup-loc-card text-left rounded-xl border-2 border-slate-200 bg-slate-50 hover:border-brand-gold p-4 transition focus:outline-none focus:ring-2 focus:ring-brand-gold">
-              <span class="text-xl" aria-hidden="true">🌍</span>
-              <span class="mt-2 block font-bold text-brand-dark">Je ne suis pas en Belgique</span>
-              <span class="mt-1 block text-xs text-slate-600">Cameroun ou autre pays — dossier FWB, visa, préparation.</span>
-            </button>
-          </div>
-          <div id="signupBelgiqueRefine" class="hidden rounded-lg border border-slate-200 bg-slate-50/80 p-3">
-            <p class="text-xs font-semibold text-slate-700 mb-2">En Belgique, vous êtes surtout :</p>
-            <div class="flex flex-wrap gap-2">
-              <label class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs cursor-pointer">
-                <input type="radio" name="signup_be_mode" value="etudiant" class="text-brand-blue" checked /> Étudiant(e)
-              </label>
-              <label class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs cursor-pointer">
-                <input type="radio" name="signup_be_mode" value="pro" class="text-brand-blue" /> Actif·ve pro / autre
-              </label>
+          <p class="text-sm font-semibold text-brand-dark mt-3">Où vous trouvez-vous <span class="text-slate-500 font-normal">(obligatoire pour créer le compte)</span> ?</p>
+
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 md:divide-x md:divide-slate-200 gap-6 md:gap-0">
+            <!-- Colonne gauche : choix (les deux options côte à côte, séparées verticalement) -->
+            <div class="md:pr-6 space-y-4">
+              <p class="text-xs text-slate-600">Cliquez <strong>obligatoirement</strong> une des deux cases ci-dessous — sans choix, le bouton « Créer mon compte » reste désactivé.</p>
+              <div class="grid grid-cols-2 gap-0 rounded-xl border-2 border-slate-200 overflow-hidden divide-x-2 divide-slate-200 shadow-sm">
+                <button type="button" id="btnLocBelgique" class="signup-loc-card text-left p-4 sm:p-5 min-h-[9.5rem] flex flex-col justify-center transition focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-gold bg-slate-50 hover:bg-white">
+                  <span class="text-xl" aria-hidden="true">🇧🇪</span>
+                  <span class="mt-2 block font-bold text-brand-dark text-sm leading-snug">J’habite en Belgique</span>
+                  <span class="mt-1 block text-[11px] text-slate-600 leading-snug">Études, job, infos, réseau…</span>
+                </button>
+                <button type="button" id="btnLocHors" class="signup-loc-card text-left p-4 sm:p-5 min-h-[9.5rem] flex flex-col justify-center transition focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-gold bg-slate-50 hover:bg-white">
+                  <span class="text-xl" aria-hidden="true">🌍</span>
+                  <span class="mt-2 block font-bold text-brand-dark text-sm leading-snug">Pas en Belgique</span>
+                  <span class="mt-1 block text-[11px] text-slate-600 leading-snug">Cameroun ou ailleurs — dossier, visa…</span>
+                </button>
+              </div>
+              <div id="signupBelgiqueRefine" class="hidden rounded-lg border border-slate-200 bg-slate-50/80 p-3">
+                <p class="text-xs font-semibold text-slate-700 mb-2">En Belgique, vous êtes surtout :</p>
+                <div class="flex flex-wrap gap-2">
+                  <label class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs cursor-pointer">
+                    <input type="radio" name="signup_be_mode" value="etudiant" class="text-brand-blue" checked /> Étudiant(e)
+                  </label>
+                  <label class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs cursor-pointer">
+                    <input type="radio" name="signup_be_mode" value="pro" class="text-brand-blue" /> Actif·ve pro / autre
+                  </label>
+                </div>
+              </div>
+            </div>
+            <!-- Colonne droite : aperçu -->
+            <div class="md:pl-6 flex flex-col min-h-[10rem]">
+              <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Aperçu de votre espace</p>
+              <div id="signupUiPreview" class="flex-1 rounded-xl border border-dashed border-slate-300 bg-white p-4 text-sm text-slate-600">
+                <p class="text-slate-500">Choisissez une option à gauche pour voir comment votre tableau de bord sera organisé.</p>
+              </div>
             </div>
           </div>
-          <div id="signupUiPreview" class="rounded-xl border border-dashed border-slate-300 bg-white p-4 text-sm text-slate-600 min-h-[7rem]">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Aperçu</p>
-            <p class="mt-2 text-slate-500">Choisissez une option ci-dessus pour voir comment votre espace sera organisé.</p>
-          </div>
-          <button type="button" id="btnSignupSubmit" disabled class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-3 rounded-lg text-sm transition disabled:opacity-40 disabled:cursor-not-allowed">
+
+          <p id="signupSubmitHint" class="mt-4 text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+            Sélectionnez <strong>Belgique</strong> ou <strong>hors Belgique</strong> pour activer la création du compte.
+          </p>
+          <button type="button" id="btnSignupSubmit" disabled class="mt-3 w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-3 rounded-lg text-sm transition disabled:opacity-40 disabled:cursor-not-allowed" aria-describedby="signupSubmitHint">
             Créer mon compte
           </button>
-          <p class="text-xs text-slate-500">En créant un compte, vous acceptez que vos données d'authentification soient traitées par StudyAlready et par notre prestataire technique (Supabase), conformément à notre <a href="../politique-confidentialite.html" class="text-brand-blue underline">politique de confidentialité</a>.</p>
+          <p class="mt-3 text-xs text-slate-500">En créant un compte, vous acceptez que vos données d'authentification soient traitées par StudyAlready et par notre prestataire technique (Supabase), conformément à notre <a href="../politique-confidentialite.html" class="text-brand-blue underline">politique de confidentialité</a>.</p>
         </div>
       </div>
     </div>
@@ -174,7 +188,7 @@
   </main>
 
   <script src="../assets/js/config.js?v=20260513espace"></script>
-  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260513espace"></script>
+  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260514layout"></script>
   <script src="../assets/js/main.js?v=20260513espace"></script>
 </body>
 </html>

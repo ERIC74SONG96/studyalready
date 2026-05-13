@@ -180,17 +180,26 @@ if (pageId === 'login') {
     if (refine) refine.classList.add('hidden');
     var cards = document.querySelectorAll('.signup-loc-card');
     for (var c = 0; c < cards.length; c++) {
-      cards[c].classList.remove('border-brand-blue', 'ring-2', 'ring-brand-gold', 'bg-amber-50');
-      cards[c].classList.add('border-slate-200', 'bg-slate-50');
+      cards[c].classList.remove('ring-2', 'ring-inset', 'ring-brand-gold', 'bg-amber-50', 'bg-white');
+      cards[c].classList.add('bg-slate-50');
     }
     var pv = document.getElementById('signupUiPreview');
     if (pv) {
       pv.innerHTML =
-        '<p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Aperçu</p>' +
-        '<p class="mt-2 text-slate-500">Choisissez une option ci-dessus pour voir comment votre espace sera organisé.</p>';
+        '<p class="text-slate-500">Choisissez une option à gauche pour voir comment votre tableau de bord sera organisé.</p>';
     }
     var sub = document.getElementById('btnSignupSubmit');
-    if (sub) sub.disabled = true;
+    if (sub) {
+      sub.disabled = true;
+      sub.setAttribute('aria-disabled', 'true');
+    }
+    var hint = document.getElementById('signupSubmitHint');
+    if (hint) {
+      hint.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+      hint.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-800');
+      hint.innerHTML =
+        'Sélectionnez <strong>Belgique</strong> ou <strong>hors Belgique</strong> à gauche pour activer la création du compte.';
+    }
     try {
       var rEt = document.querySelector('input[name="signup_be_mode"][value="etudiant"]');
       if (rEt) rEt.checked = true;
@@ -222,7 +231,7 @@ if (pageId === 'login') {
         '<ul class="mt-2 list-disc pl-5 space-y-1.5 text-slate-700">' +
         '<li>Ouverture sur l’onglet <strong>Mon dossier</strong> : étapes équivalence FWB, visa, pièces.</li>' +
         '<li>Messages et documents centralisés avec StudyAlready.</li>' +
-        '<li>Onglet <strong>Services</strong> pour les formulaires et guides.</li>' +
+        '<li>Onglet <strong>Services</strong> : blog, formulaires, guides et liens utiles.</li>' +
         '</ul>';
       return;
     }
@@ -252,13 +261,13 @@ if (pageId === 'login') {
     signupLocSelection = loc;
     var cards = document.querySelectorAll('.signup-loc-card');
     for (var c = 0; c < cards.length; c++) {
-      cards[c].classList.remove('border-brand-blue', 'ring-2', 'ring-brand-gold', 'bg-amber-50');
-      cards[c].classList.add('border-slate-200', 'bg-slate-50');
+      cards[c].classList.remove('ring-2', 'ring-inset', 'ring-brand-gold', 'bg-amber-50', 'bg-white');
+      cards[c].classList.add('bg-slate-50');
     }
     var active = loc === 'belgique' ? btnLocBelgique : btnLocHors;
     if (active) {
-      active.classList.remove('border-slate-200', 'bg-slate-50');
-      active.classList.add('border-brand-blue', 'ring-2', 'ring-brand-gold', 'bg-amber-50');
+      active.classList.remove('bg-slate-50');
+      active.classList.add('bg-amber-50', 'ring-2', 'ring-inset', 'ring-brand-gold');
     }
     var refine = document.getElementById('signupBelgiqueRefine');
     if (refine) {
@@ -268,7 +277,17 @@ if (pageId === 'login') {
     applyPersonaRadioValue(resolveSignupPersona());
     renderSignupPreview();
     var sub = document.getElementById('btnSignupSubmit');
-    if (sub) sub.disabled = false;
+    if (sub) {
+      sub.disabled = false;
+      sub.removeAttribute('aria-disabled');
+    }
+    var hint = document.getElementById('signupSubmitHint');
+    if (hint) {
+      hint.classList.remove('hidden', 'bg-amber-50', 'border-amber-200', 'text-amber-800');
+      hint.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+      hint.innerHTML =
+        'Vous pouvez maintenant cliquer sur <strong>Créer mon compte</strong>.';
+    }
   }
 
   function switchTab(which) {
@@ -512,6 +531,7 @@ if (pageId === 'login') {
       persistPersonaChoice();
 
       btnSignupSubmit.disabled = true;
+      btnSignupSubmit.setAttribute('aria-disabled', 'true');
       /* Force l'URL de retour vers le vrai site en production.
          Évite le défaut Supabase qui pointe vers http://localhost:3000. */
       var origin = (window.location && window.location.origin) || 'https://www.studyalready.com';
@@ -527,15 +547,18 @@ if (pageId === 'login') {
           emailRedirectTo: redirectUrl
         }
       });
-      btnSignupSubmit.disabled = false;
       if (r.error) {
         var em = r.error.message || '';
         if (em.indexOf('already registered') !== -1 || em.indexOf('User already registered') !== -1) {
           em = 'Un compte existe déjà avec cet email. Utilisez l\'onglet Connexion.';
         }
         showBanner(err, 'err', em);
+        btnSignupSubmit.disabled = false;
+        btnSignupSubmit.removeAttribute('aria-disabled');
         return;
       }
+      btnSignupSubmit.disabled = false;
+      btnSignupSubmit.removeAttribute('aria-disabled');
       if (r.data.session) {
         redirectAfterAuth(sb);
         return;
