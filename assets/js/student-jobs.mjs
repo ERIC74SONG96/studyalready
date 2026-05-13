@@ -403,6 +403,38 @@ function ensureJobsListOfferOpenBinding() {
   });
 }
 
+/** Texte affiché sous le titre : vide si ce n’est que le lien auto « Lien vers l’offre » (carte déjà cliquable). */
+function descriptionBlockForList(r, externalHref) {
+  const raw = String((r && r.description) || '').trim();
+  if (!raw) return '';
+  const u = String(externalHref || '').trim();
+  if (!u) {
+    return `<div class="mt-3 text-sm text-slate-700 whitespace-pre-wrap">${escapeHtml(raw)}</div>`;
+  }
+  const norm = (s) =>
+    String(s || '')
+      .replace(/\r\n/g, '\n')
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .join('\n')
+      .trim();
+  const nDesc = norm(raw);
+  const variants = [
+    norm(`Lien vers l'offre :\n${u}`),
+    norm(`Lien vers l'offre:\n${u}`),
+    norm(`Lien vers l’offre :\n${u}`),
+    norm(`Lien vers l’offre:\n${u}`),
+    norm(`Lien vers l'offre : ${u}`),
+    norm(`Lien vers l'offre: ${u}`),
+    norm(u),
+  ];
+  for (let i = 0; i < variants.length; i++) {
+    if (variants[i] && variants[i] === nDesc) return '';
+  }
+  return `<div class="mt-3 text-sm text-slate-700 whitespace-pre-wrap">${escapeHtml(raw)}</div>`;
+}
+
 function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup) {
   const host = $('jobsList');
   if (!host) return;
@@ -436,12 +468,6 @@ function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup)
         ? `<div class="mt-3 rounded-lg overflow-hidden border border-slate-200 bg-slate-100">${imgInner}</div>`
         : '';
       const titleHtml = `<h3 class="mt-1 font-display font-bold text-lg text-brand-dark leading-snug">${escapeHtml(r.title)}</h3>`;
-      const ctaHit = jobHref
-        ? `<p class="mt-2"><span class="inline-flex items-center gap-2 rounded-lg bg-brand-gold text-brand-dark font-bold text-sm px-4 py-2.5 shadow-sm">Voir l’offre / postuler →</span></p>`
-        : '';
-      const sourceHit = jobHref
-        ? `<p class="mt-2 text-sm"><span class="text-brand-blue font-semibold underline">Ouvrir sur le site de l’employeur</span></p>`
-        : '';
       const contact = r.contact_hint
         ? `<p class="mt-2 text-sm text-brand-blue font-medium whitespace-pre-wrap">${escapeHtml(r.contact_hint)}</p>`
         : '';
@@ -459,13 +485,14 @@ function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup)
       const catLabel = OFFER_CATEGORY_LABELS[cat] || 'Communauté';
       const badge = `<span class="inline-block mt-1.5 text-[10px] font-bold uppercase tracking-wide text-brand-blue bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">${escapeHtml(catLabel)}</span>`;
 
-      const descBlock = `<div class="mt-3 text-sm text-slate-700 whitespace-pre-wrap">${escapeHtml(r.description || '')}</div>`;
+      const descBlock = descriptionBlockForList(r, '');
 
       const metaLine =
         `<p class="text-xs text-slate-500">${escapeHtml(fmtDate(r.created_at))} · ${escapeHtml(r.author_label || 'Membre')}</p>`;
 
       if (jobHref) {
         const ariaCard = escapeAttr('Ouvrir cette offre sur le site de l’annonceur (nouvel onglet)');
+        const descClick = descriptionBlockForList(r, jobHref);
         return (
           `<article id="job-${escapeHtml(r.id)}" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm scroll-mt-28 cursor-pointer group hover:border-brand-gold/50 hover:shadow-md transition sa-job-offer-card" data-post-id="${escapeHtml(r.id)}" data-sa-job-url="${escapeAttr(jobHref)}" aria-label="${ariaCard}">` +
           `<div class="flex flex-wrap items-start justify-between gap-2">` +
@@ -475,10 +502,7 @@ function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup)
           titleHtml +
           `</div>` +
           `<div class="shrink-0">${del}</div></div>` +
-          ctaHit +
-          descBlock +
-          imgBlock +
-          sourceHit +
+          descClick +
           contact +
           shareBlock +
           `</article>`
