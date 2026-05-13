@@ -72,12 +72,14 @@ function publicImageUrl(sb, path) {
   return data?.publicUrl || '';
 }
 
-function renderList(sb, rows, currentUserId) {
+function renderList(sb, rows, currentUserId, isLoggedIn) {
   const host = $('jobsList');
   if (!host) return;
   if (!rows.length) {
-    host.innerHTML =
-      '<p class="text-slate-600 text-center py-10">Aucune offre pour le moment. Soyez le premier à en publier une (compte requis).</p>';
+    const emptyMsg = isLoggedIn
+      ? 'Aucune offre pour le moment. Publiez la première avec le formulaire à droite (ou ci-dessous sur mobile).'
+      : 'Aucune offre pour le moment. Soyez le premier à en publier une (compte requis).';
+    host.innerHTML = '<p class="text-slate-600 text-center py-10">' + escapeHtml(emptyMsg) + '</p>';
     return;
   }
   host.innerHTML = rows
@@ -157,6 +159,18 @@ async function initPage() {
   const { data: sess } = await sb.auth.getSession();
   const user = sess?.session?.user || null;
 
+  const heroLogin = $('jobsHeroCtaLogin');
+  const heroDash = $('jobsHeroCtaDashboard');
+  if (heroLogin && heroDash) {
+    if (user) {
+      heroLogin.classList.add('hidden');
+      heroDash.classList.remove('hidden');
+    } else {
+      heroLogin.classList.remove('hidden');
+      heroDash.classList.add('hidden');
+    }
+  }
+
   if (user) {
     if (gate) gate.classList.add('hidden');
     if (form) form.classList.remove('hidden');
@@ -167,7 +181,7 @@ async function initPage() {
 
   try {
     const rows = await loadPosts(sb);
-    renderList(sb, rows, user?.id || null);
+    renderList(sb, rows, user?.id || null, !!user);
     const err = $('jobsLoadError');
     if (err) err.classList.add('hidden');
   } catch (e) {

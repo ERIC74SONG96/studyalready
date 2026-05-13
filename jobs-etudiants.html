@@ -30,8 +30,9 @@
         <strong class="text-white">publier une annonce</strong> en texte, avec une <strong class="text-white">affiche ou capture d’écran</strong> (jusqu’à 4&nbsp;Mo), ou les deux.
         La lecture est ouverte à tous.
       </p>
-      <div class="mt-6 flex flex-wrap gap-3 text-sm">
-        <a href="espace-etudiant/" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full hover:bg-yellow-400">Se connecter / créer un compte</a>
+      <div id="jobsHeroCtas" class="mt-6 flex flex-wrap gap-3 text-sm">
+        <a id="jobsHeroCtaLogin" href="espace-etudiant/" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full hover:bg-yellow-400">Se connecter / créer un compte</a>
+        <a id="jobsHeroCtaDashboard" href="espace-etudiant/dashboard.html" class="hidden inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full hover:bg-yellow-400">Mon tableau de bord</a>
         <a href="accelerateur-job.html" class="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-5 py-2.5 rounded-full hover:bg-white/10">Accélérateur de Job (guide)</a>
       </div>
     </div>
@@ -118,7 +119,7 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
-  <script type="module" src="assets/js/jobs-etudiants.mjs"></script>
+  <script type="module" src="assets/js/jobs-etudiants.mjs?v=20260213hero"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
