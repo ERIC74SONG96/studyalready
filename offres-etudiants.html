@@ -186,7 +186,7 @@
   <script src="/assets/js/config.js?v=20260515sections"></script>
   <script src="/assets/js/header.js?v=20260515sections"></script>
   <script src="/assets/js/main.js?v=20260515sections"></script>
-  <script type="module" src="/assets/js/student-jobs.mjs?v=20260512jobs-sessionfix"></script>
+  <script type="module" src="/assets/js/student-jobs.mjs?v=20260512jobs-dynimport"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     setTimeout(function () {
@@ -195,13 +195,14 @@
       var cfgBanner = document.getElementById('jobsConfigBanner');
       if (!list || (list.textContent || '').trim().length > 0) return;
       if (cfgBanner && !cfgBanner.classList.contains('hidden')) return;
+      var scriptOk = !!window.__saJobsScriptLoaded;
       list.innerHTML =
         '<p class="text-sm text-amber-950 bg-amber-50 border border-amber-200 rounded-lg p-4">' +
-        'Le module des offres ne s’est pas chargé (réseau, bloqueur de scripts ou cache). ' +
-        'Essayez un rechargement forcé (Ctrl+F5), sans bloqueur de pubs, et l’URL ' +
-        '<a class="underline font-semibold text-brand-blue" href="https://www.studyalready.com/offres-etudiants.html">https://www.studyalready.com/offres-etudiants.html</a>. ' +
-        'Onglet Réseau (F12) : vérifiez que <code class="bg-white/80 px-1 rounded">student-jobs.mjs</code> et le CDN Supabase répondent en 200.</p>';
-    }, 2800);
+        (scriptOk
+          ? 'Le chargement des offres est anormalement lent ou bloqué. Patientez puis rechargez (Ctrl+F5). Si rien ne change : F12 → Console, puis contact@studyalready.com .'
+          : 'Le fichier <code class="bg-white/80 px-1 rounded">student-jobs.mjs</code> ne s’est pas exécuté (404, réseau ou script désactivé). Vérifiez l’onglet Réseau (F12).') +
+        '</p>';
+    }, 9000);
   </script>
 </body>
 </html>

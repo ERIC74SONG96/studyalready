@@ -3,12 +3,56 @@
  * Fichier renommé (student-jobs.mjs) pour éviter le cache navigateur/CDN sur l’ancien nom.
  * Requiert les migrations 010 + 014 (lien) + 015 (catégories) et le bucket Storage public `job-offers`.
  */
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
 
 const BUCKET = 'job-offers';
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 /** URL canonique pour le partage (trafic vers le site). */
 const CANONICAL_JOBS_PAGE = 'https://www.studyalready.com/offres-etudiants.html';
+
+/** Client Supabase unique (créé après import dynamique du SDK). */
+let __saJobsSbClient = null;
+
+function getSupabaseConfig() {
+  const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};
+  const url = cfg.SUPABASE_URL;
+  const key = cfg.SUPABASE_ANON_KEY;
+  if (!url || !key || String(url).indexOf('REMPLACER') !== -1 || String(key).indexOf('REMPLACER') !== -1) {
+    return null;
+  }
+  return { url: String(url).trim(), key: String(key).trim() };
+}
+
+async function loadSupabaseCreateClient() {
+  const urls = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm',
+    'https://esm.sh/@supabase/supabase-js@2.49.4',
+    'https://unpkg.com/@supabase/supabase-js@2.49.4/+esm',
+  ];
+  let lastErr = null;
+  for (let i = 0; i < urls.length; i++) {
+    try {
+      const mod = await import(urls[i]);
+      if (mod && typeof mod.createClient === 'function') return mod.createClient;
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  const msg = lastErr && lastErr.message ? String(lastErr.message) : 'import';
+  throw new Error('Tous les miroirs CDN ont échoué (' + msg + ').');
+}
+
+async function ensureSb() {
+  if (__saJobsSbClient) return __saJobsSbClient;
+  const creds = getSupabaseConfig();
+  if (!creds) return null;
+  const createClient = await loadSupabaseCreateClient();
+  __saJobsSbClient = createClient(creds.url, creds.key);
+  return __saJobsSbClient;
+}
+
+function getSb() {
+  return __saJobsSbClient;
+}
 
 const OFFER_CATEGORY_LABELS = {
   soutien_scolaire: 'Soutien scolaire',
@@ -55,16 +99,6 @@ function bindJobCategoryChips() {
   });
 }
 
-function getSb() {
-  const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};
-  const url = cfg.SUPABASE_URL;
-  const key = cfg.SUPABASE_ANON_KEY;
-  if (!url || !key || String(url).indexOf('REMPLACER') !== -1 || String(key).indexOf('REMPLACER') !== -1) {
-    return null;
-  }
-  return createClient(String(url).trim(), String(key).trim());
-}
-
 const $ = (id) => document.getElementById(id);
 
 const escapeHtml = (s) =>
@@ -75,7 +109,7 @@ const escapeHtml = (s) =>
     .replace(/"/g, '&quot;');
 
 function escapeAttr(s) {
-  return String(s == null ? '')
+  return String(s == null ? '' : s)
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
@@ -527,49 +561,72 @@ function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup)
 let __jobsAuthListenerBound = false;
 
 async function initPage() {
-  const banner = $('jobsConfigBanner');
-  let sb = getSb();
-  if (!sb && !window.__saJobsConfigRetried) {
-    window.__saJobsConfigRetried = true;
-    await new Promise((r) => setTimeout(r, 400));
-    sb = getSb();
-  }
-  if (!sb) {
-    if (banner) banner.classList.remove('hidden');
-    const jl = $('jobsList');
-    if (jl) {
-      jl.innerHTML =
-        '<p class="text-center text-sm text-slate-600 py-8">Configuration Supabase absente sur cette page. Vérifiez le bandeau jaune ci-dessus ou le chargement de <code class="bg-slate-100 px-1 rounded">/assets/js/config.js</code>.</p>';
+  try {
+    const banner = $('jobsConfigBanner');
+    let sb = getSb();
+    if (!sb && !window.__saJobsConfigRetried) {
+      window.__saJobsConfigRetried = true;
+      await new Promise((r) => setTimeout(r, 400));
+      sb = getSb();
     }
-    cachedJobRows = [];
-    return;
-  }
-  if (banner) banner.classList.add('hidden');
-  window.__saJobsPageBootstrapped = true;
-
-  if (!__jobsAuthListenerBound) {
-    __jobsAuthListenerBound = true;
-    sb.auth.onAuthStateChange(function (event, _session) {
-      /* Comme espace-etudiant.mjs : INITIAL_SESSION / TOKEN_REFRESHED peuvent arriver après le 1er getSession(). */
-      if (
-        event !== 'INITIAL_SESSION' &&
-        event !== 'SIGNED_IN' &&
-        event !== 'SIGNED_OUT' &&
-        event !== 'USER_UPDATED' &&
-        event !== 'TOKEN_REFRESHED'
-      ) {
+    const creds = getSupabaseConfig();
+    if (!sb && creds) {
+      try {
+        sb = await ensureSb();
+      } catch (e) {
+        if (banner) banner.classList.add('hidden');
+        const detail = e && e.message ? String(e.message) : String(e);
+        const err = $('jobsLoadError');
+        if (err) {
+          err.textContent =
+            'Le client Supabase n’a pas pu être chargé (CDN souvent bloqué par un pare-feu ou une extension). Détail : ' +
+            detail;
+          err.classList.remove('hidden');
+        }
+        const jl = $('jobsList');
+        if (jl) {
+          jl.innerHTML =
+            '<p class="text-center text-sm text-slate-700 py-8">Essayez sans bloqueur de publicités, un autre navigateur ou la 4G. Les annonces sont disponibles côté serveur.</p>';
+        }
+        cachedJobRows = [];
         return;
       }
-      try {
-        clearTimeout(window.__saJobsAuthDebounce);
-      } catch (_) {}
-      window.__saJobsAuthDebounce = setTimeout(function () {
-        initPage();
-      }, 200);
-    });
-  }
+    }
+    if (!sb) {
+      if (banner) banner.classList.remove('hidden');
+      const jl = $('jobsList');
+      if (jl) {
+        jl.innerHTML =
+          '<p class="text-center text-sm text-slate-600 py-8">Configuration Supabase absente sur cette page. Vérifiez le bandeau jaune ci-dessus ou le chargement de <code class="bg-slate-100 px-1 rounded">/assets/js/config.js</code>.</p>';
+      }
+      cachedJobRows = [];
+      return;
+    }
+    if (banner) banner.classList.add('hidden');
 
-  const gate = $('jobsGate');
+    if (!__jobsAuthListenerBound) {
+      __jobsAuthListenerBound = true;
+      sb.auth.onAuthStateChange(function (event, _session) {
+        /* Comme espace-etudiant.mjs : INITIAL_SESSION / TOKEN_REFRESHED peuvent arriver après le 1er getSession(). */
+        if (
+          event !== 'INITIAL_SESSION' &&
+          event !== 'SIGNED_IN' &&
+          event !== 'SIGNED_OUT' &&
+          event !== 'USER_UPDATED' &&
+          event !== 'TOKEN_REFRESHED'
+        ) {
+          return;
+        }
+        try {
+          clearTimeout(window.__saJobsAuthDebounce);
+        } catch (_) {}
+        window.__saJobsAuthDebounce = setTimeout(function () {
+          initPage();
+        }, 200);
+      });
+    }
+
+    const gate = $('jobsGate');
   const form = $('jobsForm');
   let { data: sess } = await sb.auth.getSession();
   if (!sess?.session && !window.__saJobsRefreshTried) {
@@ -841,7 +898,16 @@ async function initPage() {
       initPage();
     });
   }
+  } finally {
+    try {
+      window.__saJobsPageBootstrapped = true;
+    } catch (_) {}
+  }
 }
+
+try {
+  window.__saJobsScriptLoaded = true;
+} catch (_) {}
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initPage);
