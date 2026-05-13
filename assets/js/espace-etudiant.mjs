@@ -23,6 +23,10 @@ function getSupabase() {
  */
 function redirectAfterAuth(sb) {
   if (!sb) return Promise.resolve();
+  if (typeof window !== 'undefined' && window.__saEspaceAuthRedirect) {
+    return Promise.resolve();
+  }
+  if (typeof window !== 'undefined') window.__saEspaceAuthRedirect = true;
   try {
     window.history.replaceState(null, '', window.location.pathname);
   } catch (e) {}
@@ -121,8 +125,10 @@ if (pageId === 'login') {
   }
 
   function hideLoader() {
-    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-    applyEspaceUrlMode();
+    if (loader && loader.parentNode) {
+      loader.parentNode.removeChild(loader);
+      applyEspaceUrlMode();
+    }
   }
 
   if (!sb) {
@@ -145,27 +151,38 @@ if (pageId === 'login') {
       hideLoader();
     }
 
+    var authRevealTimer = null;
+    function clearAuthRevealTimer() {
+      if (authRevealTimer) {
+        clearTimeout(authRevealTimer);
+        authRevealTimer = null;
+      }
+    }
+
     sb.auth.getSession().then(function (res) {
       if (res.data && res.data.session) {
+        clearAuthRevealTimer();
         redirectAfterAuth(sb);
       } else {
+        clearAuthRevealTimer();
         hideLoader();
       }
     }, function () {
-      /* En cas d'erreur de la requete getSession, on revele quand meme la page. */
+      clearAuthRevealTimer();
       hideLoader();
     });
 
-    /* Au cas où la session arrive juste après (race condition). */
     sb.auth.onAuthStateChange(function (_evt, session) {
       if (session) {
+        clearAuthRevealTimer();
         redirectAfterAuth(sb);
       }
     });
 
-    /* Filet de securite : si pour une raison X getSession ne repond pas, on
-       affiche la page apres 2.5s pour ne pas laisser l'utilisateur bloque. */
-    setTimeout(hideLoader, 2500);
+    authRevealTimer = setTimeout(function () {
+      authRevealTimer = null;
+      hideLoader();
+    }, 2500);
   }
 
   if (tabLogin && tabSignup) {
