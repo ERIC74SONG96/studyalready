@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "headers": [
     {
@@ -44,6 +44,26 @@
       "source": "/:path*",
       "has": [{ "type": "host", "value": "studyalready.com" }],
       "destination": "https://www.studyalready.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/blog/equivalence-bts-cameroun-belgique",
+      "destination": "/blog/equivalence-bts-cameroun-belgique.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/gce-a-level-etudes-fwb",
+      "destination": "/blog/gce-a-level-etudes-fwb.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/recuperer-originaux-equivalence-fwb",
+      "destination": "/blog/recuperer-originaux-equivalence-fwb.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/belgique-etudes-job-actualites",
+      "destination": "/blog/belgique-etudes-job-actualites.html",
       "permanent": true
     },
     {
