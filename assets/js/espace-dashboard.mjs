@@ -99,13 +99,8 @@ async function boot() {
   if ($('dashName')) $('dashName').textContent = meta || 'Étudiant(e)';
   if ($('dashEmail')) $('dashEmail').textContent = currentUser.email || '';
 
-  /* Bouton déconnexion (au cas où) */
-  if ($('btnLogout')) {
-    $('btnLogout').addEventListener('click', async () => {
-      await sb.auth.signOut();
-      window.location.href = '/espace-etudiant/';
-    });
-  }
+  /* Déconnexion : gérée uniquement par espace-etudiant.mjs (évite deux
+     instances Supabase + double signOut en parallèle). */
 
   /* Charge en parallèle les 4 blocs principaux. */
   await Promise.all([

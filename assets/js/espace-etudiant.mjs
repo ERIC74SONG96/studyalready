@@ -322,9 +322,30 @@ if (pageId === 'dashboard') {
   }
 
   if (btnLogout && sb) {
-    btnLogout.addEventListener('click', async function () {
-      await sb.auth.signOut();
-      window.location.href = '/espace-etudiant/';
+    btnLogout.addEventListener('click', function () {
+      if (btnLogout.disabled) return;
+      btnLogout.disabled = true;
+      var loc = '/espace-etudiant/';
+      function go() {
+        try {
+          if (typeof window !== 'undefined') window.__saEspaceAuthRedirect = false;
+        } catch (e0) {}
+        try {
+          window.location.replace(loc);
+        } catch (e1) {
+          window.location.href = loc;
+        }
+      }
+      Promise.resolve()
+        .then(function () {
+          return sb.auth.signOut({ scope: 'local' });
+        })
+        .then(function () {
+          go();
+        })
+        .catch(function () {
+          go();
+        });
     });
   }
 }
