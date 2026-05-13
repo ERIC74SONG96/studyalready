@@ -371,16 +371,27 @@ async function initPage() {
         return;
       }
       const ti = $('jobsTitle');
-      if (ti && r.title) ti.value = r.title.slice(0, 200);
       const de = $('jobsDesc');
-      if (de && r.description) de.value = r.description.slice(0, 8000);
+      try {
+        const hn = new URL(u).hostname.replace(/^www\./i, '');
+        if (ti) ti.value = hn.length >= 3 ? hn.slice(0, 80) : '';
+      } catch {
+        if (ti) ti.value = '';
+      }
+      if (de) {
+        const bits = [];
+        if (r.title) bits.push(r.title.trim());
+        if (r.description) bits.push(r.description.trim());
+        const merged = bits.join('\n\n').slice(0, 8000);
+        if (merged) de.value = merged;
+      }
       const su = $('jobsSourceUrl');
       if (su) su.value = u;
       const jc = $('jobsContact');
       if (jc && normalizeUrl(contactRaw) === u) jc.value = '';
       const hi = $('jobsExternalImageUrl');
       if (hi) hi.value = r.imageUrl || '';
-      setImportMsg('Champs mis à jour à partir du lien. Relisez puis publiez.', false);
+      setImportMsg('Titre court = site employeur ; le détail de la page est dans le texte. Vérifiez puis publiez.', false);
     });
   }
 
@@ -525,7 +536,7 @@ async function initPage() {
       setImportMsg('', false);
       if (msg) {
         msg.textContent = usedLegacyInsert
-          ? 'Offre publiée. Pour un lien dédié + image Open Graph en base, exécutez la migration SQL 014 sur Supabase.'
+          ? 'Offre publiée. Migration SQL 014 sur Supabase : lien + image dédiés en base.'
           : 'Offre publiée.';
         msg.classList.remove('text-red-700');
         msg.classList.add('text-emerald-700');
