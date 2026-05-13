@@ -66,6 +66,10 @@
   function refreshSaProfileNav() {
     var show = hasSaPersistedSession();
     try {
+      document.querySelectorAll('.sa-espace-nav-link').forEach(function (el) {
+        if (show) el.classList.add('hidden');
+        else el.classList.remove('hidden');
+      });
       document.querySelectorAll('[data-sa-profile-slot]').forEach(function (slot) {
         var href = slot.getAttribute('data-sa-dashboard-href');
         if (!href) return;

@@ -19,7 +19,7 @@
       '</span>' +
       '<span class="flex items-center gap-3 shrink-0">' +
         '<span class="hidden" data-sa-profile-slot data-sa-profile-variant="compact" data-sa-dashboard-href="' + P + 'espace-etudiant/dashboard.html"></span>' +
-        '<a href="' + P + 'espace-etudiant/" class="text-sm font-semibold text-brand-blue hover:underline">Mon espace</a>' +
+        '<a href="' + P + 'espace-etudiant/" class="sa-espace-nav-link text-sm font-semibold text-brand-blue hover:underline">Mon espace</a>' +
       '</span>' +
     '</nav>';
 
@@ -76,7 +76,7 @@
         '</li>' +
 
         '<li>' + link(P + 'blog/', 'Blog', 'hover:text-brand-gold transition') + '</li>' +
-        '<li>' + link(P + 'espace-etudiant/', 'Mon espace', 'hover:text-brand-gold transition') + '</li>' +
+        '<li class="sa-espace-nav-link">' + link(P + 'espace-etudiant/', 'Mon espace', 'hover:text-brand-gold transition') + '</li>' +
         '<li class="hidden" data-sa-profile-slot data-sa-dashboard-href="' + P + 'espace-etudiant/dashboard.html"></li>' +
       '</ul>' +
 
@@ -132,7 +132,7 @@
       '</details>' +
 
       '<a href="' + P + 'blog/" class="block py-2 border-t border-slate-100">Blog</a>' +
-      '<a href="' + P + 'espace-etudiant/" class="block py-2 border-t border-slate-100">Espace personnel</a>' +
+      '<a href="' + P + 'espace-etudiant/" class="sa-espace-nav-link block py-2 border-t border-slate-100">Espace personnel</a>' +
       '<div class="hidden" data-sa-profile-slot data-sa-profile-variant="mobile" data-sa-dashboard-href="' + P + 'espace-etudiant/dashboard.html"></div>' +
       '<a href="' + P + 'index.html#contact" class="block py-3 border-t border-slate-100 text-brand-gold font-semibold">Contact →</a>' +
     '</div>';
