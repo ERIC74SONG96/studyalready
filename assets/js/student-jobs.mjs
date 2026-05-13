@@ -5,13 +5,13 @@
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
 
-const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};
 const BUCKET = 'job-offers';
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 /** URL canonique pour le partage (trafic vers le site). */
 const CANONICAL_JOBS_PAGE = 'https://www.studyalready.com/offres-etudiants.html';
 
 function getSb() {
+  const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};
   const url = cfg.SUPABASE_URL;
   const key = cfg.SUPABASE_ANON_KEY;
   if (!url || !key || String(url).indexOf('REMPLACER') !== -1 || String(key).indexOf('REMPLACER') !== -1) {
@@ -304,7 +304,12 @@ let __jobsAuthListenerBound = false;
 
 async function initPage() {
   const banner = $('jobsConfigBanner');
-  const sb = getSb();
+  let sb = getSb();
+  if (!sb && !window.__saJobsConfigRetried) {
+    window.__saJobsConfigRetried = true;
+    await new Promise((r) => setTimeout(r, 400));
+    sb = getSb();
+  }
   if (!sb) {
     if (banner) banner.classList.remove('hidden');
     if ($('jobsList')) $('jobsList').innerHTML = '';

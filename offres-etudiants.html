@@ -7,7 +7,7 @@
   <meta name="description" content="Publiez ou consultez des offres d'emploi étudiant en Belgique : texte, image ou lien. Réservé aux membres connectés pour la publication." />
   <link rel="canonical" href="https://www.studyalready.com/offres-etudiants.html" />
   <meta name="robots" content="index,follow" />
-  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-icon.svg" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { theme: { extend: {
@@ -16,7 +16,7 @@
     } } }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
 </head>
 <body class="font-sans text-slate-800 bg-slate-50 antialiased">
   <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
@@ -50,7 +50,8 @@
   </section>
 
   <div id="jobsConfigBanner" class="hidden max-w-6xl mx-auto px-4 sm:px-6 mt-6 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-sm p-4">
-    Configuration Supabase indisponible sur cette page. Vérifiez <code class="bg-white/80 px-1 rounded">assets/js/config.js</code>.
+    <p class="font-medium">Configuration Supabase indisponible sur cette page.</p>
+    <p class="mt-2">Vérifiez que le fichier <code class="bg-white/80 px-1 rounded">/assets/js/config.js</code> se charge (connexion stable, pas de bloqueur de scripts). Essayez aussi <strong>https://www.studyalready.com/offres-etudiants.html</strong> et un rechargement forcé.</p>
   </div>
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
@@ -137,11 +138,11 @@
     <p>© <span id="year"></span> StudyAlready</p>
   </footer>
 
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/header.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/config.js?v=20260514jobs"></script>
+  <script src="/assets/js/header.js?v=20260514jobs"></script>
+  <script src="/assets/js/main.js?v=20260514jobs"></script>
   <script type="module">
-    const u = new URL('./assets/js/student-jobs.mjs', import.meta.url);
+    const u = new URL('/assets/js/student-jobs.mjs', window.location.origin);
     u.searchParams.set('t', String(Date.now()));
     await import(u.href);
   </script>
