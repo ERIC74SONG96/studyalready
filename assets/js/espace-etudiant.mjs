@@ -241,7 +241,7 @@ if (pageId === 'login') {
         pv.innerHTML =
           '<p class="text-xs font-semibold text-brand-gold uppercase tracking-wide">Aperçu · Belgique (pro)</p>' +
           '<ul class="mt-2 list-disc pl-5 space-y-1.5 text-slate-700">' +
-          '<li>Ouverture sur <strong>Services</strong> : guides pratiques, liens utiles, contact.</li>' +
+          '<li>Ouverture sur <strong>Services</strong> : guides pratiques, blog, <strong>réseau</strong> / communauté, liens utiles, contact.</li>' +
           '<li>Suivi « dossier » si vous avez un accompagnement avec nous.</li>' +
           '<li>Historique de vos <strong>demandes</strong> via le site.</li>' +
           '</ul>';

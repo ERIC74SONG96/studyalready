@@ -79,7 +79,7 @@ const PERSONA_WELCOME = {
   belgique_etudiant:
     'Cet espace met l\'accent sur la vie pratique en Belgique : emploi étudiant, blog, réseau et liens utiles. Le suivi d\'étapes détaillé ci-dessous apparaît surtout si StudyAlready vous accompagne sur un dossier FWB ou équivalent.',
   travailleur:
-    'Accès rapide à nos guides et services sur place en Belgique. Utilisez les messages pour une question ciblée ou un accompagnement professionnel.',
+    'Accès rapide à nos guides et services sur place en Belgique, au blog et au réseau (communauté, annuaire, événements). Utilisez les messages pour une question ciblée ou un accompagnement professionnel.',
   visiteur:
     'Centralisez vos demandes passées par le site et les liens utiles. Le blog, les guides et les raccourcis utiles sont dans l\'onglet Services. Pour un parcours dossier complet (FWB, visa, etc.), contactez-nous via le site ou WhatsApp — nous activerons le suivi adapté si besoin.',
 };
@@ -89,7 +89,7 @@ const PERSONA_DOSSIER_NOTE = {
   belgique_etudiant:
     'Si vous n\'êtes pas encore accompagné(e) sur un dossier formel, l\'essentiel pour vous se trouve souvent dans l\'onglet « Services » (job, communauté, guides).',
   travailleur:
-    'Les étapes ci-dessous correspondent surtout aux parcours « dossier » (équivalence, visa, etc.). Si vous n\'avez pas ce type de suivi avec nous, privilégiez l\'onglet « Services ».',
+    'Les étapes ci-dessous correspondent surtout aux parcours « dossier » (équivalence, visa, etc.). Sinon, privilégiez « Services » pour le blog, le réseau et les guides.',
   visiteur:
     'Ce bloc détaille un parcours accompagné. S\'il est vide, c\'est normal : utilisez « Mes demandes » pour vos formulaires et « Services » pour le blog, les guides et le reste du site.',
 };
