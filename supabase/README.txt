@@ -8,3 +8,5 @@ StudyAlready — Supabase (cloud)
 Les profils « published » apparaissent dans l’annuaire via la fonction get_annuaire_profiles (sans exposer l’email).
 
 Offres job étudiant (jobs-etudiants.html) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
+
+Contexte inscription / personnalisation : migration 011_user_site_context.sql (table public.user_site_context).

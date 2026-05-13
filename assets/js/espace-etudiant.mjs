@@ -3,6 +3,7 @@
  * Charger après assets/js/config.js. data-espace-page="login" | "dashboard"
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
+import { syncUserSiteContextRow } from './user-site-context.mjs';
 
 function getConfig() {
   return typeof window !== 'undefined' && window.STUDYALREADY_CONFIG ? window.STUDYALREADY_CONFIG : {};
@@ -79,15 +80,26 @@ function redirectAfterAuth(sb) {
       home = window.location.origin + '/index.html';
     }
   } catch (e0) {}
-  return sb.rpc('is_admin').then(function (a) {
-    if (!a.error && a.data === true) {
-      window.location.replace('/admin.html');
-    } else {
+  return sb.auth
+    .getSession()
+    .then(function (sessRes) {
+      var u = sessRes && sessRes.data && sessRes.data.session && sessRes.data.session.user;
+      if (u) return syncUserSiteContextRow(sb, u);
+      return Promise.resolve();
+    })
+    .then(function () {
+      return sb.rpc('is_admin');
+    })
+    .then(function (a) {
+      if (!a.error && a.data === true) {
+        window.location.replace('/admin.html');
+      } else {
+        window.location.replace(home);
+      }
+    })
+    .catch(function () {
       window.location.replace(home);
-    }
-  }).catch(function () {
-    window.location.replace(home);
-  });
+    });
 }
 
 function showBanner(el, type, text) {
@@ -554,6 +566,8 @@ if (pageId === 'login') {
           data: {
             full_name: name || '',
             espace_persona: personaFinal,
+            signup_location: signupLocSelection,
+            signup_be_mode: signupLocSelection === 'belgique' ? getSignupBelgiqueMode() : null,
           },
           emailRedirectTo: redirectUrl
         }

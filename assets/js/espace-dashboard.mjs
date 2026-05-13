@@ -6,6 +6,7 @@
  * Une seule instance Supabase partagée via window.__saEspaceSb (voir espace-etudiant.mjs).
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
+import { syncUserSiteContextRow } from './user-site-context.mjs';
 
 const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};
 /* Une seule instance avec espace-etudiant.mjs : sinon signOut() sur l’une laisse
@@ -220,6 +221,7 @@ async function boot() {
   currentUser = session.user;
   dashboardPersona = resolvePersona(currentUser);
   await syncPersonaIfNeeded(currentUser, dashboardPersona);
+  await syncUserSiteContextRow(sb, currentUser);
 
   if ($('dashName')) $('dashName').textContent = displayNameForUser(currentUser, dashboardPersona);
   if ($('dashEmail')) $('dashEmail').textContent = currentUser.email || '';
