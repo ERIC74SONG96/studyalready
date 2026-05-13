@@ -159,17 +159,35 @@
 
     grid.innerHTML = '<p class="col-span-full text-center text-sm text-slate-500 py-8">Chargement de l\'annuaire…</p>';
 
+    var sb = window.studyalreadySb;
+    var demoParam =
+      typeof window !== 'undefined' &&
+      String(window.location.search || '').indexOf('annuaire_demo=1') !== -1;
+
     Promise.all([
-      fetch('assets/data/membres.json', { cache: 'no-cache' }).then(function (r) {
-        if (!r.ok) throw new Error('Impossible de charger l\'annuaire (' + r.status + ').');
-        return r.json();
-      }),
-      fetchSupabaseProfiles()
+      fetch('assets/data/membres.json', { cache: 'no-cache' })
+        .then(function (r) {
+          return r.ok ? r.json() : { membres: [] };
+        })
+        .catch(function () {
+          return { membres: [] };
+        }),
+      fetchSupabaseProfiles(),
     ]).then(function (pair) {
-      var data = pair[0];
+      var data = pair[0] || {};
       var remote = pair[1] || [];
-      var demos = ((data && data.membres) || []).map(function (m) { return normalizeMember(m); });
-      var membres = remote.concat(demos);
+      var demos = ((data && data.membres) || []).map(function (m) {
+        return normalizeMember(m);
+      });
+      /* Source réelle : uniquement les profils Supabase publiés (RPC). Les entrées de membres.json
+         ne servent que si ?annuaire_demo=1 (tests locaux / capture d'écran). */
+      var membres = sb
+        ? remote.length
+          ? remote
+          : demoParam
+            ? demos
+            : []
+        : demos;
 
       var universites = unique(membres.map(function (m) { return m.universite; })).sort();
       var domaines = unique(membres.map(function (m) { return m.domaine; })).sort();
@@ -201,7 +219,18 @@
         var filtered = membres.filter(function (m) { return matches(m, filters); });
         if (filtered.length === 0) {
           grid.innerHTML = '';
-          if (emptyEl) emptyEl.classList.remove('hidden');
+          if (emptyEl) {
+            emptyEl.classList.remove('hidden');
+            var emptyP = emptyEl.querySelector('p');
+            if (emptyP) {
+              if (membres.length === 0) {
+                emptyP.textContent =
+                  'Aucun profil public pour le moment. Les fiches apparaissent ici après envoi du formulaire « Créer mon profil » et publication par StudyAlready (consentement du membre).';
+              } else {
+                emptyP.textContent = 'Aucun membre ne correspond à ces filtres pour le moment.';
+              }
+            }
+          }
         } else {
           if (emptyEl) emptyEl.classList.add('hidden');
           grid.innerHTML = filtered.map(renderCard).join('');
@@ -219,8 +248,29 @@
         render();
       });
 
-      if (noteEl && data._note) {
-        noteEl.textContent = data._note + (remote.length ? ' Profils publiés en ligne : ' + remote.length + '.' : '');
+      if (noteEl) {
+        if (sb) {
+          if (remote.length) {
+            noteEl.textContent =
+              remote.length +
+              ' profil' +
+              (remote.length > 1 ? 's' : '') +
+              ' publié' +
+              (remote.length > 1 ? 's' : '') +
+              ' (données déclarées par les membres, sans vérification documentaire par StudyAlready).';
+          } else {
+            noteEl.textContent =
+              'Les profils listés proviennent uniquement du formulaire « Créer mon profil » et sont affichés après consentement et publication (aucune donnée fictive côté site).';
+          }
+          if (demoParam && demos.length) {
+            noteEl.textContent +=
+              ' Mode démo : ' + demos.length + ' fiche(s) locale(s) (paramètre annuaire_demo=1).';
+          }
+        } else {
+          noteEl.textContent =
+            'Connexion Supabase indisponible : affichage de secours limité. Vérifiez assets/js/config.js et le chargement des scripts.';
+          if (data._note) noteEl.textContent += ' ' + data._note;
+        }
       }
       render();
     }).catch(function (err) {
