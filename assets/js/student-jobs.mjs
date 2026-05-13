@@ -165,7 +165,7 @@ function scrollToJobIfHash() {
 async function loadPosts(sb) {
   const { data, error } = await sb
     .from('student_job_posts')
-    .select('id,user_id,author_label,title,description,contact_hint,image_path,source_url,external_image_url,created_at')
+    .select('*')
     .order('created_at', { ascending: false })
     .limit(80);
   if (error) throw error;
@@ -337,7 +337,7 @@ async function initPage() {
         detail;
       if (/source_url|external_image_url|does not exist|42703/i.test(detail)) {
         text +=
-          '\n\n→ Ouvrez le projet sur supabase.com → SQL Editor → collez et exécutez le script du fichier « supabase/migrations/014_student_job_posts_link_share.sql » du dépôt (GitHub), puis rechargez cette page.';
+          '\n\n→ Si le message parle de colonnes manquantes : exécutez « supabase/migrations/014_student_job_posts_link_share.sql » dans le SQL Editor Supabase. La page peut aussi fonctionner sans cette migration (liste + publication avec texte).';
       }
       err.textContent = text;
       err.classList.remove('hidden');
@@ -481,7 +481,31 @@ async function initPage() {
         external_image_url: external_image_url || null,
       };
 
-      const ins = await sb.from('student_job_posts').insert(row).select('id').maybeSingle();
+      let usedLegacyInsert = false;
+      let ins = await sb.from('student_job_posts').insert(row).select('id').maybeSingle();
+      if (ins.error && /source_url|external_image_url|does not exist|42703|PGRST204/i.test(String(ins.error.message || ''))) {
+        let legacyDesc = String(description).trim();
+        if (source_url && !legacyDesc.includes(source_url)) {
+          legacyDesc = (legacyDesc ? legacyDesc + '\n\n' : '') + 'Lien : ' + source_url;
+        }
+        if (external_image_url && !legacyDesc.includes(external_image_url)) {
+          legacyDesc = (legacyDesc ? legacyDesc + '\n\n' : '') + 'Image : ' + external_image_url;
+        }
+        if (legacyDesc.length < 10) {
+          legacyDesc = String(source_url || external_image_url || 'Annonce').slice(0, 8000);
+        }
+        const legacyRow = {
+          user_id: u.id,
+          author_label: authorFromUser(u),
+          title,
+          description: legacyDesc.slice(0, 8000),
+          contact_hint,
+          image_path,
+        };
+        ins = await sb.from('student_job_posts').insert(legacyRow).select('id').maybeSingle();
+        usedLegacyInsert = true;
+      }
+
       if (ins.error) {
         if (image_path) {
           try {
@@ -500,7 +524,9 @@ async function initPage() {
       if (hi) hi.value = '';
       setImportMsg('', false);
       if (msg) {
-        msg.textContent = 'Offre publiée.';
+        msg.textContent = usedLegacyInsert
+          ? 'Offre publiée. Pour un lien dédié + image Open Graph en base, exécutez la migration SQL 014 sur Supabase.'
+          : 'Offre publiée.';
         msg.classList.remove('text-red-700');
         msg.classList.add('text-emerald-700');
       }
