@@ -331,9 +331,15 @@ async function initPage() {
   } catch (e) {
     const err = $('jobsLoadError');
     if (err) {
-      err.textContent =
+      const detail = e && e.message ? e.message : String(e);
+      let text =
         'Les offres ne peuvent pas être chargées pour le moment (migration Supabase ou droits à vérifier). Détails : ' +
-        (e && e.message ? e.message : String(e));
+        detail;
+      if (/source_url|external_image_url|does not exist|42703/i.test(detail)) {
+        text +=
+          '\n\n→ Ouvrez le projet sur supabase.com → SQL Editor → collez et exécutez le script du fichier « supabase/migrations/014_student_job_posts_link_share.sql » du dépôt (GitHub), puis rechargez cette page.';
+      }
+      err.textContent = text;
       err.classList.remove('hidden');
     }
     if ($('jobsList')) $('jobsList').innerHTML = '';
