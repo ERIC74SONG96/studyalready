@@ -90,6 +90,16 @@
       </div>
 
       <div id="panelLogin" class="p-6 space-y-4">
+        <div id="pendingEmailConfirmPanel" class="hidden rounded-xl border-2 border-brand-gold bg-brand-cream p-4 sm:p-5 shadow-sm space-y-3" role="status" aria-live="polite">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-brand-dark">Étape obligatoire après inscription</p>
+          <p class="font-display text-lg sm:text-xl font-bold text-brand-dark leading-snug">Allez confirmer votre adresse dans vos e-mails</p>
+          <p class="text-sm text-slate-800 leading-relaxed">
+            Un message vient d’être envoyé à <strong id="pendingEmailConfirmAddress" class="text-brand-dark break-all"></strong>.
+            <strong>Ouvrez-le</strong> et <strong>cliquez sur le lien de confirmation</strong> — sans cette étape, la connexion restera impossible.
+            Vérifiez aussi le dossier <strong>Spam</strong> ou <strong>Courrier indésirable</strong>.
+          </p>
+          <p class="text-xs text-slate-600 border-t border-amber-200/80 pt-3">Ensuite seulement : utilisez l’onglet ci-dessus avec le <strong>même e-mail</strong> et le <strong>même mot de passe</strong> que vous venez de choisir.</p>
+        </div>
         <p class="text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 leading-relaxed">
           <strong class="text-brand-dark">Nouveau compte ?</strong> Si vous venez de vous inscrire, ouvrez d’abord l’<strong>e-mail de confirmation</strong> et cliquez sur le lien (y compris dans les <strong>indésirables</strong>) — sans cela, la connexion sera refusée.
         </p>
@@ -221,7 +231,7 @@
   </main>
 
   <script src="../assets/js/config.js?v=20260513espace"></script>
-  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260514emailconfirm"></script>
+  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260514confirm-panel"></script>
   <script src="../assets/js/main.js?v=20260513espace"></script>
 </body>
 </html>

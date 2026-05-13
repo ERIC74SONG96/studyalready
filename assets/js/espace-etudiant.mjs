@@ -374,6 +374,8 @@ if (pageId === 'login') {
       panelLogin.classList.add('hidden');
       if (personaBlockOuter) personaBlockOuter.classList.remove('hidden');
       resetSignupWizard();
+      var pepHide = document.getElementById('pendingEmailConfirmPanel');
+      if (pepHide) pepHide.classList.add('hidden');
     }
     if (err) { err.textContent = ''; err.classList.add('hidden'); }
   }
@@ -750,14 +752,23 @@ if (pageId === 'login') {
       showBanner(
         banner,
         'ok',
-        'Compte créé. Étape indispensable : ouvrez votre boîte mail (adresse indiquée à l’inscription), y compris le dossier Spam ou Courrier indésirable. ' +
-          'Cliquez sur le lien dans le message de StudyAlready pour confirmer votre adresse. Sans cette confirmation, la connexion ne fonctionnera pas. ' +
-          'Ensuite, revenez sur cet onglet « Connexion » avec le même e-mail et mot de passe.'
+        'Compte créé : confirmez votre e-mail (voir l’encart jaune sous « Connexion »).'
       );
-      try {
-        if (banner && banner.scrollIntoView) banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } catch (eScroll) {}
       switchTab('login');
+      var pep = document.getElementById('pendingEmailConfirmPanel');
+      var addrEl = document.getElementById('pendingEmailConfirmAddress');
+      var loginEmailInput = document.getElementById('loginEmail');
+      if (addrEl) addrEl.textContent = email;
+      if (pep) pep.classList.remove('hidden');
+      if (loginEmailInput) {
+        loginEmailInput.value = email;
+        try {
+          loginEmailInput.focus();
+        } catch (eFoc) {}
+      }
+      try {
+        if (pep && pep.scrollIntoView) pep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (eScroll) {}
     });
   }
 }
