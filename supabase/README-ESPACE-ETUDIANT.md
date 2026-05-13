@@ -47,7 +47,7 @@ C'est tout — les politiques d'accès (RLS) s'appliquent automatiquement grâce
 ### 3. Tester côté étudiant
 
 1. Ouvrez `https://www.studyalready.com/espace-etudiant/` en navigation privée.
-2. Onglet « Créer un compte » → renseignez un email à vous (pas `contact@studyalready.com`).
+2. Onglet « Créer un compte » → renseignez un email à vous (pas `studyalready8@gmail.com`).
 3. Si la confirmation email est activée dans Supabase Auth, cliquez sur le lien reçu.
 4. Connectez-vous → vous arrivez sur le dashboard.
 5. Vous devez voir un dossier **« Mon parcours StudyAlready »** avec 4 étapes (la 1ʳᵉ marquée terminée, la 2ᵉ en cours).
@@ -93,8 +93,8 @@ C'est tout — les politiques d'accès (RLS) s'appliquent automatiquement grâce
 
 La migration `007_notifications_dossier.sql` ajoute deux triggers Resend :
 
-- email à `contact@studyalready.com` quand un étudiant envoie un **message** ;
-- email à `contact@studyalready.com` quand un étudiant téléverse un **document**.
+- email à `studyalready8@gmail.com` quand un étudiant envoie un **message** ;
+- email à `studyalready8@gmail.com` quand un étudiant téléverse un **document**.
 
 Pour l'activer :
 
@@ -112,6 +112,61 @@ SELECT id, status_code, content
 ```
 
 Un `status_code = 200` confirme que Resend a accepté l'email. Si vous voyez `422`, Resend est en mode test et n'envoie qu'aux adresses inscrites sur le compte Resend.
+
+---
+
+## Emails d'authentification (moins « moche », marque StudyAlready)
+
+Les mails **Confirm your signup** / **Magic Link** envoyés par **Supabase Auth** utilisent un modèle générique et l'adresse `noreply@mail.app.supabase.io` tant que vous n'avez rien configuré. Deux réglages distincts :
+
+### 1) Contenu HTML (rapide, dans le dashboard)
+
+1. Supabase → **Authentication** → **Email** (ou **Email Templates** selon l'interface).
+2. Ouvrez le modèle **Confirm signup** (et éventuellement **Magic Link**, **Reset password**).
+3. Renseignez un **objet** en français, par ex. : `Confirmez votre compte StudyAlready`.
+4. Collez un corps **HTML** (pas seulement du texte). Exemple minimal aux couleurs du site — la variable `{{ .ConfirmationURL }}` est **obligatoire** (lien de confirmation généré par Supabase) :
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
+<body style="margin:0;background:#f1f5f9;font-family:Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding:32px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" style="max-width:480px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(10,37,64,0.08);">
+        <tr><td style="background:linear-gradient(135deg,#0a2540 0%,#1e3a8a 100%);padding:28px 24px;text-align:center;">
+          <p style="margin:0;font-size:20px;font-weight:700;color:#f5b800;font-family:Georgia,serif;">StudyAlready</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.5;color:#e2e8f0;">Votre espace StudyAlready</p>
+        </td></tr>
+        <tr><td style="padding:28px 24px;">
+          <p style="margin:0 0 16px;font-size:17px;font-weight:600;color:#0a2540;">Confirmez votre inscription</p>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#475569;">Un clic suffit pour activer votre compte et accéder à votre tableau de bord.</p>
+          <table role="presentation" cellspacing="0" cellpadding="0"><tr><td style="border-radius:9999px;background:#f5b800;">
+            <a href="{{ .ConfirmationURL }}" target="_blank" rel="noopener" style="display:inline-block;padding:14px 28px;font-size:15px;font-weight:700;color:#0a2540;text-decoration:none;">Confirmer mon e-mail</a>
+          </td></tr></table>
+          <p style="margin:24px 0 0;font-size:12px;line-height:1.5;color:#94a3b8;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><span style="word-break:break-all;color:#1e3a8a;">{{ .ConfirmationURL }}</span></p>
+        </td></tr>
+        <tr><td style="padding:0 24px 24px;font-size:11px;color:#94a3b8;text-align:center;line-height:1.5;">
+          Vous recevez ce message parce qu'une inscription a été faite avec cette adresse sur studyalready.com.<br>Si ce n'était pas vous, ignorez cet e-mail.
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
+```
+
+> Autres modèles utiles : **Magic Link** et **Change Email Address** utilisent aussi `{{ .ConfirmationURL }}`. **Reset password** utilise `{{ .ConfirmationURL }}` (lien de réinitialisation). Vérifiez l'aide en bas de l'éditeur Supabase pour la liste des variables.
+
+### 2) Expéditeur « pro » (SMTP personnalisé)
+
+Même avec un beau HTML, l'expéditeur reste `@mail.app.supabase.io` tant que vous n'activez pas le **SMTP personnalisé**.
+
+1. **Project Settings** → **Authentication** (ou **Auth**) → section **SMTP**.
+2. Activez **Custom SMTP** et renseignez les paramètres de votre fournisseur (souvent **Resend** : hôte `smtp.resend.com`, port **465**, utilisateur `resend`, mot de passe = **clé API** `re_...`, expéditeur du type `StudyAlready <noreply@studyalready.com>` ou `contact@…` si le domaine est **vérifié** dans Resend).
+3. Enregistrez, puis renvoyez un mail de test depuis l'espace étudiant.
+
+Sans domaine vérifié sur Resend, utilisez l'expéditeur autorisé par Resend (souvent `onboarding@resend.dev` en test) pour valider la chaîne, puis passez à `@studyalready.com` une fois le domaine **Verified**.
 
 ## Évolutions possibles
 

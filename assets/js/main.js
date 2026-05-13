@@ -17,7 +17,7 @@
    reset password), on le redirige vers /espace-etudiant/ qui sait gérer
    ces tokens et l'envoie vers son dashboard.
    Couvre le cas où la "Site URL" Supabase ne pointe pas exactement vers
-   l'espace étudiant. */
+   l'espace personnel (/espace-etudiant/). */
 (function handleSupabaseAuthCallback() {
   try {
     var hash = window.location.hash || '';
@@ -29,8 +29,8 @@
                    hash.indexOf('error_description=') !== -1 ||
                    search.indexOf('code=') !== -1;
     if (!hasToken) return;
-    /* Si on est déjà sur n'importe quelle page de l'espace étudiant
-       (avec ou sans slash final, ou sous-page), on laisse les scripts
+    /* Si on est déjà sur n'importe quelle page de l'espace personnel
+       (/espace-etudiant/, avec ou sans slash final, ou sous-page), on laisse les scripts
        de cet espace gérer le token. On évite ainsi toute boucle de
        redirection entre /espace-etudiant et /espace-etudiant/. */
     var p = window.location.pathname || '';

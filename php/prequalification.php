@@ -2,11 +2,14 @@
 /**
  * StudyAlready — Pré-qualification de dossier (formulaire long)
  * Envoie un email structuré à l'équipe pour analyse avant premier contact.
+ *
+ * DESTINATAIRE = boîte réelle de réception (ex. Gmail). L’adresse affichée
+ * sur le site pour les visiteurs peut être contact@studyalready.com.
  */
 
 declare(strict_types=1);
 
-const DESTINATAIRE = 'contact@studyalready.com';
+const DESTINATAIRE = 'studyalready8@gmail.com';
 const EXPEDITEUR   = 'no-reply@studyalready.com';
 const SUJET_PREFIX = '[StudyAlready] Pré-qualification dossier — ';
 

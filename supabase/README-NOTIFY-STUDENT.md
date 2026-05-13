@@ -27,7 +27,7 @@
 
 ## ⚠️ Limitation Resend en mode test
 
-En **mode test gratuit** (sans domaine vérifié), Resend n'envoie qu'à l'email du **compte Resend lui-même** (`contact@studyalready.com`).
+En **mode test gratuit** (sans domaine vérifié), Resend n'envoie qu'à l'email du **compte Resend lui-même** (`studyalready8@gmail.com`).
 
 Pour envoyer aux vrais étudiants :
 

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mon espace étudiant | StudyAlready</title>
-  <meta name="description" content="Créez votre compte StudyAlready : suivez votre parcours équivalence FWB et vos demandes depuis un espace personnel sécurisé." />
+  <title>Espace personnel | StudyAlready</title>
+  <meta name="description" content="Créez votre compte StudyAlready : suivez équivalence FWB, services et dossiers depuis un espace sécurisé — étudiants, travailleurs en mobilité ou candidats depuis le Cameroun." />
   <link rel="canonical" href="https://www.studyalready.com/espace-etudiant/" />
   <meta name="robots" content="index,follow" />
   <link rel="icon" type="image/svg+xml" href="../assets/img/logo-icon.svg" />
@@ -50,13 +50,38 @@
       <div class="inline-flex w-12 h-12 rounded-xl bg-brand-dark items-center justify-center mb-3">
         <span class="text-brand-gold font-bold font-display">SA</span>
       </div>
-      <h1 class="font-display text-2xl font-bold text-brand-dark">Mon espace étudiant</h1>
-      <p id="espaceSubtitleDefault" class="mt-2 text-sm text-slate-600">Un compte pour centraliser vos échanges avec StudyAlready (équivalence FWB, services, suivi).</p>
+      <h1 class="font-display text-2xl font-bold text-brand-dark">Votre espace StudyAlready</h1>
+      <p id="espaceSubtitleDefault" class="mt-2 text-sm text-slate-600">Un compte sécurisé pour centraliser vos échanges avec nous : équivalence FWB, services, messages et suivi de dossier — que vous prépariez des <strong>études</strong>, une <strong>mobilité professionnelle</strong> ou des démarches depuis le <strong>Cameroun</strong> ou la <strong>Belgique</strong>.</p>
       <p id="espaceSubtitleCommunaute" class="hidden mt-2 text-sm text-slate-600">Créez un compte pour rejoindre la communauté et compléter votre profil — sans passer par les pages du site principal.</p>
     </div>
 
     <div id="espaceBanner" class="hidden rounded-xl p-4 text-sm mb-6"></div>
     <div id="espaceError" class="hidden rounded-xl p-4 text-sm mb-6"></div>
+
+    <div id="personaBlockOuter" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-4">
+      <div class="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/80">
+        <p class="text-xs font-semibold text-slate-700">Connexion : vous utilisez ce compte surtout pour <span class="text-red-600">*</span></p>
+        <p class="text-[11px] text-slate-500 mt-1">À l’<strong>inscription</strong>, après vos identifiants, vous indiquerez si vous êtes <strong>en Belgique ou non</strong> et verrez l’aperçu du tableau de bord. Ici, c’est pour affiner si vous vous connectez déjà.</p>
+        <div class="mt-3 space-y-2.5 text-sm text-slate-800" id="personaChoices">
+          <label class="flex items-start gap-2.5 cursor-pointer rounded-lg border border-transparent hover:border-slate-200 hover:bg-white p-2 -m-2 transition">
+            <input type="radio" name="espace_persona" value="cameroun" class="mt-0.5 text-brand-blue shrink-0" checked />
+            <span><strong class="text-brand-dark">Parcours depuis le Cameroun</strong> — équivalence FWB, visa, dossier et suivi avec StudyAlready.</span>
+          </label>
+          <label class="flex items-start gap-2.5 cursor-pointer rounded-lg border border-transparent hover:border-slate-200 hover:bg-white p-2 -m-2 transition">
+            <input type="radio" name="espace_persona" value="belgique_etudiant" class="mt-0.5 text-brand-blue shrink-0" />
+            <span><strong class="text-brand-dark">Déjà en Belgique (études)</strong> — job, blog, infos pratiques, réseau ; suivi de dossier seulement si vous êtes accompagné(e).</span>
+          </label>
+          <label class="flex items-start gap-2.5 cursor-pointer rounded-lg border border-transparent hover:border-slate-200 hover:bg-white p-2 -m-2 transition">
+            <input type="radio" name="espace_persona" value="travailleur" class="mt-0.5 text-brand-blue shrink-0" />
+            <span><strong class="text-brand-dark">Activité professionnelle</strong> — mobilité, reconversion, services utiles sur place.</span>
+          </label>
+          <label class="flex items-start gap-2.5 cursor-pointer rounded-lg border border-transparent hover:border-slate-200 hover:bg-white p-2 -m-2 transition">
+            <input type="radio" name="espace_persona" value="visiteur" class="mt-0.5 text-brand-blue shrink-0" />
+            <span><strong class="text-brand-dark">Visiteur / compte léger</strong> — demandes liées au site, liens utiles, sans parcours dossier complet.</span>
+          </label>
+        </div>
+      </div>
+    </div>
 
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       <div class="flex border-b border-slate-200">
@@ -79,31 +104,69 @@
       </div>
 
       <div id="panelSignup" class="hidden p-6 space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Prénom et nom</label>
-          <input id="signupName" type="text" autocomplete="name" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. Marie N." />
+        <div id="signupStep1">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Prénom et nom</label>
+            <input id="signupName" type="text" autocomplete="name" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. Marie N." />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Email</label>
+            <input id="signupEmail" type="email" autocomplete="email" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Mot de passe (min. 8 caractères)</label>
+            <input id="signupPassword" type="password" autocomplete="new-password" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+          </div>
+          <button type="button" id="btnSignupNext" class="w-full bg-brand-dark hover:bg-brand-blue text-white font-bold py-3 rounded-lg text-sm transition">
+            Continuer →
+          </button>
+          <p class="text-xs text-slate-500">Étape suivante : indiquer si vous êtes <strong>déjà en Belgique</strong> ou non — vous verrez l’aperçu de votre futur tableau de bord.</p>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Email</label>
-          <input id="signupEmail" type="email" autocomplete="email" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+
+        <div id="signupStep2" class="hidden space-y-4">
+          <button type="button" id="btnSignupBack" class="text-xs text-brand-blue font-semibold underline">← Modifier mes informations</button>
+          <p class="text-sm font-semibold text-brand-dark">Où vous trouvez-vous <span class="text-slate-500 font-normal">(pour adapter l’interface)</span> ?</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button type="button" id="btnLocBelgique" class="signup-loc-card text-left rounded-xl border-2 border-slate-200 bg-slate-50 hover:border-brand-gold p-4 transition focus:outline-none focus:ring-2 focus:ring-brand-gold">
+              <span class="text-xl" aria-hidden="true">🇧🇪</span>
+              <span class="mt-2 block font-bold text-brand-dark">J’habite en Belgique</span>
+              <span class="mt-1 block text-xs text-slate-600">Études, job, infos pratiques, réseau…</span>
+            </button>
+            <button type="button" id="btnLocHors" class="signup-loc-card text-left rounded-xl border-2 border-slate-200 bg-slate-50 hover:border-brand-gold p-4 transition focus:outline-none focus:ring-2 focus:ring-brand-gold">
+              <span class="text-xl" aria-hidden="true">🌍</span>
+              <span class="mt-2 block font-bold text-brand-dark">Je ne suis pas en Belgique</span>
+              <span class="mt-1 block text-xs text-slate-600">Cameroun ou autre pays — dossier FWB, visa, préparation.</span>
+            </button>
+          </div>
+          <div id="signupBelgiqueRefine" class="hidden rounded-lg border border-slate-200 bg-slate-50/80 p-3">
+            <p class="text-xs font-semibold text-slate-700 mb-2">En Belgique, vous êtes surtout :</p>
+            <div class="flex flex-wrap gap-2">
+              <label class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs cursor-pointer">
+                <input type="radio" name="signup_be_mode" value="etudiant" class="text-brand-blue" checked /> Étudiant(e)
+              </label>
+              <label class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs cursor-pointer">
+                <input type="radio" name="signup_be_mode" value="pro" class="text-brand-blue" /> Actif·ve pro / autre
+              </label>
+            </div>
+          </div>
+          <div id="signupUiPreview" class="rounded-xl border border-dashed border-slate-300 bg-white p-4 text-sm text-slate-600 min-h-[7rem]">
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Aperçu</p>
+            <p class="mt-2 text-slate-500">Choisissez une option ci-dessus pour voir comment votre espace sera organisé.</p>
+          </div>
+          <button type="button" id="btnSignupSubmit" disabled class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-3 rounded-lg text-sm transition disabled:opacity-40 disabled:cursor-not-allowed">
+            Créer mon compte
+          </button>
+          <p class="text-xs text-slate-500">En créant un compte, vous acceptez que vos données d'authentification soient traitées par StudyAlready et par notre prestataire technique (Supabase), conformément à notre <a href="../politique-confidentialite.html" class="text-brand-blue underline">politique de confidentialité</a>.</p>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Mot de passe (min. 8 caractères)</label>
-          <input id="signupPassword" type="password" autocomplete="new-password" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
-        </div>
-        <button type="button" id="btnSignup" class="w-full bg-brand-dark hover:bg-brand-blue text-white font-bold py-3 rounded-lg text-sm transition">
-          Créer mon compte
-        </button>
-        <p class="text-xs text-slate-500">En créant un compte, vous acceptez que vos données d'authentification soient traitées par StudyAlready et par notre prestataire technique (Supabase), conformément à notre <a href="../politique-confidentialite.html" class="text-brand-blue underline">politique de confidentialité</a>.</p>
       </div>
     </div>
 
     <p class="mt-6 text-center text-sm text-slate-600">
-      Besoin d'aide ? <a href="https://wa.me/32465339448?text=Bonjour%20StudyAlready%2C%20j%27ai%20une%20question%20sur%20mon%20compte%20%C3%A9tudiant" class="text-brand-blue font-semibold underline" target="_blank" rel="noopener">WhatsApp</a>
+      Besoin d'aide ? <a href="https://wa.me/32465339448?text=Bonjour%20StudyAlready%2C%20j%27ai%20une%20question%20sur%20mon%20compte%20%28espace%20personnel%29" class="text-brand-blue font-semibold underline" target="_blank" rel="noopener">WhatsApp</a>
     </p>
     <p class="mt-3 text-center text-xs text-slate-500">
       <a href="../admin-login.html" class="text-brand-blue underline hover:text-brand-dark">Connexion admin dédiée</a>
-      <span class="block mt-1 text-slate-400">Les comptes équipe peuvent aussi utiliser le formulaire ci-dessus.</span>
+      <span class="block mt-1 text-slate-400">Les comptes administrateur peuvent aussi se connecter ici (rôle vérifié côté serveur).</span>
     </p>
     <p id="espaceFooterCommunauteNote" class="hidden mt-4 text-center text-xs text-slate-500 max-w-md mx-auto">
       Le site principal (tarifs, équivalence FWB, etc.) reste disponible sur <a href="../index.html" class="text-brand-blue underline">studyalready.com</a> si vous en avez besoin plus tard.
@@ -111,7 +174,7 @@
   </main>
 
   <script src="../assets/js/config.js?v=20260512f"></script>
-  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260515a"></script>
+  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260516b"></script>
   <script src="../assets/js/main.js?v=20260512f"></script>
 </body>
 </html>

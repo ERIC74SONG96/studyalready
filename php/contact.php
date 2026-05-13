@@ -4,7 +4,8 @@
  * Compatible avec l'hébergement LWS (PHP 7.4+ / 8.x).
  *
  * À configurer :
- *   - DESTINATAIRE : adresse email de réception (ex. contact@studyalready.com)
+ *   - DESTINATAIRE : boîte qui reçoit réellement les messages (ex. studyalready8@gmail.com).
+ *                     Le site peut afficher contact@studyalready.com au public.
  *   - EXPEDITEUR   : doit être une adresse de votre domaine (ex. no-reply@studyalready.com)
  *
  * Sécurité incluse :
@@ -17,7 +18,7 @@
 declare(strict_types=1);
 
 // ============== CONFIGURATION ==============
-const DESTINATAIRE = 'contact@studyalready.com';
+const DESTINATAIRE = 'studyalready8@gmail.com';
 const EXPEDITEUR   = 'no-reply@studyalready.com';
 const SUJET_PREFIX = '[StudyAlready] Nouvelle demande - ';
 

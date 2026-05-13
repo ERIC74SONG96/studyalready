@@ -106,7 +106,7 @@ GRANT SELECT, UPDATE, DELETE ON TABLE public.profiles TO authenticated;
 --
 -- Étape A — Créer le compte admin (à faire une fois, dans Supabase) :
 --   Dashboard Supabase → Authentication → Users → Add user → "Add user with email"
---   Email    : votre adresse (ex. contact@studyalready.com)
+--   Email    : votre adresse (ex. studyalready8@gmail.com)
 --   Password : un mot de passe fort
 --   ☑ Auto Confirm User
 --   → Cliquer "Create user"
@@ -118,7 +118,7 @@ GRANT SELECT, UPDATE, DELETE ON TABLE public.profiles TO authenticated;
 --     INSERT INTO public.admins (user_id, email, full_name)
 --     VALUES (
 --       'COLLER-LE-UID-ICI',
---       'contact@studyalready.com',
+--       'studyalready8@gmail.com',
 --       'Admin StudyAlready'
 --     );
 --

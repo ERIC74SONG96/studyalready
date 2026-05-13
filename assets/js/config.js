@@ -13,7 +13,9 @@
 // ============================================================
 
 window.STUDYALREADY_CONFIG = {
-  // Email de contact (affiché dans les liens mailto de secours)
+  // Email affiché au public (mailto, fallback JS). La réception réelle des
+  // formulaires PHP et des alertes Supabase reste sur studyalready8@gmail.com
+  // (voir DESTINATAIRE dans php/ et NOTIFY_TO dans Supabase).
   CONTACT_EMAIL: 'contact@studyalready.com',
 
   // --- Supabase (cloud, projet UE) ---

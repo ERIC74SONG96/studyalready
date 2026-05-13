@@ -1,5 +1,5 @@
 /**
- * StudyAlready — Logique du tableau de bord étudiant.
+ * StudyAlready — Tableau de bord de l'espace personnel (/espace-etudiant/).
  *
  * Charge le dossier de l'utilisateur connecté, ses étapes,
  * ses messages, ses documents et l'historique de ses demandes.
@@ -64,8 +64,130 @@ const STEP_BADGES = {
   'pending':      { icon: '○', bg: 'bg-slate-200',  fg: 'text-slate-500', text: 'À venir' },
 };
 
+const VALID_PERSONAS = ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'];
+
+const PERSONA_BADGE = {
+  cameroun: 'Parcours · Cameroun',
+  belgique_etudiant: 'Études · Belgique',
+  travailleur: 'Activité professionnelle',
+  visiteur: 'Compte visiteur',
+};
+
+const PERSONA_WELCOME = {
+  cameroun:
+    'Suivez l\'avancement de votre dossier (équivalence FWB, visa, pièces), échangez avec StudyAlready par message et déposez vos documents en un seul endroit.',
+  belgique_etudiant:
+    'Cet espace met l\'accent sur la vie pratique en Belgique : emploi étudiant, blog, réseau et liens utiles. Le suivi d\'étapes détaillé ci-dessous apparaît surtout si StudyAlready vous accompagne sur un dossier FWB ou équivalent.',
+  travailleur:
+    'Accès rapide à nos guides et services sur place en Belgique. Utilisez les messages pour une question ciblée ou un accompagnement professionnel.',
+  visiteur:
+    'Centralisez vos demandes passées par le site et les liens utiles. Pour un parcours dossier complet (FWB, visa, etc.), contactez-nous via le site ou WhatsApp — nous activerons le suivi adapté si besoin.',
+};
+
+const PERSONA_DOSSIER_NOTE = {
+  cameroun: '',
+  belgique_etudiant:
+    'Si vous n\'êtes pas encore accompagné(e) sur un dossier formel, l\'essentiel pour vous se trouve souvent dans l\'onglet « Services » (job, communauté, guides).',
+  travailleur:
+    'Les étapes ci-dessous correspondent surtout aux parcours « dossier » (équivalence, visa, etc.). Si vous n\'avez pas ce type de suivi avec nous, privilégiez l\'onglet « Services ».',
+  visiteur:
+    'Ce bloc détaille un parcours accompagné. S\'il est vide, c\'est normal : utilisez « Mes demandes » pour vos formulaires et « Services » pour explorer le site.',
+};
+
+const DEFAULT_TAB_BY_PERSONA = {
+  cameroun: 'dossier',
+  belgique_etudiant: 'services',
+  travailleur: 'services',
+  visiteur: 'demandes',
+};
+
+const TAB_DOSSIER_LABEL = {
+  cameroun: '📂 Mon dossier',
+  belgique_etudiant: '📂 Dossier / suivi',
+  travailleur: '📂 Mon suivi',
+  visiteur: '📂 Dossier',
+};
+
+function resolvePersona(user) {
+  const valid = (p) => !!p && VALID_PERSONAS.includes(p);
+  const m = user?.user_metadata?.espace_persona;
+  if (valid(m)) return m;
+  try {
+    const s = sessionStorage.getItem('sa_espace_persona');
+    if (valid(s)) return s;
+  } catch (_e) {}
+  return 'cameroun';
+}
+
+function displayNameForUser(user, persona) {
+  const meta = (user.user_metadata && user.user_metadata.full_name) || '';
+  const t = String(meta).trim();
+  if (t) return t;
+  if (persona === 'visiteur') return 'Invité(e)';
+  return 'Membre';
+}
+
+async function syncPersonaIfNeeded(user, persona) {
+  const cur = user?.user_metadata?.espace_persona;
+  if (cur === persona) return;
+  try {
+    await sb.auth.updateUser({ data: { espace_persona: persona } });
+  } catch (_e) {}
+}
+
+function applyPersonaDashboardUi(persona) {
+  const badge = $('dashPersonaBadge');
+  const lead = $('dashWelcomeLead');
+  const note = $('dossierPersonaNote');
+  const tabDossier = $('dashTabDossier');
+  const title = $('dossierPaneTitle');
+
+  if (lead) {
+    lead.textContent = PERSONA_WELCOME[persona] || PERSONA_WELCOME.cameroun;
+  }
+  if (badge) {
+    badge.textContent = PERSONA_BADGE[persona] || '';
+    if (persona && persona !== 'cameroun') badge.classList.remove('hidden');
+    else badge.classList.add('hidden');
+  }
+  if (tabDossier) {
+    tabDossier.textContent = TAB_DOSSIER_LABEL[persona] || TAB_DOSSIER_LABEL.cameroun;
+  }
+  if (title) {
+    if (persona === 'belgique_etudiant' || persona === 'visiteur') {
+      title.textContent = 'Dossier et étapes (si accompagnement)';
+    } else if (persona === 'travailleur') {
+      title.textContent = 'Dossier et étapes';
+    } else {
+      title.textContent = 'Avancement de mon dossier';
+    }
+  }
+  const ntext = PERSONA_DOSSIER_NOTE[persona];
+  if (note) {
+    if (ntext) {
+      note.textContent = ntext;
+      note.classList.remove('hidden');
+    } else {
+      note.textContent = '';
+      note.classList.add('hidden');
+    }
+  }
+
+  const defaultTab = (() => {
+    try {
+      if (sessionStorage.getItem('sa_espace_vue') === 'communaute') return 'dossier';
+    } catch (_e) {}
+    return DEFAULT_TAB_BY_PERSONA[persona] || 'dossier';
+  })();
+  requestAnimationFrame(() => {
+    const btn = document.querySelector('.esp-tab[data-tab="' + defaultTab + '"]');
+    if (btn) btn.click();
+  });
+}
+
 let currentUser = null;
 let currentDossier = null;
+let dashboardPersona = 'cameroun';
 
 async function boot() {
   const banner = $('espaceBanner');
@@ -93,14 +215,15 @@ async function boot() {
       return;
     }
   } catch (_e) {
-    /* reste sur l'espace étudiant */
+    /* reste sur l'espace personnel */
   }
   currentUser = session.user;
+  dashboardPersona = resolvePersona(currentUser);
+  await syncPersonaIfNeeded(currentUser, dashboardPersona);
 
-  /* En-tête (déjà géré par espace-etudiant.mjs, on remplit aussi par sécurité) */
-  const meta = (currentUser.user_metadata && currentUser.user_metadata.full_name) || '';
-  if ($('dashName')) $('dashName').textContent = meta || 'Étudiant(e)';
+  if ($('dashName')) $('dashName').textContent = displayNameForUser(currentUser, dashboardPersona);
   if ($('dashEmail')) $('dashEmail').textContent = currentUser.email || '';
+  applyPersonaDashboardUi(dashboardPersona);
 
   /* Déconnexion : gérée uniquement par espace-etudiant.mjs (évite deux
      instances Supabase + double signOut en parallèle). */

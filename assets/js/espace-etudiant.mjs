@@ -1,5 +1,5 @@
 /**
- * Espace étudiant StudyAlready — authentification Supabase (client uniquement).
+ * Espace personnel StudyAlready — authentification Supabase (client uniquement).
  * Charger après assets/js/config.js. data-espace-page="login" | "dashboard"
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
@@ -61,7 +61,7 @@ function clearAllGoTrueAuthLocalStorage() {
 
 /**
  * Après une session valide (connexion sur Mon espace, lien email, etc.) :
- * administrateurs → /admin.html ; sinon → tableau de bord étudiant.
+ * administrateurs → /admin.html ; sinon → tableau de bord (/espace-etudiant/dashboard.html).
  */
 function redirectAfterAuth(sb) {
   if (!sb) return Promise.resolve();
@@ -108,15 +108,168 @@ if (typeof window !== 'undefined') {
 var pageId = page();
 
 if (pageId === 'login') {
+  var PERSONA_KEY = 'sa_espace_persona';
+  var PERSONA_VALUES = ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'];
+
+  function getSelectedPersona() {
+    try {
+      var el = document.querySelector('input[name="espace_persona"]:checked');
+      if (el && el.value && PERSONA_VALUES.indexOf(el.value) !== -1) return el.value;
+    } catch (e) {}
+    return 'cameroun';
+  }
+
+  function persistPersonaChoice() {
+    try {
+      sessionStorage.setItem(PERSONA_KEY, getSelectedPersona());
+    } catch (e) {}
+  }
+
+  function syncPersonaRadiosFromStorage() {
+    try {
+      var v = sessionStorage.getItem(PERSONA_KEY);
+      if (!v || PERSONA_VALUES.indexOf(v) === -1) return;
+      var inp = document.querySelector('input[name="espace_persona"][value="' + v + '"]');
+      if (inp) inp.checked = true;
+    } catch (e) {}
+  }
+
+  function wirePersonaRadios() {
+    try {
+      var nodes = document.querySelectorAll('input[name="espace_persona"]');
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].addEventListener('change', persistPersonaChoice);
+      }
+    } catch (e) {}
+  }
+
   var banner = document.getElementById('espaceBanner');
   var err = document.getElementById('espaceError');
   var btnLogin = document.getElementById('btnLogin');
-  var btnSignup = document.getElementById('btnSignup');
+  var btnSignupNext = document.getElementById('btnSignupNext');
+  var btnSignupSubmit = document.getElementById('btnSignupSubmit');
+  var btnSignupBack = document.getElementById('btnSignupBack');
+  var btnLocBelgique = document.getElementById('btnLocBelgique');
+  var btnLocHors = document.getElementById('btnLocHors');
   var tabLogin = document.getElementById('tabLogin');
   var tabSignup = document.getElementById('tabSignup');
   var panelLogin = document.getElementById('panelLogin');
   var panelSignup = document.getElementById('panelSignup');
   var loader = document.getElementById('sessionLoader');
+
+  var personaBlockOuter = document.getElementById('personaBlockOuter');
+
+  function applyPersonaRadioValue(val) {
+    if (!val || PERSONA_VALUES.indexOf(val) === -1) return;
+    try {
+      var inp = document.querySelector('input[name="espace_persona"][value="' + val + '"]');
+      if (inp) inp.checked = true;
+      sessionStorage.setItem(PERSONA_KEY, val);
+    } catch (eA) {}
+  }
+
+  var signupLocSelection = null;
+
+  function resetSignupWizard() {
+    signupLocSelection = null;
+    var s1 = document.getElementById('signupStep1');
+    var s2 = document.getElementById('signupStep2');
+    if (s1) s1.classList.remove('hidden');
+    if (s2) s2.classList.add('hidden');
+    var refine = document.getElementById('signupBelgiqueRefine');
+    if (refine) refine.classList.add('hidden');
+    var cards = document.querySelectorAll('.signup-loc-card');
+    for (var c = 0; c < cards.length; c++) {
+      cards[c].classList.remove('border-brand-blue', 'ring-2', 'ring-brand-gold', 'bg-amber-50');
+      cards[c].classList.add('border-slate-200', 'bg-slate-50');
+    }
+    var pv = document.getElementById('signupUiPreview');
+    if (pv) {
+      pv.innerHTML =
+        '<p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Aperçu</p>' +
+        '<p class="mt-2 text-slate-500">Choisissez une option ci-dessus pour voir comment votre espace sera organisé.</p>';
+    }
+    var sub = document.getElementById('btnSignupSubmit');
+    if (sub) sub.disabled = true;
+    try {
+      var rEt = document.querySelector('input[name="signup_be_mode"][value="etudiant"]');
+      if (rEt) rEt.checked = true;
+    } catch (eR) {}
+  }
+
+  function getSignupBelgiqueMode() {
+    try {
+      var el = document.querySelector('input[name="signup_be_mode"]:checked');
+      if (el && el.value === 'pro') return 'pro';
+    } catch (eM) {}
+    return 'etudiant';
+  }
+
+  function resolveSignupPersona() {
+    if (signupLocSelection === 'hors') return 'cameroun';
+    if (signupLocSelection === 'belgique') {
+      return getSignupBelgiqueMode() === 'pro' ? 'travailleur' : 'belgique_etudiant';
+    }
+    return getSelectedPersona();
+  }
+
+  function renderSignupPreview() {
+    var pv = document.getElementById('signupUiPreview');
+    if (!pv) return;
+    if (signupLocSelection === 'hors') {
+      pv.innerHTML =
+        '<p class="text-xs font-semibold text-brand-gold uppercase tracking-wide">Aperçu · hors Belgique</p>' +
+        '<ul class="mt-2 list-disc pl-5 space-y-1.5 text-slate-700">' +
+        '<li>Ouverture sur l’onglet <strong>Mon dossier</strong> : étapes équivalence FWB, visa, pièces.</li>' +
+        '<li>Messages et documents centralisés avec StudyAlready.</li>' +
+        '<li>Onglet <strong>Services</strong> pour les formulaires et guides.</li>' +
+        '</ul>';
+      return;
+    }
+    if (signupLocSelection === 'belgique') {
+      var pro = getSignupBelgiqueMode() === 'pro';
+      if (pro) {
+        pv.innerHTML =
+          '<p class="text-xs font-semibold text-brand-gold uppercase tracking-wide">Aperçu · Belgique (pro)</p>' +
+          '<ul class="mt-2 list-disc pl-5 space-y-1.5 text-slate-700">' +
+          '<li>Ouverture sur <strong>Services</strong> : guides pratiques, liens utiles, contact.</li>' +
+          '<li>Suivi « dossier » si vous avez un accompagnement avec nous.</li>' +
+          '<li>Historique de vos <strong>demandes</strong> via le site.</li>' +
+          '</ul>';
+      } else {
+        pv.innerHTML =
+          '<p class="text-xs font-semibold text-brand-gold uppercase tracking-wide">Aperçu · Belgique (études)</p>' +
+          '<ul class="mt-2 list-disc pl-5 space-y-1.5 text-slate-700">' +
+          '<li>Ouverture sur <strong>Services</strong> : job étudiant, blog, communauté, voyage.</li>' +
+          '<li>Onglet <strong>Mes demandes</strong> pour vos formulaires.</li>' +
+          '<li><strong>Mon dossier</strong> détaillé surtout si vous êtes accompagné(e) sur une procédure.</li>' +
+          '</ul>';
+      }
+    }
+  }
+
+  function setSignupLocation(loc) {
+    signupLocSelection = loc;
+    var cards = document.querySelectorAll('.signup-loc-card');
+    for (var c = 0; c < cards.length; c++) {
+      cards[c].classList.remove('border-brand-blue', 'ring-2', 'ring-brand-gold', 'bg-amber-50');
+      cards[c].classList.add('border-slate-200', 'bg-slate-50');
+    }
+    var active = loc === 'belgique' ? btnLocBelgique : btnLocHors;
+    if (active) {
+      active.classList.remove('border-slate-200', 'bg-slate-50');
+      active.classList.add('border-brand-blue', 'ring-2', 'ring-brand-gold', 'bg-amber-50');
+    }
+    var refine = document.getElementById('signupBelgiqueRefine');
+    if (refine) {
+      if (loc === 'belgique') refine.classList.remove('hidden');
+      else refine.classList.add('hidden');
+    }
+    applyPersonaRadioValue(resolveSignupPersona());
+    renderSignupPreview();
+    var sub = document.getElementById('btnSignupSubmit');
+    if (sub) sub.disabled = false;
+  }
 
   function switchTab(which) {
     if (which === 'login') {
@@ -126,6 +279,8 @@ if (pageId === 'login') {
       tabSignup.classList.add('bg-slate-100', 'text-slate-700');
       panelLogin.classList.remove('hidden');
       panelSignup.classList.add('hidden');
+      if (personaBlockOuter) personaBlockOuter.classList.remove('hidden');
+      resetSignupWizard();
     } else {
       tabSignup.classList.add('bg-brand-dark', 'text-white');
       tabSignup.classList.remove('bg-slate-100', 'text-slate-700');
@@ -133,6 +288,8 @@ if (pageId === 'login') {
       tabLogin.classList.add('bg-slate-100', 'text-slate-700');
       panelSignup.classList.remove('hidden');
       panelLogin.classList.add('hidden');
+      if (personaBlockOuter) personaBlockOuter.classList.add('hidden');
+      resetSignupWizard();
     }
     if (err) { err.textContent = ''; err.classList.add('hidden'); }
   }
@@ -159,6 +316,12 @@ if (pageId === 'login') {
       if (openSignup) {
         switchTab('signup');
       }
+      var pm = p.get('persona') || p.get('profil');
+      if (pm && PERSONA_VALUES.indexOf(String(pm)) !== -1) {
+        try {
+          sessionStorage.setItem(PERSONA_KEY, String(pm));
+        } catch (eP) {}
+      }
       var h = window.location.hash || '';
       var hasAuthHash = h.indexOf('access_token=') !== -1 || h.indexOf('type=signup') !== -1 || h.indexOf('error=') !== -1;
       if (!hasAuthHash && window.location.search) {
@@ -176,9 +339,13 @@ if (pageId === 'login') {
     try {
       requestAnimationFrame(function () {
         applyEspaceUrlMode();
+        syncPersonaRadiosFromStorage();
+        wirePersonaRadios();
       });
     } catch (e3) {
       applyEspaceUrlMode();
+      syncPersonaRadiosFromStorage();
+      wirePersonaRadios();
     }
   }
 
@@ -186,7 +353,8 @@ if (pageId === 'login') {
     hideLoader();
     showBanner(banner, 'warn', 'Connexion à la base de données impossible pour le moment (votre réseau bloque peut-être Supabase). Forcez le rechargement avec Ctrl + Shift + R, ou essayez en navigation privée / sur une autre connexion. Si le problème persiste, écrivez-nous sur WhatsApp.');
     if (btnLogin) btnLogin.disabled = true;
-    if (btnSignup) btnSignup.disabled = true;
+    if (btnSignupNext) btnSignupNext.disabled = true;
+    if (btnSignupSubmit) btnSignupSubmit.disabled = true;
   } else {
     if (banner) banner.classList.add('hidden');
 
@@ -265,6 +433,7 @@ if (pageId === 'login') {
         return;
       }
       btnLogin.disabled = true;
+      persistPersonaChoice();
       var r = await sb.auth.signInWithPassword({ email: email, password: password });
       btnLogin.disabled = false;
       if (r.error) {
@@ -273,12 +442,13 @@ if (pageId === 'login') {
         showBanner(err, 'err', m);
         return;
       }
+      await sb.auth.updateUser({ data: { espace_persona: getSelectedPersona() } }).catch(function () {});
       redirectAfterAuth(sb);
     });
   }
 
-  if (btnSignup && sb) {
-    btnSignup.addEventListener('click', async function () {
+  if (btnSignupNext && sb) {
+    btnSignupNext.addEventListener('click', function () {
       var email = document.getElementById('signupEmail').value.trim();
       var password = document.getElementById('signupPassword').value;
       var name = document.getElementById('signupName').value.trim();
@@ -286,7 +456,62 @@ if (pageId === 'login') {
         showBanner(err, 'err', 'Email obligatoire et mot de passe d\'au moins 8 caractères.');
         return;
       }
-      btnSignup.disabled = true;
+      var s1 = document.getElementById('signupStep1');
+      var s2 = document.getElementById('signupStep2');
+      if (s1) s1.classList.add('hidden');
+      if (s2) s2.classList.remove('hidden');
+      if (err) { err.textContent = ''; err.classList.add('hidden'); }
+    });
+  }
+
+  if (btnSignupBack) {
+    btnSignupBack.addEventListener('click', function () {
+      resetSignupWizard();
+      if (err) { err.textContent = ''; err.classList.add('hidden'); }
+    });
+  }
+
+  if (btnLocBelgique) {
+    btnLocBelgique.addEventListener('click', function () {
+      setSignupLocation('belgique');
+    });
+  }
+  if (btnLocHors) {
+    btnLocHors.addEventListener('click', function () {
+      setSignupLocation('hors');
+    });
+  }
+
+  try {
+    var beModes = document.querySelectorAll('input[name="signup_be_mode"]');
+    for (var b = 0; b < beModes.length; b++) {
+      beModes[b].addEventListener('change', function () {
+        if (signupLocSelection === 'belgique') {
+          applyPersonaRadioValue(resolveSignupPersona());
+          renderSignupPreview();
+        }
+      });
+    }
+  } catch (eBe) {}
+
+  if (btnSignupSubmit && sb) {
+    btnSignupSubmit.addEventListener('click', async function () {
+      if (!signupLocSelection) {
+        showBanner(err, 'err', 'Indiquez si vous êtes en Belgique ou non pour voir l’aperçu, puis créez le compte.');
+        return;
+      }
+      var email = document.getElementById('signupEmail').value.trim();
+      var password = document.getElementById('signupPassword').value;
+      var name = document.getElementById('signupName').value.trim();
+      if (!email || !password || password.length < 8) {
+        showBanner(err, 'err', 'Email obligatoire et mot de passe d\'au moins 8 caractères.');
+        return;
+      }
+      var personaFinal = resolveSignupPersona();
+      applyPersonaRadioValue(personaFinal);
+      persistPersonaChoice();
+
+      btnSignupSubmit.disabled = true;
       /* Force l'URL de retour vers le vrai site en production.
          Évite le défaut Supabase qui pointe vers http://localhost:3000. */
       var origin = (window.location && window.location.origin) || 'https://www.studyalready.com';
@@ -295,11 +520,14 @@ if (pageId === 'login') {
         email: email,
         password: password,
         options: {
-          data: { full_name: name || '' },
+          data: {
+            full_name: name || '',
+            espace_persona: personaFinal,
+          },
           emailRedirectTo: redirectUrl
         }
       });
-      btnSignup.disabled = false;
+      btnSignupSubmit.disabled = false;
       if (r.error) {
         var em = r.error.message || '';
         if (em.indexOf('already registered') !== -1 || em.indexOf('User already registered') !== -1) {
@@ -316,6 +544,7 @@ if (pageId === 'login') {
         'Compte créé ! Ouvrez l\'email de confirmation que nous venons de vous envoyer (vérifiez le dossier spam). ' +
         'Le lien vous ramènera ici, connecté. Si vous arrivez sur une page d\'erreur, dites-le à l\'admin : la "Site URL" dans Supabase doit pointer vers ' + origin + '.');
       switchTab('login');
+      if (personaBlockOuter) personaBlockOuter.classList.remove('hidden');
     });
   }
 }
@@ -360,8 +589,25 @@ if (pageId === 'dashboard') {
         return;
       }
       var u = s.user;
-      var meta = (u.user_metadata && u.user_metadata.full_name) || '';
-      if (nameEl) nameEl.textContent = meta || 'Étudiant(e)';
+      var um = u.user_metadata || {};
+      var persona = um.espace_persona;
+      if (!persona || ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'].indexOf(persona) === -1) {
+        persona = null;
+        try {
+          var ps = sessionStorage.getItem('sa_espace_persona');
+          if (ps && ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'].indexOf(ps) !== -1) {
+            persona = ps;
+          }
+        } catch (ePs) {}
+        if (!persona) persona = 'cameroun';
+      }
+      var meta = um.full_name || '';
+      var display = meta.trim();
+      if (!display) {
+        if (persona === 'visiteur') display = 'Invité(e)';
+        else display = 'Membre';
+      }
+      if (nameEl) nameEl.textContent = display;
       if (emailEl) emailEl.textContent = u.email || '';
     });
   }

@@ -128,7 +128,7 @@
       '</details>' +
 
       '<a href="' + P + 'blog/" class="block py-2 border-t border-slate-100">Blog</a>' +
-      '<a href="' + P + 'espace-etudiant/" class="block py-2 border-t border-slate-100">Mon espace étudiant</a>' +
+      '<a href="' + P + 'espace-etudiant/" class="block py-2 border-t border-slate-100">Espace personnel</a>' +
       '<a href="' + P + 'index.html#contact" class="block py-3 border-t border-slate-100 text-brand-gold font-semibold">Contact →</a>' +
     '</div>';
 

@@ -25,7 +25,7 @@
         <a id="dashLinkAccueil" href="../index.html" class="text-sm text-slate-600 hover:text-brand-dark flex items-center gap-1 shrink-0">← Accueil</a>
         <span id="dashNavCommunaute" class="hidden text-sm font-semibold text-brand-dark truncate">StudyAlready · Communauté</span>
       </div>
-      <span class="font-display font-bold text-sm text-brand-dark hidden sm:inline">Mon espace étudiant</span>
+      <span class="font-display font-bold text-sm text-brand-dark hidden sm:inline">Espace personnel</span>
       <button type="button" id="btnLogout" class="text-sm font-semibold text-red-700 hover:underline">Déconnexion</button>
     </nav>
   </header>
@@ -37,14 +37,15 @@
     <!-- En-tête de bienvenue -->
     <section class="bg-gradient-to-br from-brand-dark to-brand-blue rounded-2xl p-6 sm:p-8 text-white shadow-lg">
       <p class="text-brand-gold text-xs font-semibold uppercase tracking-wider">Bienvenue dans votre espace</p>
+      <p id="dashPersonaBadge" class="mt-2 inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-brand-gold ring-1 ring-white/20 hidden" aria-live="polite"></p>
       <h1 class="mt-2 font-display text-2xl sm:text-3xl font-bold" id="dashName">…</h1>
       <p class="mt-1 text-slate-300 text-sm" id="dashEmail">…</p>
-      <p class="mt-4 text-sm text-slate-200 max-w-2xl">Vous pouvez suivre l'avancement de votre dossier, échanger avec StudyAlready et retrouver vos documents en un seul endroit.</p>
+      <p class="mt-4 text-sm text-slate-200 max-w-2xl" id="dashWelcomeLead">Vous pouvez suivre l'avancement de votre dossier, échanger avec StudyAlready et retrouver vos documents en un seul endroit.</p>
     </section>
 
     <!-- Onglets de navigation -->
     <nav class="flex flex-wrap gap-2 border-b border-slate-200">
-      <button data-tab="dossier" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-brand-blue text-brand-dark">📂 Mon dossier</button>
+      <button type="button" id="dashTabDossier" data-tab="dossier" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-brand-blue text-brand-dark">📂 Mon dossier</button>
       <button data-tab="messages" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">💬 Messages</button>
       <button data-tab="documents" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">📎 Documents</button>
       <button data-tab="demandes" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-brand-dark">📋 Mes demandes</button>
@@ -53,7 +54,8 @@
 
     <!-- Onglet : Mon dossier -->
     <section id="paneDossier" class="esp-pane">
-      <h2 class="font-display font-bold text-xl text-brand-dark mb-4">Avancement de mon dossier</h2>
+      <h2 class="font-display font-bold text-xl text-brand-dark mb-2" id="dossierPaneTitle">Avancement de mon dossier</h2>
+      <p id="dossierPersonaNote" class="text-sm text-slate-600 mb-4 hidden" role="note"></p>
       <div id="dossierBlock">
         <div class="bg-white rounded-2xl border border-slate-200 p-6 text-sm text-slate-500">Chargement…</div>
       </div>
@@ -161,8 +163,8 @@
   </script>
 
   <script src="../assets/js/config.js?v=20260512f"></script>
-  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260515a"></script>
-  <script type="module" src="../assets/js/espace-dashboard.mjs?v=20260515a"></script>
+  <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260516b"></script>
+  <script type="module" src="../assets/js/espace-dashboard.mjs?v=20260516a"></script>
   <script src="../assets/js/main.js?v=20260512f"></script>
 </body>
 </html>

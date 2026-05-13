@@ -77,7 +77,7 @@ ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
 -- Verifie egalement que l'email de notification est bien defini.
 INSERT INTO public.private_settings (key, value)
-VALUES ('notify_to', 'contact@studyalready.com')
+VALUES ('notify_to', 'studyalready8@gmail.com')
 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
 
