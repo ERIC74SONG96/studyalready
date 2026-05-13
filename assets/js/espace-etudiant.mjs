@@ -743,9 +743,20 @@ if (pageId === 'login') {
         redirectAfterAuth(sb);
         return;
       }
-      showBanner(err, 'warn',
-        'Compte créé ! Ouvrez l\'email de confirmation que nous venons de vous envoyer (vérifiez le dossier spam). ' +
-        'Le lien vous ramènera ici, connecté. Si vous arrivez sur une page d\'erreur, dites-le à l\'admin : la "Site URL" dans Supabase doit pointer vers ' + origin + '.');
+      if (err) {
+        err.textContent = '';
+        err.classList.add('hidden');
+      }
+      showBanner(
+        banner,
+        'ok',
+        'Compte créé. Étape indispensable : ouvrez votre boîte mail (adresse indiquée à l’inscription), y compris le dossier Spam ou Courrier indésirable. ' +
+          'Cliquez sur le lien dans le message de StudyAlready pour confirmer votre adresse. Sans cette confirmation, la connexion ne fonctionnera pas. ' +
+          'Ensuite, revenez sur cet onglet « Connexion » avec le même e-mail et mot de passe.'
+      );
+      try {
+        if (banner && banner.scrollIntoView) banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (eScroll) {}
       switchTab('login');
     });
   }
