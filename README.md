@@ -12,7 +12,7 @@ Stack : HTML5 + Tailwind CSS (CDN) + JavaScript vanilla + PHP (formulaires). Auc
 Studyalready/
 ├── index.html                       Page d'accueil
 ├── equivalence.html                 Guide équivalence FWB (SEO)
-├── notre-dossier-fwb.html           Document institutionnel
+├── notre-dossier-fwb.html           Document de présentation (FWB)
 ├── prequalification-dossier.html    Formulaire détaillé
 ├── mentions-legales.html
 ├── politique-confidentialite.html
@@ -122,7 +122,7 @@ Pour modifier le site après mise en ligne :
 2. Le ré-uploader via FileZilla, **en écrasant** l'ancien.
 3. Vider le cache navigateur si vous ne voyez pas la modif.
 
-Le PDF du dossier institutionnel peut être régénéré localement avec Microsoft Edge en mode headless (voir `assets/docs/dossier-fwb-print.html`).
+Le PDF du dossier de présentation peut être régénéré localement avec Microsoft Edge en mode headless (voir `assets/docs/dossier-fwb-print.html`).
 
 ---
 
