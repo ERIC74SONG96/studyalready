@@ -536,16 +536,30 @@ async function initPage() {
   }
   if (!sb) {
     if (banner) banner.classList.remove('hidden');
-    if ($('jobsList')) $('jobsList').innerHTML = '';
+    const jl = $('jobsList');
+    if (jl) {
+      jl.innerHTML =
+        '<p class="text-center text-sm text-slate-600 py-8">Configuration Supabase absente sur cette page. Vérifiez le bandeau jaune ci-dessus ou le chargement de <code class="bg-slate-100 px-1 rounded">/assets/js/config.js</code>.</p>';
+    }
     cachedJobRows = [];
     return;
   }
   if (banner) banner.classList.add('hidden');
+  window.__saJobsPageBootstrapped = true;
 
   if (!__jobsAuthListenerBound) {
     __jobsAuthListenerBound = true;
-    sb.auth.onAuthStateChange(function (event) {
-      if (event !== 'SIGNED_IN' && event !== 'SIGNED_OUT' && event !== 'USER_UPDATED') return;
+    sb.auth.onAuthStateChange(function (event, _session) {
+      /* Comme espace-etudiant.mjs : INITIAL_SESSION / TOKEN_REFRESHED peuvent arriver après le 1er getSession(). */
+      if (
+        event !== 'INITIAL_SESSION' &&
+        event !== 'SIGNED_IN' &&
+        event !== 'SIGNED_OUT' &&
+        event !== 'USER_UPDATED' &&
+        event !== 'TOKEN_REFRESHED'
+      ) {
+        return;
+      }
       try {
         clearTimeout(window.__saJobsAuthDebounce);
       } catch (_) {}
@@ -557,7 +571,14 @@ async function initPage() {
 
   const gate = $('jobsGate');
   const form = $('jobsForm');
-  const { data: sess } = await sb.auth.getSession();
+  let { data: sess } = await sb.auth.getSession();
+  if (!sess?.session && !window.__saJobsRefreshTried) {
+    window.__saJobsRefreshTried = true;
+    try {
+      const { data: ref } = await sb.auth.refreshSession();
+      if (ref && ref.session) sess = ref;
+    } catch (_) {}
+  }
   const user = sess?.session?.user || null;
 
   const heroLogin = $('jobsHeroCtaLogin');
@@ -603,7 +624,11 @@ async function initPage() {
       err.textContent = text;
       err.classList.remove('hidden');
     }
-    if ($('jobsList')) $('jobsList').innerHTML = '';
+    const jl = $('jobsList');
+    if (jl) {
+      jl.innerHTML =
+        '<p class="text-center text-sm text-slate-600 py-8">Impossible d’afficher les annonces pour le moment. Détail au-dessus ou dans la console du navigateur (F12).</p>';
+    }
     cachedJobRows = [];
   }
 
