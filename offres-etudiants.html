@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Offres job étudiant | StudyAlready</title>
-  <meta name="description" content="Publiez ou consultez des offres d'emploi étudiant en Belgique : texte, image ou lien. Réservé aux membres connectés pour la publication." />
+  <title>Jobs étudiants, stages & partages | StudyAlready</title>
+  <meta name="description" content="Plateforme communautaire : soutien scolaire, jobs étudiants, stages… Les membres partagent des annonces. StudyAlready n’est pas employeur." />
   <link rel="canonical" href="https://www.studyalready.com/offres-etudiants.html" />
   <meta name="robots" content="index,follow" />
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-icon.svg" />
@@ -24,12 +24,12 @@
   <section class="pt-24 pb-10 bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <p class="text-brand-gold uppercase text-xs font-semibold tracking-widest">Communauté</p>
-      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl leading-tight">Offres job étudiant</h1>
+      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl leading-tight">Jobs, stages & partages étudiants</h1>
       <p class="mt-4 text-slate-200 max-w-3xl text-lg">
-        Un espace <strong class="text-white">lisible et simple</strong> : tout membre avec un compte StudyAlready peut
-        <strong class="text-white">publier une annonce</strong> en texte, avec une <strong class="text-white">affiche ou capture d’écran</strong> (jusqu’à 4&nbsp;Mo),
-        ou en collant <strong class="text-white">un lien d’offre</strong> pour préremplir titre et texte automatiquement.
-        La lecture est ouverte à tous.
+        <strong class="text-white">StudyAlready n’est pas une entreprise ni un employeur</strong> : c’est une
+        <strong class="text-white">plateforme communautaire</strong> où les membres peuvent partager des annonces utiles
+        (soutien scolaire, petits jobs, stages, etc.). Chaque annonce reste sous la responsabilité de la personne qui la publie.
+        Texte, image (jusqu’à 4&nbsp;Mo) ou <strong class="text-white">lien</strong> pour préremplir — lecture ouverte à tous.
       </p>
       <div id="jobsHeroCtas" class="mt-6 flex flex-wrap gap-3 text-sm">
         <a id="jobsHeroCtaLogin" href="espace-etudiant/" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full hover:bg-yellow-400">Se connecter / créer un compte</a>
@@ -42,8 +42,8 @@
   <section class="py-6 bg-amber-50 border-y border-amber-200">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 text-sm text-amber-950">
       <p>
-        <strong>Modération :</strong> les annonces sont publiées par les utilisateurs. StudyAlready n’en garantit ni l’exactitude ni la légalité.
-        En cas d’annonce douteuse ou offensante, écrivez-nous à
+        <strong>Modération :</strong> les annonces viennent des <strong>membres</strong>, pas de l’équipe StudyAlready.
+        Nous n’en garantissons ni l’exactitude ni la légalité. En cas d’annonce douteuse ou offensante :
         <a href="mailto:contact@studyalready.com" class="underline font-medium">contact@studyalready.com</a>.
       </p>
     </div>
@@ -54,19 +54,53 @@
     <p class="mt-2">Vérifiez que le fichier <code class="bg-white/80 px-1 rounded">/assets/js/config.js</code> se charge (connexion stable, pas de bloqueur de scripts). Essayez aussi <strong>https://www.studyalready.com/offres-etudiants.html</strong> et un rechargement forcé.</p>
   </div>
 
+  <section id="types-partage" class="py-10 bg-white border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h2 class="font-display text-lg font-bold text-brand-dark">Qu’est-ce qu’on peut partager ici ?</h2>
+      <p class="mt-2 text-sm text-slate-600 max-w-3xl">
+        Quatre familles pour classer votre annonce. Le fil d’annonces est commun ; utilisez les filtres ci-dessous pour se concentrer sur un type.
+      </p>
+      <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p class="text-xs font-bold uppercase tracking-wide text-brand-blue">Soutien scolaire</p>
+          <p class="mt-2 text-sm text-slate-700">Cours particuliers, aide aux devoirs, méthodo, préparation d’examens… entre membres.</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p class="text-xs font-bold uppercase tracking-wide text-brand-blue">Emploi universitaire</p>
+          <p class="mt-2 text-sm text-slate-700">Jobs compatibles avec les cours : week-end, soir, vacances, mi-temps étudiant.</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p class="text-xs font-bold uppercase tracking-wide text-brand-blue">Stages</p>
+          <p class="mt-2 text-sm text-slate-700">Stages d’observation, académiques, ou première expérience pro liée aux études.</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p class="text-xs font-bold uppercase tracking-wide text-brand-blue">Autre (communauté)</p>
+          <p class="mt-2 text-sm text-slate-700">Petits services, extras, babysitting ponctuel, échanges… tant que ça reste légal et respectueux.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
     <div class="grid lg:grid-cols-5 gap-8 lg:gap-10">
       <div class="lg:col-span-3 space-y-6 order-2 lg:order-1">
         <h2 class="font-display text-xl font-bold text-brand-dark">Annonces récentes</h2>
+        <div id="jobsCategoryChips" class="flex flex-wrap gap-2" role="tablist" aria-label="Filtrer par type d’annonce">
+          <button type="button" data-job-cat="" class="jobs-cat-chip rounded-full border px-3 py-1.5 text-xs font-semibold border-brand-dark bg-brand-dark text-white">Toutes</button>
+          <button type="button" data-job-cat="soutien_scolaire" class="jobs-cat-chip rounded-full border px-3 py-1.5 text-xs font-semibold border-slate-300 bg-white text-slate-700">Soutien scolaire</button>
+          <button type="button" data-job-cat="emploi_universitaire" class="jobs-cat-chip rounded-full border px-3 py-1.5 text-xs font-semibold border-slate-300 bg-white text-slate-700">Emploi étudiant</button>
+          <button type="button" data-job-cat="stage" class="jobs-cat-chip rounded-full border px-3 py-1.5 text-xs font-semibold border-slate-300 bg-white text-slate-700">Stages</button>
+          <button type="button" data-job-cat="autre_communaute" class="jobs-cat-chip rounded-full border px-3 py-1.5 text-xs font-semibold border-slate-300 bg-white text-slate-700">Autre partage</button>
+        </div>
         <p id="jobsLoadError" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3 whitespace-pre-wrap"></p>
         <div id="jobsList" class="space-y-5" aria-live="polite"></div>
       </div>
 
       <aside class="lg:col-span-2 order-1 lg:order-2">
         <div id="jobsGate" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 class="font-display font-bold text-lg text-brand-dark">Publier une offre</h2>
+          <h2 class="font-display font-bold text-lg text-brand-dark">Publier une annonce</h2>
           <p class="mt-2 text-sm text-slate-600">
-            La publication est réservée aux personnes connectées à
+            Réservé aux membres connectés — vous partagez en votre nom, pas au nom de StudyAlready.
             <a href="espace-etudiant/" class="text-brand-blue font-semibold underline">Mon espace</a>.
           </p>
           <a href="espace-etudiant/" class="mt-4 inline-flex w-full justify-center items-center gap-2 bg-brand-dark text-white font-semibold py-3 rounded-xl hover:bg-brand-blue text-sm">
@@ -80,8 +114,19 @@
             Page actuelle : offres-etudiants.html · import par lien · titre optionnel · partage
           </p>
           <p class="text-xs text-slate-500">
-            Le <strong>titre court</strong> est optionnel : après « Importer », il est suggéré (nom du site) ; le <strong>long titre de la page</strong> va dans le texte. Sinon décrivez le poste (10 caractères), une image, ou un <strong>lien https</strong> (12 caractères minimum).
+            Choisissez le <strong>type d’annonce</strong>. Le <strong>titre court</strong> est optionnel ; après « Importer », un titre court est suggéré et le détail va dans le texte. Sinon : 10 caractères de texte, une image, ou un <strong>lien https</strong> (12 caractères minimum).
           </p>
+
+          <div>
+            <label for="jobsCategory" class="block text-xs font-semibold text-slate-600 mb-1">Type d’annonce</label>
+            <select id="jobsCategory" name="offer_category"
+              class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="soutien_scolaire">Cours / soutien scolaire</option>
+              <option value="emploi_universitaire" selected>Emploi pendant les études (job étudiant)</option>
+              <option value="stage">Stage</option>
+              <option value="autre_communaute">Autre partage communautaire</option>
+            </select>
+          </div>
 
           <div>
             <label for="jobsSourceUrl" class="block text-xs font-semibold text-slate-600 mb-1">Lien de l’offre (optionnel)</label>
@@ -138,9 +183,9 @@
     <p>© <span id="year"></span> StudyAlready</p>
   </footer>
 
-  <script src="/assets/js/config.js?v=20260514jobs"></script>
-  <script src="/assets/js/header.js?v=20260514jobs"></script>
-  <script src="/assets/js/main.js?v=20260514jobs"></script>
+  <script src="/assets/js/config.js?v=20260515sections"></script>
+  <script src="/assets/js/header.js?v=20260515sections"></script>
+  <script src="/assets/js/main.js?v=20260515sections"></script>
   <script type="module">
     const u = new URL('/assets/js/student-jobs.mjs', window.location.origin);
     u.searchParams.set('t', String(Date.now()));

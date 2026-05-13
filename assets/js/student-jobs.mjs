@@ -1,7 +1,7 @@
 /**
  * Mur des offres job étudiant — lecture publique, publication réservée aux comptes connectés.
  * Fichier renommé (student-jobs.mjs) pour éviter le cache navigateur/CDN sur l’ancien nom.
- * Requiert les migrations 010 + 014 et le bucket Storage public `job-offers`.
+ * Requiert les migrations 010 + 014 (lien) + 015 (catégories) et le bucket Storage public `job-offers`.
  */
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm';
 
@@ -9,6 +9,51 @@ const BUCKET = 'job-offers';
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 /** URL canonique pour le partage (trafic vers le site). */
 const CANONICAL_JOBS_PAGE = 'https://www.studyalready.com/offres-etudiants.html';
+
+const OFFER_CATEGORY_LABELS = {
+  soutien_scolaire: 'Soutien scolaire',
+  emploi_universitaire: 'Emploi étudiant',
+  stage: 'Stage',
+  autre_communaute: 'Autre partage',
+};
+
+function normalizeOfferCategory(v) {
+  const s = String(v || '').trim();
+  return Object.prototype.hasOwnProperty.call(OFFER_CATEGORY_LABELS, s) ? s : 'autre_communaute';
+}
+
+let cachedJobRows = [];
+let jobsCategoryFilter = '';
+let lastJobsUserId = null;
+let lastJobsLogged = false;
+
+function filterJobRows(rows) {
+  if (!jobsCategoryFilter) return rows || [];
+  return (rows || []).filter((r) => normalizeOfferCategory(r.offer_category) === jobsCategoryFilter);
+}
+
+function bindJobCategoryChips() {
+  const wrap = document.getElementById('jobsCategoryChips');
+  if (!wrap || wrap.dataset.bound) return;
+  wrap.dataset.bound = '1';
+  wrap.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('[data-job-cat]');
+    if (!btn) return;
+    jobsCategoryFilter = btn.getAttribute('data-job-cat') ?? '';
+    wrap.querySelectorAll('[data-job-cat]').forEach((b) => {
+      const on = (b.getAttribute('data-job-cat') || '') === jobsCategoryFilter;
+      b.classList.toggle('border-brand-dark', on);
+      b.classList.toggle('bg-brand-dark', on);
+      b.classList.toggle('text-white', on);
+      b.classList.toggle('border-slate-300', !on);
+      b.classList.toggle('bg-white', !on);
+      b.classList.toggle('text-slate-700', !on);
+    });
+    const sb = getSb();
+    if (!sb) return;
+    renderList(sb, filterJobRows(cachedJobRows), lastJobsUserId, lastJobsLogged, cachedJobRows);
+  });
+}
 
 function getSb() {
   const cfg = (typeof window !== 'undefined' && window.STUDYALREADY_CONFIG) || {};
@@ -205,17 +250,22 @@ function publicImageUrl(sb, path) {
   return data?.publicUrl || '';
 }
 
-function renderList(sb, rows, currentUserId, isLoggedIn) {
+function renderList(sb, rowsToShow, currentUserId, isLoggedIn, allRowsForLookup) {
   const host = $('jobsList');
   if (!host) return;
-  if (!rows.length) {
-    const emptyMsg = isLoggedIn
+  const lookup = allRowsForLookup || rowsToShow;
+  if (!rowsToShow.length) {
+    let emptyMsg = isLoggedIn
       ? 'Aucune offre pour le moment. Publiez la première avec le formulaire à droite (ou ci-dessous sur mobile).'
       : 'Aucune offre pour le moment. Soyez le premier à en publier une (compte requis).';
+    if (lookup.length && jobsCategoryFilter) {
+      emptyMsg =
+        'Aucune annonce dans ce type pour le moment. Choisissez « Toutes » ou publiez une annonce dans cette catégorie.';
+    }
     host.innerHTML = '<p class="text-slate-600 text-center py-10">' + escapeHtml(emptyMsg) + '</p>';
     return;
   }
-  host.innerHTML = rows
+  host.innerHTML = rowsToShow
     .map((r) => {
       const storageUrl = r.image_path ? publicImageUrl(sb, r.image_path) : '';
       const extImg = safeHttpsUrl(r.external_image_url);
@@ -245,11 +295,15 @@ function renderList(sb, rows, currentUserId, isLoggedIn) {
         `<a href="${mail}" class="jobs-share-mail inline-flex items-center gap-1 rounded-lg bg-slate-600 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-2">E-mail</a>` +
         `<button type="button" class="jobs-copylink inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2" data-url="${escapeHtml(pageUrl)}">Copier le lien</button>` +
         `</div></div>`;
+      const cat = normalizeOfferCategory(r.offer_category);
+      const catLabel = OFFER_CATEGORY_LABELS[cat] || 'Communauté';
+      const badge = `<span class="inline-block mt-1.5 text-[10px] font-bold uppercase tracking-wide text-brand-blue bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">${escapeHtml(catLabel)}</span>`;
 
       return (
         `<article id="job-${escapeHtml(r.id)}" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm scroll-mt-28" data-post-id="${escapeHtml(r.id)}">` +
         `<div class="flex flex-wrap items-start justify-between gap-2">` +
         `<div><p class="text-xs text-slate-500">${escapeHtml(fmtDate(r.created_at))} · ${escapeHtml(r.author_label || 'Membre')}</p>` +
+        badge +
         `<h3 class="mt-1 font-display font-bold text-lg text-brand-dark">${escapeHtml(r.title)}</h3></div>` +
         `<div class="shrink-0">${del}</div></div>` +
         `<div class="mt-3 text-sm text-slate-700 whitespace-pre-wrap">${escapeHtml(r.description || '')}</div>` +
@@ -266,7 +320,7 @@ function renderList(sb, rows, currentUserId, isLoggedIn) {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-id');
       if (!id || !confirm('Supprimer cette offre ?')) return;
-      const row = rows.find((x) => x.id === id);
+      const row = lookup.find((x) => x.id === id);
       const { error } = await sb.from('student_job_posts').delete().eq('id', id);
       if (error) {
         alert(error.message || 'Suppression impossible.');
@@ -313,6 +367,7 @@ async function initPage() {
   if (!sb) {
     if (banner) banner.classList.remove('hidden');
     if ($('jobsList')) $('jobsList').innerHTML = '';
+    cachedJobRows = [];
     return;
   }
   if (banner) banner.classList.add('hidden');
@@ -356,8 +411,11 @@ async function initPage() {
   }
 
   try {
-    const rows = await loadPosts(sb);
-    renderList(sb, rows, user?.id || null, !!user);
+    cachedJobRows = await loadPosts(sb);
+    bindJobCategoryChips();
+    lastJobsUserId = user?.id || null;
+    lastJobsLogged = !!user;
+    renderList(sb, filterJobRows(cachedJobRows), lastJobsUserId, lastJobsLogged, cachedJobRows);
     scrollToJobIfHash();
     const err = $('jobsLoadError');
     if (err) err.classList.add('hidden');
@@ -368,14 +426,15 @@ async function initPage() {
       let text =
         'Les offres ne peuvent pas être chargées pour le moment (migration Supabase ou droits à vérifier). Détails : ' +
         detail;
-      if (/source_url|external_image_url|does not exist|42703/i.test(detail)) {
+      if (/source_url|external_image_url|offer_category|does not exist|42703/i.test(detail)) {
         text +=
-          '\n\n→ Si le message parle de colonnes manquantes : exécutez « supabase/migrations/014_student_job_posts_link_share.sql » dans le SQL Editor Supabase. La page peut aussi fonctionner sans cette migration (liste + publication avec texte).';
+          '\n\n→ Colonnes manquantes : exécutez les migrations SQL du dossier supabase/migrations (014 lien + image, 015 catégories) dans le SQL Editor Supabase, puis rechargez.';
       }
       err.textContent = text;
       err.classList.remove('hidden');
     }
     if ($('jobsList')) $('jobsList').innerHTML = '';
+    cachedJobRows = [];
   }
 
   const importBtn = $('jobsImportLinkBtn');
@@ -424,7 +483,7 @@ async function initPage() {
       if (jc && normalizeUrl(contactRaw) === u) jc.value = '';
       const hi = $('jobsExternalImageUrl');
       if (hi) hi.value = r.imageUrl || '';
-      setImportMsg('Titre court = site employeur ; le détail de la page est dans le texte. Vérifiez puis publiez.', false);
+      setImportMsg('Titre court = nom du site source ; le détail de la page est dans le texte. Vérifiez puis publiez.', false);
     });
   }
 
@@ -514,6 +573,8 @@ async function initPage() {
         image_path = path;
       }
 
+      const offer_category = normalizeOfferCategory($('jobsCategory') && $('jobsCategory').value);
+
       const row = {
         user_id: u.id,
         author_label: authorFromUser(u),
@@ -523,11 +584,19 @@ async function initPage() {
         image_path,
         source_url: source_url || null,
         external_image_url: external_image_url || null,
+        offer_category,
       };
 
       let usedLegacyInsert = false;
       let ins = await sb.from('student_job_posts').insert(row).select('id').maybeSingle();
-      if (ins.error && /source_url|external_image_url|does not exist|42703|PGRST204/i.test(String(ins.error.message || ''))) {
+      const errStr = (err) => String((err && err.message) || '');
+
+      if (ins.error && /offer_category|does not exist|42703|PGRST204/i.test(errStr(ins.error))) {
+        const { offer_category: _rm, ...rowNoCat } = row;
+        ins = await sb.from('student_job_posts').insert(rowNoCat).select('id').maybeSingle();
+      }
+
+      if (ins.error && /source_url|external_image_url|does not exist|42703|PGRST204/i.test(errStr(ins.error))) {
         let legacyDesc = String(description).trim();
         if (source_url && !legacyDesc.includes(source_url)) {
           legacyDesc = (legacyDesc ? legacyDesc + '\n\n' : '') + 'Lien : ' + source_url;
