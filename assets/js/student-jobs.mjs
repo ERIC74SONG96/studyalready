@@ -143,13 +143,40 @@ function setImportMsg(text, isError) {
 
 function shareLinksForPost(postId, title) {
   const pageUrl = `${CANONICAL_JOBS_PAGE}#job-${postId}`;
-  const text = `${title}\n\nVoir sur StudyAlready :\n${pageUrl}`;
-  return {
-    pageUrl,
-    wa: `https://wa.me/?text=${encodeURIComponent(text)}`,
-    fb: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`,
-    mail: `mailto:?subject=${encodeURIComponent(`Offre : ${title}`)}&body=${encodeURIComponent(text)}`,
-  };
+  const shortTitle = String(title || 'Offre')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 120);
+  const text = `${shortTitle}\n\nVoir sur StudyAlready :\n${pageUrl}`;
+  const wa = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+  const fb = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+  const mail = `mailto:?subject=${encodeURIComponent(`Offre : ${shortTitle}`)}&body=${encodeURIComponent(text)}`;
+  return { pageUrl, wa, fb, mail };
+}
+
+function copyTextToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  }
+  return new Promise((resolve, reject) => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('execCommand'));
+    } catch (e) {
+      try {
+        document.body.removeChild(ta);
+      } catch (_) {}
+      reject(e);
+    }
+  });
 }
 
 function scrollToJobIfHash() {
@@ -210,12 +237,12 @@ function renderList(sb, rows, currentUserId, isLoggedIn) {
         : '';
       const { wa, fb, mail, pageUrl } = shareLinksForPost(r.id, r.title || 'Offre');
       const shareBlock =
-        `<div class="mt-4 pt-3 border-t border-slate-100">` +
+        `<div class="mt-4 pt-3 border-t border-slate-100 relative z-10">` +
         `<p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Partager cette annonce</p>` +
         `<div class="mt-2 flex flex-wrap gap-2">` +
-        `<a href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2">WhatsApp</a>` +
-        `<a href="${escapeHtml(fb)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2">Facebook</a>` +
-        `<a href="${escapeHtml(mail)}" class="inline-flex items-center gap-1 rounded-lg bg-slate-600 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-2">E-mail</a>` +
+        `<a href="${wa}" target="_blank" rel="noopener noreferrer" class="jobs-share-wa inline-flex items-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2">WhatsApp</a>` +
+        `<a href="${fb}" target="_blank" rel="noopener noreferrer" class="jobs-share-fb inline-flex items-center gap-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2">Facebook</a>` +
+        `<a href="${mail}" class="jobs-share-mail inline-flex items-center gap-1 rounded-lg bg-slate-600 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-2">E-mail</a>` +
         `<button type="button" class="jobs-copylink inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2" data-url="${escapeHtml(pageUrl)}">Copier le lien</button>` +
         `</div></div>`;
 
@@ -255,18 +282,19 @@ function renderList(sb, rows, currentUserId, isLoggedIn) {
   });
 
   host.querySelectorAll('.jobs-copylink').forEach((btn) => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', async (ev) => {
+      ev.preventDefault();
       const url = btn.getAttribute('data-url');
       if (!url) return;
       try {
-        await navigator.clipboard.writeText(url);
+        await copyTextToClipboard(url);
         const prev = btn.textContent;
         btn.textContent = 'Copié !';
         setTimeout(() => {
           btn.textContent = prev;
         }, 2000);
       } catch {
-        prompt('Copiez ce lien :', url);
+        window.prompt('Copiez ce lien :', url);
       }
     });
   });
