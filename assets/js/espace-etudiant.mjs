@@ -215,7 +215,13 @@ if (pageId === 'login') {
   }
 
   function resolveSignupPersona() {
-    if (signupLocSelection === 'hors') return 'cameroun';
+    if (signupLocSelection === 'hors') {
+      try {
+        var elH = document.querySelector('input[name="espace_persona"]:checked');
+        if (elH && elH.value === 'visiteur') return 'visiteur';
+      } catch (eH) {}
+      return 'cameroun';
+    }
     if (signupLocSelection === 'belgique') {
       return getSignupBelgiqueMode() === 'pro' ? 'travailleur' : 'belgique_etudiant';
     }
@@ -298,7 +304,7 @@ if (pageId === 'login') {
       tabSignup.classList.add('bg-slate-100', 'text-slate-700');
       panelLogin.classList.remove('hidden');
       panelSignup.classList.add('hidden');
-      if (personaBlockOuter) personaBlockOuter.classList.remove('hidden');
+      if (personaBlockOuter) personaBlockOuter.classList.add('hidden');
       resetSignupWizard();
     } else {
       tabSignup.classList.add('bg-brand-dark', 'text-white');
@@ -452,7 +458,6 @@ if (pageId === 'login') {
         return;
       }
       btnLogin.disabled = true;
-      persistPersonaChoice();
       var r = await sb.auth.signInWithPassword({ email: email, password: password });
       btnLogin.disabled = false;
       if (r.error) {
@@ -461,7 +466,6 @@ if (pageId === 'login') {
         showBanner(err, 'err', m);
         return;
       }
-      await sb.auth.updateUser({ data: { espace_persona: getSelectedPersona() } }).catch(function () {});
       redirectAfterAuth(sb);
     });
   }
@@ -567,7 +571,6 @@ if (pageId === 'login') {
         'Compte créé ! Ouvrez l\'email de confirmation que nous venons de vous envoyer (vérifiez le dossier spam). ' +
         'Le lien vous ramènera ici, connecté. Si vous arrivez sur une page d\'erreur, dites-le à l\'admin : la "Site URL" dans Supabase doit pointer vers ' + origin + '.');
       switchTab('login');
-      if (personaBlockOuter) personaBlockOuter.classList.remove('hidden');
     });
   }
 }
