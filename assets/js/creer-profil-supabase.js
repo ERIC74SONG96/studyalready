@@ -1,6 +1,6 @@
 /**
  * Soumission du formulaire « Créer mon profil » → insert Supabase (table profiles).
- * Statut : pending si visiteur ou e-mail ≠ compte ; published si connecté avec le même e-mail (migration 020).
+ * Statut : published immédiatement (trigger SQL) pour visibilité annuaire.
  */
 (function () {
   'use strict';
@@ -102,26 +102,12 @@
             showStatus(statusEl, escapeHtml(msg), 'text-red-600');
             return;
           }
-          return sb.auth.getSession().then(function (sessRes) {
-            var u = sessRes.data && sessRes.data.session && sessRes.data.session.user;
-            var jwtEmail = u && u.email ? String(u.email).toLowerCase().trim() : '';
-            var formEmail = String(row.email || '').toLowerCase().trim();
-            var sameAccount = jwtEmail.length > 3 && formEmail === jwtEmail;
-            if (sameAccount) {
-              showStatus(
-                statusEl,
-                'Merci ! Votre profil est <strong>déjà visible dans l’annuaire</strong> (vous étiez connecté·e avec la même adresse e-mail). Pour une modification : <a href="mailto:contact@studyalready.com" class="underline font-semibold">contact@studyalready.com</a>.',
-                'text-green-600'
-              );
-            } else {
-              showStatus(
-                statusEl,
-                'Merci ! Votre profil est enregistré. Il sera <strong>visible dans l’annuaire</strong> après validation manuelle (souvent sous 48 h). Astuce : connectez-vous à <strong>Mon espace</strong> avec la <strong>même adresse e-mail</strong> que sur ce formulaire puis renvoyez le formulaire pour une publication immédiate.',
-                'text-green-600'
-              );
-            }
-            form.reset();
-          });
+          showStatus(
+            statusEl,
+            'Merci ! Votre profil est <strong>visible dans l’annuaire</strong> pour les autres membres (rafraîchissez la page annuaire si besoin). Pour une modification ou un retrait : <a href="mailto:contact@studyalready.com" class="underline font-semibold">contact@studyalready.com</a>.',
+            'text-green-600'
+          );
+          form.reset();
         })
         .catch(function (err) {
           var m = (err && err.message) || String(err);

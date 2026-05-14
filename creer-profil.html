@@ -180,11 +180,11 @@
         <p id="creerProfilStatus" class="text-sm text-center hidden min-h-[1.5rem]" role="status" aria-live="polite"></p>
 
         <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-3.5 rounded-lg text-sm transition shadow-md">Soumettre mon profil</button>
-        <p class="text-xs text-slate-500 text-center">Si vous êtes <strong>connecté·e à Mon espace</strong> avec <strong>la même adresse e-mail</strong> que sur ce formulaire, le profil apparaît <strong>tout de suite</strong> dans l’annuaire. Sinon, relecture équipe sous ~48 h.</p>
+        <p class="text-xs text-slate-500 text-center">Une fois le formulaire accepté, votre fiche apparaît dans l’<a href="annuaire.html" class="underline font-medium">annuaire</a> pour les autres membres (souvent après un rafraîchissement de la page).</p>
       </form>
 
       <div class="mt-8 rounded-2xl bg-white border border-slate-200 p-5 text-sm text-slate-600">
-        <p><strong class="text-brand-dark">À savoir.</strong> Les données vont dans <strong>Supabase</strong> (Europe), table <strong>profiles</strong>. Compte connecté + même e-mail → statut <strong>publié</strong> immédiatement dans l'<a href="annuaire.html" class="underline">annuaire</a>. Sans compte (ou e-mail différent) → en attente puis publication après modération. L'e-mail n'est jamais affiché publiquement.</p>
+        <p><strong class="text-brand-dark">À savoir.</strong> Les données vont dans <strong>Supabase</strong> (Europe), table <strong>profiles</strong>, avec statut <strong>publié</strong> pour l’<a href="annuaire.html" class="underline">annuaire</a> dès l’enregistrement (vous avez coché le consentement publication). L'e-mail n'est jamais affiché publiquement.</p>
       </div>
     </div>
   </section>
@@ -203,7 +203,7 @@
   <script src="assets/js/config.js"></script>
   <script src="/assets/js/vendor/supabase-umd-2.49.4.min.js"></script>
   <script src="assets/js/supabase-init.js"></script>
-  <script src="assets/js/creer-profil-supabase.js?v=20260516autopublish"></script>
+  <script src="assets/js/creer-profil-supabase.js?v=20260516alwayspub"></script>
   <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

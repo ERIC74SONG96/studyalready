@@ -8,7 +8,8 @@ StudyAlready — Supabase (cloud)
 Les profils « published » apparaissent dans l’annuaire via la fonction get_annuaire_profiles (sans exposer l’email).
 Migration 018_annuaire_gate_communaute.sql : les comptes connectés sans adhésion communauté (rejoindre le réseau avec user_id, ou profil annuaire même e-mail, ou admin) reçoivent denied=true et ne voient pas la liste — les visiteurs non connectés gardent l’accès public.
 019_annuaire_gate_rejoindre_email.sql : même adresse e-mail qu’une adhésion « rejoindre » (même sans user_id) ouvre aussi l’annuaire une fois connecté.
-020_profiles_auto_publish_same_email.sql : création de profil annuaire en « published » si l’utilisateur est connecté (JWT) et que l’e-mail du formulaire = e-mail du compte ; sinon « pending » comme avant.
+020_profiles_auto_publish_same_email.sql : (remplacée par 021) publication conditionnelle connecté + même e-mail.
+021_profiles_always_published_on_insert.sql : toute nouvelle fiche → published ; toutes les fiches encore pending passent en published pour l’annuaire.
 Rejoindre le réseau (rejoindre-reseau.html) : crée un compte Mon espace + form_submissions (assets/js/rejoindre-reseau-auth.js).
 
 Offres job étudiant (offres-etudiants.html ; jobs-etudiants.html redirige) — migrations 014 (lien + image) et 015 (catégories) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
