@@ -123,10 +123,26 @@
     return out;
   }
 
+  function parseProfilesPayload(raw) {
+    if (raw == null) return [];
+    if (Array.isArray(raw)) return raw;
+    if (typeof raw === 'string') {
+      try {
+        var p = JSON.parse(raw);
+        return Array.isArray(p) ? p : [];
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
+  }
+
   function fetchSupabaseProfiles() {
     var sb = window.studyalreadySb;
     if (!sb) return Promise.resolve({ list: [], denied: false });
-    return sb.rpc('get_annuaire_profiles').then(function (res) {
+    return sb.auth.getSession().then(function () {
+      return sb.rpc('get_annuaire_profiles');
+    }).then(function (res) {
       if (res.error) {
         console.warn('StudyAlready annuaire Supabase:', res.error.message);
         return { list: [], denied: false };
@@ -137,12 +153,8 @@
         denied = !!raw.denied;
         raw = raw.profiles;
       }
-      var arr = [];
-      if (Array.isArray(raw)) arr = raw;
-      else if (raw && typeof raw === 'string') {
-        try { arr = JSON.parse(raw); } catch (e) { arr = []; }
-      }
-      return { list: (arr || []).map(normalizeMember), denied: denied };
+      var arr = parseProfilesPayload(raw);
+      return { list: arr.map(normalizeMember), denied: denied };
     }).catch(function (e) {
       console.warn('StudyAlready annuaire Supabase:', e);
       return { list: [], denied: false };

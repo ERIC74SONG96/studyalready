@@ -18,7 +18,9 @@
   }
   try {
     window.studyalreadySb = createClientFn(c.SUPABASE_URL, c.SUPABASE_ANON_KEY, {
-      auth: { persistSession: false, autoRefreshToken: false }
+      /* Même stockage de session que l’espace personnel : l’annuaire et les formulaires
+         peuvent appeler des RPC « authentifiés » (JWT) quand l’utilisateur est déjà connecté. */
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
   } catch (e) {
     console.warn('StudyAlready Supabase init:', e);
