@@ -125,22 +125,27 @@
 
   function fetchSupabaseProfiles() {
     var sb = window.studyalreadySb;
-    if (!sb) return Promise.resolve([]);
+    if (!sb) return Promise.resolve({ list: [], denied: false });
     return sb.rpc('get_annuaire_profiles').then(function (res) {
       if (res.error) {
         console.warn('StudyAlready annuaire Supabase:', res.error.message);
-        return [];
+        return { list: [], denied: false };
       }
       var raw = res.data;
+      var denied = false;
+      if (raw && typeof raw === 'object' && !Array.isArray(raw) && Number(raw.schema_version) === 2) {
+        denied = !!raw.denied;
+        raw = raw.profiles;
+      }
       var arr = [];
       if (Array.isArray(raw)) arr = raw;
       else if (raw && typeof raw === 'string') {
         try { arr = JSON.parse(raw); } catch (e) { arr = []; }
       }
-      return (arr || []).map(normalizeMember);
+      return { list: (arr || []).map(normalizeMember), denied: denied };
     }).catch(function (e) {
       console.warn('StudyAlready annuaire Supabase:', e);
-      return [];
+      return { list: [], denied: false };
     });
   }
 
@@ -175,7 +180,20 @@
       fetchSupabaseProfiles(),
     ]).then(function (pair) {
       var data = pair[0] || {};
-      var remote = pair[1] || [];
+      var remotePack = pair[1] || { list: [], denied: false };
+      var remote = remotePack.list || [];
+      var accessDenied = !!remotePack.denied;
+      var gateEl = document.getElementById('annuaireAccessGate');
+      var mainEl = document.getElementById('annuaireMainContent');
+
+      if (accessDenied) {
+        if (mainEl) mainEl.classList.add('hidden');
+        if (gateEl) gateEl.classList.remove('hidden');
+        return;
+      }
+      if (mainEl) mainEl.classList.remove('hidden');
+      if (gateEl) gateEl.classList.add('hidden');
+
       var demos = ((data && data.membres) || []).map(function (m) {
         return normalizeMember(m);
       });

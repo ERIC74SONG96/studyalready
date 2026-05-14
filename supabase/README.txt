@@ -6,6 +6,7 @@ StudyAlready — Supabase (cloud)
 4. Les clés API (URL + anon) sont dans assets/js/config.js — ne commitez jamais la clé service_role.
 
 Les profils « published » apparaissent dans l’annuaire via la fonction get_annuaire_profiles (sans exposer l’email).
+Migration 018_annuaire_gate_communaute.sql : les comptes connectés sans adhésion communauté (rejoindre le réseau avec user_id, ou profil annuaire même e-mail, ou admin) reçoivent denied=true et ne voient pas la liste — les visiteurs non connectés gardent l’accès public.
 
 Offres job étudiant (offres-etudiants.html ; jobs-etudiants.html redirige) — migrations 014 (lien + image) et 015 (catégories) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
 
