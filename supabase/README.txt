@@ -11,6 +11,7 @@ Migration 018_annuaire_gate_communaute.sql : les comptes connectés sans adhési
 020_profiles_auto_publish_same_email.sql : (remplacée par 021) publication conditionnelle connecté + même e-mail.
 021_profiles_always_published_on_insert.sql : toute nouvelle fiche → published ; toutes les fiches encore pending passent en published pour l’annuaire.
 022_annuaire_gate_anon_denied.sql : get_annuaire_profiles refuse aussi les visiteurs non connectés (denied) ; liste visible seulement pour membres communauté (même règles qu’avant pour les connectés).
+023_annuaire_exclude_own_email.sql : la liste renvoyée n’inclut pas la fiche dont l’e-mail = celui du JWT (on ne se voit pas soi-même dans la grille).
 Rejoindre le réseau (rejoindre-reseau.html) : crée un compte Mon espace + form_submissions (assets/js/rejoindre-reseau-auth.js).
 
 Offres job étudiant (offres-etudiants.html ; jobs-etudiants.html redirige) — migrations 014 (lien + image) et 015 (catégories) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
