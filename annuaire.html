@@ -38,23 +38,22 @@
 
   <section class="py-8 bg-amber-50 border-y border-amber-200">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 text-sm text-amber-950">
-      <p><strong>Annuaire réel :</strong> chaque fiche provient du formulaire <a href="creer-profil.html" class="underline font-medium">Créer mon profil</a> et n’apparaît ici qu’avec le <strong>consentement</strong> du membre et une <strong>publication</strong> par StudyAlready (statut « publié » dans notre outil). Aucun profil fictif n’est mélangé aux données : la liste peut être vide tant que personne n’a été publié(e). Pour des démos internes uniquement, vous pouvez utiliser l’URL avec <code class="bg-white/80 px-1 rounded text-xs">?annuaire_demo=1</code>.</p>
+      <p><strong>Annuaire réservé à la communauté :</strong> seuls les membres connectés qui ont rejoint le réseau ou créé un profil annuaire (même e-mail que le compte) voient la liste. Chaque fiche provient du formulaire <a href="creer-profil.html" class="underline font-medium">Créer mon profil</a> avec consentement. Pour des démos internes uniquement : <code class="bg-white/80 px-1 rounded text-xs">?annuaire_demo=1</code>.</p>
     </div>
   </section>
 
   <div id="annuaireAccessGate" class="hidden py-16 bg-white border-b border-slate-100">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
       <p class="text-brand-gold font-semibold uppercase text-xs tracking-widest">Accès annuaire</p>
-      <h2 class="mt-3 font-display text-2xl font-bold text-brand-dark">Rejoignez la communauté pour voir les membres.</h2>
+      <h2 class="mt-3 font-display text-2xl font-bold text-brand-dark">L’annuaire est réservé aux membres de la communauté.</h2>
       <p class="mt-4 text-slate-600 text-sm leading-relaxed">
-        Vous êtes connecté·e à votre espace StudyAlready, mais l’annuaire des membres est réservé aux personnes qui se sont
-        <strong>inscrites dans la communauté</strong> : adhésion « Rejoindre le réseau » (depuis votre compte, pour que la demande soit liée à votre profil),
-        ou bien envoi du formulaire <strong>Créer mon profil</strong> avec la <strong>même adresse e-mail</strong> que votre compte Mon espace.
+        <strong>Sans compte</strong> ou <strong>sans adhésion</strong>, les fiches des autres membres ne s’affichent pas. Créez un compte (ou connectez-vous), puis :
+        adhésion <strong>« Rejoindre le réseau »</strong> depuis votre compte, <strong>ou</strong> formulaire <strong>Créer mon profil</strong> avec la <strong>même adresse e-mail</strong> que Mon espace.
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="espace-etudiant/" class="inline-flex items-center gap-2 bg-brand-dark text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-blue">Connexion / créer un compte</a>
         <a href="rejoindre-reseau.html" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-yellow-400">Rejoindre le réseau</a>
         <a href="creer-profil.html" class="inline-flex items-center gap-2 border-2 border-brand-dark text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-cream">Créer mon profil annuaire</a>
-        <a href="espace-etudiant/" class="inline-flex items-center gap-2 text-slate-600 font-semibold px-4 py-3 text-sm underline">Mon espace</a>
       </div>
     </div>
   </div>
@@ -152,6 +151,6 @@
   <script src="assets/js/supabase-init.js?v=20260515persist"></script>
   <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/annuaire.js?v=20260515session"></script>
+  <script src="assets/js/annuaire.js?v=20260516gateanon"></script>
 </body>
 </html>

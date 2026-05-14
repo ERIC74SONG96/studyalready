@@ -198,7 +198,7 @@
       var gateEl = document.getElementById('annuaireAccessGate');
       var mainEl = document.getElementById('annuaireMainContent');
 
-      if (accessDenied) {
+      if (accessDenied && !demoParam) {
         if (mainEl) mainEl.classList.add('hidden');
         if (gateEl) gateEl.classList.remove('hidden');
         return;
