@@ -11,6 +11,9 @@
     el.classList.remove('text-red-600', 'text-green-600', 'text-amber-700', 'text-slate-600');
     el.classList.add(cls || 'text-slate-600');
     el.innerHTML = html;
+    try {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (e) {}
   }
 
   function parseOuvertures(form) {
@@ -28,12 +31,30 @@
   document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('creerProfilForm');
     var statusEl = document.getElementById('creerProfilStatus');
-    var sb = window.studyalreadySb;
-    if (!form || !sb) return;
+    var submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+    if (!form) return;
+
+    if (!window.studyalreadySb) {
+      showStatus(
+        statusEl,
+        '<strong>Connexion au serveur impossible.</strong> Rechargez la page, vérifiez votre réseau ou désactivez temporairement les bloqueurs de publicité pour ce site (le script Supabase doit se charger). Sans cela, l’envoi du formulaire ne peut pas fonctionner.',
+        'text-red-600'
+      );
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
+
+      var sb = window.studyalreadySb;
+      if (!sb) {
+        showStatus(
+          statusEl,
+          '<strong>Client Supabase indisponible.</strong> Rechargez la page ou essayez un autre navigateur. Si le problème continue, écrivez à <a href="mailto:contact@studyalready.com" class="underline font-semibold">contact@studyalready.com</a>.',
+          'text-red-600'
+        );
+        return;
+      }
 
       var honeypot = form.querySelector('input[name="website"]');
       if (honeypot && honeypot.value) {
@@ -65,23 +86,43 @@
       };
 
       showStatus(statusEl, 'Envoi en cours…', 'text-slate-600');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+      }
 
-      sb.from('profiles').insert(row).then(function (res) {
-        if (res.error) {
-          var msg = res.error.message || 'Erreur serveur';
-          if (res.error.code === '42501' || (msg && msg.indexOf('policy') !== -1)) {
-            msg += ' — Avez-vous exécuté le script SQL dans Supabase (voir dossier supabase/migrations) ?';
+      sb.from('profiles')
+        .insert(row)
+        .then(function (res) {
+          if (res.error) {
+            var msg = res.error.message || 'Erreur serveur';
+            if (res.error.code === '42501' || (msg && msg.indexOf('policy') !== -1)) {
+              msg += ' — Avez-vous exécuté le script SQL dans Supabase (voir dossier supabase/migrations) ?';
+            }
+            showStatus(statusEl, escapeHtml(msg), 'text-red-600');
+            return;
           }
-          showStatus(statusEl, escapeHtml(msg), 'text-red-600');
-          return;
-        }
-        showStatus(
-          statusEl,
-          'Merci ! Votre profil est enregistré. Il sera <strong>visible dans l’annuaire</strong> après validation manuelle (souvent sous 48 h).',
-          'text-green-600'
-        );
-        form.reset();
-      });
+          showStatus(
+            statusEl,
+            'Merci ! Votre profil est enregistré. Il sera <strong>visible dans l’annuaire</strong> après validation manuelle (souvent sous 48 h).',
+            'text-green-600'
+          );
+          form.reset();
+        })
+        .catch(function (err) {
+          var m = (err && err.message) || String(err);
+          showStatus(
+            statusEl,
+            escapeHtml('Erreur réseau ou technique : ' + m + '. Réessayez ou contactez contact@studyalready.com.'),
+            'text-red-600'
+          );
+        })
+        .finally(function () {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute('aria-busy');
+          }
+        });
     }, true);
   });
 
