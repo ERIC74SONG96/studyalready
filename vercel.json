@@ -42,12 +42,6 @@
       ]
     },
     {
-      "source": "/bourses-belgique.html",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
-    },
-    {
       "source": "/assets/js/vendor/(.*)",
       "headers": [
         {
@@ -58,12 +52,6 @@
     },
     {
       "source": "/assets/js/student-jobs.mjs",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
-    },
-    {
-      "source": "/assets/js/student-scholarships.mjs",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
@@ -188,7 +176,7 @@
       "permanent": false
     },
     { "source": "/jobs-etudiants", "destination": "/offres-etudiants.html", "permanent": false },
-    { "source": "/bourses", "destination": "/bourses-belgique.html", "permanent": false },
+    { "source": "/bourses", "destination": "/blog/index.html#bourses", "permanent": false },
     { "source": "/contact", "destination": "/#contact", "permanent": false },
     { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true },
     {

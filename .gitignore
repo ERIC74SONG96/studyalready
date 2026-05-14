@@ -35,3 +35,6 @@ error_log
 .env
 .env.local
 config.local.php
+
+# Supabase CLI (cache local)
+supabase/.temp/
