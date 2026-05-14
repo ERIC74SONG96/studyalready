@@ -176,12 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
       successMessage: 'Merci ! Votre pré-qualification est enregistrée. Réponse sous 48 h ouvrées.'
     });
     SA.bind({
-      formId: 'rejoindreReseauForm',
-      statusId: 'rejoindreReseauStatus',
-      formType: 'rejoindre-reseau',
-      successMessage: 'Merci ! Vous êtes bien inscrit·e au réseau StudyAlready.'
-    });
-    SA.bind({
       formId: 'miseEnRelationForm',
       statusId: 'miseEnRelationStatus',
       formType: 'mise-en-relation',
