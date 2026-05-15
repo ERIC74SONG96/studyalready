@@ -69,6 +69,82 @@
   } catch (e) {}
 })();
 
+/* Navigation plus rapide : précharge les pages publiques internes au survol,
+   au focus et pendant les temps morts. Les pages sensibles restent exclues. */
+(function setupFastNavigation() {
+  try {
+    var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''))) return;
+
+    var prefetched = {};
+    var maxIdlePrefetches = 10;
+
+    function isSensitivePath(pathname) {
+      return pathname.indexOf('/admin') === 0 ||
+        pathname.indexOf('/dashboard') === 0 ||
+        pathname.indexOf('/espace-etudiant') === 0 ||
+        pathname.indexOf('/php/') === 0;
+    }
+
+    function cleanUrl(href) {
+      if (!href || href.charAt(0) === '#') return '';
+      var u = new URL(href, window.location.href);
+      if (u.origin !== window.location.origin) return '';
+      if (isSensitivePath(u.pathname)) return '';
+      if (/\.(pdf|jpg|jpeg|png|gif|webp|svg|css|js|mjs|json|xml|txt|webmanifest)$/i.test(u.pathname)) return '';
+      u.hash = '';
+      return u.href;
+    }
+
+    function prefetchUrl(url) {
+      if (!url || prefetched[url]) return;
+      prefetched[url] = true;
+
+      var link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.as = 'document';
+      link.href = url;
+      document.head.appendChild(link);
+
+      if (window.fetch) {
+        try {
+          fetch(url, { credentials: 'same-origin', cache: 'force-cache', priority: 'low' }).catch(function () {});
+        } catch (_e) {}
+      }
+    }
+
+    function prefetchLink(link) {
+      if (!link || link.target || link.hasAttribute('download')) return;
+      prefetchUrl(cleanUrl(link.getAttribute('href')));
+    }
+
+    ['pointerenter', 'focusin', 'touchstart'].forEach(function (eventName) {
+      document.addEventListener(eventName, function (ev) {
+        var link = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+        prefetchLink(link);
+      }, { passive: true, capture: true });
+    });
+
+    function idlePrefetch() {
+      var links = Array.prototype.slice.call(document.querySelectorAll('header a[href], nav a[href], footer a[href], main a[href]'));
+      var count = 0;
+      links.some(function (link) {
+        var url = cleanUrl(link.getAttribute('href'));
+        if (!url || prefetched[url]) return false;
+        prefetchUrl(url);
+        count += 1;
+        return count >= maxIdlePrefetches;
+      });
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(idlePrefetch, { timeout: 2500 });
+    } else {
+      window.setTimeout(idlePrefetch, 1800);
+    }
+  } catch (e) {}
+})();
+
 /* Charge dynamiquement les scripts globaux (cookies RGPD, liens sociaux footer) */
 (function loadGlobalScripts() {
   if (window.studyalreadyGlobalLoaded) return;

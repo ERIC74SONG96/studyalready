@@ -1,5 +1,5 @@
 /* StudyAlready PWA cache - reseaux instables, experience mobile. */
-const CACHE_VERSION = 'studyalready-v1';
+const CACHE_VERSION = 'studyalready-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const PAGE_CACHE = `${CACHE_VERSION}-pages`;
 
@@ -11,7 +11,12 @@ const PRECACHE_URLS = [
   '/assets/js/main.js',
   '/assets/js/config.js',
   '/assets/img/logo-icon.svg',
-  '/assets/img/logo.svg'
+  '/assets/img/logo.svg',
+  '/equivalence',
+  '/tarifs-packs',
+  '/prequalification-dossier',
+  '/communaute',
+  '/blog'
 ];
 
 function isSameOrigin(url) {
@@ -44,12 +49,26 @@ async function networkFirst(request) {
   }
 }
 
-async function staleWhileRevalidate(request) {
+async function staleWhileRevalidate(request, cacheName = STATIC_CACHE) {
   const cached = await caches.match(request);
   const refresh = fetch(request)
-    .then((response) => putIfOk(STATIC_CACHE, request, response))
+    .then((response) => putIfOk(cacheName, request, response))
     .catch(() => null);
   return cached || refresh;
+}
+
+async function pageStaleWhileRevalidate(request) {
+  const response = await staleWhileRevalidate(request, PAGE_CACHE);
+  return response || caches.match('/offline.html');
+}
+
+function isHtmlLikeRequest(request, url) {
+  if (request.mode === 'navigate') return true;
+  const accept = request.headers.get('accept') || '';
+  if (accept.indexOf('text/html') !== -1) return true;
+  if (url.pathname === '/' || url.pathname.endsWith('/')) return true;
+  const last = url.pathname.split('/').pop() || '';
+  return last.indexOf('.') === -1;
 }
 
 self.addEventListener('install', (event) => {
@@ -87,8 +106,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (request.mode === 'navigate') {
-    event.respondWith(networkFirst(request));
+  if (isHtmlLikeRequest(request, url)) {
+    event.respondWith(pageStaleWhileRevalidate(request));
     return;
   }
 
