@@ -13,6 +13,31 @@ AddDefaultCharset UTF-8
 # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 # RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
+# ============== Masque URL (fichiers .html, barre d'adresse sans extension) ==============
+# Le code et le serveur gardent communaute.html ; le visiteur voit /communaute.
+# Nécessite mod_rewrite + AllowOverride sur LWS. Uploader ce fichier à la racine du site.
+Options -Indexes +FollowSymLinks
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1) Masque : /page.html → /page (ce que l'utilisateur voit)
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L,NE]
+
+  # 2) Serveur : /page → fichier page.html (sans changer l'URL affichée)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^ %{REQUEST_FILENAME}.html [L]
+</IfModule>
+
+DirectoryIndex index.html
+
 # ============== EN-TÊTES DE SÉCURITÉ ==============
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
