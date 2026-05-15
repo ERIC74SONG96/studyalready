@@ -1,0 +1,27 @@
+{
+  "name": "studyalready-site",
+  "version": "1.0.0",
+  "description": "Site vitrine + accompagnement pour **StudyAlready**, bureau d'aide aux étudiants camerounais vers la Fédération Wallonie-Bruxelles.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/copy-astro-public.mjs",
+    "preview": "astro preview",
+    "check": "node scripts/validate-astro-build.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ERIC74SONG96/studyalready.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ERIC74SONG96/studyalready/issues"
+  },
+  "homepage": "https://github.com/ERIC74SONG96/studyalready#readme",
+  "devDependencies": {
+    "astro": "^6.3.3"
+  }
+}

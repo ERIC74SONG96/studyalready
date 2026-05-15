@@ -1,0 +1,14 @@
+---
+import { listStaticHtmlPages, readStaticHtmlPage } from '../lib/static-html-pages.mjs';
+
+export function getStaticPaths() {
+  return listStaticHtmlPages().map((page) => ({
+    params: { slug: page.slug },
+    props: { sourcePath: page.sourcePath },
+  }));
+}
+
+const { sourcePath } = Astro.props;
+const html = readStaticHtmlPage(sourcePath);
+---
+<Fragment set:html={html} />

@@ -21,6 +21,9 @@ Desktop.ini
 *.tmp
 *.bak
 _bundle_tmp/
+node_modules/
+dist/
+.astro/
 
 # Cursor
 .cursor/

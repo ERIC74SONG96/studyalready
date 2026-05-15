@@ -1,0 +1,6 @@
+---
+import { readStaticHtmlPage } from '../lib/static-html-pages.mjs';
+
+const html = readStaticHtmlPage('index.html');
+---
+<Fragment set:html={html} />

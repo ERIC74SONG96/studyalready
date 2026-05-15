@@ -2,7 +2,7 @@
 
 Site vitrine + accompagnement pour **StudyAlready**, bureau d'aide aux étudiants camerounais vers la Fédération Wallonie-Bruxelles.
 
-Stack : HTML5 + Tailwind CSS (CDN) + JavaScript vanilla + PHP (formulaires). Aucun build, aucune dépendance à installer.
+Stack : Astro (SSG) + HTML statique existant + Tailwind CSS (CDN) + JavaScript vanilla + Supabase. Le build Astro génère des routes propres sans `.html` à partir des pages HTML existantes, pour permettre une migration progressive vers des composants Astro.
 
 ---
 
@@ -127,6 +127,20 @@ Le PDF du dossier de présentation peut être régénéré localement avec Micro
 ---
 
 ## Test en local (avant upload)
+
+### Avec Astro (recommandé)
+```bash
+npm install
+npm run dev
+```
+
+Pour produire le site statique dans `dist/` :
+```bash
+npm run build
+npm run check
+```
+
+Le script de build copie automatiquement les assets publics (`assets/`, `robots.txt`, `sitemap.xml`, `sw.js`, `manifest.webmanifest`, etc.) après la génération Astro.
 
 ### Sans formulaire (rapide)
 Double-cliquez sur `index.html`. Le formulaire affichera un message expliquant qu'il ne marche qu'en ligne.
