@@ -62,7 +62,7 @@ function clearAllGoTrueAuthLocalStorage() {
 
 /**
  * Après une session valide (connexion sur Mon espace, lien email, etc.) :
- * administrateurs → /admin.html ; sinon → accueil du site (l’utilisateur ouvre son tableau
+ * administrateurs → /admin ; sinon → accueil du site (l’utilisateur ouvre son tableau
  * de bord via « Mon profil » dans la navigation).
  */
 function redirectAfterAuth(sb) {
@@ -74,10 +74,10 @@ function redirectAfterAuth(sb) {
   try {
     window.history.replaceState(null, '', window.location.pathname);
   } catch (e) {}
-  var home = '/index.html';
+  var home = '/';
   try {
     if (window.location && window.location.origin) {
-      home = window.location.origin + '/index.html';
+      home = window.location.origin + '/';
     }
   } catch (e0) {}
   return sb.auth
@@ -92,7 +92,7 @@ function redirectAfterAuth(sb) {
     })
     .then(function (a) {
       if (!a.error && a.data === true) {
-        window.location.replace('/admin.html');
+        window.location.replace('/admin');
       } else {
         window.location.replace(home);
       }
@@ -719,7 +719,7 @@ if (pageId === 'login') {
       /* Force l'URL de retour vers le vrai site en production.
          Évite le défaut Supabase qui pointe vers http://localhost:3000. */
       var origin = (window.location && window.location.origin) || 'https://www.studyalready.com';
-      var redirectUrl = origin + '/espace-etudiant/dashboard.html';
+      var redirectUrl = origin + '/espace-etudiant/dashboard';
       var r = await sb.auth.signUp({
         email: email,
         password: password,

@@ -68,7 +68,7 @@
 
   function todayISO() {
     var d = new Date();
-    return d.getFullYear() + '-.html' + pad2(d.getMonth() + 1) + '-.html' + pad2(d.getDate());
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
   }
 
   function initComparateur() {

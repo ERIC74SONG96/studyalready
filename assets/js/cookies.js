@@ -55,7 +55,7 @@
             '<p style="margin:0;color:#475569">' +
               'Nous utilisons uniquement des cookies <strong>essentiels</strong> au fonctionnement du site ' +
               '(connexion sécurisée, envoi de formulaires). Aucun traceur publicitaire. ' +
-              'En savoir plus : <a href="politique-cookies.html" style="color:#1e3a8a;text-decoration:underline;font-weight:600">politique cookies</a>.' +
+              'En savoir plus : <a href="/politique-cookies" style="color:#1e3a8a;text-decoration:underline;font-weight:600">politique cookies</a>.' +
             '</p>' +
           '</div>' +
           '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">' +

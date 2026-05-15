@@ -291,7 +291,7 @@
     if (!opts.includePast) list = list.filter(isUpcoming);
     list.sort(function (a, b) { return new Date(a.starts_at) - new Date(b.starts_at); });
     if (!list.length) {
-      container.innerHTML = '<p class="text-sm text-slate-600">Aucun événement à venir. <a href="creer-evenement.html" class="text-brand-blue font-semibold underline">Proposer le vôtre</a>.</p>';
+      container.innerHTML = '<p class="text-sm text-slate-600">Aucun événement à venir. <a href="/creer-evenement" class="text-brand-blue font-semibold underline">Proposer le vôtre</a>.</p>';
       container.className = 'space-y-4';
       return;
     }

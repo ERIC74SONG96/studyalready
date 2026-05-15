@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT_DIR = process.cwd();
-const ASSET_VERSION = '20260515mobile';
+const ASSET_VERSION = '20260515links';
 const SKIP_DIRS = new Set([
   '.astro',
   '.git',

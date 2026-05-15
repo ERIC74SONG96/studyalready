@@ -640,7 +640,7 @@
     if (!m || !drawer || !body) return;
     var color = colorFor(m.universite);
     var initiales = initialsOf(m.prenom, m.initial_nom);
-    var msgHref = 'mise-en-relation.html?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
+    var msgHref = '/mise-en-relation?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
     var following = state.followSet.has(m.id);
     var spec = (m.specialites || []).map(function (s) {
       return '<span class="inline-block text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 mr-1 mb-1">' + escapeHTML(s) + '</span>';
@@ -859,7 +859,7 @@
   function renderMemberRow(m, compact, query) {
     var color = colorFor(m.universite);
     var initiales = initialsOf(m.prenom, m.initial_nom);
-    var msgHref = 'mise-en-relation.html?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
+    var msgHref = '/mise-en-relation?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
     var following = state.followSet.has(m.id);
     var q = query || '';
     var bio = compact ? '' : '<p class="mt-1 text-xs text-slate-600 line-clamp-2">' + highlightHtml(m.bio || '', q) + '</p>';
@@ -986,7 +986,7 @@
     if (!cta) return;
     if (hasOwnProfile) {
       cta.textContent = 'Ma fiche annuaire';
-      cta.href = 'espace-etudiant/dashboard.html';
+      cta.href = '/espace-etudiant/dashboard';
       cta.classList.remove('bg-brand-gold', 'hover:bg-yellow-400');
       cta.classList.add('bg-white', 'border-2', 'border-brand-dark', 'text-brand-dark', 'hover:bg-brand-cream');
       if (hint) {
@@ -997,7 +997,7 @@
       }
     } else if (hasAnnuaireAccess) {
       cta.textContent = '+ Publier ma fiche dans l’annuaire';
-      cta.href = 'creer-profil.html';
+      cta.href = '/creer-profil';
       cta.classList.add('bg-brand-gold', 'hover:bg-yellow-400', 'text-brand-dark');
       cta.classList.remove('bg-white', 'border-2', 'border-brand-dark', 'hover:bg-brand-cream');
       if (hint) {
@@ -1008,7 +1008,7 @@
       }
     } else {
       cta.textContent = '+ Créer mon profil';
-      cta.href = 'creer-profil.html';
+      cta.href = '/creer-profil';
       cta.classList.add('bg-brand-gold', 'hover:bg-yellow-400', 'text-brand-dark');
       cta.classList.remove('bg-white', 'border-2', 'border-brand-dark', 'hover:bg-brand-cream');
       if (hint) hint.classList.add('hidden');
