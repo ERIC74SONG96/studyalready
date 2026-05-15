@@ -1,5 +1,5 @@
 /* StudyAlready PWA cache - reseaux instables, experience mobile. */
-const CACHE_VERSION = 'studyalready-v5';
+const CACHE_VERSION = 'studyalready-v6';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const PAGE_CACHE = `${CACHE_VERSION}-pages`;
 
@@ -57,11 +57,6 @@ async function staleWhileRevalidate(request, cacheName = STATIC_CACHE) {
   return cached || refresh;
 }
 
-async function pageStaleWhileRevalidate(request) {
-  const response = await staleWhileRevalidate(request, PAGE_CACHE);
-  return response || caches.match('/offline.html');
-}
-
 function isHtmlLikeRequest(request, url) {
   if (request.mode === 'navigate') return true;
   const accept = request.headers.get('accept') || '';
@@ -107,7 +102,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (isHtmlLikeRequest(request, url)) {
-    event.respondWith(pageStaleWhileRevalidate(request));
+    event.respondWith(networkFirst(request));
     return;
   }
 
