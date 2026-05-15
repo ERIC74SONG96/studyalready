@@ -71,8 +71,8 @@
         '<strong>' + fmt(count) + '</strong>' +
         '<span class="sa-community-matrix-sub-label">' + label + '</span>' +
         '<span class="sa-community-matrix-sub-flag">' + flag + '</span>' +
-      '</motion>'
-    ).replace('</motion>', '</div>');
+      '</div>'
+    );
   }
 
   function applyEntryCounts(stats) {
