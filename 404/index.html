@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page introuvable | StudyAlready</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    /* Détection ULTRA précoce d'un retour de confirmation Supabase.
+       Si l'URL contient un token (#access_token=..., type=signup,
+       type=recovery, type=magiclink, ?code=...) ou une erreur d'auth,
+       on redirige vers /espace-etudiant/ qui sait gérer le token. */
+    (function () {
+      try {
+        var hash = window.location.hash || '';
+        var search = window.location.search || '';
+        var hasToken =
+          hash.indexOf('access_token=') !== -1 ||
+          hash.indexOf('refresh_token=') !== -1 ||
+          hash.indexOf('type=signup') !== -1 ||
+          hash.indexOf('type=recovery') !== -1 ||
+          hash.indexOf('type=magiclink') !== -1 ||
+          hash.indexOf('type=invite') !== -1 ||
+          hash.indexOf('error_description=') !== -1 ||
+          hash.indexOf('error_code=') !== -1 ||
+          search.indexOf('code=') !== -1 ||
+          search.indexOf('token=') !== -1 ||
+          search.indexOf('type=') !== -1;
+        if (hasToken) {
+          /* On préserve hash + search pour que la page d'atterrissage
+             puisse créer la session ou afficher l'erreur. */
+          window.location.replace('/espace-etudiant/' + hash + search);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 antialiased min-h-screen flex flex-col">
+
+  <main class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="max-w-lg w-full text-center">
+      <div class="inline-flex w-16 h-16 rounded-2xl bg-brand-dark items-center justify-center mb-6">
+        <span class="text-brand-gold font-display font-bold text-xl">SA</span>
+      </div>
+      <p class="text-brand-gold text-xs font-semibold uppercase tracking-widest">Erreur 404</p>
+      <h1 class="mt-3 font-display text-3xl sm:text-4xl font-bold text-brand-dark">Page introuvable.</h1>
+      <p class="mt-4 text-slate-600">
+        La page que vous cherchez n'existe pas ou a été déplacée. Vérifiez l'URL ou revenez à l'accueil.
+      </p>
+      <p class="mt-3 text-sm text-slate-500 max-w-md mx-auto">
+        Le <strong class="text-slate-700">blog</strong> et les guides du site sont <strong class="text-slate-700">publics</strong> : aucune connexion n’est requise pour les lire. Seul l’<a href="/espace-etudiant/" class="text-brand-blue underline font-semibold">espace personnel</a> sert à vous connecter ou à créer un compte.
+      </p>
+      <p class="mt-3 text-xs text-slate-500" id="authHint">
+        Si vous arrivez d'un email de confirmation : <a href="/espace-etudiant/" id="authLink" class="text-brand-blue underline font-semibold">accéder à mon espace personnel</a>.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3 justify-center">
+        <a href="/" class="inline-flex items-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold px-6 py-3 rounded-full text-sm">
+          ← Accueil StudyAlready
+        </a>
+        <a href="/espace-etudiant/" id="goSpace" class="inline-flex items-center gap-2 bg-brand-dark hover:bg-brand-blue text-white font-semibold px-6 py-3 rounded-full text-sm">
+          Espace personnel
+        </a>
+      </div>
+
+      <!-- Encart diagnostic : visible uniquement si l'URL contient des paramètres -->
+      <div id="diagBox" class="hidden mt-8 bg-amber-50 border border-amber-300 rounded-2xl p-4 text-left text-xs">
+        <p class="font-semibold text-amber-900 mb-1">🔍 Diagnostic technique</p>
+        <p class="text-amber-800 mb-2">URL d'arrivée détectée :</p>
+        <code id="diagUrl" class="block bg-white border border-amber-200 rounded p-2 text-[11px] break-all text-slate-700"></code>
+        <p class="mt-2 text-amber-800">Cliquez sur « Espace personnel » ci-dessus — nous transmettons les paramètres pour vous connecter.</p>
+      </div>
+
+      <div class="mt-10 bg-white border border-slate-200 rounded-2xl p-5 text-left">
+        <p class="text-sm font-semibold text-brand-dark">Liens utiles</p>
+        <ul class="mt-3 text-sm text-slate-700 space-y-1.5">
+          <li>→ <a href="/blog/" class="text-brand-blue hover:underline">Blog (articles publics)</a></li>
+          <li>→ <a href="/equivalence.html" class="text-brand-blue hover:underline">Guide équivalence FWB</a></li>
+          <li>→ <a href="/communaute.html" class="text-brand-blue hover:underline">Communauté &amp; réseau</a></li>
+          <li>→ <a href="/besoin-d-aide.html" class="text-brand-blue hover:underline">Besoin d'aide ?</a></li>
+          <li>→ <a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="text-brand-blue hover:underline">WhatsApp +32 465 33 94 48</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    /* Affiche l'URL actuelle dans l'encart diagnostic et transmet les
+       paramètres (hash/search) aux boutons vers l'espace personnel. */
+    (function () {
+      try {
+        var hash = window.location.hash || '';
+        var search = window.location.search || '';
+        var fullUrl = window.location.href;
+        var hasAnything = hash || search;
+        var diagBox = document.getElementById('diagBox');
+        var diagUrl = document.getElementById('diagUrl');
+        var goSpace = document.getElementById('goSpace');
+        var authLink = document.getElementById('authLink');
+        if (hasAnything) {
+          if (diagBox) diagBox.classList.remove('hidden');
+          if (diagUrl) diagUrl.textContent = fullUrl;
+          var target = '/espace-etudiant/' + hash + search;
+          if (goSpace) goSpace.href = target;
+          if (authLink) authLink.href = target;
+        }
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>
