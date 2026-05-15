@@ -969,16 +969,32 @@
     return [];
   }
 
-  function updateProfileCta(hasOwnProfile) {
+  function updateProfileCta(hasOwnProfile, hasAnnuaireAccess) {
     var cta = document.getElementById('annuaireProfilCta');
     var hint = document.getElementById('annuaireOwnProfileHint');
     if (!cta) return;
     if (hasOwnProfile) {
       cta.textContent = 'Ma fiche annuaire';
       cta.href = 'espace-etudiant/dashboard.html';
-      cta.classList.remove('bg-brand-gold', 'hover:bg-yellow-400', 'text-brand-dark');
+      cta.classList.remove('bg-brand-gold', 'hover:bg-yellow-400');
       cta.classList.add('bg-white', 'border-2', 'border-brand-dark', 'text-brand-dark', 'hover:bg-brand-cream');
-      if (hint) hint.classList.remove('hidden');
+      if (hint) {
+        hint.classList.remove('hidden');
+        hint.innerHTML =
+          'Votre fiche est publiée : elle n’apparaît pas ici (vous voyez les <strong>autres</strong> membres). Pour modifier : ' +
+          '<a href="mailto:contact@studyalready.com" class="text-brand-blue font-semibold underline">contact@studyalready.com</a>.';
+      }
+    } else if (hasAnnuaireAccess) {
+      cta.textContent = '+ Publier ma fiche dans l’annuaire';
+      cta.href = 'creer-profil.html';
+      cta.classList.add('bg-brand-gold', 'hover:bg-yellow-400', 'text-brand-dark');
+      cta.classList.remove('bg-white', 'border-2', 'border-brand-dark', 'hover:bg-brand-cream');
+      if (hint) {
+        hint.classList.remove('hidden');
+        hint.innerHTML =
+          'Vous avez accès au réseau, mais <strong>pas encore de fiche publique</strong>. Les profils listés sont d’autres membres. ' +
+          'Créez votre fiche (même e-mail que Mon espace) pour être trouvable — vous ne vous verrez pas vous-même dans cette liste.';
+      }
     } else {
       cta.textContent = '+ Créer mon profil';
       cta.href = 'creer-profil.html';
@@ -1192,7 +1208,7 @@
       if (mainEl) mainEl.classList.remove('hidden');
       if (gateEl) gateEl.classList.add('hidden');
 
-      updateProfileCta(!!remotePack.viewerHasProfile);
+      updateProfileCta(!!remotePack.viewerHasProfile, true);
 
       var demos = ((data && data.membres) || []).map(normalizeMember);
       state.membres = sb
