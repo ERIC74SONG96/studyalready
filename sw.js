@@ -1,5 +1,5 @@
 /* StudyAlready PWA cache - reseaux instables, experience mobile. */
-const CACHE_VERSION = 'studyalready-v4';
+const CACHE_VERSION = 'studyalready-v5';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const PAGE_CACHE = `${CACHE_VERSION}-pages`;
 
@@ -7,8 +7,8 @@ const PRECACHE_URLS = [
   '/',
   '/offline.html',
   '/manifest.webmanifest',
-  '/assets/css/style.css?v=20260515links',
-  '/assets/js/main.js?v=20260515links',
+  '/assets/css/style.css?v=20260515menu',
+  '/assets/js/main.js?v=20260515menu',
   '/assets/js/config.js',
   '/assets/img/logo-icon.svg',
   '/assets/img/logo.svg',
