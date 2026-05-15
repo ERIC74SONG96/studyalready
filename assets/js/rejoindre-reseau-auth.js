@@ -229,7 +229,7 @@
                 sessionStorage.setItem('sa_espace_vue', 'communaute');
               } catch (eS) {}
               showStatus(statusEl, 'Compte créé — redirection vers votre espace…', 'text-green-600');
-              window.location.href = origin + '/espace-etudiant/dashboard';
+              window.location.href = origin + '/espace-etudiant/dashboard.html';
               return;
             }
             showStatus(
@@ -250,7 +250,7 @@
           }
           showStatus(
             statusEl,
-            'Merci ! Votre adhésion est enregistrée sur votre compte. Vous pouvez consulter l’<a href="annuaire" class="underline font-semibold">annuaire</a> des membres.',
+            'Merci ! Votre adhésion est enregistrée sur votre compte. Vous pouvez consulter l’<a href="annuaire.html" class="underline font-semibold">annuaire</a> des membres.',
             'text-green-600'
           );
           form.reset();

@@ -236,7 +236,7 @@ async function boot() {
   try {
     const { data: isAdm, error: admErr } = await sb.rpc('is_admin');
     if (!admErr && isAdm === true) {
-      window.location.replace('/admin');
+      window.location.replace('/admin.html');
       return;
     }
   } catch (_e) {
@@ -378,7 +378,7 @@ async function loadSubmissions() {
       <div class="bg-white rounded-2xl border border-slate-200 p-6 text-sm text-slate-600">
         <p>Vous n'avez encore envoyé aucune demande depuis ce compte.</p>
         <p class="mt-2 text-xs text-slate-500">Astuce : connectez-vous à votre espace <strong>avant</strong> de remplir un formulaire pour qu'il soit lié à votre compte.</p>
-        <a href="/#contact" class="mt-4 inline-block text-brand-blue underline font-semibold text-sm">Nous écrire maintenant →</a>
+        <a href="../index.html#contact" class="mt-4 inline-block text-brand-blue underline font-semibold text-sm">Nous écrire maintenant →</a>
       </div>
     `;
     return;

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Annuaire de la communauté | StudyAlready</title>
   <meta name="description" content="Annuaire interactif des membres StudyAlready : étudiants, stagiaires et diplômés en Belgique. Filtrez par université (ULB, UCLouvain, UMons, ULiège…), domaine et statut." />
-  <link rel="canonical" href="https://www.studyalready.com/annuaire" />
+  <link rel="canonical" href="https://www.studyalready.com/annuaire.html" />
   <meta name="robots" content="index,follow" />
   <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,9 +28,9 @@
   <section class="pt-20 pb-0 bg-brand-dark text-white border-b border-white/10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 pb-4">
       <nav class="text-xs text-slate-400 mb-2" aria-label="Fil d'Ariane">
-        <a href="/" class="hover:text-brand-gold">Accueil</a>
+        <a href="index.html" class="hover:text-brand-gold">Accueil</a>
         <span class="mx-1.5">/</span>
-        <a href="communaute" class="hover:text-brand-gold">Communauté</a>
+        <a href="communaute.html" class="hover:text-brand-gold">Communauté</a>
         <span class="mx-1.5">/</span>
         <span class="text-slate-200">Annuaire</span>
       </nav>
@@ -53,8 +53,8 @@
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
         <a href="espace-etudiant/" class="inline-flex items-center gap-2 bg-brand-dark text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-blue">Connexion</a>
-        <a href="rejoindre-reseau" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-yellow-400">Rejoindre le réseau</a>
-        <a href="creer-profil" class="inline-flex items-center gap-2 border-2 border-brand-dark text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-cream">Créer mon profil</a>
+        <a href="rejoindre-reseau.html" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-yellow-400">Rejoindre le réseau</a>
+        <a href="creer-profil.html" class="inline-flex items-center gap-2 border-2 border-brand-dark text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-cream">Créer mon profil</a>
       </div>
     </div>
   </div>
@@ -64,10 +64,10 @@
 
       <aside class="annuaire-sidebar-left space-y-3">
         <div class="annuaire-panel p-4">
-          <a id="annuaireProfilCta" href="creer-profil" class="block w-full text-center bg-brand-gold hover:bg-yellow-400 text-brand-dark font-bold text-sm py-2.5 rounded-lg">+ Créer mon profil</a>
+          <a id="annuaireProfilCta" href="creer-profil.html" class="block w-full text-center bg-brand-gold hover:bg-yellow-400 text-brand-dark font-bold text-sm py-2.5 rounded-lg">+ Créer mon profil</a>
           <p id="annuaireOwnProfileHint" class="hidden mt-2 text-[10px] text-slate-500 leading-snug"></p>
-          <a href="creer-evenement" class="mt-2 block w-full text-center bg-brand-dark hover:bg-brand-blue text-white font-bold text-sm py-2.5 rounded-lg">+ Créer un événement</a>
-          <a href="devenir-professionnel" class="mt-2 block text-center text-xs text-brand-blue font-semibold underline">Vous êtes diplômé / pro ?</a>
+          <a href="creer-evenement.html" class="mt-2 block w-full text-center bg-brand-dark hover:bg-brand-blue text-white font-bold text-sm py-2.5 rounded-lg">+ Créer un événement</a>
+          <a href="devenir-professionnel.html" class="mt-2 block text-center text-xs text-brand-blue font-semibold underline">Vous êtes diplômé / pro ?</a>
         </div>
         <nav class="annuaire-panel p-2" aria-label="Vues annuaire">
           <p class="px-2 pb-1 text-[10px] font-bold uppercase tracking-wide text-slate-400">Explorer</p>
@@ -209,7 +209,7 @@
           </div>
           <div id="annuaireActiveFilters" class="hidden mt-2 flex flex-wrap gap-1.5"></div>
           <div id="annuaireLegalNotice" class="hidden mt-3 rounded-lg border border-indigo-200 bg-indigo-50/80 p-3 text-xs text-indigo-950">
-            <p><strong>Visa / séjour :</strong> entraide communautaire, pas cabinet d'avocats. <a href = 'besoin-d-aide'#titre-sejour" class="underline font-semibold">Besoin d'aide ?</a></p>
+            <p><strong>Visa / séjour :</strong> entraide communautaire, pas cabinet d'avocats. <a href="besoin-d-aide.html#titre-sejour" class="underline font-semibold">Besoin d'aide ?</a></p>
           </div>
         </div>
 
@@ -252,11 +252,11 @@
           <p class="mt-1 text-xs text-slate-500">Professionnels et mentors</p>
           <div id="annuaireSuggestList" class="mt-3 space-y-2 text-sm"></div>
           <p id="annuaireExpertsEmpty" class="hidden mt-2 text-xs text-slate-500">Aucun pro pour le moment.</p>
-          <a href="annuaire?aide=professionnel" class="mt-3 inline-block text-xs font-bold text-brand-blue underline">Tous les pros</a>
+          <a href="annuaire.html?aide=professionnel" class="mt-3 inline-block text-xs font-bold text-brand-blue underline">Tous les pros</a>
         </div>
         <div class="annuaire-panel p-4 text-xs text-slate-600">
           <p class="font-semibold text-brand-dark">Aide officielle</p>
-          <a href="besoin-d-aide" class="mt-2 inline-block underline text-brand-blue">CIRÉ, BAJ, santé</a>
+          <a href="besoin-d-aide.html" class="mt-2 inline-block underline text-brand-blue">CIRÉ, BAJ, santé</a>
         </div>
         <div id="annuaireExpertsGrid" class="hidden" aria-hidden="true"></div>
         <p id="annuaireExpertsMore" class="hidden"></p>
@@ -275,17 +275,17 @@
   <section class="py-10 bg-brand-cream">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 text-sm text-slate-700">
       <h3 class="font-display font-bold text-brand-dark">Vie privée &amp; RGPD</h3>
-      <p class="mt-2">Aucune information n'est publiée sans le <strong>consentement explicite</strong> du membre. Par défaut, seules les <strong>initiales</strong>, l'<strong>université</strong> et la <strong>filière</strong> apparaissent ; l'email et le téléphone restent privés et sont uniquement utilisés pour la mise en relation interne. Voir notre <a href="politique-confidentialite" class="underline">politique de confidentialité</a>.</p>
+      <p class="mt-2">Aucune information n'est publiée sans le <strong>consentement explicite</strong> du membre. Par défaut, seules les <strong>initiales</strong>, l'<strong>université</strong> et la <strong>filière</strong> apparaissent ; l'email et le téléphone restent privés et sont uniquement utilisés pour la mise en relation interne. Voir notre <a href="politique-confidentialite.html" class="underline">politique de confidentialité</a>.</p>
     </div>
   </section>
 
   <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
     <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-4 mb-4">
-      <a href="/" class="hover:text-brand-gold">Accueil</a>
-      <a href="communaute" class="hover:text-brand-gold">Communauté</a>
-      <a href="evenements-seminaires" class="hover:text-brand-gold">Événements</a>
-      <a href="creer-profil" class="hover:text-brand-gold">Créer mon profil</a>
-      <a href="mentions-legales" class="hover:text-brand-gold">Mentions légales</a>
+      <a href="index.html" class="hover:text-brand-gold">Accueil</a>
+      <a href="communaute.html" class="hover:text-brand-gold">Communauté</a>
+      <a href="evenements-seminaires.html" class="hover:text-brand-gold">Événements</a>
+      <a href="creer-profil.html" class="hover:text-brand-gold">Créer mon profil</a>
+      <a href="mentions-legales.html" class="hover:text-brand-gold">Mentions légales</a>
     </div>
     <p>© <span id="year"></span> StudyAlready</p>
   </footer>

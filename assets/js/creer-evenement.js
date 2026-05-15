@@ -107,7 +107,7 @@
           var id = r.data && r.data.id;
           showStatus(
             statusEl,
-            '<strong>Événement publié !</strong> <a href="annuaire?vue=evenements" class="underline font-semibold">Voir dans l\'annuaire</a>',
+            '<strong>Événement publié !</strong> <a href="annuaire.html?vue=evenements" class="underline font-semibold">Voir dans l\'annuaire</a>',
             'text-green-600'
           );
           form.reset();

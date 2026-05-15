@@ -9,7 +9,7 @@ import { loadSupabaseCreateClient } from './sa-supabase-loader.mjs';
 const BUCKET = 'job-offers';
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 /** URL canonique pour le partage (trafic vers le site). */
-const CANONICAL_JOBS_PAGE = 'https://www.studyalready.com/offres-etudiants';
+const CANONICAL_JOBS_PAGE = 'https://www.studyalready.com/offres-etudiants.html';
 
 /** Client Supabase unique (créé après import dynamique du SDK). */
 let __saJobsSbClient = null;

@@ -11,7 +11,7 @@
       String(c.SUPABASE_ANON_KEY).indexOf('REMPLACER') !== -1) {
     if (gate) {
       gate.classList.remove('hidden');
-      gate.innerHTML = '<div class="text-center max-w-md mx-auto px-4"><p class="text-red-600 font-semibold mb-2">Configuration Supabase absente ou invalide.</p><p class="text-sm text-slate-600 mb-3">Vérifiez <code class="text-xs bg-slate-100 px-1 rounded">assets/js/config.js</code> (SUPABASE_URL et SUPABASE_ANON_KEY).</p><a href="admin-login" class="underline text-brand-dark">Retour</a></div>';
+      gate.innerHTML = '<div class="text-center max-w-md mx-auto px-4"><p class="text-red-600 font-semibold mb-2">Configuration Supabase absente ou invalide.</p><p class="text-sm text-slate-600 mb-3">Vérifiez <code class="text-xs bg-slate-100 px-1 rounded">assets/js/config.js</code> (SUPABASE_URL et SUPABASE_ANON_KEY).</p><a href="admin-login.html" class="underline text-brand-dark">Retour</a></div>';
     }
     return;
   }
@@ -28,7 +28,7 @@
   function showFatal(msg) {
     gate.classList.remove('hidden');
     gate.innerHTML = '<div class="text-center"><p class="text-red-600 font-semibold mb-3">' + escapeHtml(msg) + '</p>' +
-      '<a href="admin-login" class="underline text-brand-dark">Retour à la connexion</a></div>';
+      '<a href="admin-login.html" class="underline text-brand-dark">Retour à la connexion</a></div>';
   }
 
   if (!sb) { showFatal('Client Supabase indisponible (bloqueur de pub ?).'); return; }
@@ -94,7 +94,7 @@
     if (gateDecided) return;
     gateDecided = true;
     if (!session) {
-      window.location.replace('admin-login');
+      window.location.replace('admin-login.html');
       return;
     }
     sb.rpc('is_admin').then(function (a) {
@@ -103,12 +103,12 @@
         gate.innerHTML = '<div class="text-center max-w-md mx-auto px-4"><p class="text-red-600 font-semibold mb-2">' +
           escapeHtml(a.error.message || 'Erreur de vérification des droits.') + '</p>' +
           '<p class="text-sm text-slate-600 mb-3">Si le message parle d’une fonction manquante, exécutez le script SQL <code class="text-xs bg-slate-100 px-1 rounded">003_admin_dashboard.sql</code> dans Supabase.</p>' +
-          '<a href="admin-login" class="underline text-brand-dark">Retour à la connexion</a></div>';
+          '<a href="admin-login.html" class="underline text-brand-dark">Retour à la connexion</a></div>';
         return;
       }
       if (a.data !== true) {
         sb.auth.signOut().then(function () {
-          window.location.replace('admin-login?raison=non-admin');
+          window.location.replace('admin-login.html?raison=non-admin');
         });
         return;
       }
@@ -177,7 +177,7 @@
         try {
           sb.auth.signOut({ scope: 'global' });
         } catch (e3) {}
-        window.location.replace('admin-login');
+        window.location.replace('admin-login.html');
       });
   });
 

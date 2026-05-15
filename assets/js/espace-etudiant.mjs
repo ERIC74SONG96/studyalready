@@ -74,10 +74,10 @@ function redirectAfterAuth(sb) {
   try {
     window.history.replaceState(null, '', window.location.pathname);
   } catch (e) {}
-  var home = '/';
+  var home = '/index.html';
   try {
     if (window.location && window.location.origin) {
-      home = window.location.origin + '/';
+      home = window.location.origin + '/index.html';
     }
   } catch (e0) {}
   return sb.auth
@@ -92,7 +92,7 @@ function redirectAfterAuth(sb) {
     })
     .then(function (a) {
       if (!a.error && a.data === true) {
-        window.location.replace('/admin');
+        window.location.replace('/admin.html');
       } else {
         window.location.replace(home);
       }
@@ -719,7 +719,7 @@ if (pageId === 'login') {
       /* Force l'URL de retour vers le vrai site en production.
          Évite le défaut Supabase qui pointe vers http://localhost:3000. */
       var origin = (window.location && window.location.origin) || 'https://www.studyalready.com';
-      var redirectUrl = origin + '/espace-etudiant/dashboard';
+      var redirectUrl = origin + '/espace-etudiant/dashboard.html';
       var r = await sb.auth.signUp({
         email: email,
         password: password,

@@ -52,7 +52,7 @@
     var cfg = window.STUDYALREADY_CONFIG || {};
     var locale = (cfg.SKYSCANNER_LOCALE || 'fr-FR').toLowerCase();
     var domain = locale.indexOf('fr') === 0 ? 'fr' : 'com';
-    var base = 'https://www.skyscanner.' + domain + '/transport/vols';
+    var base = 'https://www.skyscanner.' + domain + '/transport/vols.html';
     var url = base + '/' + from.toLowerCase() + '/' + to.toLowerCase() + '/';
     if (depart) url += toSkyscannerDate(depart) + '/';
     if (ret) url += toSkyscannerDate(ret) + '/';
@@ -68,7 +68,7 @@
 
   function todayISO() {
     var d = new Date();
-    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+    return d.getFullYear() + '-.html' + pad2(d.getMonth() + 1) + '-.html' + pad2(d.getDate());
   }
 
   function initComparateur() {
