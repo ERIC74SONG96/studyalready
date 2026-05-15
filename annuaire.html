@@ -17,127 +17,132 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/annuaire.css" />
   <style>
-    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   </style>
 </head>
 <body class="font-sans text-slate-800 bg-slate-50 antialiased">
   <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
 
-  <section class="pt-24 pb-10 bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <p class="text-brand-gold uppercase text-xs font-semibold tracking-widest">Annuaire</p>
-      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl leading-tight">L'annuaire de la communauté StudyAlready.</h1>
-      <p class="mt-4 text-slate-200 max-w-3xl">Trouvez en un clic un étudiant de votre filière à <strong class="text-white">l'ULB</strong>, un mentor à <strong class="text-white">l'UMons</strong>, ou un diplômé de votre domaine qui peut vous orienter. Filtrez par <strong class="text-white">université</strong>, <strong class="text-white">domaine</strong> et <strong class="text-white">statut</strong>.</p>
-      <div class="mt-6 flex flex-wrap gap-3 text-sm">
-        <a href="annuaire.html?aide=professionnel" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full hover:bg-yellow-400">Diplômés &amp; pros</a>
-        <a href="annuaire.html?aide=juridique" class="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-5 py-2.5 rounded-full hover:bg-white/10">Visa / séjour</a>
-        <a href="devenir-professionnel.html" class="inline-flex items-center gap-2 border border-brand-gold/50 text-brand-gold font-semibold px-5 py-2.5 rounded-full hover:bg-white/10">Vous êtes pro ?</a>
-        <a href="creer-profil.html" class="inline-flex items-center gap-2 border border-white/20 text-white/90 font-medium px-5 py-2.5 rounded-full hover:bg-white/10 text-xs sm:text-sm">Créer mon profil</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-8 bg-amber-50 border-y border-amber-200">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 text-sm text-amber-950">
-      <p><strong>Annuaire réservé à la communauté.</strong> Seuls les membres connectés qui ont rejoint le réseau ou créé un profil public (même adresse e-mail que leur compte) peuvent consulter les fiches. Chaque profil provient du formulaire <a href="creer-profil.html" class="underline font-medium">Créer mon profil</a>, avec consentement explicite du membre.</p>
+  <section class="pt-20 pb-3 bg-brand-dark text-white border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3">
+      <h1 class="font-display font-bold text-xl sm:text-2xl">Annuaire communauté</h1>
+      <p class="mt-1 text-slate-300 text-sm">Répertoire de membres : recherche, filtres et abonnements — sans fil d'actualité.</p>
     </div>
   </section>
 
   <div id="annuaireAccessGate" class="hidden py-16 bg-white border-b border-slate-100">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
       <p class="text-brand-gold font-semibold uppercase text-xs tracking-widest">Accès annuaire</p>
-      <h2 class="mt-3 font-display text-2xl font-bold text-brand-dark">L’annuaire est réservé aux membres de la communauté.</h2>
+      <h2 class="mt-3 font-display text-2xl font-bold text-brand-dark">L'annuaire est réservé aux membres de la communauté.</h2>
       <p class="mt-4 text-slate-600 text-sm leading-relaxed">
-        <strong>Sans compte</strong> ou <strong>sans adhésion</strong>, les fiches des autres membres ne s’affichent pas. Créez un compte (ou connectez-vous), puis :
-        adhésion <strong>« Rejoindre le réseau »</strong> depuis votre compte, <strong>ou</strong> formulaire <strong>Créer mon profil</strong> avec la <strong>même adresse e-mail</strong> que Mon espace.
+        <strong>Sans compte</strong> ou <strong>sans adhésion</strong>, les fiches ne s'affichent pas. Connectez-vous puis rejoignez le réseau ou créez un profil avec la <strong>même adresse e-mail</strong> que Mon espace.
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href="espace-etudiant/" class="inline-flex items-center gap-2 bg-brand-dark text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-blue">Connexion / créer un compte</a>
+        <a href="espace-etudiant/" class="inline-flex items-center gap-2 bg-brand-dark text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-blue">Connexion</a>
         <a href="rejoindre-reseau.html" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-yellow-400">Rejoindre le réseau</a>
-        <a href="creer-profil.html" class="inline-flex items-center gap-2 border-2 border-brand-dark text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-cream">Créer mon profil annuaire</a>
+        <a href="creer-profil.html" class="inline-flex items-center gap-2 border-2 border-brand-dark text-brand-dark font-bold px-6 py-3 rounded-full text-sm hover:bg-brand-cream">Créer mon profil</a>
       </div>
     </div>
   </div>
 
-  <div id="annuaireMainContent">
-  <section class="py-10 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div id="annuaireLegalNotice" class="hidden mb-4 rounded-xl border border-indigo-200 bg-indigo-50/80 p-4 text-sm text-indigo-950">
-        <p><strong>Visa, titre de séjour, recours :</strong> les profils ci-dessous sont des <strong>membres de la communauté</strong> (entraide, retour d’expérience). Ce n’est <strong>pas</strong> un cabinet d’avocats. Pour une aide juridique officielle ou gratuite, utilisez d’abord <a href="besoin-d-aide.html#titre-sejour" class="underline font-semibold">Besoin d’aide ?</a> (CIRÉ, BAJ, Office des étrangers).</p>
-      </div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-3">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Université</label>
-          <select id="filterUniversite" class="w-full border border-slate-200 bg-white rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none"></select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Domaine</label>
-          <select id="filterDomaine" class="w-full border border-slate-200 bg-white rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none"></select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Statut</label>
-          <select id="filterStatut" class="w-full border border-slate-200 bg-white rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none"></select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Type d’aide</label>
-          <select id="filterAide" class="w-full border border-slate-200 bg-white rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none">
-            <option value="">Tous les profils</option>
-            <option value="juridique">Visa / titre de séjour / droit des étrangers</option>
-            <option value="professionnel">Diplômés / professionnels (mentorat)</option>
-          </select>
-        </div>
-        <div class="md:col-span-2 lg:col-span-1">
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Recherche libre</label>
-          <input id="filterQ" type="search" placeholder="Avocat, visa, recours, filière, ville…" class="w-full border border-slate-200 bg-white rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
-        </div>
-      </div>
-      <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
-        <span id="annuaireCount">0 membre</span>
-        <button type="button" id="filterReset" class="text-brand-dark font-semibold hover:text-brand-blue underline">Réinitialiser les filtres</button>
-      </div>
-    </div>
-  </section>
+  <div id="annuaireMainContent" class="annuaire-shell">
+    <div class="annuaire-layout">
 
-  <section class="py-12 bg-slate-50">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <h2 class="font-display text-xl font-bold text-brand-dark">Membres</h2>
-      <p id="annuaireNote" class="mt-1 text-xs text-slate-500"></p>
-      <div id="annuaireGrid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      <div id="annuaireEmpty" class="hidden mt-10 text-center">
-        <p class="text-slate-600">Aucun membre ne correspond à ces filtres pour le moment.</p>
-        <div class="mt-4 flex flex-wrap gap-3 justify-center">
-          <a href="besoin-d-aide.html" class="inline-flex items-center gap-2 bg-amber-100 text-amber-900 font-semibold px-5 py-2.5 rounded-full text-sm hover:bg-amber-200 border border-amber-300">Voir « Besoin d'aide ? »</a>
-          <a href="creer-profil.html" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-sm hover:bg-yellow-400">Soyez le premier de votre filière</a>
+      <aside class="annuaire-sidebar-left space-y-3">
+        <div class="annuaire-panel p-4">
+          <a href="creer-profil.html" class="block w-full text-center bg-brand-gold hover:bg-yellow-400 text-brand-dark font-bold text-sm py-2.5 rounded-lg">+ Créer mon profil</a>
+          <a href="devenir-professionnel.html" class="mt-2 block text-center text-xs text-brand-blue font-semibold underline">Vous êtes diplômé / pro ?</a>
         </div>
-      </div>
-    </div>
-  </section>
+        <nav class="annuaire-panel p-2" aria-label="Vues annuaire">
+          <button type="button" class="annuaire-nav-btn is-active" data-annuaire-view="tous">Tous les membres</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="suivis">Mes abonnements</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="etudiants">Étudiants</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="professionnels">Professionnels</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="juridique">Visa / séjour</button>
+        </nav>
+        <div class="annuaire-panel p-4 space-y-3 text-sm">
+          <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">Affiner</p>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Université</label>
+            <select id="filterUniversite" class="w-full border border-slate-200 rounded-lg px-2 py-2 text-sm"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Domaine</label>
+            <select id="filterDomaine" class="w-full border border-slate-200 rounded-lg px-2 py-2 text-sm"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Statut</label>
+            <select id="filterStatut" class="w-full border border-slate-200 rounded-lg px-2 py-2 text-sm"></select>
+          </div>
+          <select id="filterAide" class="hidden" aria-hidden="true"><option value=""></option><option value="juridique"></option><option value="professionnel"></option></select>
+          <button type="button" id="filterReset" class="text-xs text-brand-blue font-semibold underline">Réinitialiser</button>
+        </div>
+      </aside>
 
+      <main class="annuaire-main min-w-0 space-y-3">
+        <div class="annuaire-search-sticky annuaire-panel p-3">
+          <label for="filterQ" class="sr-only">Rechercher</label>
+          <input id="filterQ" type="search" autocomplete="off" placeholder="Nom, filière, université, ville, avocat, visa…" class="w-full border border-slate-200 rounded-full px-4 py-2.5 text-sm bg-slate-50 focus:ring-2 focus:ring-brand-gold outline-none" />
+          <div id="annuaireLegalNotice" class="hidden mt-3 rounded-lg border border-indigo-200 bg-indigo-50/80 p-3 text-xs text-indigo-950">
+            <p><strong>Visa / séjour :</strong> entraide communautaire, pas cabinet d'avocats. <a href="besoin-d-aide.html#titre-sejour" class="underline font-semibold">Besoin d'aide ?</a></p>
+          </div>
+        </div>
+
+        <div class="annuaire-panel overflow-hidden">
+          <div class="px-4 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p class="font-display font-bold text-brand-dark">Membres</p>
+              <p id="annuaireNote" class="text-xs text-slate-500"></p>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span id="annuaireCount" class="text-slate-600 font-medium">0 membre</span>
+              <label class="sr-only" for="filterSort">Tri</label>
+              <select id="filterSort" class="border border-slate-200 rounded-lg px-2 py-1.5 text-xs">
+                <option value="pertinence">Pertinence</option>
+                <option value="nom">Nom A → Z</option>
+                <option value="univ">Université</option>
+                <option value="pros">Pros en premier</option>
+              </select>
+            </div>
+          </div>
+          <div id="annuaireGrid" class="min-h-[12rem]"></div>
+          <div id="annuaireEmpty" class="hidden px-4 py-10 text-center">
+            <p class="text-slate-600 text-sm">Aucun membre pour ces critères.</p>
+          </div>
+          <div id="annuairePagination" class="px-4 py-3 border-t border-slate-100 flex flex-wrap items-center justify-center gap-1"></div>
+        </div>
+      </main>
+
+      <aside class="annuaire-sidebar-right space-y-3">
+        <div class="annuaire-panel p-4 text-sm">
+          <p class="text-xs font-bold text-slate-500 uppercase">Communauté</p>
+          <p id="annuaireStats" class="mt-2 text-slate-700 leading-relaxed">—</p>
+          <p id="annuaireFollowCount" class="mt-2 text-xs text-brand-blue font-semibold">0 abonnement</p>
+        </div>
+        <div class="annuaire-panel p-4">
+          <p class="text-xs font-bold text-slate-500 uppercase">À découvrir</p>
+          <p class="mt-1 text-xs text-slate-500">Professionnels et mentors</p>
+          <div id="annuaireSuggestList" class="mt-3 space-y-2 text-sm"></div>
+          <p id="annuaireExpertsEmpty" class="hidden mt-2 text-xs text-slate-500">Aucun pro pour le moment.</p>
+          <a href="annuaire.html?aide=professionnel" class="mt-3 inline-block text-xs font-bold text-brand-blue underline">Tous les pros</a>
+        </div>
+        <div class="annuaire-panel p-4 text-xs text-slate-600">
+          <p class="font-semibold text-brand-dark">Aide officielle</p>
+          <a href="besoin-d-aide.html" class="mt-2 inline-block underline text-brand-blue">CIRÉ, BAJ, santé</a>
+        </div>
+        <div id="annuaireExpertsGrid" class="hidden" aria-hidden="true"></div>
+        <p id="annuaireExpertsMore" class="hidden"></p>
+        <p id="annuaireExpertsLegalHint" class="hidden"></p>
+      </aside>
+
+    </div>
   </div>
 
-  <section class="py-10 bg-amber-50 border-y border-amber-200">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <div>
-        <p class="font-display font-bold text-amber-900">Vous cherchez de l'aide précise (avocat, médecin, finance, urgence) ?</p>
-        <p class="mt-1 text-sm text-amber-900/80">L'annuaire est un complément humain. Pour les démarches officielles, utilisez d'abord notre page d'aiguillage.</p>
-      </div>
-      <a href="besoin-d-aide.html" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white font-bold px-5 py-3 rounded-full text-sm shrink-0">Aller à « Besoin d'aide ? »</a>
-    </div>
-  </section>
-
-  <section class="py-14 bg-white border-t border-slate-100">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6">
-      <h2 class="font-display text-2xl font-bold text-brand-dark">Diplômés &amp; professionnels (mentors)</h2>
-      <p class="mt-3 text-sm text-slate-600 max-w-3xl">Avocats, médecins, ingénieurs, RH… <strong>déjà installés en Belgique</strong> et ouverts au mentorat. Entraide communautaire — pas substitution à un cabinet ou à un ordre professionnel.</p>
-      <div id="annuaireExpertsGrid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      <p id="annuaireExpertsEmpty" class="hidden mt-6 text-sm text-slate-600 text-center">Aucun profil professionnel pour le moment. <a href="devenir-professionnel.html" class="underline font-semibold text-brand-blue">Page pros</a> · <a href="creer-profil.html?expert=1" class="underline font-semibold text-brand-blue">Créer un profil</a></p>
-      <p id="annuaireExpertsMore" class="hidden mt-6 text-center text-sm"><a href="annuaire.html?aide=professionnel" class="font-semibold text-brand-blue underline">Voir tous les diplômés / professionnels →</a></p>
-      <p id="annuaireExpertsLegalHint" class="hidden mt-6 text-sm text-slate-600 text-center rounded-xl border border-indigo-100 bg-indigo-50/60 px-4 py-3">Visa / titre de séjour : <a href="annuaire.html?aide=juridique" class="underline font-semibold text-brand-blue">profils juridiques</a> · <a href="besoin-d-aide.html#titre-sejour" class="underline">CIRÉ, BAJ</a></p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="devenir-professionnel.html" class="inline-flex items-center gap-2 bg-brand-dark text-white font-semibold px-5 py-3 rounded-full text-sm hover:bg-brand-blue">Inviter des professionnels</a>
-        <a href="creer-profil.html?expert=1" class="inline-flex items-center gap-2 border-2 border-brand-dark text-brand-dark font-semibold px-5 py-3 rounded-full text-sm hover:bg-brand-cream">Créer mon profil pro</a>
-      </div>
+  <section class="py-6 bg-amber-50 border-y border-amber-200">
+    <div class="max-w-5xl mx-auto px-4 text-center text-sm text-amber-950">
+      <p>Annuaire réservé aux <strong>membres connectés</strong>. Données déclarées par chaque membre.</p>
     </div>
   </section>
 
@@ -164,6 +169,6 @@
   <script src="assets/js/supabase-init.js?v=20260515persist"></script>
   <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/annuaire.js?v=20260516pros"></script>
+  <script src="assets/js/annuaire.js?v=20260516network"></script>
 </body>
 </html>
