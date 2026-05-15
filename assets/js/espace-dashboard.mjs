@@ -237,7 +237,7 @@ async function boot() {
   try {
     const { data: isAdm, error: admErr } = await sb.rpc('is_admin');
     if (!admErr && isAdm === true) {
-      window.location.replace('/admin.html');
+      window.location.replace('/admin');
       return;
     }
   } catch (_e) {

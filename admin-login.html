@@ -129,7 +129,7 @@
           if (loginJumpDone) return;
           if (!a.error && a.data === true) {
             loginJumpDone = true;
-            window.location.replace('admin.html');
+            window.location.replace('/admin');
           }
         });
       }
@@ -189,7 +189,7 @@
                 return;
               }
               setStatus('Connecté ! Redirection…', 'text-green-600');
-              window.location.replace('admin.html');
+              window.location.replace('/admin');
             });
           });
         });
