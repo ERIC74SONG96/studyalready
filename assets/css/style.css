@@ -358,3 +358,138 @@ textarea:focus-visible {
 .sa-community-stats-pulse {
   animation: sa-stats-pulse 1.2s ease-in-out infinite;
 }
+
+/* Matrice étudiants / pros × Belgique / Cameroun */
+.sa-community-matrix {
+  margin-top: 2.5rem;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.sa-community-matrix-lead {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #f5b800;
+  margin-bottom: 1rem;
+}
+.sa-community-matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .sa-community-matrix-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+}
+.sa-community-matrix-block {
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+}
+.sa-community-matrix-block--students {
+  box-shadow: 0 4px 24px rgba(30, 58, 138, 0.25);
+}
+.sa-community-matrix-block--pros {
+  box-shadow: 0 4px 24px rgba(245, 184, 0, 0.12);
+}
+.sa-community-matrix-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.sa-community-matrix-block--students .sa-community-matrix-head {
+  background: linear-gradient(90deg, rgba(30, 58, 138, 0.55), rgba(10, 37, 64, 0.2));
+}
+.sa-community-matrix-block--pros .sa-community-matrix-head {
+  background: linear-gradient(90deg, rgba(245, 184, 0, 0.22), rgba(10, 37, 64, 0.15));
+}
+.sa-community-matrix-title {
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.sa-community-matrix-total {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #f5b800;
+  font-family: Poppins, system-ui, sans-serif;
+  line-height: 1;
+}
+.sa-community-matrix-subs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.sa-community-matrix-sub {
+  padding: 1rem 0.85rem;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+.sa-community-matrix-sub:last-child {
+  border-right: none;
+}
+.sa-community-matrix-sub strong {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 800;
+  font-family: Poppins, system-ui, sans-serif;
+  color: #f5b800;
+  line-height: 1.1;
+}
+@media (min-width: 640px) {
+  .sa-community-matrix-sub strong {
+    font-size: 2rem;
+  }
+}
+.sa-community-matrix-sub-label {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.95);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.sa-community-matrix-sub-flag {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.65rem;
+  color: rgba(203, 213, 225, 0.8);
+}
+.sa-community-matrix-sub a {
+  display: inline-block;
+  margin-top: 0.65rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  transition: background 0.15s, border-color 0.15s;
+}
+.sa-community-matrix-sub a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #f5b800;
+  color: #f5b800;
+}
+.sa-community-matrix-foot {
+  margin-top: 0.85rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: rgba(203, 213, 225, 0.85);
+}
