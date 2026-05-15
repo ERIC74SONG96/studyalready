@@ -48,7 +48,8 @@
     authUserId: null,
     debounceTimer: null,
     urlSync: true,
-    uiBound: false
+    uiBound: false,
+    proUiBound: false
   };
 
   function colorFor(univ) {
@@ -758,6 +759,8 @@
   }
 
   function bindProUI() {
+    if (state.proUiBound) return;
+    state.proUiBound = true;
     var fQ = document.getElementById('filterQ');
     var clearBtn = document.getElementById('filterQClear');
     var shareBtn = document.getElementById('annuaireShareLink');
@@ -1116,26 +1119,45 @@
     setActiveNav(state.view);
   }
 
+  function fetchSupabaseProfilesWithTimeout() {
+    return Promise.race([
+      fetchSupabaseProfiles(),
+      new Promise(function (resolve) {
+        setTimeout(function () {
+          console.warn('StudyAlready annuaire: delai depasse (profils).');
+          resolve({ list: [], denied: false });
+        }, 15000);
+      })
+    ]);
+  }
+
   function init() {
     var grid = document.getElementById('annuaireGrid');
     if (!grid) return;
 
     grid.innerHTML = renderSkeleton();
+    bindAnnuaireListeners();
+    bindProUI();
+    applyViewFromUrl();
 
     var sb = window.studyalreadySb;
     var demoParam = String(window.location.search || '').indexOf('annuaire_demo=1') !== -1;
 
-    Promise.all([
+    Promise.allSettled([
       fetch('assets/data/membres.json', { cache: 'no-cache' }).then(function (r) {
         return r.ok ? r.json() : { membres: [] };
       }).catch(function () { return { membres: [] }; }),
-      fetchSupabaseProfiles(),
-      loadFollows(sb),
+      fetchSupabaseProfilesWithTimeout(),
+      loadFollows(sb).catch(function () { return null; }),
       (global.StudyAlreadyEvents ? global.StudyAlreadyEvents.fetchPublishedEvents(sb) : Promise.resolve([]))
-    ]).then(function (results) {
-      var data = results[0] || {};
-      var remotePack = results[1] || { list: [], denied: false };
-      var eventsList = Array.isArray(results[3]) ? results[3] : [];
+    ]).then(function (settled) {
+      function val(i, fallback) {
+        return settled[i] && settled[i].status === 'fulfilled' ? settled[i].value : fallback;
+      }
+      var data = val(0, { membres: [] }) || {};
+      var remotePack = val(1, { list: [], denied: false }) || { list: [], denied: false };
+      var eventsRaw = val(3, []);
+      var eventsList = Array.isArray(eventsRaw) ? eventsRaw : [];
       var remote = remotePack.list || [];
       var accessDenied = !!remotePack.denied;
       var gateEl = document.getElementById('annuaireAccessGate');
@@ -1184,9 +1206,6 @@
         if (sp.get('q') && fQ) fQ.value = sp.get('q');
         applyRefineFromUrl(sp);
       } catch (e) {}
-
-      bindAnnuaireListeners();
-      bindProUI();
 
       try {
         if (global.StudyAlreadyEvents) {
