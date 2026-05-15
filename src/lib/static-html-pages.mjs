@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT_DIR = process.cwd();
+const ASSET_VERSION = '20260515mobile';
 const SKIP_DIRS = new Set([
   '.astro',
   '.git',
@@ -111,8 +112,15 @@ function replaceSocialImage(html, sourcePath) {
 }
 
 function addPreloads(html) {
-  if (html.includes('rel="preload" href="/assets/css/style.css"')) return html;
-  return html.replace('</head>', '  <link rel="preload" href="/assets/css/style.css" as="style" />\n</head>');
+  if (html.includes('rel="preload" href="/assets/css/style.css')) return html;
+  return html.replace('</head>', `  <link rel="preload" href="/assets/css/style.css?v=${ASSET_VERSION}" as="style" />\n</head>`);
+}
+
+function versionCriticalAssets(html) {
+  return html
+    .replace(/\bhref=(["'])(?:\/)?assets\/css\/style\.css(?:\?[^"']*)?\1/g, `href="/assets/css/style.css?v=${ASSET_VERSION}"`)
+    .replace(/\bsrc=(["'])(?:\/)?assets\/js\/main\.js(?:\?[^"']*)?\1/g, `src="/assets/js/main.js?v=${ASSET_VERSION}"`)
+    .replace(/\bsrc=(["'])(?:\/)?assets\/js\/header\.js(?:\?[^"']*)?\1/g, `src="/assets/js/header.js?v=${ASSET_VERSION}"`);
 }
 
 function addImageDefaults(html) {
@@ -281,16 +289,18 @@ export function readStaticHtmlPage(sourcePath) {
   const abs = path.join(ROOT_DIR, sourcePath);
   const html = fs.readFileSync(abs, 'utf8');
   return addImageDefaults(
-    addPreloads(
-      injectStructuredData(
-        exposeBlogArticleContent(
-          replaceSocialImage(
-            cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
+    versionCriticalAssets(
+      addPreloads(
+        injectStructuredData(
+          exposeBlogArticleContent(
+            replaceSocialImage(
+              cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
+              sourcePath
+            ),
             sourcePath
           ),
           sourcePath
-        ),
-        sourcePath
+        )
       )
     )
   );
