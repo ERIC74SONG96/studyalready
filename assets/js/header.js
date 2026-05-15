@@ -72,6 +72,7 @@
               link(P + 'evenements-seminaires.html', 'Événements &amp; séminaires', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'offres-etudiants.html', 'Offres job étudiant', 'block px-4 py-2 hover:bg-slate-50') +
               link(P + 'rejoindre-reseau.html', 'Rejoindre le réseau', 'block px-4 py-2 hover:bg-slate-50 text-brand-dark font-semibold border-t border-slate-100 mt-1') +
+              link(P + 'devenir-professionnel.html', 'Professionnels &amp; mentors', 'block px-4 py-2 hover:bg-amber-50 text-amber-900 font-semibold') +
               link(P + 'creer-profil.html', 'Créer mon profil public', 'block px-4 py-2 hover:bg-slate-50') +
             '</div>' +
           '</div>' +

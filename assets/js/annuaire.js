@@ -2,6 +2,8 @@
   'use strict';
 
   var LEGAL_OUVERTURES = ['visa_titre_sejour', 'droit_etrangers_recours'];
+  var PRO_MENTOR_OUVERTURES = ['mentorat', 'reseau_pro', 'seminaires'];
+  var STATUT_PRO = 'Diplômé·e / Professionnel·le';
   var TAG_JURIDIQUE_LABELS = {
     avocat_juriste: 'Avocat·e / juriste',
     etudiant_droit: 'Étudiant·e en droit',
@@ -66,8 +68,24 @@
     return /\b(avocat|juriste|visa|titre de s[eé]jour|recours|étrangers?|immigration)\b/.test(hay);
   }
 
+  function hasProMentorOuverture(m) {
+    var ouv = (m && m.ouvertures) || [];
+    var i;
+    for (i = 0; i < PRO_MENTOR_OUVERTURES.length; i++) {
+      if (ouv.indexOf(PRO_MENTOR_OUVERTURES[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  function isExpert(m) {
+    if (!m || m.statut !== STATUT_PRO) return false;
+    if (hasProMentorOuverture(m)) return true;
+    if (m.contact_publique === true) return true;
+    return isLegalMember(m);
+  }
+
   function isExpertLegal(m) {
-    return m && m.statut === 'Diplômé·e / Professionnel·le' && isLegalMember(m);
+    return m && m.statut === STATUT_PRO && isLegalMember(m);
   }
 
   function legalBadgesHtml(m) {
@@ -156,6 +174,7 @@
     if (filters.domaine && m.domaine !== filters.domaine) return false;
     if (filters.statut && m.statut !== filters.statut) return false;
     if (filters.aide === 'juridique' && !isLegalMember(m)) return false;
+    if (filters.aide === 'professionnel' && !isExpert(m)) return false;
     if (filters.q) {
       var q = filters.q.toLowerCase();
       var hay = [
@@ -187,14 +206,26 @@
     var grid = document.getElementById('annuaireExpertsGrid');
     var empty = document.getElementById('annuaireExpertsEmpty');
     if (!grid) return;
-    var experts = membres.filter(isExpertLegal);
-    if (experts.length === 0) {
+    var experts = membres.filter(isExpert);
+    var legal = membres.filter(isExpertLegal);
+    var shown = experts.slice(0, 9);
+    if (shown.length === 0) {
       grid.innerHTML = '';
       if (empty) empty.classList.remove('hidden');
       return;
     }
     if (empty) empty.classList.add('hidden');
-    grid.innerHTML = experts.map(renderCard).join('');
+    grid.innerHTML = shown.map(renderCard).join('');
+    var more = document.getElementById('annuaireExpertsMore');
+    if (more) {
+      if (experts.length > shown.length) more.classList.remove('hidden');
+      else more.classList.add('hidden');
+    }
+    var legalHint = document.getElementById('annuaireExpertsLegalHint');
+    if (legalHint) {
+      if (legal.length > 0) legalHint.classList.remove('hidden');
+      else legalHint.classList.add('hidden');
+    }
   }
 
   function updateLegalNotice(show) {
@@ -321,7 +352,7 @@
         if (qUniv && fUniv) fUniv.value = qUniv;
         if (qStat && fStatut) fStatut.value = qStat;
         if (qSearch && fQ) fQ.value = qSearch;
-        if (qAide === 'juridique' && fAide) fAide.value = 'juridique';
+        if ((qAide === 'juridique' || qAide === 'professionnel') && fAide) fAide.value = qAide;
       } catch (e) {}
 
       function render() {
@@ -346,6 +377,9 @@
               } else if (filters.aide === 'juridique') {
                 emptyP.textContent =
                   'Aucun profil juridique / visa pour ces critères. Consultez « Besoin d’aide ? » pour CIRÉ, aide juridique gratuite (BAJ) et avocats.be.';
+              } else if (filters.aide === 'professionnel') {
+                emptyP.textContent =
+                  'Aucun diplômé / professionnel mentor pour ces critères. Partagez devenir-professionnel.html avec votre réseau pour inviter des profils.';
               } else {
                 emptyP.textContent = 'Aucun membre ne correspond à ces filtres pour le moment.';
               }

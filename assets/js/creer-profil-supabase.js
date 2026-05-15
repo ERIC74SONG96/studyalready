@@ -127,20 +127,35 @@
     }, true);
 
     try {
-      if (String(window.location.search || '').indexOf('expert=1') !== -1) {
+      var search = String(window.location.search || '');
+      if (search.indexOf('expert=1') !== -1) {
+        var EXPERT_DOMAINE = {
+          droit: 'Droit & sciences politiques',
+          sante: 'Santé & paramédical',
+          ingenierie: 'Ingénierie & sciences',
+          business: 'Business & économie',
+          info: 'Informatique & data'
+        };
+        var sp = new URLSearchParams(search);
+        var slug = (sp.get('domain') || '').toLowerCase();
         var statutEl = form.querySelector('[name="statut"]');
         var domEl = form.querySelector('[name="domaine"]');
         var tagEl = form.querySelector('[name="tag_juridique"]');
+        var banner = document.getElementById('creerProfilExpertBanner');
+        if (banner) banner.classList.remove('hidden');
         if (statutEl) statutEl.value = 'Diplômé·e / Professionnel·le';
-        if (domEl) domEl.value = 'Droit & sciences politiques';
-        if (tagEl) tagEl.value = 'avocat_juriste';
+        if (domEl && EXPERT_DOMAINE[slug]) domEl.value = EXPERT_DOMAINE[slug];
+        else if (domEl && slug === 'droit') domEl.value = EXPERT_DOMAINE.droit;
+        if (slug === 'droit' && tagEl) tagEl.value = 'avocat_juriste';
         form.querySelectorAll('input[name="ouverture"]').forEach(function (cb) {
-          if (cb.value === 'visa_titre_sejour' || cb.value === 'droit_etrangers_recours' || cb.value === 'mentorat') {
-            cb.checked = true;
-          }
+          var v = cb.value;
+          if (v === 'mentorat' || v === 'reseau_pro' || v === 'seminaires') cb.checked = true;
+          if (slug === 'droit' && (v === 'visa_titre_sejour' || v === 'droit_etrangers_recours')) cb.checked = true;
         });
-        var mentorat = form.querySelector('input[name="contact_via_studyalready"]');
-        if (mentorat) mentorat.checked = true;
+        var contactSa = form.querySelector('input[name="contact_via_studyalready"]');
+        if (contactSa) contactSa.checked = true;
+        var consentPub = form.querySelector('input[name="consent_publication"]');
+        if (consentPub && !consentPub.checked) consentPub.focus();
       }
     } catch (e) {}
   });
