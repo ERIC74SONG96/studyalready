@@ -290,15 +290,11 @@
               ' (données déclarées par les membres, sans vérification documentaire par StudyAlready).';
           } else {
             noteEl.textContent =
-              'Les profils listés proviennent uniquement du formulaire « Créer mon profil » et sont affichés après consentement et publication (aucune donnée fictive côté site).';
-          }
-          if (demoParam && demos.length) {
-            noteEl.textContent +=
-              ' Mode démo : ' + demos.length + ' fiche(s) locale(s) (paramètre annuaire_demo=1).';
+              'Les profils affichés proviennent du formulaire « Créer mon profil », avec le consentement de chaque membre.';
           }
         } else {
           noteEl.textContent =
-            'Connexion Supabase indisponible : affichage de secours limité. Vérifiez assets/js/config.js et le chargement des scripts.';
+            'Chargement temporairement indisponible. Réessayez dans quelques instants ou contactez-nous si le problème persiste.';
           if (data._note) noteEl.textContent += ' ' + data._note;
         }
       }
