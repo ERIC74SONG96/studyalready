@@ -68,9 +68,9 @@ const STEP_BADGES = {
 const VALID_PERSONAS = ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'];
 
 const PERSONA_BADGE = {
-  cameroun: 'Parcours · Cameroun',
-  belgique_etudiant: 'Études · Belgique',
-  travailleur: 'Activité professionnelle',
+  cameroun: 'Parcours · Préparation depuis le Cameroun',
+  belgique_etudiant: 'Parcours · Étudiant en Belgique',
+  travailleur: 'Parcours · Professionnel en Belgique',
   visiteur: 'Compte visiteur',
 };
 
@@ -139,6 +139,16 @@ async function syncPersonaIfNeeded(user, persona) {
   } catch (_e) {}
 }
 
+function applyPersonaServicesFilter(persona) {
+  const pane = $('paneServices');
+  if (!pane) return;
+  pane.querySelectorAll('[data-esp-show]').forEach((el) => {
+    const raw = (el.getAttribute('data-esp-show') || 'all').split(',').map((s) => s.trim());
+    const ok = raw.indexOf('all') !== -1 || raw.indexOf(persona) !== -1;
+    el.classList.toggle('hidden', !ok);
+  });
+}
+
 function applyPersonaDashboardUi(persona) {
   const badge = $('dashPersonaBadge');
   const lead = $('dashWelcomeLead');
@@ -150,10 +160,21 @@ function applyPersonaDashboardUi(persona) {
     lead.textContent = PERSONA_WELCOME[persona] || PERSONA_WELCOME.cameroun;
   }
   if (badge) {
-    badge.textContent = PERSONA_BADGE[persona] || '';
-    if (persona && persona !== 'cameroun') badge.classList.remove('hidden');
-    else badge.classList.add('hidden');
+    badge.textContent = PERSONA_BADGE[persona] || PERSONA_BADGE.cameroun;
+    badge.classList.remove('hidden');
   }
+  document.querySelectorAll('[data-dash-parcours-panel]').forEach((panel) => {
+    const key = panel.getAttribute('data-dash-parcours-panel');
+    const show =
+      (persona === 'cameroun' && key === 'cameroun') ||
+      (persona === 'belgique_etudiant' && key === 'belgique_etudiant') ||
+      (persona === 'travailleur' && key === 'travailleur') ||
+      (persona === 'visiteur' && key === 'visiteur');
+    panel.classList.toggle('hidden', !show);
+  });
+  const hub = $('dashParcoursHub');
+  if (hub) hub.classList.remove('hidden');
+  applyPersonaServicesFilter(persona);
   if (tabDossier) {
     tabDossier.textContent = TAB_DOSSIER_LABEL[persona] || TAB_DOSSIER_LABEL.cameroun;
   }

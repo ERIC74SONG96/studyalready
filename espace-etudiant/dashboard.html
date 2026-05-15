@@ -52,6 +52,64 @@
       <p class="mt-4 text-sm text-slate-200 max-w-2xl" id="dashWelcomeLead">Vous pouvez suivre l'avancement de votre dossier, échanger avec StudyAlready et retrouver vos documents en un seul endroit.</p>
     </section>
 
+    <section id="dashParcoursHub" class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+      <p class="text-xs font-bold uppercase tracking-wider text-brand-blue">Votre parcours dans le réseau</p>
+      <p class="mt-1 text-sm text-slate-600">Même communauté pour tous — contenus et raccourcis adaptés à votre situation.</p>
+      <div id="dashParcoursPanelCameroun" data-dash-parcours-panel="cameroun" class="hidden mt-4 grid sm:grid-cols-2 gap-3">
+        <a href="../equivalence.html" class="rounded-xl border border-amber-100 bg-amber-50/80 p-4 hover:border-brand-gold transition">
+          <p class="font-semibold text-brand-dark text-sm">Équivalence FWB</p>
+          <p class="mt-1 text-xs text-slate-600">Guides et démarches depuis le Cameroun.</p>
+        </a>
+        <a href="../prequalification-dossier.html" class="rounded-xl border border-slate-200 p-4 hover:border-brand-gold transition">
+          <p class="font-semibold text-brand-dark text-sm">Pré-qualifier mon dossier</p>
+          <p class="mt-1 text-xs text-slate-600">Formulaire détaillé avant départ.</p>
+        </a>
+        <a href="../preparer-voyage.html" class="rounded-xl border border-slate-200 p-4 hover:border-brand-gold transition">
+          <p class="font-semibold text-brand-dark text-sm">Préparer mon voyage</p>
+          <p class="mt-1 text-xs text-slate-600">Vols, bagages, départs groupés.</p>
+        </a>
+        <a href="../annuaire.html?view=preparation" class="rounded-xl border border-slate-200 p-4 hover:border-brand-blue transition">
+          <p class="font-semibold text-brand-dark text-sm">Annuaire · futurs étudiants</p>
+          <p class="mt-1 text-xs text-slate-600">Membres en préparation comme vous.</p>
+        </a>
+      </div>
+      <div id="dashParcoursPanelBelgique" data-dash-parcours-panel="belgique_etudiant" class="hidden mt-4 grid sm:grid-cols-2 gap-3">
+        <a href="../accelerateur-job.html" class="rounded-xl border border-slate-200 p-4 hover:border-brand-gold transition">
+          <p class="font-semibold text-brand-dark text-sm">Job étudiant</p>
+          <p class="mt-1 text-xs text-slate-600">CV, recruteurs, Student@work.</p>
+        </a>
+        <a href="../logement-etudiant.html" class="rounded-xl border border-slate-200 p-4 hover:border-brand-gold transition">
+          <p class="font-semibold text-brand-dark text-sm">Logement &amp; kot</p>
+          <p class="mt-1 text-xs text-slate-600">Conseils et bons plans sur place.</p>
+        </a>
+        <a href="../evenements-seminaires.html" class="rounded-xl border border-slate-200 p-4 hover:border-brand-gold transition">
+          <p class="font-semibold text-brand-dark text-sm">Séminaires &amp; événements</p>
+          <p class="mt-1 text-xs text-slate-600">Webinaires et rencontres en Belgique.</p>
+        </a>
+        <a href="../annuaire.html?view=belgique" class="rounded-xl border border-slate-200 p-4 hover:border-brand-blue transition">
+          <p class="font-semibold text-brand-dark text-sm">Annuaire · sur place</p>
+          <p class="mt-1 text-xs text-slate-600">Membres déjà en Belgique.</p>
+        </a>
+      </div>
+      <div id="dashParcoursPanelTravailleur" data-dash-parcours-panel="travailleur" class="hidden mt-4 grid sm:grid-cols-2 gap-3">
+        <a href="../devenir-professionnel.html" class="rounded-xl border border-slate-200 p-4 hover:border-brand-gold transition">
+          <p class="font-semibold text-brand-dark text-sm">Profil mentor / pro</p>
+          <p class="mt-1 text-xs text-slate-600">Partager votre expérience.</p>
+        </a>
+        <a href="../annuaire.html?view=belgique" class="rounded-xl border border-slate-200 p-4 hover:border-brand-blue transition">
+          <p class="font-semibold text-brand-dark text-sm">Annuaire · réseau local</p>
+          <p class="mt-1 text-xs text-slate-600">Étudiants et pros en Belgique.</p>
+        </a>
+        <a href="../communaute.html" class="rounded-xl border border-slate-200 p-4 hover:border-brand-gold transition sm:col-span-2">
+          <p class="font-semibold text-brand-dark text-sm">Communauté StudyAlready</p>
+          <p class="mt-1 text-xs text-slate-600">Événements, entraide, mise en relation.</p>
+        </a>
+      </div>
+      <div id="dashParcoursPanelVisiteur" data-dash-parcours-panel="visiteur" class="hidden mt-4 text-sm text-slate-600">
+        <p>Explorez le <a href="../blog/index.html" class="text-brand-blue font-semibold underline">blog</a>, les <a href="#" data-tab-link="services" class="text-brand-blue font-semibold underline">services</a> et l’<a href="../annuaire.html" class="text-brand-blue font-semibold underline">annuaire</a> selon vos besoins.</p>
+      </div>
+    </section>
+
     <!-- Onglets de navigation -->
     <nav class="flex flex-wrap gap-2 border-b border-slate-200">
       <button type="button" id="dashTabDossier" data-tab="dossier" class="esp-tab px-4 py-2 font-semibold text-sm border-b-2 border-brand-blue text-brand-dark">📂 Mon dossier</button>
@@ -100,27 +158,27 @@
     <section id="paneServices" class="esp-pane hidden">
       <h2 class="font-display font-bold text-xl text-brand-dark mb-4">Services et raccourcis</h2>
       <div class="grid sm:grid-cols-2 gap-3">
-        <a href="../prequalification-dossier.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+        <a href="../prequalification-dossier.html" data-esp-show="cameroun,all" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
           <span class="text-2xl">📋</span>
           <h3 class="mt-2 font-semibold text-brand-dark">Pré-qualification dossier</h3>
           <p class="mt-1 text-xs text-slate-600">Formulaire détaillé pour préparer votre équivalence FWB.</p>
         </a>
-        <a href="../analyseur-admission.html" class="block rounded-xl border border-amber-200 bg-amber-50 p-5 hover:border-amber-400 shadow-sm transition">
+        <a href="../analyseur-admission.html" data-esp-show="cameroun,all" class="block rounded-xl border border-amber-200 bg-amber-50 p-5 hover:border-amber-400 shadow-sm transition">
           <span class="text-2xl">🎯</span>
           <h3 class="mt-2 font-semibold text-amber-900">Analyseur d'admission</h3>
           <p class="mt-1 text-xs text-amber-900/80">Estimer mes chances et les écoles à viser.</p>
         </a>
-        <a href="../accelerateur-job.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+        <a href="../accelerateur-job.html" data-esp-show="belgique_etudiant,travailleur,all" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
           <span class="text-2xl">⚡</span>
           <h3 class="mt-2 font-semibold text-brand-dark">Accélérateur de Job</h3>
           <p class="mt-1 text-xs text-slate-600">Job étudiant en Belgique : recruteurs, CV.</p>
         </a>
-        <a href="../offres-etudiants.html" class="block rounded-xl border border-emerald-200 bg-emerald-50 p-5 hover:border-emerald-400 shadow-sm transition">
+        <a href="../offres-etudiants.html" data-esp-show="belgique_etudiant,travailleur,all" class="block rounded-xl border border-emerald-200 bg-emerald-50 p-5 hover:border-emerald-400 shadow-sm transition">
           <span class="text-2xl">📌</span>
           <h3 class="mt-2 font-semibold text-emerald-900">Mur des offres job</h3>
           <p class="mt-1 text-xs text-emerald-900/80">Publier ou consulter des annonces (texte + image).</p>
         </a>
-        <a href="../preparer-voyage.html" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
+        <a href="../preparer-voyage.html" data-esp-show="cameroun,all" class="block rounded-xl border border-slate-200 bg-white p-5 hover:border-brand-gold shadow-sm transition">
           <span class="text-2xl">✈️</span>
           <h3 class="mt-2 font-semibold text-brand-dark">Préparer mon voyage</h3>
           <p class="mt-1 text-xs text-slate-600">Vols, bagages, départs groupés.</p>
@@ -178,7 +236,7 @@
 
   <script src="../assets/js/config.js?v=20260513espace"></script>
   <script type="module" src="../assets/js/espace-etudiant.mjs?v=20260512vendor"></script>
-  <script type="module" src="../assets/js/espace-dashboard.mjs?v=20260512vendor"></script>
+  <script type="module" src="../assets/js/espace-dashboard.mjs?v=20260525parcours"></script>
   <script src="../assets/js/main.js?v=20260513espace"></script>
 </body>
 </html>

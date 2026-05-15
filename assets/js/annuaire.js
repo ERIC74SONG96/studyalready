@@ -280,6 +280,8 @@
     if (filters.view === 'etudiants' && !isStudent(m)) return false;
     if (filters.view === 'professionnels' && !isExpert(m)) return false;
     if (filters.view === 'juridique' && !isLegalMember(m)) return false;
+    if (filters.view === 'belgique' && (m.reseau_segment || 'preparation') !== 'belgique') return false;
+    if (filters.view === 'preparation' && (m.reseau_segment || 'preparation') !== 'preparation') return false;
     if (filters.universite && m.universite !== filters.universite) return false;
     if (filters.domaine && m.domaine !== filters.domaine) return false;
     if (filters.statut && m.statut !== filters.statut) return false;
@@ -525,7 +527,14 @@
     var wrap = document.getElementById('annuaireActiveFilters');
     if (!wrap) return;
     var chips = [];
-    var labels = { suivis: 'Mes abonnements', etudiants: 'Étudiants', professionnels: 'Professionnels', juridique: 'Visa / séjour' };
+    var labels = {
+      suivis: 'Mes abonnements',
+      etudiants: 'Étudiants',
+      professionnels: 'Professionnels',
+      juridique: 'Visa / séjour',
+      belgique: 'En Belgique',
+      preparation: 'En préparation (Cameroun)'
+    };
     if (filters.view && filters.view !== 'tous' && labels[filters.view]) {
       chips.push({ key: 'view', label: labels[filters.view] });
     }
@@ -1153,7 +1162,7 @@
       var qAide = sp.get('aide');
       if (qAide === 'juridique') state.view = 'juridique';
       else if (qAide === 'professionnel') state.view = 'professionnels';
-      else if (v === 'suivis' || v === 'etudiants' || v === 'professionnels' || v === 'juridique' || v === 'evenements' || v === 'tous') {
+      else if (v === 'suivis' || v === 'etudiants' || v === 'professionnels' || v === 'juridique' || v === 'evenements' || v === 'belgique' || v === 'preparation' || v === 'tous') {
         state.view = v;
       }
       var fAide = document.getElementById('filterAide');
