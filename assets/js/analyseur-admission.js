@@ -258,11 +258,11 @@
         medecineEncadre +
 
         '<div class="p-6 sm:p-8 bg-slate-50">' +
-          '<p class="text-sm text-slate-600">Ce score est un <strong>outil d\'orientation interne</strong>. Seuls la FWB et chaque établissement décident de l\'admission finale. Un <a href="prequalification-dossier.html" class="underline font-semibold text-brand-dark">dossier de pré-qualification détaillé</a> vous donnera une réponse personnalisée par un humain.</p>' +
+          '<p class="text-sm text-slate-600">Ce score est un <strong>outil d\'orientation interne</strong>. Seuls la FWB et chaque établissement décident de l\'admission finale. Un <a href="prequalification-dossier" class="underline font-semibold text-brand-dark">dossier de pré-qualification détaillé</a> vous donnera une réponse personnalisée par un humain.</p>' +
           '<div class="mt-5 flex flex-wrap gap-3">' +
             '<button type="button" id="btnRapportEmail" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-3 rounded-full text-sm hover:bg-yellow-400">Recevoir le rapport par email</button>' +
             '<button type="button" id="btnImprimer" class="inline-flex items-center gap-2 border border-slate-300 text-brand-dark font-semibold px-5 py-3 rounded-full text-sm hover:border-brand-gold">Imprimer / sauvegarder PDF</button>' +
-            '<a href="prequalification-dossier.html" class="inline-flex items-center gap-2 bg-brand-dark text-white font-semibold px-5 py-3 rounded-full text-sm hover:bg-brand-blue">Demander la pré-qualification humaine</a>' +
+            '<a href="prequalification-dossier" class="inline-flex items-center gap-2 bg-brand-dark text-white font-semibold px-5 py-3 rounded-full text-sm hover:bg-brand-blue">Demander la pré-qualification humaine</a>' +
           '</div>' +
         '</div>' +
       '</div>';
