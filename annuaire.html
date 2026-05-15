@@ -65,6 +65,7 @@
       <aside class="annuaire-sidebar-left space-y-3">
         <div class="annuaire-panel p-4">
           <a href="creer-profil.html" class="block w-full text-center bg-brand-gold hover:bg-yellow-400 text-brand-dark font-bold text-sm py-2.5 rounded-lg">+ Créer mon profil</a>
+          <a href="creer-evenement.html" class="mt-2 block w-full text-center bg-brand-dark hover:bg-brand-blue text-white font-bold text-sm py-2.5 rounded-lg">+ Créer un événement</a>
           <a href="devenir-professionnel.html" class="mt-2 block text-center text-xs text-brand-blue font-semibold underline">Vous êtes diplômé / pro ?</a>
         </div>
         <nav class="annuaire-panel p-2" aria-label="Vues annuaire">
@@ -73,10 +74,45 @@
           <button type="button" class="annuaire-nav-btn" data-annuaire-view="suivis"><span class="annuaire-nav-icon" aria-hidden="true">&#9733;</span> Mes abonnements</button>
           <button type="button" class="annuaire-nav-btn" data-annuaire-view="etudiants"><span class="annuaire-nav-icon" aria-hidden="true">&#127891;</span> Étudiants</button>
           <button type="button" class="annuaire-nav-btn" data-annuaire-view="professionnels"><span class="annuaire-nav-icon" aria-hidden="true">&#128188;</span> Professionnels</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="evenements"><span class="annuaire-nav-icon" aria-hidden="true">&#128197;</span> Événements</button>
           <button type="button" class="annuaire-nav-btn" data-annuaire-view="juridique"><span class="annuaire-nav-icon" aria-hidden="true">&#9878;</span> Visa / séjour</button>
         </nav>
         <div id="annuaireDomainBreakdown" class="annuaire-panel p-4 text-xs text-slate-600 hidden lg:block"></div>
-        <div class="annuaire-panel p-4 annuaire-refine-panel text-sm">
+        <div id="annuaireEventsRefine" class="annuaire-panel p-4 annuaire-refine-panel text-sm hidden">
+          <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Filtrer les événements</p>
+          <div class="space-y-2">
+            <label class="annuaire-refine-label" for="filterEventPeriod">Période</label>
+            <select id="filterEventPeriod" class="annuaire-refine-select">
+              <option value="upcoming">À venir</option>
+              <option value="past">Passés</option>
+              <option value="all">Tous</option>
+            </select>
+            <label class="annuaire-refine-label" for="filterEventType">Type</label>
+            <select id="filterEventType" class="annuaire-refine-select">
+              <option value="">Tous les types</option>
+              <option value="webinaire">Webinaire</option>
+              <option value="atelier">Atelier</option>
+              <option value="seminaire">Séminaire</option>
+              <option value="meetup">Meetup</option>
+              <option value="networking">Networking</option>
+              <option value="conference">Conférence</option>
+              <option value="social">Social / apéro</option>
+              <option value="sport">Sport</option>
+              <option value="culture">Culture</option>
+              <option value="autre">Autre</option>
+            </select>
+            <label class="annuaire-refine-label" for="filterEventFormat">Format</label>
+            <select id="filterEventFormat" class="annuaire-refine-select">
+              <option value="">Tous</option>
+              <option value="online">En ligne</option>
+              <option value="presentiel">Présentiel</option>
+              <option value="hybride">Hybride</option>
+            </select>
+            <label class="annuaire-refine-label" for="filterEventCity">Ville</label>
+            <select id="filterEventCity" class="annuaire-refine-select"><option value="">Toutes</option></select>
+          </div>
+        </div>
+        <div id="annuaireMembersRefine" class="annuaire-panel p-4 annuaire-refine-panel text-sm">
           <div class="flex items-center justify-between gap-2 mb-3">
             <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">Affiner</p>
             <span id="annuaireRefineCount" class="annuaire-refine-badge hidden">0</span>
@@ -177,7 +213,7 @@
         <div class="annuaire-panel overflow-hidden">
           <div class="px-4 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2">
             <div>
-              <p class="font-display font-bold text-brand-dark">Membres</p>
+              <p id="annuaireListTitle" class="font-display font-bold text-brand-dark">Membres</p>
               <p id="annuaireNote" class="text-xs text-slate-500"></p>
             </div>
             <div class="flex items-center gap-2 text-xs">
@@ -267,6 +303,7 @@
     </div>
   </div>
 
-  <script src="assets/js/annuaire.js?v=20260517affiner"></script>
+  <script src="assets/js/community-events.js?v=20260518events"></script>
+  <script src="assets/js/annuaire.js?v=20260518events"></script>
 </body>
 </html>

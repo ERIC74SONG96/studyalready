@@ -17,6 +17,7 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/annuaire.css" />
 </head>
 <body class="font-sans text-slate-800 bg-white antialiased">
   <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
@@ -37,10 +38,22 @@
 
   <section class="py-16 bg-white">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
-      <h2 class="font-display text-2xl font-bold text-brand-dark">Prochains rendez-vous</h2>
-      <p class="mt-2 text-sm text-slate-600">Les dates exactes et liens Zoom seront publiées au fur et à mesure. Inscrivez-vous par formulaire ou WhatsApp pour être ajouté(e) à la liste d'attente.</p>
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 class="font-display text-2xl font-bold text-brand-dark">Événements de la communauté</h2>
+          <p class="mt-2 text-sm text-slate-600 max-w-2xl">Webinaires, ateliers, meetups… proposés par les membres.</p>
+        </div>
+        <a href="creer-evenement.html" class="inline-flex items-center gap-2 bg-brand-gold text-brand-dark font-bold px-5 py-2.5 rounded-full text-sm hover:bg-yellow-400 shrink-0">+ Créer un événement</a>
+      </div>
 
-      <div class="mt-10 space-y-6">
+      <div id="communityEventsPublicList" class="mt-8 min-h-[4rem]">
+        <p class="text-sm text-slate-500">Chargement des événements…</p>
+      </div>
+
+      <h2 class="font-display text-xl font-bold text-brand-dark mt-14">Séminaires StudyAlready (indicatifs)</h2>
+      <p class="mt-2 text-sm text-slate-600">Inscrivez-vous par formulaire ou WhatsApp pour la liste d'attente.</p>
+
+      <div class="mt-8 space-y-6">
         <article class="rounded-2xl border border-slate-200 p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 hover:border-brand-gold transition">
           <div>
             <p class="text-xs font-bold uppercase tracking-wider text-brand-gold">Webinaire · Zoom</p>
@@ -98,7 +111,12 @@
     </div>
     <p>© <span id="year"></span> StudyAlready</p>
   </footer>
+  <script src="assets/js/config.js"></script>
+  <script src="/assets/js/vendor/supabase-umd-2.49.4.min.js"></script>
+  <script src="assets/js/supabase-init.js?v=20260515persist"></script>
   <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/community-events.js?v=20260518events"></script>
+  <script src="assets/js/evenements-public.js?v=20260518events"></script>
 </body>
 </html>

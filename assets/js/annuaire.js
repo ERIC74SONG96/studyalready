@@ -584,7 +584,10 @@
   function syncUrlFromFilters(filters) {
     if (!state.urlSync || typeof history === 'undefined' || !history.replaceState) return;
     var p = new URLSearchParams();
-    if (filters.view && filters.view !== 'tous') p.set('vue', filters.view);
+    if (filters.view && filters.view !== 'tous') {
+      if (filters.view === 'evenements') p.set('vue', 'evenements');
+      else p.set('vue', filters.view);
+    }
     if (filters.universite) p.set('universite', filters.universite);
     if (filters.domaine) p.set('domaine', filters.domaine);
     if (filters.statut) p.set('statut', filters.statut);
@@ -947,10 +950,19 @@
   }
 
   function render() {
+    if (state.view === 'evenements' && global.StudyAlreadyEvents) {
+      if (global.StudyAlreadyEvents.toggleAnnuaireChrome) global.StudyAlreadyEvents.toggleAnnuaireChrome(true);
+      global.StudyAlreadyEvents.renderAnnuaireEventsView();
+      return;
+    }
+    if (global.StudyAlreadyEvents && global.StudyAlreadyEvents.toggleAnnuaireChrome) {
+      global.StudyAlreadyEvents.toggleAnnuaireChrome(false);
+    }
     var grid = document.getElementById('annuaireGrid');
     var emptyEl = document.getElementById('annuaireEmpty');
     var countEl = document.getElementById('annuaireCount');
     if (!grid) return;
+    grid.className = 'min-h-[12rem]';
 
     var filters = getFiltersFromDom();
     updateLegalNotice(filters.view === 'juridique' || filters.aide === 'juridique');
@@ -1021,7 +1033,7 @@
       var qAide = sp.get('aide');
       if (qAide === 'juridique') state.view = 'juridique';
       else if (qAide === 'professionnel') state.view = 'professionnels';
-      else if (v === 'suivis' || v === 'etudiants' || v === 'professionnels' || v === 'juridique' || v === 'tous') {
+      else if (v === 'suivis' || v === 'etudiants' || v === 'professionnels' || v === 'juridique' || v === 'evenements' || v === 'tous') {
         state.view = v;
       }
       var fAide = document.getElementById('filterAide');
@@ -1044,10 +1056,12 @@
         return r.ok ? r.json() : { membres: [] };
       }).catch(function () { return { membres: [] }; }),
       fetchSupabaseProfiles(),
-      loadFollows(sb)
+      loadFollows(sb),
+      (global.StudyAlreadyEvents ? global.StudyAlreadyEvents.fetchPublishedEvents(sb) : Promise.resolve([]))
     ]).then(function (results) {
       var data = results[0] || {};
       var remotePack = results[1] || { list: [], denied: false };
+      var eventsList = results[2] || [];
       var remote = remotePack.list || [];
       var accessDenied = !!remotePack.denied;
       var gateEl = document.getElementById('annuaireAccessGate');
@@ -1097,6 +1111,10 @@
         applyRefineFromUrl(sp);
       } catch (e) {}
 
+      if (global.StudyAlreadyEvents) {
+        global.StudyAlreadyEvents.setEvents(eventsList);
+        global.StudyAlreadyEvents.setAuthUserId(state.authUserId);
+      }
       buildMembersIndex();
       applyViewFromUrl();
       updateStats(state.membres);
@@ -1121,6 +1139,7 @@
             else if (state.view === 'professionnels') fAide.value = 'professionnel';
             else fAide.value = '';
           }
+          if (state.view === 'evenements' && global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
           setActiveNav(state.view);
           render();
         });
@@ -1149,6 +1168,14 @@
         el.addEventListener('change', function () { state.page = 1; render(); });
       });
       if (fQ) fQ.addEventListener('input', scheduleRender);
+      ['filterEventType', 'filterEventFormat', 'filterEventCity', 'filterEventPeriod'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('change', function () {
+          if (global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
+          state.page = 1;
+          render();
+        });
+      });
 
       if (btnReset) {
         btnReset.addEventListener('click', function () {
@@ -1169,6 +1196,8 @@
       grid.innerHTML = '<p class="text-center text-sm text-red-600 py-8">' + escapeHTML(err.message || 'Erreur.') + '</p>';
     });
   }
+
+  global.SAAnnuaireRenderPager = renderPagination;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
