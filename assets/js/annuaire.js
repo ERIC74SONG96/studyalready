@@ -47,7 +47,8 @@
     followSet: new Set(),
     authUserId: null,
     debounceTimer: null,
-    urlSync: true
+    urlSync: true,
+    uiBound: false
   };
 
   function colorFor(univ) {
@@ -669,9 +670,7 @@
   }
 
   function bindProfileRowClicks() {
-    var grid = document.getElementById('annuaireGrid');
-    if (!grid) return;
-    grid.querySelectorAll('.annuaire-member-row').forEach(function (row) {
+    document.querySelectorAll('#annuaireGrid .annuaire-member-row, #annuaireSuggestList .annuaire-member-row').forEach(function (row) {
       row.addEventListener('click', function (e) {
         if (e.target.closest('.annuaire-row-actions')) return;
         openProfileDrawer(row.getAttribute('data-profile-id'));
@@ -683,6 +682,79 @@
         }
       });
     });
+  }
+
+  function bindAnnuaireListeners() {
+    if (state.uiBound) return;
+    state.uiBound = true;
+
+    var fUniv = document.getElementById('filterUniversite');
+    var fDom = document.getElementById('filterDomaine');
+    var fStatut = document.getElementById('filterStatut');
+    var fQ = document.getElementById('filterQ');
+    var fSort = document.getElementById('filterSort');
+    var btnReset = document.getElementById('filterReset');
+
+    document.querySelectorAll('[data-annuaire-view]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.view = btn.getAttribute('data-annuaire-view') || 'tous';
+        state.page = 1;
+        var fAide = document.getElementById('filterAide');
+        if (fAide) {
+          if (state.view === 'juridique') fAide.value = 'juridique';
+          else if (state.view === 'professionnels') fAide.value = 'professionnel';
+          else fAide.value = '';
+        }
+        if (state.view === 'evenements' && global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
+        setActiveNav(state.view);
+        render();
+      });
+    });
+
+    function scheduleRender() {
+      clearTimeout(state.debounceTimer);
+      state.debounceTimer = setTimeout(function () {
+        state.page = 1;
+        render();
+      }, DEBOUNCE_MS);
+    }
+
+    var refineEls = [fUniv, fDom, fStatut, fSort, document.getElementById('filterVille'), document.getElementById('filterTagJuridique')];
+    refineEls.forEach(function (el) {
+      if (el) el.addEventListener('change', function () { state.page = 1; render(); });
+    });
+    var fFilEl = document.getElementById('filterFiliere');
+    if (fFilEl) {
+      fFilEl.addEventListener('change', function () { state.page = 1; render(); });
+      fFilEl.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { state.page = 1; render(); }
+      });
+    }
+    document.querySelectorAll('[data-filter-ouverture], #filterAvecBio, #filterContactPublic, #filterAvecSpecialites').forEach(function (el) {
+      el.addEventListener('change', function () { state.page = 1; render(); });
+    });
+    if (fQ) fQ.addEventListener('input', scheduleRender);
+    ['filterEventType', 'filterEventFormat', 'filterEventCity', 'filterEventPeriod'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('change', function () {
+        if (global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
+        state.page = 1;
+        render();
+      });
+    });
+    if (btnReset) {
+      btnReset.addEventListener('click', function () {
+        resetRefineForm();
+        if (fQ) fQ.value = '';
+        var fAide = document.getElementById('filterAide');
+        if (fAide) fAide.value = '';
+        state.view = 'tous';
+        state.page = 1;
+        setActiveNav('tous');
+        updateLegalNotice(false);
+        render();
+      });
+    }
   }
 
   function bindProUI() {
@@ -950,9 +1022,11 @@
   }
 
   function render() {
-    if (state.view === 'evenements' && global.StudyAlreadyEvents) {
-      if (global.StudyAlreadyEvents.toggleAnnuaireChrome) global.StudyAlreadyEvents.toggleAnnuaireChrome(true);
-      global.StudyAlreadyEvents.renderAnnuaireEventsView();
+    if (state.view === 'evenements') {
+      if (global.StudyAlreadyEvents) {
+        if (global.StudyAlreadyEvents.toggleAnnuaireChrome) global.StudyAlreadyEvents.toggleAnnuaireChrome(true);
+        global.StudyAlreadyEvents.renderAnnuaireEventsView();
+      }
       return;
     }
     if (global.StudyAlreadyEvents && global.StudyAlreadyEvents.toggleAnnuaireChrome) {
@@ -1061,7 +1135,7 @@
     ]).then(function (results) {
       var data = results[0] || {};
       var remotePack = results[1] || { list: [], denied: false };
-      var eventsList = results[2] || [];
+      var eventsList = Array.isArray(results[3]) ? results[3] : [];
       var remote = remotePack.list || [];
       var accessDenied = !!remotePack.denied;
       var gateEl = document.getElementById('annuaireAccessGate');
@@ -1111,87 +1185,33 @@
         applyRefineFromUrl(sp);
       } catch (e) {}
 
-      if (global.StudyAlreadyEvents) {
-        global.StudyAlreadyEvents.setEvents(eventsList);
-        global.StudyAlreadyEvents.setAuthUserId(state.authUserId);
-      }
-      buildMembersIndex();
-      applyViewFromUrl();
-      updateStats(state.membres);
-      updateFollowCountEl();
-      renderDomainBreakdown();
-      renderRefineCounts();
-      renderSuggestList(state.membres);
+      bindAnnuaireListeners();
       bindProUI();
-      renderRecentSearches();
 
-      if (noteEl && sb && remote.length) {
-        noteEl.textContent = 'Données déclarées par les membres — sans vérification documentaire.';
+      try {
+        if (global.StudyAlreadyEvents) {
+          global.StudyAlreadyEvents.setEvents(eventsList);
+          global.StudyAlreadyEvents.setAuthUserId(state.authUserId);
+        }
+        buildMembersIndex();
+        applyViewFromUrl();
+        updateStats(state.membres);
+        updateFollowCountEl();
+        renderDomainBreakdown();
+        renderRefineCounts();
+        renderSuggestList(state.membres);
+        bindProfileRowClicks();
+        renderRecentSearches();
+
+        if (noteEl && sb && remote.length) {
+          noteEl.textContent = 'Données déclarées par les membres — sans vérification documentaire.';
+        }
+
+        render();
+      } catch (bootErr) {
+        console.error('StudyAlready annuaire init:', bootErr);
+        grid.innerHTML = '<p class="text-center text-sm text-red-600 py-8">Erreur d’affichage. Rechargez la page.</p>';
       }
-
-      document.querySelectorAll('[data-annuaire-view]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          state.view = btn.getAttribute('data-annuaire-view') || 'tous';
-          state.page = 1;
-          var fAide = document.getElementById('filterAide');
-          if (fAide) {
-            if (state.view === 'juridique') fAide.value = 'juridique';
-            else if (state.view === 'professionnels') fAide.value = 'professionnel';
-            else fAide.value = '';
-          }
-          if (state.view === 'evenements' && global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
-          setActiveNav(state.view);
-          render();
-        });
-      });
-
-      function scheduleRender() {
-        clearTimeout(state.debounceTimer);
-        state.debounceTimer = setTimeout(function () {
-          state.page = 1;
-          render();
-        }, DEBOUNCE_MS);
-      }
-
-      var refineEls = [fUniv, fDom, fStatut, fSort, document.getElementById('filterVille'), document.getElementById('filterTagJuridique')];
-      refineEls.forEach(function (el) {
-        if (el) el.addEventListener('change', function () { state.page = 1; render(); });
-      });
-      var fFilEl = document.getElementById('filterFiliere');
-      if (fFilEl) {
-        fFilEl.addEventListener('change', function () { state.page = 1; render(); });
-        fFilEl.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter') { state.page = 1; render(); }
-        });
-      }
-      document.querySelectorAll('[data-filter-ouverture], #filterAvecBio, #filterContactPublic, #filterAvecSpecialites').forEach(function (el) {
-        el.addEventListener('change', function () { state.page = 1; render(); });
-      });
-      if (fQ) fQ.addEventListener('input', scheduleRender);
-      ['filterEventType', 'filterEventFormat', 'filterEventCity', 'filterEventPeriod'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('change', function () {
-          if (global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
-          state.page = 1;
-          render();
-        });
-      });
-
-      if (btnReset) {
-        btnReset.addEventListener('click', function () {
-          resetRefineForm();
-          if (fQ) fQ.value = '';
-          var fAide = document.getElementById('filterAide');
-          if (fAide) fAide.value = '';
-          state.view = 'tous';
-          state.page = 1;
-          setActiveNav('tous');
-          updateLegalNotice(false);
-          render();
-        });
-      }
-
-      render();
     }).catch(function (err) {
       grid.innerHTML = '<p class="text-center text-sm text-red-600 py-8">' + escapeHTML(err.message || 'Erreur.') + '</p>';
     });

@@ -494,7 +494,9 @@
 }
 
 .annuaire-drawer.hidden {
-  display: none;
+  display: none !important;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .annuaire-drawer-backdrop {

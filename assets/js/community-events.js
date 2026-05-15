@@ -202,6 +202,7 @@
     var countEl = document.getElementById('annuaireCount');
     var pagination = document.getElementById('annuairePagination');
     if (!grid) return;
+    if (!Array.isArray(annuaireState.events)) annuaireState.events = [];
     toggleAnnuaireChrome(true);
     var filters = getEventFiltersFromDom();
     var filtered = annuaireState.events.filter(function (ev) { return matchEvent(ev, filters); });
@@ -267,10 +268,11 @@
   }
 
   function fillEventFilterSelects(events) {
+    if (!Array.isArray(events)) events = [];
     var cities = {};
     var i;
     for (i = 0; i < events.length; i++) {
-      if (events[i].city) cities[events[i].city] = true;
+      if (events[i] && events[i].city) cities[events[i].city] = true;
     }
     var fCity = document.getElementById('filterEventCity');
     if (fCity) {
@@ -310,7 +312,7 @@
     renderPublicList: renderPublicList,
     insertEvent: insertEvent,
     setEvents: function (list) {
-      annuaireState.events = list || [];
+      annuaireState.events = Array.isArray(list) ? list : [];
       fillEventFilterSelects(annuaireState.events);
     },
     setAuthUserId: function (id) { annuaireState.authUserId = id; },
