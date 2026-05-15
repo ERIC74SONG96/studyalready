@@ -41,7 +41,7 @@
     };
   }
 
-  function parcoursToUserMeta(parcours) {
+  function parcoursToUserMeta(parcours, paysResidence) {
     if (parcours === 'deja_belgique_etudiant') {
       return { signup_location: 'belgique', signup_be_mode: 'etudiant', espace_persona: 'belgique_etudiant' };
     }
@@ -51,7 +51,19 @@
     if (parcours === 'autre') {
       return { signup_location: 'hors', signup_be_mode: null, espace_persona: 'visiteur' };
     }
-    return { signup_location: 'hors', signup_be_mode: null, espace_persona: 'cameroun' };
+    if (parcours === 'hors_belgique' || parcours === 'au_cameroun') {
+      var pays = String(paysResidence || '').trim();
+      if (pays === 'CM') {
+        return { signup_location: 'hors', signup_be_mode: null, espace_persona: 'cameroun', signup_country: 'CM' };
+      }
+      return {
+        signup_location: 'hors',
+        signup_be_mode: null,
+        espace_persona: 'visiteur',
+        signup_country: pays || null,
+      };
+    }
+    return { signup_location: 'hors', signup_be_mode: null, espace_persona: 'visiteur' };
   }
 
   function showStatus(el, html, cls) {
@@ -123,6 +135,14 @@
         return;
       }
 
+      var parcoursCheck = String(payload.parcours || '');
+      if (parcoursCheck === 'hors_belgique' || parcoursCheck === 'au_cameroun') {
+        if (!String(payload.pays_residence || '').trim()) {
+          showStatus(statusEl, 'Indiquez votre pays de résidence (hors Belgique).', 'text-red-600');
+          return;
+        }
+      }
+
       var pwd = (form.querySelector('input[name="password"]') && form.querySelector('input[name="password"]').value) || '';
       var pwd2 =
         (form.querySelector('input[name="password_confirm"]') && form.querySelector('input[name="password_confirm"]').value) ||
@@ -159,7 +179,7 @@
         try {
           if (!existingUser) {
             var parcours = String(payload.parcours || '');
-            var meta = parcoursToUserMeta(parcours);
+            var meta = parcoursToUserMeta(parcours, payload.pays_residence);
             var origin = (window.location && window.location.origin) || 'https://www.studyalready.com';
             var redirectUrl = origin + '/espace-etudiant/';
             var sign = await sb.auth.signUp({

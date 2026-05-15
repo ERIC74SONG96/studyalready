@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rejoindre le réseau — espace membres | StudyAlready</title>
-  <meta name="description" content="Espace membres StudyAlready : inscription par domaine d'études (Droit, Santé, Ingénierie, Business...), parcours (au Cameroun / déjà en Belgique), ville, intérêt pour les séminaires et le mentorat." />
+  <meta name="description" content="Espace membres StudyAlready : inscription par domaine d'études, situation en Belgique ou hors Belgique, pays de résidence, séminaires et mentorat." />
   <link rel="canonical" href="https://www.studyalready.com/rejoindre-reseau.html" />
   <meta name="robots" content="index,follow" />
   <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
@@ -39,7 +39,7 @@
         <span id="rejoindreHeroCommunaute" class="hidden">Un formulaire d'adhésion <strong class="text-white">léger et gratuit</strong> pour qu'on vous mette en relation avec les autres étudiants de votre domaine, qu'on vous invite aux séminaires et qu'on relaie les bons plans (job, logement, mentorat) de votre ville.</span>
       </p>
       <div class="sa-community-stats sa-community-stats--hero max-w-3xl" data-sa-community-stats aria-live="polite"></div>
-      <p class="mt-4 text-sm text-slate-300 max-w-3xl">Après inscription, <strong class="text-white">Mon espace</strong> et l’<strong class="text-white">annuaire</strong> s’adaptent à votre parcours (préparation au Cameroun ou déjà en Belgique).</p>
+      <p class="mt-4 text-sm text-slate-300 max-w-3xl">Après inscription, <strong class="text-white">Mon espace</strong> et l’<strong class="text-white">annuaire</strong> s’adaptent à votre situation (<strong>en Belgique</strong> ou <strong>hors Belgique</strong>) et à votre pays de résidence.</p>
     </div>
   </section>
 
@@ -145,14 +145,38 @@
         </div>
 
         <div>
-          <label class="block text-sm font-semibold mb-1">Mon parcours <span class="text-red-600">*</span></label>
-          <select name="parcours" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+          <label class="block text-sm font-semibold mb-1">Où vous situez-vous ? <span class="text-red-600">*</span></label>
+          <select name="parcours" id="rejoindreParcours" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
             <option value="">— Choisir —</option>
-            <option value="au_cameroun">Je suis encore au Cameroun (projet d'études)</option>
-            <option value="deja_belgique_etudiant">Je suis déjà étudiant en Belgique</option>
-            <option value="deja_belgique_travailleur">Je suis ancien étudiant / travailleur en Belgique</option>
+            <option value="deja_belgique_etudiant">J’habite en Belgique — étudiant·e</option>
+            <option value="deja_belgique_travailleur">J’habite en Belgique — diplômé·e / professionnel·le</option>
+            <option value="hors_belgique">Je n’habite pas en Belgique (hors Belgique)</option>
             <option value="autre">Autre situation</option>
           </select>
+        </div>
+
+        <div id="rejoindrePaysWrap" class="hidden">
+          <label class="block text-sm font-semibold mb-1">Pays de résidence <span class="text-red-600">*</span></label>
+          <select name="pays_residence" id="rejoindrePaysResidence" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+            <option value="">— Choisir —</option>
+            <option value="CM">Cameroun</option>
+            <option value="BJ">Bénin</option>
+            <option value="SN">Sénégal</option>
+            <option value="CI">Côte d’Ivoire</option>
+            <option value="FR">France</option>
+            <option value="autre">Autre pays</option>
+          </select>
+          <p class="mt-1.5 text-xs text-slate-500">Déclaratif — sert à adapter Mon espace et les ressources proposées.</p>
+        </div>
+
+        <div id="rejoindreServicesCameroun" class="hidden rounded-xl border border-amber-200 bg-amber-50/90 p-4 sm:p-5">
+          <p class="text-xs font-bold uppercase tracking-wider text-amber-900">Ressources pour résidents au Cameroun</p>
+          <p class="mt-1 text-sm text-slate-700">En rejoignant le réseau depuis le Cameroun, vous accédez aussi à nos parcours dédiés :</p>
+          <ul class="mt-3 space-y-2 text-sm text-slate-700">
+            <li><a href="equivalence.html" class="text-brand-blue font-semibold underline">Équivalence FWB</a> et <a href="notre-dossier-fwb.html" class="underline">dossier irréprochable</a></li>
+            <li>Visa, compte bloqué, <a href="assurance-visa.html" class="underline">assurances</a></li>
+            <li><a href="prequalification-dossier.html" class="underline">Pré-qualification</a> et coaching de départ</li>
+          </ul>
         </div>
 
         <div>
@@ -259,9 +283,31 @@
   <script src="assets/js/rejoindre-reseau-auth.js"></script>
   <script src="assets/js/community-stats-public.js?v=20260524public"></script>
   <script>
-    /* Pré-remplissage et personnalisation depuis ?parcours=belgique|cameroun
-       et ?domaine=<code> pour des liens contextualisés depuis communaute.html. */
+    /* Pré-remplissage : ?parcours=belgique|hors-belgique|cameroun (legacy) et ?domaine= */
     (function () {
+      function syncRejoindreLocationUI() {
+        var sel = document.getElementById('rejoindreParcours');
+        var paysWrap = document.getElementById('rejoindrePaysWrap');
+        var paysSel = document.getElementById('rejoindrePaysResidence');
+        var camPanel = document.getElementById('rejoindreServicesCameroun');
+        if (!sel) return;
+        var hors = sel.value === 'hors_belgique' || sel.value === 'au_cameroun';
+        if (paysWrap) paysWrap.classList.toggle('hidden', !hors);
+        if (paysSel) {
+          paysSel.required = hors;
+          if (!hors) paysSel.value = '';
+        }
+        if (camPanel) {
+          camPanel.classList.toggle('hidden', !(hors && paysSel && paysSel.value === 'CM'));
+        }
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        var sel = document.getElementById('rejoindreParcours');
+        var paysSel = document.getElementById('rejoindrePaysResidence');
+        if (sel) sel.addEventListener('change', syncRejoindreLocationUI);
+        if (paysSel) paysSel.addEventListener('change', syncRejoindreLocationUI);
+        syncRejoindreLocationUI();
+      });
       var params = new URLSearchParams(window.location.search);
       if (params.get('vue') === 'communaute') {
         try { sessionStorage.setItem('sa_espace_vue', 'communaute'); } catch (e) {}
@@ -305,15 +351,26 @@
       if (parcours && selParcours) {
         var map = {
           'belgique': 'deja_belgique_etudiant',
-          'cameroun': 'au_cameroun',
-          'ancien': 'deja_belgique_travailleur'
+          'hors-belgique': 'hors_belgique',
+          'cameroun': 'hors_belgique',
+          'ancien': 'deja_belgique_travailleur',
+          'au_cameroun': 'hors_belgique'
         };
-        var val = map[parcours] || parcours;
+        var val = map[parcours] || parcours.replace(/-/g, '_');
         var opt = Array.prototype.find.call(selParcours.options, function (o) { return o.value === val; });
         if (opt) selParcours.value = val;
         if (parcours === 'belgique' && title && intro) {
           title.textContent = 'Adhésion — étudiant déjà en Belgique';
           intro.innerHTML = 'Bienvenue ! Quelques infos pour qu\'on vous mette en relation avec les autres étudiants camerounais de votre université et qu\'on vous invite aux séminaires. <span class="text-red-600">*</span> = obligatoire.';
+        }
+        if ((parcours === 'hors-belgique' || parcours === 'cameroun') && title) {
+          title.textContent = 'Adhésion — hors Belgique';
+        }
+        syncRejoindreLocationUI();
+        if (parcours === 'cameroun') {
+          var paysSel = document.getElementById('rejoindrePaysResidence');
+          if (paysSel) paysSel.value = 'CM';
+          syncRejoindreLocationUI();
         }
       }
       if (domaine && selDomaine) {

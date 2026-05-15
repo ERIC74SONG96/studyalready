@@ -618,7 +618,7 @@ textarea:focus-visible {
   color: #b45309;
 }
 .sa-porte-sub-title {
-  margin-top: 0.35rem;
+  margin-top: 0;
   font-size: 0.95rem;
   font-weight: 700;
   color: #0a2540;

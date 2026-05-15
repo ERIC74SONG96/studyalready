@@ -533,7 +533,7 @@
       professionnels: 'Professionnels',
       juridique: 'Visa / séjour',
       belgique: 'En Belgique',
-      preparation: 'En préparation (Cameroun)'
+      preparation: 'Hors Belgique'
     };
     if (filters.view && filters.view !== 'tous' && labels[filters.view]) {
       chips.push({ key: 'view', label: labels[filters.view] });

@@ -115,7 +115,7 @@
           '</header>' +
           '<div class="sa-community-matrix-subs">' +
             matrixSubCell(st.belgique, 'En Belgique', 'Sur place') +
-            matrixSubCell(st.cameroun, 'Au Cameroun', 'En préparation') +
+            matrixSubCell(st.cameroun, 'Hors Belgique', 'À l’étranger') +
           '</div>' +
         '</article>' +
         '<article class="sa-community-matrix-block sa-community-matrix-block--pros">' +
@@ -125,7 +125,7 @@
           '</header>' +
           '<div class="sa-community-matrix-subs">' +
             matrixSubCell(pr.belgique, 'En Belgique', 'Mentors &amp; diplômés') +
-            matrixSubCell(pr.cameroun, 'Au Cameroun', 'Relais diaspora') +
+            matrixSubCell(pr.cameroun, 'Hors Belgique', 'Relais diaspora') +
           '</div>' +
         '</article>' +
       '</div>' + foot;
