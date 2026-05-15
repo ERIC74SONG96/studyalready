@@ -49,7 +49,8 @@
     debounceTimer: null,
     urlSync: true,
     uiBound: false,
-    proUiBound: false
+    proUiBound: false,
+    communityStats: { total: 0, students: 0, professionals: 0, published_profiles: 0 }
   };
 
   function colorFor(univ) {
@@ -243,7 +244,7 @@
     }
     saveFollowsLocal();
     updateFollowCountEl();
-    updateStats(state.membres);
+    updateStats(state.communityStats);
     syncFollowButtons();
     if (sb) {
       if (following) {
@@ -906,23 +907,24 @@
     });
   }
 
-  function updateStats(membres) {
+  function updateStats(communityStats) {
     var el = document.getElementById('annuaireStats');
     if (!el) return;
-    var pros = 0;
-    var etu = 0;
-    var i;
-    for (i = 0; i < membres.length; i++) {
-      if (isExpert(membres[i])) pros++;
-      else etu++;
-    }
+    var s = communityStats || {};
+    var total = Number(s.total) || 0;
+    var etu = Number(s.students) || 0;
+    var pros = Number(s.professionals) || 0;
+    var published = Number(s.published_profiles) || 0;
+    var sub = published > 0 && published < total
+      ? '<p class="mt-2 text-[10px] text-slate-400 leading-snug">' + published.toLocaleString('fr-BE') + ' fiche' + (published > 1 ? 's' : '') + ' visible' + (published > 1 ? 's' : '') + ' dans l’annuaire</p>'
+      : '';
     el.innerHTML =
       '<div class="annuaire-stats-grid">' +
-        '<div class="annuaire-stat-card"><strong>' + membres.length.toLocaleString('fr-BE') + '</strong><span>Profils</span></div>' +
+        '<div class="annuaire-stat-card"><strong>' + total.toLocaleString('fr-BE') + '</strong><span>Membres</span></div>' +
         '<div class="annuaire-stat-card"><strong>' + etu.toLocaleString('fr-BE') + '</strong><span>Étudiants</span></div>' +
         '<div class="annuaire-stat-card"><strong>' + pros.toLocaleString('fr-BE') + '</strong><span>Pros</span></div>' +
         '<div class="annuaire-stat-card"><strong>' + state.followSet.size + '</strong><span>Abonnements</span></div>' +
-      '</div>';
+      '</div>' + sub;
   }
 
   function renderSuggestList(membres) {
@@ -1012,21 +1014,25 @@
     }).then(function (res) {
       if (res.error) {
         console.warn('StudyAlready annuaire Supabase:', res.error.message);
-        return { list: [], denied: false, viewerHasProfile: false };
+        return { list: [], denied: false, viewerHasProfile: false, communityStats: { total: 0, students: 0, professionals: 0, published_profiles: 0 } };
       }
       var raw = res.data;
       var denied = false;
       var viewerHasProfile = false;
+      var communityStats = { total: 0, students: 0, professionals: 0, published_profiles: 0 };
       if (raw && typeof raw === 'object' && !Array.isArray(raw) && Number(raw.schema_version) === 2) {
         denied = !!raw.denied;
         viewerHasProfile = !!raw.viewer_has_profile;
+        if (raw.community_stats && typeof raw.community_stats === 'object') {
+          communityStats = raw.community_stats;
+        }
         raw = raw.profiles;
       }
       var arr = parseProfilesPayload(raw);
-      return { list: arr.map(normalizeMember), denied: denied, viewerHasProfile: viewerHasProfile };
+      return { list: arr.map(normalizeMember), denied: denied, viewerHasProfile: viewerHasProfile, communityStats: communityStats };
     }).catch(function (e) {
       console.warn('StudyAlready annuaire Supabase:', e);
-      return { list: [], denied: false, viewerHasProfile: false };
+      return { list: [], denied: false, viewerHasProfile: false, communityStats: { total: 0, students: 0, professionals: 0, published_profiles: 0 } };
     });
   }
 
@@ -1192,7 +1198,7 @@
         return settled[i] && settled[i].status === 'fulfilled' ? settled[i].value : fallback;
       }
       var data = val(0, { membres: [] }) || {};
-      var remotePack = val(1, { list: [], denied: false, viewerHasProfile: false }) || { list: [], denied: false, viewerHasProfile: false };
+      var remotePack = val(1, { list: [], denied: false, viewerHasProfile: false, communityStats: { total: 0, students: 0, professionals: 0, published_profiles: 0 } }) || { list: [], denied: false, viewerHasProfile: false, communityStats: { total: 0, students: 0, professionals: 0, published_profiles: 0 } };
       var eventsRaw = val(3, []);
       var eventsList = Array.isArray(eventsRaw) ? eventsRaw : [];
       var remote = remotePack.list || [];
@@ -1209,6 +1215,7 @@
       if (gateEl) gateEl.classList.add('hidden');
 
       updateProfileCta(!!remotePack.viewerHasProfile, true);
+      state.communityStats = remotePack.communityStats || state.communityStats;
 
       var demos = ((data && data.membres) || []).map(normalizeMember);
       state.membres = sb
@@ -1253,7 +1260,7 @@
         }
         buildMembersIndex();
         applyViewFromUrl();
-        updateStats(state.membres);
+        updateStats(state.communityStats);
         updateFollowCountEl();
         renderDomainBreakdown();
         renderRefineCounts();
