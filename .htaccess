@@ -3,6 +3,7 @@
 
 # ============== ENCODAGE ==============
 AddDefaultCharset UTF-8
+AddType application/manifest+json .webmanifest
 
 # ============== FORCER HTTPS (à activer après installation du certificat SSL) ==============
 # RewriteEngine On
@@ -23,7 +24,15 @@ DirectoryIndex index.html index.htm
     Header set X-Frame-Options "SAMEORIGIN"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://wa.me mailto:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://esm.sh https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.microlink.io; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
 </IfModule>
+
+<Files "sw.js">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "public, max-age=0, must-revalidate"
+        Header set Service-Worker-Allowed "/"
+    </IfModule>
+</Files>
 
 # ============== CACHE NAVIGATEUR (performance) ==============
 <IfModule mod_expires.c>

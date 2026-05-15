@@ -53,6 +53,20 @@
       <p class="mt-4 text-sm text-slate-200 max-w-2xl" id="dashWelcomeLead">Vous pouvez suivre l'avancement de votre dossier, échanger avec StudyAlready et retrouver vos documents en un seul endroit.</p>
     </section>
 
+    <section class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-brand-blue">Sécurité du compte</p>
+          <h2 class="mt-1 font-display text-lg font-bold text-brand-dark">Double authentification</h2>
+          <p class="mt-1 text-sm text-slate-600">Protégez l'accès à vos documents et messages sensibles avec une application d'authentification (Google Authenticator, Microsoft Authenticator, 1Password...).</p>
+        </div>
+        <span id="mfaBadge" class="hidden shrink-0 rounded-full px-3 py-1 text-xs font-bold"></span>
+      </div>
+      <div id="mfaBlock" class="mt-4 rounded-xl border border-slate-100 bg-slate-50 p-4 text-sm text-slate-600">
+        Vérification de la sécurité du compte...
+      </div>
+    </section>
+
     <section id="dashParcoursHub" class="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
       <p class="text-xs font-bold uppercase tracking-wider text-brand-blue">Votre parcours dans le réseau</p>
       <p class="mt-1 text-sm text-slate-600">Même communauté pour tous — contenus et raccourcis adaptés à votre situation.</p>
@@ -237,7 +251,7 @@
 
   <script src="/assets/js/config.js?v=20260513espace"></script>
   <script type="module" src="/assets/js/espace-etudiant.mjs?v=20260512vendor"></script>
-  <script type="module" src="/assets/js/espace-dashboard.mjs?v=20260525parcours"></script>
+  <script type="module" src="/assets/js/espace-dashboard.mjs?v=20260515security"></script>
   <script src="/assets/js/main.js?v=20260513espace"></script>
 </body>
 </html>

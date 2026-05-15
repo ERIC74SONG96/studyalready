@@ -1,14 +1,33 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": false,
+  "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://wa.me mailto:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://esm.sh https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.microlink.io; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" },
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" }
       ]
     },
     {
@@ -146,28 +165,8 @@
       "permanent": true
     },
     {
-      "source": "/blog/equivalence-bts-cameroun-belgique",
-      "destination": "/blog/equivalence-bts-cameroun-belgique.html",
-      "permanent": true
-    },
-    {
-      "source": "/blog/gce-a-level-etudes-fwb",
-      "destination": "/blog/gce-a-level-etudes-fwb.html",
-      "permanent": true
-    },
-    {
-      "source": "/blog/recuperer-originaux-equivalence-fwb",
-      "destination": "/blog/recuperer-originaux-equivalence-fwb.html",
-      "permanent": true
-    },
-    {
-      "source": "/blog/belgique-etudes-job-actualites",
-      "destination": "/blog/belgique-etudes-job-actualites.html",
-      "permanent": true
-    },
-    {
       "source": "/communaute/rejoindre",
-      "destination": "/rejoindre-reseau.html?vue=communaute",
+      "destination": "/rejoindre-reseau?vue=communaute",
       "permanent": false
     },
     {
@@ -175,8 +174,8 @@
       "destination": "/espace-etudiant/?vue=communaute&tab=inscription",
       "permanent": false
     },
-    { "source": "/jobs-etudiants", "destination": "/offres-etudiants.html", "permanent": false },
-    { "source": "/bourses", "destination": "/blog/index.html#bourses", "permanent": false },
+    { "source": "/jobs-etudiants", "destination": "/offres-etudiants", "permanent": false },
+    { "source": "/bourses", "destination": "/blog#bourses", "permanent": false },
     { "source": "/contact", "destination": "/#contact", "permanent": false },
     { "source": "/equivalence-fwb", "destination": "/equivalence", "permanent": true },
     {

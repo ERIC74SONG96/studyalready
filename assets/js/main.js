@@ -44,6 +44,31 @@
   } catch (e) {}
 })();
 
+/* PWA : ajoute le manifest et installe le service worker quand le contexte est sûr. */
+(function setupPwa() {
+  try {
+    if (!document.querySelector('link[rel="manifest"]')) {
+      var manifest = document.createElement('link');
+      manifest.rel = 'manifest';
+      manifest.href = '/manifest.webmanifest';
+      document.head.appendChild(manifest);
+    }
+    if (!document.querySelector('meta[name="theme-color"]')) {
+      var theme = document.createElement('meta');
+      theme.name = 'theme-color';
+      theme.content = '#0a2540';
+      document.head.appendChild(theme);
+    }
+    if (!('serviceWorker' in navigator)) return;
+    var host = window.location.hostname;
+    var secure = window.location.protocol === 'https:' || host === 'localhost' || host === '127.0.0.1';
+    if (!secure) return;
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () {});
+    });
+  } catch (e) {}
+})();
+
 /* Charge dynamiquement les scripts globaux (cookies RGPD, liens sociaux footer) */
 (function loadGlobalScripts() {
   if (window.studyalreadyGlobalLoaded) return;

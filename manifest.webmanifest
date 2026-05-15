@@ -1,0 +1,53 @@
+{
+  "name": "StudyAlready - Accompagnement etudes Belgique",
+  "short_name": "StudyAlready",
+  "description": "Suivi de dossier, guides et espace personnel pour les etudiants qui preparent leurs etudes en Belgique.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "lang": "fr-BE",
+  "dir": "ltr",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait-primary",
+  "background_color": "#0a2540",
+  "theme_color": "#0a2540",
+  "categories": ["education", "productivity", "travel"],
+  "icons": [
+    {
+      "src": "/assets/img/logo-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/img/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mon espace",
+      "short_name": "Espace",
+      "description": "Ouvrir le tableau de bord personnel",
+      "url": "/espace-etudiant/",
+      "icons": [{ "src": "/assets/img/logo-icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Pre-qualification dossier",
+      "short_name": "Dossier",
+      "description": "Remplir le formulaire de pre-qualification",
+      "url": "/prequalification-dossier.html",
+      "icons": [{ "src": "/assets/img/logo-icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Contact StudyAlready",
+      "short_name": "Contact",
+      "description": "Contacter StudyAlready",
+      "url": "/#contact",
+      "icons": [{ "src": "/assets/img/logo-icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}

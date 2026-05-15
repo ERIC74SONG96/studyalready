@@ -213,6 +213,7 @@ function applyPersonaDashboardUi(persona) {
 let currentUser = null;
 let currentDossier = null;
 let dashboardPersona = 'cameroun';
+let uploadDownloadHandlerBound = false;
 
 async function boot() {
   const banner = $('espaceBanner');
@@ -256,17 +257,237 @@ async function boot() {
   /* Déconnexion : gérée uniquement par espace-etudiant.mjs (évite deux
      instances Supabase + double signOut en parallèle). */
 
-  /* Charge en parallèle les 4 blocs principaux. */
+  const mfaState = await loadMfaStatus();
+
+  /* Charge en parallèle les 4 blocs principaux. Les documents exigent l'AAL2 si la 2FA est activée. */
   await Promise.all([
     loadDossier(),
     loadSubmissions(),
     loadMessages(),
-    loadDocuments(),
+    mfaState.needsChallenge ? renderDocumentsMfaLocked() : loadDocuments(),
   ]);
 
   bindMessageForm();
   bindUploadForm();
   bindPseudoForm();
+}
+
+/* ---------- DOUBLE AUTHENTIFICATION (TOTP) ---------- */
+
+function setMfaBadge(label, cls) {
+  const badge = $('mfaBadge');
+  if (!badge) return;
+  badge.className = 'shrink-0 rounded-full px-3 py-1 text-xs font-bold ' + cls;
+  badge.textContent = label;
+  badge.classList.remove('hidden');
+}
+
+async function getMfaAal() {
+  try {
+    if (!sb?.auth?.mfa?.getAuthenticatorAssuranceLevel) return { currentLevel: 'aal1', nextLevel: 'aal1' };
+    const { data } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+    return data || { currentLevel: 'aal1', nextLevel: 'aal1' };
+  } catch (_e) {
+    return { currentLevel: 'aal1', nextLevel: 'aal1' };
+  }
+}
+
+async function verifyMfaFactor(factorId, code) {
+  if (sb.auth.mfa.challengeAndVerify) {
+    return sb.auth.mfa.challengeAndVerify({ factorId, code });
+  }
+  const challenge = await sb.auth.mfa.challenge({ factorId });
+  if (challenge.error) return challenge;
+  return sb.auth.mfa.verify({ factorId, challengeId: challenge.data.id, code });
+}
+
+async function loadMfaStatus() {
+  const block = $('mfaBlock');
+  if (!block) return { needsChallenge: false };
+
+  if (!sb?.auth?.mfa) {
+    setMfaBadge('Indisponible', 'bg-amber-100 text-amber-800');
+    block.innerHTML = 'La double authentification Supabase n’est pas disponible sur ce projet ou cette version du client.';
+    return { needsChallenge: false };
+  }
+
+  const { data, error } = await sb.auth.mfa.listFactors();
+  if (error) {
+    setMfaBadge('À vérifier', 'bg-amber-100 text-amber-800');
+    block.innerHTML = 'Impossible de lire l’état 2FA : ' + escapeHtml(error.message || 'erreur inconnue') + '.';
+    return { needsChallenge: false };
+  }
+
+  const totp = (data && data.totp) || [];
+  const verified = totp.find((f) => f.status === 'verified');
+  if (verified) {
+    const aal = await getMfaAal();
+    const needsChallenge = aal.currentLevel !== 'aal2';
+    renderMfaVerified(verified, needsChallenge);
+    return { needsChallenge };
+  }
+
+  const pending = totp.find((f) => f.status === 'unverified');
+  renderMfaStart(pending);
+  return { needsChallenge: false };
+}
+
+function renderMfaStart(pendingFactor) {
+  const block = $('mfaBlock');
+  if (!block) return;
+  setMfaBadge('Non activée', 'bg-slate-100 text-slate-700');
+  block.innerHTML = `
+    <p>Ajoutez un second facteur pour limiter le risque d'accès non autorisé à vos originaux, documents officiels et messages.</p>
+    ${pendingFactor ? '<p class="mt-2 text-amber-700">Une activation 2FA est en attente. Vous pouvez recommencer si le QR code a expiré.</p>' : ''}
+    <button type="button" id="mfaEnrollBtn" class="mt-3 rounded-lg bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:bg-brand-blue">Activer la 2FA</button>
+    <p id="mfaStatus" class="mt-2 hidden text-xs"></p>
+  `;
+  const btn = $('mfaEnrollBtn');
+  const status = $('mfaStatus');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    if (status) {
+      status.textContent = 'Génération du QR code...';
+      status.className = 'mt-2 text-xs text-slate-500';
+      status.classList.remove('hidden');
+    }
+    const { data, error } = await sb.auth.mfa.enroll({
+      factorType: 'totp',
+      friendlyName: 'StudyAlready'
+    });
+    btn.disabled = false;
+    if (error) {
+      if (status) {
+        status.textContent = error.message || 'Activation impossible.';
+        status.className = 'mt-2 text-xs text-red-600';
+      }
+      return;
+    }
+    renderMfaEnrollment(data);
+  });
+}
+
+function renderMfaEnrollment(enrollment) {
+  const block = $('mfaBlock');
+  if (!block || !enrollment) return;
+  const factorId = enrollment.id;
+  const qr = enrollment.totp && enrollment.totp.qr_code ? String(enrollment.totp.qr_code) : '';
+  const secret = enrollment.totp && enrollment.totp.secret ? String(enrollment.totp.secret) : '';
+  setMfaBadge('À confirmer', 'bg-amber-100 text-amber-800');
+  block.innerHTML = `
+    <div class="grid gap-4 sm:grid-cols-[160px,1fr] sm:items-start">
+      <div class="rounded-xl border border-slate-200 bg-white p-3 text-center">
+        ${qr ? `<img src="${escapeHtml(qr)}" alt="QR code 2FA StudyAlready" class="mx-auto h-32 w-32" />` : '<p class="text-xs text-slate-500">QR code indisponible.</p>'}
+      </div>
+      <div>
+        <p class="font-semibold text-brand-dark">Scannez ce QR code avec votre application d'authentification.</p>
+        ${secret ? `<p class="mt-2 text-xs text-slate-500">Clé manuelle : <code class="rounded bg-white px-1 py-0.5">${escapeHtml(secret)}</code></p>` : ''}
+        <form id="mfaVerifyForm" class="mt-3 flex flex-col gap-2 sm:flex-row">
+          <input id="mfaVerifyCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required placeholder="Code à 6 chiffres" class="rounded-lg border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+          <button type="submit" class="rounded-lg bg-brand-gold px-4 py-2 text-sm font-bold text-brand-dark hover:bg-yellow-400">Confirmer</button>
+        </form>
+        <p id="mfaVerifyStatus" class="mt-2 hidden text-xs"></p>
+      </div>
+    </div>
+  `;
+  bindMfaVerifyForm(factorId, false);
+}
+
+function renderMfaVerified(factor, needsChallenge) {
+  const block = $('mfaBlock');
+  if (!block) return;
+  setMfaBadge(needsChallenge ? 'Code requis' : 'Activée', needsChallenge ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800');
+  block.innerHTML = needsChallenge ? `
+    <p class="font-semibold text-brand-dark">2FA activée. Confirmez votre code pour accéder aux documents sensibles pendant cette session.</p>
+    <form id="mfaVerifyForm" class="mt-3 flex flex-col gap-2 sm:flex-row">
+      <input id="mfaVerifyCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required placeholder="Code à 6 chiffres" class="rounded-lg border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+      <button type="submit" class="rounded-lg bg-brand-dark px-4 py-2 text-sm font-bold text-white hover:bg-brand-blue">Valider ma session</button>
+    </form>
+    <p id="mfaVerifyStatus" class="mt-2 hidden text-xs"></p>
+  ` : `
+    <p class="font-semibold text-emerald-800">Double authentification active.</p>
+    <p class="mt-1 text-slate-600">Votre session a le niveau de sécurité renforcé pour consulter les documents.</p>
+    <button type="button" id="mfaRemoveBtn" class="mt-3 rounded-lg border border-red-200 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-50">Désactiver la 2FA</button>
+    <p id="mfaVerifyStatus" class="mt-2 hidden text-xs"></p>
+  `;
+  if (needsChallenge) bindMfaVerifyForm(factor.id, true);
+  const removeBtn = $('mfaRemoveBtn');
+  if (removeBtn) {
+    removeBtn.addEventListener('click', async () => {
+      if (!window.confirm('Désactiver la double authentification sur ce compte ?')) return;
+      removeBtn.disabled = true;
+      const status = $('mfaVerifyStatus');
+      const { error } = await sb.auth.mfa.unenroll({ factorId: factor.id });
+      removeBtn.disabled = false;
+      if (error) {
+        if (status) {
+          status.textContent = error.message || 'Désactivation impossible.';
+          status.className = 'mt-2 text-xs text-red-600';
+          status.classList.remove('hidden');
+        }
+        return;
+      }
+      await loadMfaStatus();
+      await loadDocuments();
+      bindUploadForm();
+    });
+  }
+}
+
+function bindMfaVerifyForm(factorId, reloadDocuments) {
+  const form = $('mfaVerifyForm');
+  const code = $('mfaVerifyCode');
+  const status = $('mfaVerifyStatus');
+  if (!form || !code) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const value = String(code.value || '').replace(/\s+/g, '');
+    if (!/^[0-9]{6}$/.test(value)) {
+      if (status) {
+        status.textContent = 'Entrez un code à 6 chiffres.';
+        status.className = 'mt-2 text-xs text-red-600';
+        status.classList.remove('hidden');
+      }
+      return;
+    }
+    const btn = form.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = true;
+    if (status) {
+      status.textContent = 'Vérification...';
+      status.className = 'mt-2 text-xs text-slate-500';
+      status.classList.remove('hidden');
+    }
+    const { error } = await verifyMfaFactor(factorId, value);
+    if (btn) btn.disabled = false;
+    if (error) {
+      if (status) {
+        status.textContent = error.message || 'Code invalide.';
+        status.className = 'mt-2 text-xs text-red-600';
+      }
+      return;
+    }
+    if (status) {
+      status.textContent = '2FA validée.';
+      status.className = 'mt-2 text-xs text-green-600';
+    }
+    await loadMfaStatus();
+    if (reloadDocuments) {
+      await loadDocuments();
+      bindUploadForm();
+    }
+  });
+}
+
+async function renderDocumentsMfaLocked() {
+  const wrap = $('documentsBlock');
+  if (!wrap) return;
+  wrap.innerHTML = `
+    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900">
+      <p class="font-semibold">Documents protégés par la double authentification.</p>
+      <p class="mt-1">Validez votre code 2FA dans le bloc « Sécurité du compte » pour consulter ou téléverser vos documents pendant cette session.</p>
+    </div>
+  `;
 }
 
 /* ---------- DOSSIER ET ÉTAPES ---------- */
@@ -627,21 +848,24 @@ function renderDoc(d) {
 
 function bindUploadForm() {
   /* Délégation : récupération des liens téléchargement à la volée. */
-  document.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.js-doc-download');
-    if (!btn) return;
-    e.preventDefault();
-    const path = btn.dataset.docPath;
-    if (!path) return;
-    btn.disabled = true; btn.textContent = '…';
-    const { data, error } = await sb.storage.from('dossier-documents').createSignedUrl(path, 60);
-    btn.disabled = false; btn.textContent = 'Télécharger';
-    if (error || !data) {
-      alert('Impossible d\'ouvrir ce document : ' + (error ? error.message : 'erreur inconnue'));
-      return;
-    }
-    window.open(data.signedUrl, '_blank', 'noopener');
-  });
+  if (!uploadDownloadHandlerBound) {
+    uploadDownloadHandlerBound = true;
+    document.addEventListener('click', async (e) => {
+      const btn = e.target.closest('.js-doc-download');
+      if (!btn) return;
+      e.preventDefault();
+      const path = btn.dataset.docPath;
+      if (!path) return;
+      btn.disabled = true; btn.textContent = '…';
+      const { data, error } = await sb.storage.from('dossier-documents').createSignedUrl(path, 60);
+      btn.disabled = false; btn.textContent = 'Télécharger';
+      if (error || !data) {
+        alert('Impossible d\'ouvrir ce document : ' + (error ? error.message : 'erreur inconnue'));
+        return;
+      }
+      window.open(data.signedUrl, '_blank', 'noopener');
+    });
+  }
 
   const form = $('uploadForm');
   if (!form) return;
