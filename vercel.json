@@ -161,12 +161,6 @@
     }
   ],
   "redirects": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "studyalready.com" }],
-      "destination": "https://www.studyalready.com/:path*",
-      "permanent": true
-    },
     { "source": "/accelerateur-job.html", "destination": "/accelerateur-job", "permanent": true },
     { "source": "/admin.html", "destination": "/admin", "permanent": true },
     { "source": "/admin-login.html", "destination": "/admin-login", "permanent": true },
