@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/copy-astro-public.mjs",
+    "build": "astro build && node scripts/copy-astro-public.mjs && node scripts/generate-og-images.mjs",
     "preview": "astro preview",
     "check": "node scripts/validate-astro-build.mjs"
   },

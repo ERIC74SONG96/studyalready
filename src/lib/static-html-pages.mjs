@@ -1,8 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const ROOT_DIR = path.resolve(fileURLToPath(new URL('../..', import.meta.url)), '..');
+const ROOT_DIR = process.cwd();
 const SKIP_DIRS = new Set([
   '.astro',
   '.git',
@@ -92,6 +91,162 @@ function cleanSiteUrl(url) {
   });
 }
 
+function routeFromSourcePath(sourcePath) {
+  if (sourcePath === 'index.html') return '/';
+  return '/' + sourcePath.replace(/\/index\.html$/, '').replace(/\.html$/, '');
+}
+
+function ogSlugFromSourcePath(sourcePath) {
+  const route = routeFromSourcePath(sourcePath);
+  return route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '--');
+}
+
+function replaceSocialImage(html, sourcePath) {
+  const slug = ogSlugFromSourcePath(sourcePath);
+  const url = `https://www.studyalready.com/assets/img/og/${slug}.svg`;
+  return html
+    .replace(/(<meta\s+property=["']og:image["']\s+content=["'])([^"']+)(["'][^>]*>)/i, `$1${url}$3`)
+    .replace(/(<meta\s+name=["']twitter:image["']\s+content=["'])([^"']+)(["'][^>]*>)/i, `$1${url}$3`)
+    .replace(/https:\/\/www\.studyalready\.com\/assets\/img\/og-cover\.svg/g, url);
+}
+
+function addPreloads(html) {
+  if (html.includes('rel="preload" href="/assets/css/style.css"')) return html;
+  return html.replace('</head>', '  <link rel="preload" href="/assets/css/style.css" as="style" />\n</head>');
+}
+
+function addImageDefaults(html) {
+  return html.replace(/<img\b([^>]*)>/gi, (tag, attrs) => {
+    let next = attrs;
+    if (!/\bloading=/i.test(next)) next += ' loading="lazy"';
+    if (!/\bdecoding=/i.test(next)) next += ' decoding="async"';
+    return `<img${next}>`;
+  });
+}
+
+function exposeBlogArticleContent(html, sourcePath) {
+  if (!sourcePath.startsWith('blog/')) return html;
+  return html
+    .replace(/(<div\b[^>]*id=["']blogArticleGate["'][^>]*class=["'])([^"']*)(["'][^>]*>)/i, (_m, start, cls, end) => {
+      const classes = cls.split(/\s+/).filter(Boolean);
+      if (!classes.includes('hidden')) classes.push('hidden');
+      return start + classes.join(' ') + end;
+    })
+    .replace(/(<div\b[^>]*id=["']blogArticleFull["'][^>]*class=["'])([^"']*)(["'][^>]*>)/i, (_m, start, cls, end) => {
+      const classes = cls.split(/\s+/).filter((c) => c && c !== 'hidden');
+      return start + classes.join(' ') + end;
+    });
+}
+
+function structuredScript(data) {
+  return `\n  <script type="application/ld+json">\n${JSON.stringify(data, null, 2)}\n  </script>`;
+}
+
+function injectStructuredData(html, sourcePath) {
+  const route = routeFromSourcePath(sourcePath);
+  if (route === '/') {
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'StudyAlready est-il un service officiel de la Fédération Wallonie-Bruxelles ?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Non. StudyAlready est un accompagnement indépendant : nous préparons et suivons les dossiers, mais les décisions appartiennent aux autorités et établissements compétents.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Quels pays sont accompagnés ?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Le service est ouvert aux étudiants internationaux, avec une expertise forte Cameroun et Afrique de l’Ouest, pour un projet d’études en Belgique francophone.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Les tarifs sont-ils affichés ?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Oui. La page Tarifs et packs présente les formules principales et les montants indicatifs avant devis personnalisé.'
+          }
+        }
+      ]
+    };
+    const localBusiness = {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      name: 'StudyAlready',
+      url: 'https://www.studyalready.com',
+      image: 'https://www.studyalready.com/assets/img/og/home.svg',
+      email: 'contact@studyalready.com',
+      telephone: '+32465339448',
+      areaServed: ['BE', 'CM', 'SN', 'CI', 'BJ'],
+      priceRange: '€€',
+      sameAs: [
+        'https://www.facebook.com/profile.php?id=61589453766633',
+        'https://www.instagram.com/studyalready/'
+      ]
+    };
+    return html.replace('</head>', `${structuredScript(localBusiness)}${structuredScript(faq)}\n</head>`);
+  }
+
+  if (route === '/equivalence') {
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Qui décide de l’équivalence FWB ?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'La décision revient exclusivement au service compétent de la Fédération Wallonie-Bruxelles. StudyAlready aide à préparer et suivre le dossier.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'StudyAlready garantit-il une équivalence ?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Non. L’accompagnement vise à améliorer la clarté et la complétude du dossier, sans garantir la décision finale.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Le suivi inclut-il les originaux ?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Oui, le suivi met l’accent sur la récupération sécurisée des originaux et de la décision lorsque cela fait partie du mandat convenu.'
+          }
+        }
+      ]
+    };
+    return html.replace('</head>', `${structuredScript(faq)}\n</head>`);
+  }
+
+  if (route === '/tarifs-packs') {
+    const offerCatalog = {
+      '@context': 'https://schema.org',
+      '@type': 'OfferCatalog',
+      name: 'Tarifs et packs StudyAlready',
+      url: 'https://www.studyalready.com/tarifs-packs',
+      itemListElement: [
+        { '@type': 'Offer', name: 'Pack équivalence', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
+        { '@type': 'Offer', name: 'Pack équivalence + aide admission', price: '200', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
+        { '@type': 'Offer', name: 'Pack admission seul', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
+        { '@type': 'Offer', name: 'Pack entretien + préparation', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
+        { '@type': 'Offer', name: 'Pack préparation visa', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' }
+      ]
+    };
+    return html.replace('</head>', `${structuredScript(offerCatalog)}\n</head>`);
+  }
+
+  return html;
+}
+
 function cleanInternalHtmlUrl(rawUrl, sourcePath) {
   const url = String(rawUrl || '').trim();
   if (!url || url.startsWith('#')) return rawUrl;
@@ -125,5 +280,18 @@ function normalizeInternalLinks(html, sourcePath) {
 export function readStaticHtmlPage(sourcePath) {
   const abs = path.join(ROOT_DIR, sourcePath);
   const html = fs.readFileSync(abs, 'utf8');
-  return cleanSiteUrl(normalizeInternalLinks(html, sourcePath));
+  return addImageDefaults(
+    addPreloads(
+      injectStructuredData(
+        exposeBlogArticleContent(
+          replaceSocialImage(
+            cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
+            sourcePath
+          ),
+          sourcePath
+        ),
+        sourcePath
+      )
+    )
+  );
 }

@@ -15,6 +15,9 @@ const required = [
   'assets/css/style.css',
   'assets/js/main.js',
   'manifest.webmanifest',
+  'assets/img/og/home.svg',
+  'assets/img/og/tarifs-packs.svg',
+  'assets/img/og/blog--equivalence-bts-cameroun-belgique.svg',
   'sw.js',
   'offline.html',
   'robots.txt',
@@ -49,6 +52,30 @@ if (/rel="canonical" href="https:\/\/www\.studyalready\.com\/[^"]+\/"/.test(equi
 const blogArticle = fs.readFileSync(path.join(DIST_DIR, 'blog/equivalence-bts-cameroun-belgique/index.html'), 'utf8');
 if (/href=["']\/?gce-a-level-etudes-fwb/.test(blogArticle)) {
   console.error('Les liens relatifs de blog ne sont pas préfixés par /blog/.');
+  failed = true;
+}
+if (/id=["']blogArticleFull["'][^>]*class=["'][^"']*\bhidden\b/.test(blogArticle)) {
+  console.error('Le contenu complet du blog reste masqué dans le HTML généré.');
+  failed = true;
+}
+if (!/https:\/\/www\.studyalready\.com\/assets\/img\/og\/blog--equivalence-bts-cameroun-belgique\.svg/.test(blogArticle)) {
+  console.error('L’image Open Graph générée de l’article blog n’est pas référencée.');
+  failed = true;
+}
+if (/assets\/img\/og-cover\.svg/.test(blogArticle)) {
+  console.error('Le JSON-LD de l’article conserve encore l’ancienne image OG générique.');
+  failed = true;
+}
+
+const home = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf8');
+if (!/"@type":"FAQPage"|"@type": "FAQPage"/.test(home) || !/"@type":"LocalBusiness"|"@type": "LocalBusiness"/.test(home)) {
+  console.error('Les données structurées FAQPage / LocalBusiness sont absentes de la page d’accueil.');
+  failed = true;
+}
+
+const pricing = fs.readFileSync(path.join(DIST_DIR, 'tarifs-packs/index.html'), 'utf8');
+if (!/"@type":"OfferCatalog"|"@type": "OfferCatalog"/.test(pricing)) {
+  console.error('Les données structurées OfferCatalog sont absentes de la page tarifs.');
   failed = true;
 }
 
