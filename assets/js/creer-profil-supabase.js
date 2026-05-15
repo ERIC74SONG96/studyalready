@@ -37,7 +37,7 @@
     if (!window.studyalreadySb) {
       showStatus(
         statusEl,
-        '<strong>Connexion au serveur impossible.</strong> Rechargez la page, vérifiez votre réseau ou désactivez temporairement les bloqueurs de publicité pour ce site (le script Supabase doit se charger). Sans cela, l’envoi du formulaire ne peut pas fonctionner.',
+        '<strong>Connexion au serveur impossible.</strong> Rechargez la page, vérifiez votre réseau ou désactivez temporairement les bloqueurs de publicité pour ce site. Sans cela, l’envoi du formulaire ne peut pas fonctionner.',
         'text-red-600'
       );
     }
@@ -50,7 +50,7 @@
       if (!sb) {
         showStatus(
           statusEl,
-          '<strong>Client Supabase indisponible.</strong> Rechargez la page ou essayez un autre navigateur. Si le problème continue, écrivez à <a href="mailto:contact@studyalready.com" class="underline font-semibold">contact@studyalready.com</a>.',
+          '<strong>Service indisponible.</strong> Rechargez la page ou essayez un autre navigateur. Si le problème continue, écrivez à <a href="mailto:contact@studyalready.com" class="underline font-semibold">contact@studyalready.com</a>.',
           'text-red-600'
         );
         return;
@@ -97,7 +97,7 @@
           if (res.error) {
             var msg = res.error.message || 'Erreur serveur';
             if (res.error.code === '42501' || (msg && msg.indexOf('policy') !== -1)) {
-              msg += ' — Avez-vous exécuté le script SQL dans Supabase (voir dossier supabase/migrations) ?';
+              msg = 'Envoi refusé : vérifiez les cases obligatoires (consentements) ou contactez contact@studyalready.com.';
             }
             showStatus(statusEl, escapeHtml(msg), 'text-red-600');
             return;
@@ -113,7 +113,7 @@
           var m = (err && err.message) || String(err);
           showStatus(
             statusEl,
-            escapeHtml('Erreur réseau ou technique : ' + m + '. Réessayez ou contactez contact@studyalready.com.'),
+            escapeHtml('Erreur réseau. Réessayez dans quelques instants ou contactez contact@studyalready.com.'),
             'text-red-600'
           );
         })

@@ -666,7 +666,7 @@ async function initPage() {
       const jl = $('jobsList');
       if (jl) {
         jl.innerHTML =
-          '<p class="text-center text-sm text-slate-600 py-8">Configuration Supabase absente sur cette page. Vérifiez le bandeau jaune ci-dessus ou le chargement de <code class="bg-slate-100 px-1 rounded">/assets/js/config.js</code>.</p>';
+          '<p class="text-center text-sm text-slate-600 py-8">Les annonces ne peuvent pas être chargées pour le moment. Consultez le message ci-dessus ou réessayez plus tard.</p>';
       }
       cachedJobRows = [];
       return;
@@ -751,20 +751,14 @@ async function initPage() {
     const err = $('jobsLoadError');
     if (err) {
       const detail = e && e.message ? e.message : String(e);
-      let text =
-        'Les offres ne peuvent pas être chargées pour le moment (migration Supabase ou droits à vérifier). Détails : ' +
-        detail;
-      if (/source_url|external_image_url|offer_category|does not exist|42703/i.test(detail)) {
-        text +=
-          '\n\n→ Colonnes manquantes : exécutez les migrations SQL du dossier supabase/migrations (014 lien + image, 015 catégories) dans le SQL Editor Supabase, puis actualisez cette page.';
-      }
-      err.textContent = text;
+      err.textContent =
+        'Les offres ne peuvent pas être chargées pour le moment. Réessayez dans quelques instants ou écrivez à contact@studyalready.com.';
       err.classList.remove('hidden');
     }
     const jl = $('jobsList');
     if (jl) {
       jl.innerHTML =
-        '<p class="text-center text-sm text-slate-600 py-8">Impossible d’afficher les annonces pour le moment. Le détail figure au-dessus ; vous pouvez aussi réessayer plus tard ou nous écrire : contact@studyalready.com</p>';
+        '<p class="text-center text-sm text-slate-600 py-8">Impossible d’afficher les annonces pour le moment. Réessayez plus tard ou écrivez à <a href="mailto:contact@studyalready.com" class="underline font-semibold">contact@studyalready.com</a>.</p>';
     }
     cachedJobRows = [];
   }

@@ -255,7 +255,7 @@
             if (emptyP) {
               if (membres.length === 0) {
                 emptyP.textContent =
-                  'Aucun profil public pour le moment. Les fiches apparaissent ici après envoi du formulaire « Créer mon profil » et publication par StudyAlready (consentement du membre).';
+                  'Aucun membre pour le moment. Les fiches apparaissent ici après envoi du formulaire « Créer mon profil », avec le consentement du membre.';
               } else {
                 emptyP.textContent = 'Aucun membre ne correspond à ces filtres pour le moment.';
               }

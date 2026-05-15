@@ -130,9 +130,9 @@
         if (res.error) {
           var msg = res.error.message || 'Erreur d’envoi';
           if (res.error.code === '42P01' || /relation .* does not exist/i.test(msg)) {
-            msg = 'La table « form_submissions » n’existe pas encore dans Supabase. Exécutez le script SQL <code class="text-xs bg-slate-100 px-1 rounded">supabase/migrations/002_form_submissions.sql</code>.';
+            msg = 'Service temporairement indisponible. Réessayez plus tard ou écrivez à contact@studyalready.com.';
           } else if (res.error.code === '42501' || /policy/i.test(msg)) {
-            msg = 'Politique RLS bloquante. Vérifiez les policies de la table form_submissions.';
+            msg = 'Envoi refusé pour des raisons de sécurité. Vérifiez que tous les champs obligatoires sont remplis, ou contactez-nous : contact@studyalready.com.';
           }
           showStatus(statusEl, escapeHtml(msg), 'text-red-600');
           return;
