@@ -706,7 +706,7 @@
           else if (state.view === 'professionnels') fAide.value = 'professionnel';
           else fAide.value = '';
         }
-        if (state.view === 'evenements' && global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
+        if (state.view === 'evenements' && window.StudyAlreadyEvents) window.StudyAlreadyEvents.resetEventPage();
         setActiveNav(state.view);
         render();
       });
@@ -738,7 +738,7 @@
     ['filterEventType', 'filterEventFormat', 'filterEventCity', 'filterEventPeriod'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener('change', function () {
-        if (global.StudyAlreadyEvents) global.StudyAlreadyEvents.resetEventPage();
+        if (window.StudyAlreadyEvents) window.StudyAlreadyEvents.resetEventPage();
         state.page = 1;
         render();
       });
@@ -1026,14 +1026,14 @@
 
   function render() {
     if (state.view === 'evenements') {
-      if (global.StudyAlreadyEvents) {
-        if (global.StudyAlreadyEvents.toggleAnnuaireChrome) global.StudyAlreadyEvents.toggleAnnuaireChrome(true);
-        global.StudyAlreadyEvents.renderAnnuaireEventsView();
+      if (window.StudyAlreadyEvents) {
+        if (window.StudyAlreadyEvents.toggleAnnuaireChrome) window.StudyAlreadyEvents.toggleAnnuaireChrome(true);
+        window.StudyAlreadyEvents.renderAnnuaireEventsView();
       }
       return;
     }
-    if (global.StudyAlreadyEvents && global.StudyAlreadyEvents.toggleAnnuaireChrome) {
-      global.StudyAlreadyEvents.toggleAnnuaireChrome(false);
+    if (window.StudyAlreadyEvents && window.StudyAlreadyEvents.toggleAnnuaireChrome) {
+      window.StudyAlreadyEvents.toggleAnnuaireChrome(false);
     }
     var grid = document.getElementById('annuaireGrid');
     var emptyEl = document.getElementById('annuaireEmpty');
@@ -1149,7 +1149,7 @@
       }).catch(function () { return { membres: [] }; }),
       fetchSupabaseProfilesWithTimeout(),
       loadFollows(sb).catch(function () { return null; }),
-      (global.StudyAlreadyEvents ? global.StudyAlreadyEvents.fetchPublishedEvents(sb) : Promise.resolve([]))
+      (window.StudyAlreadyEvents ? window.StudyAlreadyEvents.fetchPublishedEvents(sb) : Promise.resolve([]))
     ]).then(function (settled) {
       function val(i, fallback) {
         return settled[i] && settled[i].status === 'fulfilled' ? settled[i].value : fallback;
@@ -1208,9 +1208,9 @@
       } catch (e) {}
 
       try {
-        if (global.StudyAlreadyEvents) {
-          global.StudyAlreadyEvents.setEvents(eventsList);
-          global.StudyAlreadyEvents.setAuthUserId(state.authUserId);
+        if (window.StudyAlreadyEvents) {
+          window.StudyAlreadyEvents.setEvents(eventsList);
+          window.StudyAlreadyEvents.setAuthUserId(state.authUserId);
         }
         buildMembersIndex();
         applyViewFromUrl();
@@ -1236,7 +1236,7 @@
     });
   }
 
-  global.SAAnnuaireRenderPager = renderPagination;
+  window.SAAnnuaireRenderPager = renderPagination;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
