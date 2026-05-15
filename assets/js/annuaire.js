@@ -280,6 +280,24 @@
     if (filters.universite && m.universite !== filters.universite) return false;
     if (filters.domaine && m.domaine !== filters.domaine) return false;
     if (filters.statut && m.statut !== filters.statut) return false;
+    if (filters.ville && (m.ville || '') !== filters.ville) return false;
+    if (filters.filiere) {
+      var filHay = (m.filiere || '').toLowerCase();
+      if (filHay.indexOf(filters.filiere.toLowerCase()) === -1) return false;
+    }
+    if (filters.tagJuridique && m.tag_juridique !== filters.tagJuridique) return false;
+    if (filters.ouvertures && filters.ouvertures.length) {
+      var ouvM = m.ouvertures || [];
+      var ouvOk = false;
+      var oi;
+      for (oi = 0; oi < filters.ouvertures.length; oi++) {
+        if (ouvM.indexOf(filters.ouvertures[oi]) !== -1) { ouvOk = true; break; }
+      }
+      if (!ouvOk) return false;
+    }
+    if (filters.avecBio && !(m.bio && String(m.bio).trim().length > 15)) return false;
+    if (filters.contactPublic && m.contact_publique !== true) return false;
+    if (filters.avecSpecialites && !(m.specialites && m.specialites.length > 0)) return false;
     if (filters.aide === 'juridique' && !isLegalMember(m)) return false;
     if (filters.aide === 'professionnel' && !isExpert(m)) return false;
     if (filters.q) {
@@ -288,6 +306,109 @@
     }
     return true;
   }
+
+
+  function getCheckedOuvertures() {
+    var boxes = document.querySelectorAll('[data-filter-ouverture]:checked');
+    var out = [];
+    var i;
+    for (i = 0; i < boxes.length; i++) {
+      out.push(boxes[i].value);
+    }
+    return out;
+  }
+
+  function memberHasOuverture(m, key) {
+    return (m.ouvertures || []).indexOf(key) !== -1;
+  }
+
+  function countRefineFilters(filters) {
+    var n = 0;
+    if (filters.universite) n++;
+    if (filters.domaine) n++;
+    if (filters.statut) n++;
+    if (filters.ville) n++;
+    if (filters.filiere) n++;
+    if (filters.tagJuridique) n++;
+    if (filters.avecBio) n++;
+    if (filters.contactPublic) n++;
+    if (filters.avecSpecialites) n++;
+    if (filters.ouvertures && filters.ouvertures.length) n += filters.ouvertures.length;
+    return n;
+  }
+
+  function updateRefineBadge(filters) {
+    var el = document.getElementById('annuaireRefineCount');
+    if (!el) return;
+    var n = countRefineFilters(filters);
+    if (n > 0) {
+      el.textContent = String(n);
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  }
+
+  function renderRefineCounts() {
+    document.querySelectorAll('[data-count-for]').forEach(function (em) {
+      var key = em.getAttribute('data-count-for');
+      var n = 0;
+      var i;
+      for (i = 0; i < state.membres.length; i++) {
+        if (memberHasOuverture(state.membres[i], key)) n++;
+      }
+      em.textContent = n > 0 ? '(' + n + ')' : '';
+      var cb = document.querySelector('[data-filter-ouverture][value="' + key + '"]');
+      if (cb) cb.disabled = n === 0;
+    });
+  }
+
+  function resetRefineForm() {
+    var ids = ['filterUniversite', 'filterDomaine', 'filterStatut', 'filterVille', 'filterTagJuridique'];
+    var i;
+    for (i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el) el.value = '';
+    }
+    var fil = document.getElementById('filterFiliere');
+    if (fil) fil.value = '';
+    ['filterAvecBio', 'filterContactPublic', 'filterAvecSpecialites'].forEach(function (id) {
+      var c = document.getElementById(id);
+      if (c) c.checked = false;
+    });
+    document.querySelectorAll('[data-filter-ouverture]').forEach(function (cb) {
+      cb.checked = false;
+    });
+  }
+
+  function applyRefineFromUrl(sp) {
+    var fVille = document.getElementById('filterVille');
+    var fFil = document.getElementById('filterFiliere');
+    var fTag = document.getElementById('filterTagJuridique');
+    if (sp.get('ville') && fVille) fVille.value = sp.get('ville');
+    if (sp.get('filiere') && fFil) fFil.value = sp.get('filiere');
+    if (sp.get('tag') && fTag) fTag.value = sp.get('tag');
+    if (sp.get('bio') === '1') {
+      var b = document.getElementById('filterAvecBio');
+      if (b) b.checked = true;
+    }
+    if (sp.get('contact') === '1') {
+      var c = document.getElementById('filterContactPublic');
+      if (c) c.checked = true;
+    }
+    if (sp.get('spec') === '1') {
+      var s = document.getElementById('filterAvecSpecialites');
+      if (s) s.checked = true;
+    }
+    var ouv = sp.get('ouverture');
+    if (ouv) {
+      ouv.split(',').forEach(function (key) {
+        var cb = document.querySelector('[data-filter-ouverture][value="' + key.trim() + '"]');
+        if (cb) cb.checked = true;
+      });
+    }
+  }
+
 
   function buildMembersIndex() {
     state.membersById = {};
@@ -408,6 +529,19 @@
     if (filters.universite) chips.push({ key: 'universite', label: filters.universite });
     if (filters.domaine) chips.push({ key: 'domaine', label: filters.domaine });
     if (filters.statut) chips.push({ key: 'statut', label: filters.statut });
+    if (filters.ville) chips.push({ key: 'ville', label: filters.ville });
+    if (filters.filiere) chips.push({ key: 'filiere', label: filters.filiere });
+    if (filters.tagJuridique && TAG_JURIDIQUE_LABELS[filters.tagJuridique]) {
+      chips.push({ key: 'tagJuridique', label: TAG_JURIDIQUE_LABELS[filters.tagJuridique] });
+    }
+    if (filters.ouvertures && filters.ouvertures.length) {
+      filters.ouvertures.forEach(function (ok) {
+        chips.push({ key: 'ouverture:' + ok, label: OUVERTURE_LABELS[ok] || ok });
+      });
+    }
+    if (filters.avecBio) chips.push({ key: 'avecBio', label: 'Avec bio' });
+    if (filters.contactPublic) chips.push({ key: 'contactPublic', label: 'Contact public' });
+    if (filters.avecSpecialites) chips.push({ key: 'avecSpecialites', label: 'Spécialités' });
     if (filters.q) chips.push({ key: 'q', label: '"' + filters.q + '"' });
     if (!chips.length) {
       wrap.classList.add('hidden');
@@ -431,6 +565,17 @@
     else if (key === 'domaine') { var el2 = document.getElementById('filterDomaine'); if (el2) el2.value = ''; }
     else if (key === 'statut') { var el3 = document.getElementById('filterStatut'); if (el3) el3.value = ''; }
     else if (key === 'q') { var el4 = document.getElementById('filterQ'); if (el4) el4.value = ''; }
+    else if (key === 'ville') { var el5 = document.getElementById('filterVille'); if (el5) el5.value = ''; }
+    else if (key === 'filiere') { var el6 = document.getElementById('filterFiliere'); if (el6) el6.value = ''; }
+    else if (key === 'tagJuridique') { var el7 = document.getElementById('filterTagJuridique'); if (el7) el7.value = ''; }
+    else if (key === 'avecBio') { var el8 = document.getElementById('filterAvecBio'); if (el8) el8.checked = false; }
+    else if (key === 'contactPublic') { var el9 = document.getElementById('filterContactPublic'); if (el9) el9.checked = false; }
+    else if (key === 'avecSpecialites') { var el10 = document.getElementById('filterAvecSpecialites'); if (el10) el10.checked = false; }
+    else if (key.indexOf('ouverture:') === 0) {
+      var ov = key.slice(10);
+      var cb = document.querySelector('[data-filter-ouverture][value="' + ov + '"]');
+      if (cb) cb.checked = false;
+    }
     setActiveNav(state.view);
     state.page = 1;
     render();
@@ -444,6 +589,13 @@
     if (filters.domaine) p.set('domaine', filters.domaine);
     if (filters.statut) p.set('statut', filters.statut);
     if (filters.q) p.set('q', filters.q);
+    if (filters.ville) p.set('ville', filters.ville);
+    if (filters.filiere) p.set('filiere', filters.filiere);
+    if (filters.tagJuridique) p.set('tag', filters.tagJuridique);
+    if (filters.ouvertures && filters.ouvertures.length) p.set('ouverture', filters.ouvertures.join(','));
+    if (filters.avecBio) p.set('bio', '1');
+    if (filters.contactPublic) p.set('contact', '1');
+    if (filters.avecSpecialites) p.set('spec', '1');
     if (filters.aide === 'juridique') p.set('aide', 'juridique');
     if (filters.aide === 'professionnel') p.set('aide', 'professionnel');
     var qs = p.toString();
@@ -770,11 +922,24 @@
     var fAide = document.getElementById('filterAide');
     var fQ = document.getElementById('filterQ');
     var fSort = document.getElementById('filterSort');
+    var fVille = document.getElementById('filterVille');
+    var fFil = document.getElementById('filterFiliere');
+    var fTag = document.getElementById('filterTagJuridique');
+    var fBio = document.getElementById('filterAvecBio');
+    var fContact = document.getElementById('filterContactPublic');
+    var fSpec = document.getElementById('filterAvecSpecialites');
     return {
       view: state.view,
       universite: fUniv ? fUniv.value : '',
       domaine: fDom ? fDom.value : '',
       statut: fStatut ? fStatut.value : '',
+      ville: fVille ? fVille.value : '',
+      filiere: fFil ? fFil.value.trim() : '',
+      tagJuridique: fTag ? fTag.value : '',
+      ouvertures: getCheckedOuvertures(),
+      avecBio: !!(fBio && fBio.checked),
+      contactPublic: !!(fContact && fContact.checked),
+      avecSpecialites: !!(fSpec && fSpec.checked),
       aide: fAide ? fAide.value : '',
       q: fQ ? fQ.value.trim() : '',
       sort: fSort ? fSort.value : 'pertinence'
@@ -846,6 +1011,7 @@
     updateSearchClearBtn();
     if (filters.q) saveRecentSearch(filters.q);
     renderRecentSearches();
+    updateRefineBadge(filters);
   }
 
   function applyViewFromUrl() {
@@ -908,9 +1074,19 @@
       var btnReset = document.getElementById('filterReset');
       var noteEl = document.getElementById('annuaireNote');
 
-      fillSelect(fUniv, unique(state.membres.map(function (m) { return m.universite; })).sort(), 'Toutes');
-      fillSelect(fDom, unique(state.membres.map(function (m) { return m.domaine; })).sort(), 'Tous');
-      fillSelect(fStatut, unique(state.membres.map(function (m) { return m.statut; })).sort(), 'Tous');
+      var fVille = document.getElementById('filterVille');
+      var fFil = document.getElementById('filterFiliere');
+      var filiereList = document.getElementById('annuaireFiliereList');
+
+      fillSelect(fUniv, unique(state.membres.map(function (m) { return m.universite; })).sort(), 'Toutes les universités');
+      fillSelect(fDom, unique(state.membres.map(function (m) { return m.domaine; })).sort(), 'Tous les domaines');
+      fillSelect(fStatut, unique(state.membres.map(function (m) { return m.statut; })).sort(), 'Tous les statuts');
+      fillSelect(fVille, unique(state.membres.map(function (m) { return m.ville; })).sort(), 'Toutes les villes');
+      if (filiereList) {
+        filiereList.innerHTML = unique(state.membres.map(function (m) { return m.filiere; })).sort().map(function (f) {
+          return '<option value="' + escapeHTML(f) + '">';
+        }).join('');
+      }
 
       try {
         var sp = new URLSearchParams(window.location.search);
@@ -918,6 +1094,7 @@
         if (sp.get('universite') && fUniv) fUniv.value = sp.get('universite');
         if (sp.get('statut') && fStatut) fStatut.value = sp.get('statut');
         if (sp.get('q') && fQ) fQ.value = sp.get('q');
+        applyRefineFromUrl(sp);
       } catch (e) {}
 
       buildMembersIndex();
@@ -925,6 +1102,7 @@
       updateStats(state.membres);
       updateFollowCountEl();
       renderDomainBreakdown();
+      renderRefineCounts();
       renderSuggestList(state.membres);
       bindProUI();
       renderRecentSearches();
@@ -956,16 +1134,25 @@
         }, DEBOUNCE_MS);
       }
 
-      [fUniv, fDom, fStatut, fSort].forEach(function (el) {
+      var refineEls = [fUniv, fDom, fStatut, fSort, document.getElementById('filterVille'), document.getElementById('filterTagJuridique')];
+      refineEls.forEach(function (el) {
         if (el) el.addEventListener('change', function () { state.page = 1; render(); });
+      });
+      var fFilEl = document.getElementById('filterFiliere');
+      if (fFilEl) {
+        fFilEl.addEventListener('change', function () { state.page = 1; render(); });
+        fFilEl.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') { state.page = 1; render(); }
+        });
+      }
+      document.querySelectorAll('[data-filter-ouverture], #filterAvecBio, #filterContactPublic, #filterAvecSpecialites').forEach(function (el) {
+        el.addEventListener('change', function () { state.page = 1; render(); });
       });
       if (fQ) fQ.addEventListener('input', scheduleRender);
 
       if (btnReset) {
         btnReset.addEventListener('click', function () {
-          if (fUniv) fUniv.value = '';
-          if (fDom) fDom.value = '';
-          if (fStatut) fStatut.value = '';
+          resetRefineForm();
           if (fQ) fQ.value = '';
           var fAide = document.getElementById('filterAide');
           if (fAide) fAide.value = '';

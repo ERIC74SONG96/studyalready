@@ -15,7 +15,7 @@
 
 @media (min-width: 1024px) {
   .annuaire-layout {
-    grid-template-columns: 17rem minmax(0, 1fr) 17rem;
+    grid-template-columns: 19rem minmax(0, 1fr) 17rem;
     align-items: start;
   }
 }
@@ -475,3 +475,122 @@
   from { opacity: 0; transform: translateX(-50%) translateY(8px); }
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
+/* Panneau Affiner */
+.annuaire-refine-panel {
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+}
+
+.annuaire-refine-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: #1e3a8a;
+  color: #fff;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.35rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.annuaire-refine-group {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.annuaire-refine-group:first-of-type {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.annuaire-refine-legend {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.annuaire-refine-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.25rem;
+}
+
+.annuaire-refine-select,
+.annuaire-refine-input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.8rem;
+  background: #fff;
+}
+
+.annuaire-refine-select:focus,
+.annuaire-refine-input:focus {
+  outline: 2px solid #f5b800;
+  outline-offset: 0;
+}
+
+.annuaire-refine-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.annuaire-refine-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.75rem;
+  color: #334155;
+  cursor: pointer;
+  line-height: 1.35;
+}
+
+.annuaire-refine-check input {
+  margin-top: 0.15rem;
+  accent-color: #1e3a8a;
+}
+
+.annuaire-refine-check input:disabled + span {
+  opacity: 0.45;
+}
+
+.annuaire-refine-count {
+  font-style: normal;
+  font-size: 0.65rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.annuaire-refine-actions {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.annuaire-refine-reset {
+  width: 100%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.annuaire-refine-reset:hover {
+  background: #dbeafe;
+}
+
