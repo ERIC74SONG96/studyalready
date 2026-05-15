@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
       formId: 'rapportAdmissionForm',
       statusId: 'rapportAdmissionStatus',
       formType: 'rapport-admission',
-      successMessage: 'Merci ! Votre demande de rapport est bien reçue. Réponse personnalisée sous 48 h.'
+      successMessage: 'Accusé de réception instantané : votre demande de rapport est bien enregistrée. Un conseiller StudyAlready revient vers vous sous 48 h.'
     });
     SA.bind({
       formId: 'chasseurBilletForm',
