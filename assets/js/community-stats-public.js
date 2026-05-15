@@ -61,7 +61,7 @@
       '<div class="sa-community-stats-grid" role="group" aria-label="Membres de la communauté">' +
         '<div class="sa-community-stats-card"><strong>' + total + '</strong><span>Membres</span></div>' +
         '<div class="sa-community-stats-card"><strong>' + students + '</strong><span>Étudiants</span></div>' +
-        '<div class="sa-community-stats-card"><strong>' + pros + '</strong><span>Pros &amp; mentors</span></div>' +
+        '<div class="sa-community-stats-card"><strong>' + pros + '</strong><span>Professionnels</span></div>' +
       '</div>' + foot;
   }
 

@@ -279,6 +279,15 @@ textarea:focus-visible {
 .sa-community-stats--hero .sa-community-stats-lead {
   color: #f5b800;
 }
+.sa-community-stats--hero.mx-0 .sa-community-stats-lead,
+.sa-community-stats--hero.mx-0 .sa-community-stats-foot {
+  text-align: left;
+}
+.sa-community-stats--hero.mx-0 .sa-community-stats-grid {
+  margin-left: 0;
+  margin-right: auto;
+  max-width: 28rem;
+}
 .sa-community-stats--light .sa-community-stats-lead {
   color: #1e3a8a;
 }
