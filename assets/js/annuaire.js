@@ -969,27 +969,48 @@
     return [];
   }
 
+  function updateProfileCta(hasOwnProfile) {
+    var cta = document.getElementById('annuaireProfilCta');
+    var hint = document.getElementById('annuaireOwnProfileHint');
+    if (!cta) return;
+    if (hasOwnProfile) {
+      cta.textContent = 'Ma fiche annuaire';
+      cta.href = 'espace-etudiant/dashboard.html';
+      cta.classList.remove('bg-brand-gold', 'hover:bg-yellow-400', 'text-brand-dark');
+      cta.classList.add('bg-white', 'border-2', 'border-brand-dark', 'text-brand-dark', 'hover:bg-brand-cream');
+      if (hint) hint.classList.remove('hidden');
+    } else {
+      cta.textContent = '+ Créer mon profil';
+      cta.href = 'creer-profil.html';
+      cta.classList.add('bg-brand-gold', 'hover:bg-yellow-400', 'text-brand-dark');
+      cta.classList.remove('bg-white', 'border-2', 'border-brand-dark', 'hover:bg-brand-cream');
+      if (hint) hint.classList.add('hidden');
+    }
+  }
+
   function fetchSupabaseProfiles() {
     var sb = window.studyalreadySb;
-    if (!sb) return Promise.resolve({ list: [], denied: false });
+    if (!sb) return Promise.resolve({ list: [], denied: false, viewerHasProfile: false });
     return sb.auth.getSession().then(function () {
       return sb.rpc('get_annuaire_profiles');
     }).then(function (res) {
       if (res.error) {
         console.warn('StudyAlready annuaire Supabase:', res.error.message);
-        return { list: [], denied: false };
+        return { list: [], denied: false, viewerHasProfile: false };
       }
       var raw = res.data;
       var denied = false;
+      var viewerHasProfile = false;
       if (raw && typeof raw === 'object' && !Array.isArray(raw) && Number(raw.schema_version) === 2) {
         denied = !!raw.denied;
+        viewerHasProfile = !!raw.viewer_has_profile;
         raw = raw.profiles;
       }
       var arr = parseProfilesPayload(raw);
-      return { list: arr.map(normalizeMember), denied: denied };
+      return { list: arr.map(normalizeMember), denied: denied, viewerHasProfile: viewerHasProfile };
     }).catch(function (e) {
       console.warn('StudyAlready annuaire Supabase:', e);
-      return { list: [], denied: false };
+      return { list: [], denied: false, viewerHasProfile: false };
     });
   }
 
@@ -1155,7 +1176,7 @@
         return settled[i] && settled[i].status === 'fulfilled' ? settled[i].value : fallback;
       }
       var data = val(0, { membres: [] }) || {};
-      var remotePack = val(1, { list: [], denied: false }) || { list: [], denied: false };
+      var remotePack = val(1, { list: [], denied: false, viewerHasProfile: false }) || { list: [], denied: false, viewerHasProfile: false };
       var eventsRaw = val(3, []);
       var eventsList = Array.isArray(eventsRaw) ? eventsRaw : [];
       var remote = remotePack.list || [];
@@ -1170,6 +1191,8 @@
       }
       if (mainEl) mainEl.classList.remove('hidden');
       if (gateEl) gateEl.classList.add('hidden');
+
+      updateProfileCta(!!remotePack.viewerHasProfile);
 
       var demos = ((data && data.membres) || []).map(normalizeMember);
       state.membres = sb
