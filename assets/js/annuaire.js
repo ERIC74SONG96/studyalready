@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   'use strict';
 
   var PAGE_SIZE = 24;
@@ -27,13 +27,27 @@
     'Autre': '#94a3b8'
   };
 
+  var RECENT_SEARCHES_KEY = 'sa_annuaire_recent_v1';
+  var OUVERTURE_LABELS = {
+    visa_titre_sejour: 'Visa / titre de séjour',
+    droit_etrangers_recours: 'Droit des étrangers',
+    mentorat: 'Mentorat',
+    reseau_pro: 'Réseau pro',
+    seminaires: 'Séminaires',
+    aide_examens: 'Aide examens',
+    logement: 'Logement',
+    job: 'Job étudiant'
+  };
+
   var state = {
     membres: [],
+    membersById: {},
     view: 'tous',
     page: 1,
     followSet: new Set(),
     authUserId: null,
-    debounceTimer: null
+    debounceTimer: null,
+    urlSync: true
   };
 
   function colorFor(univ) {
@@ -227,6 +241,7 @@
     }
     saveFollowsLocal();
     updateFollowCountEl();
+    updateStats(state.membres);
     syncFollowButtons();
     if (sb) {
       if (following) {
@@ -274,6 +289,301 @@
     return true;
   }
 
+  function buildMembersIndex() {
+    state.membersById = {};
+    var i;
+    for (i = 0; i < state.membres.length; i++) {
+      state.membersById[state.membres[i].id] = state.membres[i];
+    }
+  }
+
+  function showToast(msg) {
+    var old = document.querySelector('.annuaire-toast');
+    if (old) old.remove();
+    var el = document.createElement('p');
+    el.className = 'annuaire-toast';
+    el.setAttribute('role', 'status');
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(function () { if (el.parentNode) el.remove(); }, 2600);
+  }
+
+  function highlightHtml(text, query) {
+    var safe = escapeHTML(text || '');
+    if (!query || query.length < 2) return safe;
+    var q = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    try {
+      return safe.replace(new RegExp('(' + q + ')', 'gi'), '<mark class="annuaire-mark">$1</mark>');
+    } catch (e) {
+      return safe;
+    }
+  }
+
+  function ouvertureBadgesHtml(m) {
+    var ouv = m.ouvertures || [];
+    var parts = [];
+    var i;
+    for (i = 0; i < ouv.length; i++) {
+      if (OUVERTURE_LABELS[ouv[i]]) {
+        parts.push('<span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium mr-1">' + escapeHTML(OUVERTURE_LABELS[ouv[i]]) + '</span>');
+      }
+    }
+    return parts.slice(0, 3).join('');
+  }
+
+  function renderSkeleton() {
+    var html = '';
+    var i;
+    for (i = 0; i < 6; i++) {
+      html += '<div class="annuaire-skeleton-row"><div class="annuaire-skeleton-avatar"></div><div class="flex-1 space-y-2"><div class="annuaire-skeleton-line short"></div><div class="annuaire-skeleton-line mid"></div></div></div>';
+    }
+    return html;
+  }
+
+  function renderDomainBreakdown() {
+    var el = document.getElementById('annuaireDomainBreakdown');
+    if (!el || !state.membres.length) return;
+    var counts = {};
+    var i;
+    var dom;
+    for (i = 0; i < state.membres.length; i++) {
+      dom = state.membres[i].domaine || 'Autre';
+      counts[dom] = (counts[dom] || 0) + 1;
+    }
+    var sorted = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 5);
+    var max = counts[sorted[0]] || 1;
+    var html = '<p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Top domaines</p>';
+    for (i = 0; i < sorted.length; i++) {
+      dom = sorted[i];
+      var pct = Math.round((counts[dom] / max) * 100);
+      html += '<div class="annuaire-domain-bar"><span title="' + escapeHTML(dom) + '">' + escapeHTML(dom) + '</span><div class="annuaire-domain-bar-track"><div class="annuaire-domain-bar-fill" style="width:' + pct + '%"></div></div><span class="text-slate-400 tabular-nums">' + counts[dom] + '</span></div>';
+    }
+    el.innerHTML = html;
+  }
+
+  function saveRecentSearch(q) {
+    if (!q || q.length < 2) return;
+    try {
+      var list = JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY) || '[]');
+      if (!Array.isArray(list)) list = [];
+      list = list.filter(function (x) { return x !== q; });
+      list.unshift(q);
+      list = list.slice(0, 5);
+      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(list));
+    } catch (e) {}
+  }
+
+  function renderRecentSearches() {
+    var wrap = document.getElementById('annuaireRecentSearches');
+    if (!wrap) return;
+    var list = [];
+    try {
+      list = JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY) || '[]');
+    } catch (e) {}
+    if (!list.length) {
+      wrap.classList.add('hidden');
+      wrap.innerHTML = '';
+      return;
+    }
+    wrap.classList.remove('hidden');
+    wrap.innerHTML = '<span class="text-[10px] text-slate-400 w-full">Récent :</span>' + list.map(function (q) {
+      return '<button type="button" class="annuaire-recent-btn" data-recent="' + escapeHTML(q) + '">' + escapeHTML(q) + '</button>';
+    }).join('');
+    wrap.querySelectorAll('[data-recent]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var fQ = document.getElementById('filterQ');
+        if (fQ) { fQ.value = btn.getAttribute('data-recent'); state.page = 1; render(); }
+      });
+    });
+  }
+
+  function renderActiveFilterChips(filters) {
+    var wrap = document.getElementById('annuaireActiveFilters');
+    if (!wrap) return;
+    var chips = [];
+    var labels = { suivis: 'Mes abonnements', etudiants: 'Étudiants', professionnels: 'Professionnels', juridique: 'Visa / séjour' };
+    if (filters.view && filters.view !== 'tous' && labels[filters.view]) {
+      chips.push({ key: 'view', label: labels[filters.view] });
+    }
+    if (filters.universite) chips.push({ key: 'universite', label: filters.universite });
+    if (filters.domaine) chips.push({ key: 'domaine', label: filters.domaine });
+    if (filters.statut) chips.push({ key: 'statut', label: filters.statut });
+    if (filters.q) chips.push({ key: 'q', label: '"' + filters.q + '"' });
+    if (!chips.length) {
+      wrap.classList.add('hidden');
+      wrap.innerHTML = '';
+      return;
+    }
+    wrap.classList.remove('hidden');
+    wrap.innerHTML = chips.map(function (c) {
+      return '<span class="annuaire-filter-pill">' + escapeHTML(c.label) + '<button type="button" data-clear-filter="' + escapeHTML(c.key) + '" aria-label="Retirer">×</button></span>';
+    }).join('');
+    wrap.querySelectorAll('[data-clear-filter]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        clearFilterKey(btn.getAttribute('data-clear-filter'));
+      });
+    });
+  }
+
+  function clearFilterKey(key) {
+    if (key === 'view') state.view = 'tous';
+    else if (key === 'universite') { var el = document.getElementById('filterUniversite'); if (el) el.value = ''; }
+    else if (key === 'domaine') { var el2 = document.getElementById('filterDomaine'); if (el2) el2.value = ''; }
+    else if (key === 'statut') { var el3 = document.getElementById('filterStatut'); if (el3) el3.value = ''; }
+    else if (key === 'q') { var el4 = document.getElementById('filterQ'); if (el4) el4.value = ''; }
+    setActiveNav(state.view);
+    state.page = 1;
+    render();
+  }
+
+  function syncUrlFromFilters(filters) {
+    if (!state.urlSync || typeof history === 'undefined' || !history.replaceState) return;
+    var p = new URLSearchParams();
+    if (filters.view && filters.view !== 'tous') p.set('vue', filters.view);
+    if (filters.universite) p.set('universite', filters.universite);
+    if (filters.domaine) p.set('domaine', filters.domaine);
+    if (filters.statut) p.set('statut', filters.statut);
+    if (filters.q) p.set('q', filters.q);
+    if (filters.aide === 'juridique') p.set('aide', 'juridique');
+    if (filters.aide === 'professionnel') p.set('aide', 'professionnel');
+    var qs = p.toString();
+    history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''));
+  }
+
+  function copyShareLink() {
+    var url = window.location.href;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { showToast('Lien copié dans le presse-papiers'); });
+    } else {
+      showToast(url);
+    }
+  }
+
+  function updateSearchClearBtn() {
+    var fQ = document.getElementById('filterQ');
+    var btn = document.getElementById('filterQClear');
+    if (!fQ || !btn) return;
+    btn.classList.toggle('hidden', !fQ.value.trim());
+  }
+
+  function openProfileDrawer(id) {
+    var m = state.membersById[id];
+    var drawer = document.getElementById('annuaireDrawer');
+    var body = document.getElementById('annuaireDrawerBody');
+    if (!m || !drawer || !body) return;
+    var color = colorFor(m.universite);
+    var initiales = initialsOf(m.prenom, m.initial_nom);
+    var msgHref = 'mise-en-relation.html?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
+    var following = state.followSet.has(m.id);
+    var spec = (m.specialites || []).map(function (s) {
+      return '<span class="inline-block text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 mr-1 mb-1">' + escapeHTML(s) + '</span>';
+    }).join('');
+    body.innerHTML =
+      '<div class="annuaire-drawer-hero">' +
+        '<div class="annuaire-avatar' + (isExpert(m) ? ' ring-2 ring-brand-gold' : '') + '" style="background-color:' + color + '">' + escapeHTML(initiales) + '</div>' +
+        '<h3 class="mt-3 font-display font-bold text-brand-dark text-lg">' + escapeHTML(m.prenom + ' ' + (m.initial_nom || '')) + '</h3>' +
+        '<p class="text-sm text-slate-500">' + escapeHTML(m.filiere || '') + ' · ' + escapeHTML(m.universite || '') + '</p>' +
+        '<p class="text-xs text-slate-400 mt-1">' + escapeHTML(m.domaine || '') + (m.ville ? ' · ' + m.ville : '') + '</p>' +
+        '<div class="mt-2 flex flex-wrap justify-center gap-1">' + legalBadgesHtml(m) + ouvertureBadgesHtml(m) + '</div>' +
+      '</div>' +
+      '<div class="annuaire-drawer-section"><h3>Présentation</h3><p class="text-sm text-slate-600 leading-relaxed">' + escapeHTML(m.bio || 'Aucune présentation.') + '</p></div>' +
+      (spec ? '<div class="annuaire-drawer-section"><h3>Spécialités</h3><div>' + spec + '</div></div>' : '') +
+      '<div class="annuaire-drawer-section flex flex-col gap-2">' +
+        '<button type="button" class="annuaire-follow-btn w-full' + (following ? ' is-following' : '') + '" data-follow-id="' + escapeHTML(m.id) + '">' + (following ? 'Abonné·e' : "S'abonner") + '</button>' +
+        '<a href="' + msgHref + '" class="block text-center bg-brand-dark text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-brand-blue">Envoyer un message</a>' +
+      '</div>' +
+      '<p class="mt-4 text-[10px] text-slate-400 text-center">Profil déclaré par le membre — non vérifié par StudyAlready.</p>';
+    drawer.classList.remove('hidden');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    body.querySelectorAll('[data-follow-id]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleFollow(btn.getAttribute('data-follow-id'), btn);
+        openProfileDrawer(id);
+      });
+    });
+  }
+
+  function closeProfileDrawer() {
+    var drawer = document.getElementById('annuaireDrawer');
+    if (!drawer) return;
+    drawer.classList.add('hidden');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function bindProfileRowClicks() {
+    var grid = document.getElementById('annuaireGrid');
+    if (!grid) return;
+    grid.querySelectorAll('.annuaire-member-row').forEach(function (row) {
+      row.addEventListener('click', function (e) {
+        if (e.target.closest('.annuaire-row-actions')) return;
+        openProfileDrawer(row.getAttribute('data-profile-id'));
+      });
+      row.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openProfileDrawer(row.getAttribute('data-profile-id'));
+        }
+      });
+    });
+  }
+
+  function bindProUI() {
+    var fQ = document.getElementById('filterQ');
+    var clearBtn = document.getElementById('filterQClear');
+    var shareBtn = document.getElementById('annuaireShareLink');
+    var emptyReset = document.getElementById('annuaireEmptyReset');
+    document.querySelectorAll('[data-drawer-close]').forEach(function (el) {
+      el.addEventListener('click', closeProfileDrawer);
+    });
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        if (fQ) fQ.focus();
+      }
+      if (e.key === 'Escape') closeProfileDrawer();
+    });
+    if (clearBtn && fQ) {
+      clearBtn.addEventListener('click', function () {
+        fQ.value = '';
+        updateSearchClearBtn();
+        state.page = 1;
+        render();
+        fQ.focus();
+      });
+    }
+    if (shareBtn) shareBtn.addEventListener('click', copyShareLink);
+    if (emptyReset) {
+      emptyReset.addEventListener('click', function () {
+        var btn = document.getElementById('filterReset');
+        if (btn) btn.click();
+      });
+    }
+    document.querySelectorAll('[data-quick-view]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.view = btn.getAttribute('data-quick-view');
+        state.page = 1;
+        setActiveNav(state.view);
+        render();
+      });
+    });
+    document.querySelectorAll('[data-quick-domain]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var fDom = document.getElementById('filterDomaine');
+        if (fDom) fDom.value = btn.getAttribute('data-quick-domain');
+        state.page = 1;
+        render();
+      });
+    });
+    if (fQ) {
+      fQ.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && fQ.value.trim()) saveRecentSearch(fQ.value.trim());
+      });
+    }
+  }
+
   function sortMembers(list, sortKey, query) {
     var out = list.slice();
     var q = (query || '').toLowerCase();
@@ -306,31 +616,33 @@
     return out;
   }
 
-  function renderMemberRow(m, compact) {
+  function renderMemberRow(m, compact, query) {
     var color = colorFor(m.universite);
     var initiales = initialsOf(m.prenom, m.initial_nom);
     var msgHref = 'mise-en-relation.html?id=' + encodeURIComponent(m.id) + '&nom=' + encodeURIComponent(m.prenom + ' ' + (m.initial_nom || ''));
     var following = state.followSet.has(m.id);
-    var bio = compact ? '' : '<p class="mt-1 text-xs text-slate-600 line-clamp-2">' + escapeHTML(m.bio || '') + '</p>';
+    var q = query || '';
+    var bio = compact ? '' : '<p class="mt-1 text-xs text-slate-600 line-clamp-2">' + highlightHtml(m.bio || '', q) + '</p>';
+    var proClass = isExpert(m) ? ' is-pro' : '';
 
     return '' +
-      '<article class="annuaire-member-row" data-profile-id="' + escapeHTML(m.id) + '">' +
-        '<div class="annuaire-avatar" style="background-color:' + color + '">' + escapeHTML(initiales) + '</div>' +
-        '<div class="flex-1 min-w-0">' +
-          '<p class="font-display font-bold text-brand-dark text-sm truncate">' + escapeHTML(m.prenom + ' ' + (m.initial_nom || '')) + '</p>' +
-          '<p class="text-xs text-slate-500 truncate">' + escapeHTML(m.filiere || '') + ' · ' + escapeHTML(m.universite || '') + '</p>' +
-          '<p class="text-xs text-slate-400 truncate">' + escapeHTML((m.domaine || '') + (m.ville ? ' · ' + m.ville : '')) + '</p>' +
-          '<div class="mt-1 flex flex-wrap gap-1">' +
-            '<span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase ' + badgeStatut(m.statut) + '">' + escapeHTML((m.statut || '').replace(' / Professionnel·le', '')) + '</span>' +
-            legalBadgesHtml(m) +
-          '</div>' +
-          bio +
+      '<article class="annuaire-member-row' + proClass + '" data-profile-id="' + escapeHTML(m.id) + '" role="button" tabindex="0" title="Voir la fiche">' +
+      '<div class="annuaire-avatar" style="background-color:' + color + '">' + escapeHTML(initiales) + '</div>' +
+      '<div class="flex-1 min-w-0">' +
+        '<p class="font-display font-bold text-brand-dark text-sm truncate">' + highlightHtml(m.prenom + ' ' + (m.initial_nom || ''), q) + '</p>' +
+        '<p class="text-xs text-slate-500 truncate">' + highlightHtml((m.filiere || '') + ' · ' + (m.universite || ''), q) + '</p>' +
+        '<p class="text-xs text-slate-400 truncate">' + highlightHtml((m.domaine || '') + (m.ville ? ' · ' + m.ville : ''), q) + '</p>' +
+        '<div class="mt-1 flex flex-wrap gap-1">' +
+          '<span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase ' + badgeStatut(m.statut) + '">' + escapeHTML((m.statut || '').replace(' / Professionnel·le', '')) + '</span>' +
+          legalBadgesHtml(m) + ouvertureBadgesHtml(m) +
         '</div>' +
-        '<div class="flex flex-col gap-1.5 shrink-0">' +
-          '<button type="button" class="annuaire-follow-btn' + (following ? ' is-following' : '') + '" data-follow-id="' + escapeHTML(m.id) + '" aria-pressed="' + (following ? 'true' : 'false') + '">' + (following ? 'Abonné·e' : "S'abonner") + '</button>' +
-          '<a href="' + msgHref + '" class="text-center text-[11px] font-semibold text-brand-blue hover:underline py-1">Message</a>' +
-        '</div>' +
-      '</article>';
+        bio +
+      '</div>' +
+      '<div class="annuaire-row-actions flex flex-col gap-1.5 shrink-0">' +
+        '<button type="button" class="annuaire-follow-btn' + (following ? ' is-following' : '') + '" data-follow-id="' + escapeHTML(m.id) + '" aria-pressed="' + (following ? 'true' : 'false') + '">' + (following ? 'Abonné·e' : "S'abonner") + '</button>' +
+        '<a href="' + msgHref + '" class="text-center text-[11px] font-semibold text-brand-blue hover:underline py-1">Message</a>' +
+      '</div>' +
+    '</article>';
   }
 
   function renderPagination(total, page) {
@@ -375,9 +687,12 @@
       else etu++;
     }
     el.innerHTML =
-      '<strong>' + membres.length.toLocaleString('fr-BE') + '</strong> profils publiés<br>' +
-      '<span class="text-slate-500">' + etu.toLocaleString('fr-BE') + ' étudiant·e·s / stagiaires · ' +
-      pros.toLocaleString('fr-BE') + ' diplômé·e·s / pros</span>';
+      '<div class="annuaire-stats-grid">' +
+        '<div class="annuaire-stat-card"><strong>' + membres.length.toLocaleString('fr-BE') + '</strong><span>Profils</span></div>' +
+        '<div class="annuaire-stat-card"><strong>' + etu.toLocaleString('fr-BE') + '</strong><span>Étudiants</span></div>' +
+        '<div class="annuaire-stat-card"><strong>' + pros.toLocaleString('fr-BE') + '</strong><span>Pros</span></div>' +
+        '<div class="annuaire-stat-card"><strong>' + state.followSet.size + '</strong><span>Abonnements</span></div>' +
+      '</div>';
   }
 
   function renderSuggestList(membres) {
@@ -392,7 +707,7 @@
     }
     if (empty) empty.classList.add('hidden');
     list.innerHTML = experts.map(function (m) {
-      return renderMemberRow(m, true);
+      return renderMemberRow(m, true, '');
     }).join('');
   }
 
@@ -505,12 +820,14 @@
       }
     } else {
       if (emptyEl) emptyEl.classList.add('hidden');
-      grid.innerHTML = slice.map(function (m) { return renderMemberRow(m, false); }).join('');
+      grid.innerHTML = slice.map(function (m) { return renderMemberRow(m, false, filters.q); }).join('');
       grid.querySelectorAll('[data-follow-id]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
           toggleFollow(btn.getAttribute('data-follow-id'), btn);
         });
       });
+      bindProfileRowClicks();
     }
 
     if (countEl) {
@@ -524,6 +841,11 @@
 
     renderPagination(total, state.page);
     syncFollowButtons();
+    renderActiveFilterChips(filters);
+    syncUrlFromFilters(filters);
+    updateSearchClearBtn();
+    if (filters.q) saveRecentSearch(filters.q);
+    renderRecentSearches();
   }
 
   function applyViewFromUrl() {
@@ -546,7 +868,7 @@
     var grid = document.getElementById('annuaireGrid');
     if (!grid) return;
 
-    grid.innerHTML = '<p class="text-center text-sm text-slate-500 py-12">Chargement…</p>';
+    grid.innerHTML = renderSkeleton();
 
     var sb = window.studyalreadySb;
     var demoParam = String(window.location.search || '').indexOf('annuaire_demo=1') !== -1;
@@ -598,10 +920,14 @@
         if (sp.get('q') && fQ) fQ.value = sp.get('q');
       } catch (e) {}
 
+      buildMembersIndex();
       applyViewFromUrl();
       updateStats(state.membres);
       updateFollowCountEl();
+      renderDomainBreakdown();
       renderSuggestList(state.membres);
+      bindProUI();
+      renderRecentSearches();
 
       if (noteEl && sb && remote.length) {
         noteEl.textContent = 'Données déclarées par les membres — sans vérification documentaire.';

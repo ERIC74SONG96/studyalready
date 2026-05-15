@@ -25,10 +25,22 @@
 <body class="font-sans text-slate-800 bg-slate-50 antialiased">
   <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
 
-  <section class="pt-20 pb-3 bg-brand-dark text-white border-b border-white/10">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3">
+  <section class="pt-20 pb-0 bg-brand-dark text-white border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 pb-4">
+      <nav class="text-xs text-slate-400 mb-2" aria-label="Fil d'Ariane">
+        <a href="index.html" class="hover:text-brand-gold">Accueil</a>
+        <span class="mx-1.5">/</span>
+        <a href="communaute.html" class="hover:text-brand-gold">Communauté</a>
+        <span class="mx-1.5">/</span>
+        <span class="text-slate-200">Annuaire</span>
+      </nav>
       <h1 class="font-display font-bold text-xl sm:text-2xl">Annuaire communauté</h1>
-      <p class="mt-1 text-slate-300 text-sm">Répertoire de membres : recherche, filtres et abonnements — sans fil d'actualité.</p>
+      <p class="mt-1 text-slate-300 text-sm max-w-2xl">Répertoire des membres : recherche, filtres, abonnements et fiches détaillées — sans fil d'actualité.</p>
+      <div class="mt-3 flex flex-wrap gap-2 text-[11px] text-slate-300">
+        <span class="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1">Accès membres</span>
+        <span class="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1">Consentement RGPD</span>
+        <span class="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1">Mise en relation encadrée</span>
+      </div>
     </div>
   </section>
 
@@ -56,12 +68,14 @@
           <a href="devenir-professionnel.html" class="mt-2 block text-center text-xs text-brand-blue font-semibold underline">Vous êtes diplômé / pro ?</a>
         </div>
         <nav class="annuaire-panel p-2" aria-label="Vues annuaire">
-          <button type="button" class="annuaire-nav-btn is-active" data-annuaire-view="tous">Tous les membres</button>
-          <button type="button" class="annuaire-nav-btn" data-annuaire-view="suivis">Mes abonnements</button>
-          <button type="button" class="annuaire-nav-btn" data-annuaire-view="etudiants">Étudiants</button>
-          <button type="button" class="annuaire-nav-btn" data-annuaire-view="professionnels">Professionnels</button>
-          <button type="button" class="annuaire-nav-btn" data-annuaire-view="juridique">Visa / séjour</button>
+          <p class="px-2 pb-1 text-[10px] font-bold uppercase tracking-wide text-slate-400">Explorer</p>
+          <button type="button" class="annuaire-nav-btn is-active" data-annuaire-view="tous"><span class="annuaire-nav-icon" aria-hidden="true">&#9673;</span> Tous les membres</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="suivis"><span class="annuaire-nav-icon" aria-hidden="true">&#9733;</span> Mes abonnements</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="etudiants"><span class="annuaire-nav-icon" aria-hidden="true">&#127891;</span> Étudiants</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="professionnels"><span class="annuaire-nav-icon" aria-hidden="true">&#128188;</span> Professionnels</button>
+          <button type="button" class="annuaire-nav-btn" data-annuaire-view="juridique"><span class="annuaire-nav-icon" aria-hidden="true">&#9878;</span> Visa / séjour</button>
         </nav>
+        <div id="annuaireDomainBreakdown" class="annuaire-panel p-4 text-xs text-slate-600 hidden lg:block"></div>
         <div class="annuaire-panel p-4 space-y-3 text-sm">
           <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">Affiner</p>
           <div>
@@ -83,8 +97,24 @@
 
       <main class="annuaire-main min-w-0 space-y-3">
         <div class="annuaire-search-sticky annuaire-panel p-3">
-          <label for="filterQ" class="sr-only">Rechercher</label>
-          <input id="filterQ" type="search" autocomplete="off" placeholder="Nom, filière, université, ville, avocat, visa…" class="w-full border border-slate-200 rounded-full px-4 py-2.5 text-sm bg-slate-50 focus:ring-2 focus:ring-brand-gold outline-none" />
+          <label for="filterQ" class="sr-only">Rechercher dans l'annuaire</label>
+          <div class="annuaire-search-wrap">
+            <span class="annuaire-search-icon" aria-hidden="true">&#128269;</span>
+            <input id="filterQ" type="search" autocomplete="off" placeholder="Nom, filière, université, visa, mentorat…" class="annuaire-search-input" />
+            <button type="button" id="filterQClear" class="annuaire-search-clear hidden" aria-label="Effacer">&times;</button>
+          </div>
+          <p class="mt-2 text-[10px] text-slate-400 flex flex-wrap justify-between gap-2">
+            <span><kbd class="annuaire-kbd">Ctrl</kbd>+<kbd class="annuaire-kbd">K</kbd> rechercher</span>
+            <button type="button" id="annuaireShareLink" class="text-brand-blue font-semibold hover:underline">Copier lien filtré</button>
+          </p>
+          <div id="annuaireRecentSearches" class="hidden mt-2 flex flex-wrap gap-1.5"></div>
+          <div id="annuaireQuickChips" class="mt-2 flex flex-wrap gap-1.5">
+            <button type="button" class="annuaire-chip" data-quick-view="professionnels">Pros</button>
+            <button type="button" class="annuaire-chip" data-quick-view="juridique">Visa</button>
+            <button type="button" class="annuaire-chip" data-quick-domain="Santé &amp; paramédical">Santé</button>
+            <button type="button" class="annuaire-chip" data-quick-domain="Ingénierie &amp; sciences">Ingénierie</button>
+          </div>
+          <div id="annuaireActiveFilters" class="hidden mt-2 flex flex-wrap gap-1.5"></div>
           <div id="annuaireLegalNotice" class="hidden mt-3 rounded-lg border border-indigo-200 bg-indigo-50/80 p-3 text-xs text-indigo-950">
             <p><strong>Visa / séjour :</strong> entraide communautaire, pas cabinet d'avocats. <a href="besoin-d-aide.html#titre-sejour" class="underline font-semibold">Besoin d'aide ?</a></p>
           </div>
@@ -108,8 +138,11 @@
             </div>
           </div>
           <div id="annuaireGrid" class="min-h-[12rem]"></div>
-          <div id="annuaireEmpty" class="hidden px-4 py-10 text-center">
-            <p class="text-slate-600 text-sm">Aucun membre pour ces critères.</p>
+          <div id="annuaireEmpty" class="hidden px-4 py-12 text-center annuaire-empty-state">
+            <p class="text-4xl mb-3" aria-hidden="true">&#128269;</p>
+            <p class="font-display font-bold text-brand-dark">Aucun résultat</p>
+            <p class="mt-2 text-slate-600 text-sm max-w-sm mx-auto">Modifiez la recherche ou retirez un filtre.</p>
+            <button type="button" id="annuaireEmptyReset" class="mt-4 text-sm font-semibold text-brand-blue underline">Réinitialiser tout</button>
           </div>
           <div id="annuairePagination" class="px-4 py-3 border-t border-slate-100 flex flex-wrap items-center justify-center gap-1"></div>
         </div>
@@ -169,6 +202,17 @@
   <script src="assets/js/supabase-init.js?v=20260515persist"></script>
   <script src="assets/js/header.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/annuaire.js?v=20260516network"></script>
+  <div id="annuaireDrawer" class="annuaire-drawer hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="annuaireDrawerTitle">
+    <div class="annuaire-drawer-backdrop" data-drawer-close></div>
+    <div class="annuaire-drawer-panel">
+      <div class="annuaire-drawer-header">
+        <h2 id="annuaireDrawerTitle" class="font-display font-bold text-brand-dark text-lg">Profil membre</h2>
+        <button type="button" class="annuaire-drawer-close" data-drawer-close aria-label="Fermer">&times;</button>
+      </div>
+      <div id="annuaireDrawerBody" class="annuaire-drawer-body"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/annuaire.js?v=20260517pro2"></script>
 </body>
 </html>
