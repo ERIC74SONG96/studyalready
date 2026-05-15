@@ -7,7 +7,8 @@
   'use strict';
 
   var containers = document.querySelectorAll('[data-sa-community-stats]');
-  if (!containers.length) return;
+  var hasStatsWidgets = containers.length > 0 || document.querySelector('[data-sa-community-entry]');
+  if (!hasStatsWidgets) return;
 
   function fmt(n) {
     var x = Number(n);
@@ -64,15 +65,35 @@
       '</div>' + foot;
   }
 
-  function subCell(count, label, flag, href, cta) {
+  function matrixSubCell(count, label, flag) {
     return (
-      '<div class="sa-community-matrix-sub">' +
+      '<div class="sa-community-matrix-sub sa-community-matrix-sub--compact">' +
         '<strong>' + fmt(count) + '</strong>' +
         '<span class="sa-community-matrix-sub-label">' + label + '</span>' +
         '<span class="sa-community-matrix-sub-flag">' + flag + '</span>' +
-        '<a href="' + href + '">' + cta + '</a>' +
-      '</div>'
-    );
+      '</motion>'
+    ).replace(/<\/?motion\b[^>]*>/gi, '');
+  }
+
+  function applyEntryCounts(stats) {
+    var mx = stats.matrix || {};
+    var st = mx.students || {};
+    var pr = mx.professionals || {};
+    var map = {
+      'students-total': st.total,
+      'students-belgique': st.belgique,
+      'students-cameroun': st.cameroun,
+      'professionals-total': pr.total,
+      'professionals-belgique': pr.belgique,
+      'professionals-cameroun': pr.cameroun
+    };
+    var key;
+    for (key in map) {
+      if (!Object.prototype.hasOwnProperty.call(map, key)) continue;
+      document.querySelectorAll('[data-sa-count="' + key + '"]').forEach(function (el) {
+        el.textContent = fmt(map[key]);
+      });
+    }
   }
 
   function renderMatrix(el, stats) {
@@ -80,9 +101,10 @@
     var st = mx.students || {};
     var pr = mx.professionals || {};
     var published = Number(stats.published_profiles) || 0;
-    var foot = published > 0
-      ? '<p class="sa-community-matrix-foot">' + fmt(published) + ' fiche' + (published > 1 ? 's' : '') + ' publiée' + (published > 1 ? 's' : '') + ' dans l’annuaire public</p>'
-      : '';
+    var foot = '<p class="sa-community-matrix-foot">Choisissez votre porte d’entrée ci-dessous ↓</p>';
+    if (published > 0) {
+      foot += '<p class="sa-community-matrix-foot">' + fmt(published) + ' fiche' + (published > 1 ? 's' : '') + ' publiée' + (published > 1 ? 's' : '') + ' dans l’annuaire</p>';
+    }
     el.innerHTML =
       '<p class="sa-community-matrix-lead">La communauté StudyAlready en chiffres</p>' +
       '<div class="sa-community-matrix-grid" role="group" aria-label="Inscriptions par profil et lieu">' +
@@ -92,8 +114,8 @@
             '<span class="sa-community-matrix-total" title="Total étudiants">' + fmt(st.total) + '</span>' +
           '</header>' +
           '<div class="sa-community-matrix-subs">' +
-            subCell(st.belgique, 'En Belgique', 'Déjà sur place', 'rejoindre-reseau.html?vue=communaute&parcours=belgique#adhesion', 'Rejoindre →') +
-            subCell(st.cameroun, 'Au Cameroun', 'Projet d’études', 'rejoindre-reseau.html?vue=communaute&parcours=cameroun#adhesion', 'Rejoindre →') +
+            matrixSubCell(st.belgique, 'En Belgique', 'Sur place') +
+            matrixSubCell(st.cameroun, 'Au Cameroun', 'En préparation') +
           '</div>' +
         '</article>' +
         '<article class="sa-community-matrix-block sa-community-matrix-block--pros">' +
@@ -102,8 +124,8 @@
             '<span class="sa-community-matrix-total" title="Total professionnels">' + fmt(pr.total) + '</span>' +
           '</header>' +
           '<div class="sa-community-matrix-subs">' +
-            subCell(pr.belgique, 'En Belgique', 'Mentors &amp; diplômés', 'devenir-professionnel.html', 'Proposer mon aide →') +
-            subCell(pr.cameroun, 'Au Cameroun', 'Réseau &amp; relais', 'rejoindre-reseau.html?vue=communaute&parcours=cameroun#adhesion', 'Rejoindre →') +
+            matrixSubCell(pr.belgique, 'En Belgique', 'Mentors &amp; diplômés') +
+            matrixSubCell(pr.cameroun, 'Au Cameroun', 'Relais diaspora') +
           '</div>' +
         '</article>' +
       '</div>' + foot;
@@ -130,6 +152,14 @@
     return;
   }
 
+  if (!containers.length) {
+    sb.rpc('get_public_community_stats').then(function (res) {
+      var stats = res.data;
+      if (!res.error && stats && typeof stats === 'object') applyEntryCounts(stats);
+    }).catch(function () {});
+    return;
+  }
+
   sb.rpc('get_public_community_stats').then(function (res) {
     var stats = res.data;
     if (res.error || !stats || typeof stats !== 'object') {
@@ -139,6 +169,7 @@
     containers.forEach(function (el) {
       render(el, stats);
     });
+    applyEntryCounts(stats);
   }).catch(function () {
     containers.forEach(renderError);
   });

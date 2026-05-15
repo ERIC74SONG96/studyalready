@@ -493,3 +493,190 @@ textarea:focus-visible {
   font-size: 0.7rem;
   color: rgba(203, 213, 225, 0.85);
 }
+.sa-community-matrix-sub--compact a {
+  display: none;
+}
+.sa-community-matrix-sub--compact {
+  padding-bottom: 0.85rem;
+}
+
+/* Portes d'entrée Communauté (Étudiants / Professionnels) */
+.sa-porte-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 30px rgba(10, 37, 64, 0.08);
+  overflow: hidden;
+}
+.sa-porte-card--etudiants {
+  border-top: 4px solid #1e3a8a;
+}
+.sa-porte-card--pros {
+  border-top: 4px solid #f5b800;
+}
+.sa-porte-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+}
+.sa-porte-card--etudiants .sa-porte-head {
+  background: linear-gradient(180deg, #eff6ff 0%, #fff 100%);
+}
+.sa-porte-card--pros .sa-porte-head {
+  background: linear-gradient(180deg, #fffbeb 0%, #fff 100%);
+}
+.sa-porte-head-text {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.sa-porte-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+.sa-porte-kicker {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+.sa-porte-title {
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0a2540;
+  line-height: 1.2;
+}
+.sa-porte-total {
+  text-align: right;
+  flex-shrink: 0;
+}
+.sa-porte-total span:first-child {
+  display: block;
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  line-height: 1;
+}
+.sa-porte-card--pros .sa-porte-total span:first-child {
+  color: #b45309;
+}
+.sa-porte-total-label {
+  font-size: 0.65rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.sa-porte-subs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 520px) {
+  .sa-porte-subs {
+    grid-template-columns: 1fr;
+  }
+  .sa-porte-sub:first-child {
+    border-bottom: 1px solid #e2e8f0;
+  }
+}
+.sa-porte-sub {
+  padding: 1.1rem 1rem 1.25rem;
+  border-right: 1px solid #e2e8f0;
+}
+.sa-porte-sub:last-child {
+  border-right: none;
+}
+@media (max-width: 520px) {
+  .sa-porte-sub {
+    border-right: none;
+  }
+}
+.sa-porte-sub-count {
+  font-family: Poppins, system-ui, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0a2540;
+  line-height: 1;
+  margin: 0;
+}
+.sa-porte-card--pros .sa-porte-sub-count {
+  color: #b45309;
+}
+.sa-porte-sub-title {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0a2540;
+}
+.sa-porte-sub-hint {
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  color: #64748b;
+}
+.sa-porte-list {
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #475569;
+}
+.sa-porte-list li {
+  position: relative;
+  padding-left: 0.85rem;
+  margin-bottom: 0.45rem;
+}
+.sa-porte-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #f5b800;
+  font-weight: 700;
+}
+.sa-porte-list a {
+  color: #1e3a8a;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sa-porte-list a:hover {
+  color: #0a2540;
+}
+.sa-porte-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 1rem;
+}
+.sa-porte-btn {
+  display: block;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.55rem 0.75rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.sa-porte-btn-primary {
+  background: #0a2540;
+  color: #fff;
+}
+.sa-porte-btn-primary:hover {
+  background: #1e3a8a;
+}
+.sa-porte-btn-outline {
+  border: 1px solid #cbd5e1;
+  color: #0a2540;
+  background: #fff;
+}
+.sa-porte-btn-outline:hover {
+  border-color: #f5b800;
+  color: #1e3a8a;
+}
