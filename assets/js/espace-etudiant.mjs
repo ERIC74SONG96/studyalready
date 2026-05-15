@@ -399,6 +399,10 @@ if (pageId === 'login') {
         if (fn) fn.classList.remove('hidden');
       }
       var openSignup = p.get('tab') === 'inscription' || p.get('inscription') === '1' || p.get('signup') === '1';
+      var statsEl = document.getElementById('espaceCommunityStats');
+      if (statsEl && (openSignup || sessionStorage.getItem('sa_espace_vue') === 'communaute')) {
+        statsEl.classList.remove('hidden');
+      }
       var skipSignupForRecovery = false;
       try {
         skipSignupForRecovery = window.__saEspaceRecoveryFlow === true;

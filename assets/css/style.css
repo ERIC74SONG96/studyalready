@@ -263,3 +263,98 @@ textarea:focus-visible {
   line-height: 1.65;
   color: #475569;
 }
+
+/* Compteurs communauté (pages publiques d'adhésion) */
+.sa-community-stats {
+  margin-top: 1.75rem;
+}
+.sa-community-stats-lead {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.65rem;
+}
+.sa-community-stats--hero .sa-community-stats-lead {
+  color: #f5b800;
+}
+.sa-community-stats--light .sa-community-stats-lead {
+  color: #1e3a8a;
+}
+.sa-community-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  max-width: 22rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width: 640px) {
+  .sa-community-stats-grid {
+    max-width: 26rem;
+    gap: 0.65rem;
+  }
+}
+.sa-community-stats-card {
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.35rem;
+  text-align: center;
+}
+.sa-community-stats--hero .sa-community-stats-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.sa-community-stats--light .sa-community-stats-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+.sa-community-stats-card strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  font-family: Poppins, system-ui, sans-serif;
+}
+@media (min-width: 640px) {
+  .sa-community-stats-card strong {
+    font-size: 1.6rem;
+  }
+}
+.sa-community-stats--hero .sa-community-stats-card strong {
+  color: #f5b800;
+}
+.sa-community-stats--light .sa-community-stats-card strong {
+  color: #0a2540;
+}
+.sa-community-stats-card span {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.65rem;
+  line-height: 1.2;
+}
+.sa-community-stats--hero .sa-community-stats-card span {
+  color: rgba(226, 232, 240, 0.92);
+}
+.sa-community-stats--light .sa-community-stats-card span {
+  color: #64748b;
+}
+.sa-community-stats-foot {
+  margin-top: 0.55rem;
+  text-align: center;
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+.sa-community-stats--hero .sa-community-stats-foot {
+  color: rgba(203, 213, 225, 0.85);
+}
+.sa-community-stats--light .sa-community-stats-foot {
+  color: #64748b;
+}
+@keyframes sa-stats-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+.sa-community-stats-pulse {
+  animation: sa-stats-pulse 1.2s ease-in-out infinite;
+}
