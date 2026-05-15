@@ -509,6 +509,26 @@ textarea:focus-visible {
   padding-bottom: 0.85rem;
 }
 
+/* Intro compacte — portes d'entrée communauté */
+.sa-portes-intro-row {
+  line-height: 1.25;
+}
+@media (min-width: 640px) {
+  .sa-portes-intro-row {
+    flex-wrap: nowrap;
+  }
+  .sa-portes-intro > p {
+    white-space: nowrap;
+  }
+}
+@media (max-width: 639px) {
+  .sa-portes-intro > p {
+    max-width: 20rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 /* Portes d'entrée Communauté (Étudiants / Professionnels) */
 .sa-porte-card {
   background: #fff;
