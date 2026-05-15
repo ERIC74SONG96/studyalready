@@ -61,11 +61,11 @@
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/"/g, .html'&quot;');
+      .replace(/"/g, '&quot;');
   }
 
   function escapeAttr(s) {
-    return String(s).replace(/&/g, '&amp;').replace(/"/g, .html'&quot;').replace(/</g, '&lt;');
+    return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
   }
 
   function truncateNavLabel(name, maxLen) {

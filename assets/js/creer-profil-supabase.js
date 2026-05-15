@@ -165,6 +165,6 @@
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/"/g, .html'&quot;');
+      .replace(/"/g, '&quot;');
   }
 })();
