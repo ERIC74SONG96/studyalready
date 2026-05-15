@@ -72,7 +72,7 @@
         '<span class="sa-community-matrix-sub-label">' + label + '</span>' +
         '<span class="sa-community-matrix-sub-flag">' + flag + '</span>' +
       '</motion>'
-    ).replace(/<\/?motion\b[^>]*>/gi, '');
+    ).replace('</motion>', '</div>');
   }
 
   function applyEntryCounts(stats) {
