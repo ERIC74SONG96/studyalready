@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Créer un événement | StudyAlready</title>
+  <meta name="description" content="Proposez un webinaire, atelier, meetup ou tout autre événement à la communauté StudyAlready." />
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/annuaire.css" />
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 antialiased">
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
+
+  <section class="pt-28 pb-10 bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <p class="text-brand-gold uppercase text-xs font-semibold tracking-widest">Communauté</p>
+      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl">Proposer un événement</h1>
+      <p class="mt-4 text-slate-200 text-sm max-w-2xl">Webinaire, atelier, meetup, apéro, conférence… Votre événement apparaît dans l’<a href="annuaire.html?vue=evenements" class="underline hover:text-brand-gold">annuaire</a> et sur la page <a href="evenements-seminaires.html" class="underline hover:text-brand-gold">Événements</a>.</p>
+    </div>
+  </section>
+
+  <section class="py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+      <div id="creerEventGate" class="hidden rounded-2xl border border-amber-300 bg-amber-50 p-6 text-sm text-amber-950">
+        <p class="font-bold text-brand-dark">Connexion requise</p>
+        <p class="mt-2">Pour publier un événement, connectez-vous avec un compte membre (réseau ou profil annuaire).</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href="espace-etudiant/" class="inline-flex bg-brand-dark text-white font-bold px-5 py-2.5 rounded-full text-sm">Connexion</a>
+          <a href="rejoindre-reseau.html" class="inline-flex border border-brand-dark text-brand-dark font-semibold px-5 py-2.5 rounded-full text-sm">Rejoindre le réseau</a>
+        </div>
+      </div>
+
+      <form id="creerEventForm" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+        <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1" for="event_title">Titre *</label>
+          <input id="event_title" name="title" required maxlength="200" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" placeholder="Ex. Atelier CV pour étudiants internationaux" />
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1" for="event_type">Type *</label>
+            <select id="event_type" name="event_type" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm">
+              <option value="webinaire">Webinaire</option>
+              <option value="atelier">Atelier</option>
+              <option value="seminaire">Séminaire</option>
+              <option value="meetup">Meetup</option>
+              <option value="networking">Networking</option>
+              <option value="conference">Conférence</option>
+              <option value="social">Social / apéro</option>
+              <option value="sport">Sport</option>
+              <option value="culture">Culture</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1" for="event_format">Format *</label>
+            <select id="event_format" name="event_format" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm">
+              <option value="online">En ligne</option>
+              <option value="presentiel">Présentiel</option>
+              <option value="hybride">Hybride</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1" for="starts_at">Début *</label>
+            <input id="starts_at" name="starts_at" type="datetime-local" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1" for="ends_at">Fin (optionnel)</label>
+            <input id="ends_at" name="ends_at" type="datetime-local" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" />
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1" for="city">Ville</label>
+            <input id="city" name="city" maxlength="120" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" placeholder="Bruxelles, Liège…" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1" for="location">Lieu / lien</label>
+            <input id="location" name="location" maxlength="500" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" placeholder="Zoom, ULB, adresse…" />
+          </div>>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1" for="description">Description *</label>
+          <textarea id="description" name="description" required rows="5" maxlength="12000" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" placeholder="Programme, public visé, ce qu'il faut prévoir…"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1" for="link_url">Lien d'inscription (optionnel)</label>
+          <input id="link_url" name="link_url" type="url" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" placeholder="https://…" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1" for="contact_hint">Contact (optionnel)</label>
+          <input id="contact_hint" name="contact_hint" maxlength="500" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" placeholder="WhatsApp, email affiché…" />
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4 items-end">
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="is_free" value="1" checked class="mt-0.5" id="is_free" /> Événement gratuit</label>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1" for="price_hint">Tarif (si payant)</label>
+            <input id="price_hint" name="price_hint" maxlength="200" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm" placeholder="5 €, participation aux frais…" />
+          </div>
+        </div>
+
+        <label class="flex items-start gap-2 text-sm text-slate-600">
+          <input type="checkbox" name="confirm_responsible" required class="mt-1" />
+          <span>Je confirme être responsable de cet événement et que les informations sont exactes. StudyAlready relaie sans organiser ni garantir le contenu.</span>
+        </label>
+
+        <p id="creerEventStatus" class="hidden text-sm"></p>
+        <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-400 text-brand-dark font-bold py-3 rounded-lg">Publier l'événement</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+    <p>© <span id="year"></span> StudyAlready</p>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="/assets/js/vendor/supabase-umd-2.49.4.min.js"></script>
+  <script src="assets/js/supabase-init.js?v=20260515persist"></script>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/community-events.js?v=20260518events"></script>
+  <script src="assets/js/creer-evenement.js?v=20260518events"></script>
+</body>
+</html>

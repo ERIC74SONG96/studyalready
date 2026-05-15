@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rejoindre le réseau — espace membres | StudyAlready</title>
+  <meta name="description" content="Espace membres StudyAlready : inscription par domaine d'études, situation en Belgique ou hors Belgique, pays de résidence, séminaires et mentorat." />
+  <link rel="canonical" href="https://www.studyalready.com/rejoindre-reseau/" />
+  <meta name="robots" content="index,follow" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script>
+    /* Avant le rendu du menu : activer le mode « communauté » partagé avec /espace-etudiant/ */
+    (function () {
+      try {
+        var p = new URLSearchParams(window.location.search || '');
+        if (p.get('vue') === 'communaute') sessionStorage.setItem('sa_espace_vue', 'communaute');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased">
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
+
+  <section class="pt-28 pb-14 bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <p class="text-brand-gold uppercase text-xs font-semibold tracking-widest">Espace membres</p>
+      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight">Rejoindre le réseau StudyAlready.</h1>
+      <p id="rejoindreHeroLead" class="mt-5 text-slate-200 text-lg max-w-3xl">
+        <span id="rejoindreHeroMarketing">Un formulaire d'adhésion <strong class="text-white">léger et gratuit</strong> pour qu'on vous mette en relation avec les autres étudiants de votre domaine, qu'on vous invite aux <a href="evenements-seminaires.html" class="underline hover:text-brand-gold">séminaires</a> et qu'on relaie les bons plans (job, logement, mentorat) de votre ville.</span>
+        <span id="rejoindreHeroCommunaute" class="hidden">Un formulaire d'adhésion <strong class="text-white">léger et gratuit</strong> pour qu'on vous mette en relation avec les autres étudiants de votre domaine, qu'on vous invite aux séminaires et qu'on relaie les bons plans (job, logement, mentorat) de votre ville.</span>
+      </p>
+      <div class="sa-community-stats sa-community-stats--hero max-w-3xl" data-sa-community-stats aria-live="polite"></div>
+      <p class="mt-4 text-sm text-slate-300 max-w-3xl">Ouvert à tous les pays — avec une expertise forte pour le <strong class="text-white">Cameroun</strong>. Après inscription, <strong class="text-white">Mon espace</strong> et l’<strong class="text-white">annuaire</strong> s’adaptent à votre situation (<strong>en Belgique</strong> ou <strong>hors Belgique</strong>) et à votre pays de résidence.</p>
+    </div>
+  </section>
+
+  <!-- Encadré comparatif : adhésion simple vs profil public -->
+  <section class="py-10 sm:py-12 bg-slate-50 border-y border-slate-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="rounded-2xl border border-amber-200/80 bg-gradient-to-b from-amber-50/90 to-white p-5 sm:p-8 shadow-sm">
+        <p class="text-xs uppercase tracking-widest text-amber-800 font-semibold">Deux façons de rejoindre la communauté</p>
+        <h2 class="mt-2 font-display text-xl sm:text-2xl font-bold text-brand-dark leading-tight">Quelle option vous convient le mieux ?</h2>
+        <p class="mt-2 text-sm text-slate-600 max-w-3xl">L’<strong>adhésion simple</strong> (cette page) ouvre votre compte et votre accès communauté. Le <strong>profil annuaire</strong> est une étape en plus si vous voulez une fiche publique.</p>
+
+        <div class="mt-6 grid md:grid-cols-2 gap-4 md:gap-6 md:items-stretch">
+          <div class="flex flex-col rounded-xl bg-white border-2 border-brand-gold p-5 sm:p-6 shadow-sm ring-1 ring-amber-100/80">
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-brand-gold text-brand-dark font-bold text-sm shrink-0">A</span>
+              <p class="font-display font-bold text-brand-dark text-lg">Adhésion simple</p>
+              <span class="inline-flex items-center rounded-full bg-amber-100 text-amber-900 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0">Vous êtes ici</span>
+            </div>
+            <p class="mt-4 text-sm text-slate-700 leading-relaxed flex-1">Recevoir les <strong>invitations</strong> aux séminaires, les bons plans (job, logement, mentorat) et être contacté(e) si quelqu’un dans votre filière cherche un binôme — <strong>sans</strong> fiche visible dans l’annuaire.</p>
+            <ul class="mt-4 text-sm text-slate-600 space-y-2 border-t border-slate-100 pt-4">
+              <li class="flex gap-2.5"><span class="text-green-600 shrink-0" aria-hidden="true">✓</span><span>Formulaire court (environ 3 min)</span></li>
+              <li class="flex gap-2.5"><span class="text-green-600 shrink-0" aria-hidden="true">✓</span><span>Compte <strong>Mon espace</strong> créé en même temps</span></li>
+              <li class="flex gap-2.5"><span class="text-green-600 shrink-0" aria-hidden="true">✓</span><span>Pas de carte dans l’annuaire tant que vous ne créez pas un profil public</span></li>
+              <li class="flex gap-2.5"><span class="text-green-600 shrink-0" aria-hidden="true">✓</span><span>Anonymat côté annuaire public</span></li>
+            </ul>
+          </div>
+
+          <a href="creer-profil.html" class="group flex flex-col rounded-xl bg-white border border-slate-200 hover:border-brand-blue hover:shadow-md p-5 sm:p-6 transition shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2">
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-brand-blue text-white font-bold text-sm shrink-0">B</span>
+              <p class="font-display font-bold text-brand-dark text-lg group-hover:text-brand-blue transition-colors">Profil public dans l’annuaire</p>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-auto text-slate-400 group-hover:text-brand-blue group-hover:translate-x-0.5 transition shrink-0" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </div>
+            <p class="mt-4 text-sm text-slate-700 leading-relaxed flex-1">Être <strong>trouvable</strong> dans l’<span class="text-brand-blue font-medium">annuaire</span> par université, filière ou ville (mentorat, conseils, binôme d’études). Les autres <strong>membres de la communauté</strong> voient les fiches ; l’e-mail et le téléphone restent privés.</p>
+            <ul class="mt-4 text-sm text-slate-600 space-y-2 border-t border-slate-100 pt-4">
+              <li class="flex gap-2.5"><span class="text-brand-blue shrink-0 font-bold" aria-hidden="true">→</span><span>Formulaire plus détaillé + consentements</span></li>
+              <li class="flex gap-2.5"><span class="text-brand-blue shrink-0 font-bold" aria-hidden="true">→</span><span>Fiche <strong>publiée</strong> dans l’annuaire après envoi réussi</span></li>
+              <li class="flex gap-2.5"><span class="text-brand-blue shrink-0 font-bold" aria-hidden="true">→</span><span>Consulter les autres profils : réservé aux personnes inscrites à la communauté (comme après cette adhésion)</span></li>
+            </ul>
+            <p class="mt-4 text-sm font-semibold text-brand-blue flex items-center gap-1">Créer un profil public <span aria-hidden="true">→</span></p>
+          </a>
+        </div>
+        <p class="mt-5 text-sm text-slate-500 text-center sm:text-left border-t border-slate-200/80 pt-5">Vous pouvez faire les deux : adhésion simple aujourd’hui, puis <a href="creer-profil.html" class="text-brand-blue font-semibold underline hover:no-underline">créer un profil public</a> quand vous le souhaitez.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 bg-brand-cream border-y border-amber-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-6 text-sm">
+      <div class="bg-white rounded-2xl p-6 border border-amber-100">
+        <p class="font-display font-bold text-brand-dark">1. Vous remplissez</p>
+        <p class="mt-2 text-slate-600">Domaine, parcours, ville. Quelques minutes suffisent.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-amber-100">
+        <p class="font-display font-bold text-brand-dark">2. Nous structurons</p>
+        <p class="mt-2 text-slate-600">Nous regroupons les inscrits par filière et ville pour les rencontres et webinaires.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-amber-100">
+        <p class="font-display font-bold text-brand-dark">3. Vous êtes invité(e)</p>
+        <p class="mt-2 text-slate-600">Invitations <strong>email / WhatsApp</strong> aux séminaires et mises en relation pertinentes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="adhesion" class="py-16 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <h2 id="formTitle" class="font-display text-2xl font-bold text-brand-dark">Formulaire d'adhésion</h2>
+      <p id="formIntro" class="mt-2 text-sm text-slate-600">L’adhésion <strong>crée en même temps votre compte Mon espace</strong> (e-mail + mot de passe). Une fois l’adhésion enregistrée, vous pouvez consulter l’<strong>annuaire des membres</strong> (liste réservée aux personnes inscrites à la communauté). Les champs marqués <span class="text-red-600">*</span> sont obligatoires.</p>
+      <p id="rejoindreLoggedInHint" class="hidden mt-2 text-sm text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2">Vous êtes déjà connecté·e : le mot de passe n’est pas nécessaire. Soumettez le formulaire pour enregistrer votre adhésion sur ce compte.</p>
+
+      <form id="rejoindreReseauForm" method="POST" class="mt-8 space-y-5 bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Nom complet <span class="text-red-600">*</span></label>
+            <input type="text" name="nom" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Prénom Nom" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Email <span class="text-red-600">*</span></label>
+            <input type="email" name="email" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="vous@exemple.com" />
+          </div>
+        </div>
+
+        <div id="rejoindrePasswordRow" class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Mot de passe (Mon espace) <span class="text-red-600">*</span></label>
+            <input type="password" name="password" autocomplete="new-password" minlength="8" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Au moins 8 caractères" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Confirmer le mot de passe <span class="text-red-600">*</span></label>
+            <input type="password" name="password_confirm" autocomplete="new-password" minlength="8" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" />
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold mb-1">WhatsApp</label>
+            <input type="tel" name="telephone" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="+237 ... ou +32 ..." />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Ville actuelle</label>
+            <input type="text" name="ville" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Yaoundé, Bruxelles, Louvain-la-Neuve..." />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Où vous situez-vous ? <span class="text-red-600">*</span></label>
+          <select name="parcours" id="rejoindreParcours" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+            <option value="">— Choisir —</option>
+            <option value="deja_belgique_etudiant">J’habite en Belgique — étudiant·e</option>
+            <option value="deja_belgique_travailleur">J’habite en Belgique — diplômé·e / professionnel·le</option>
+            <option value="hors_belgique">Je n’habite pas en Belgique (hors Belgique)</option>
+            <option value="autre">Autre situation</option>
+          </select>
+        </div>
+
+        <div id="rejoindrePaysWrap" class="hidden">
+          <label class="block text-sm font-semibold mb-1">Pays de résidence <span class="text-red-600">*</span></label>
+          <select name="pays_residence" id="rejoindrePaysResidence" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+            <option value="">— Choisir —</option>
+            <option value="CM">Cameroun</option>
+            <option value="BJ">Bénin</option>
+            <option value="SN">Sénégal</option>
+            <option value="CI">Côte d’Ivoire</option>
+            <option value="FR">France</option>
+            <option value="autre">Autre pays</option>
+          </select>
+          <p class="mt-1.5 text-xs text-slate-500">Déclaratif — sert à adapter Mon espace et les ressources proposées.</p>
+        </div>
+
+        <div id="rejoindreServicesCameroun" class="hidden rounded-xl border border-amber-200 bg-amber-50/90 p-4 sm:p-5">
+          <p class="text-xs font-bold uppercase tracking-wider text-amber-900">Ressources pour résidents au Cameroun</p>
+          <p class="mt-1 text-sm text-slate-700">En rejoignant le réseau depuis le Cameroun, vous accédez aussi à nos parcours dédiés :</p>
+          <ul class="mt-3 space-y-2 text-sm text-slate-700">
+            <li><a href="equivalence.html" class="text-brand-blue font-semibold underline">Équivalence FWB</a> et <a href="notre-dossier-fwb.html" class="underline">dossier irréprochable</a></li>
+            <li>Visa, compte bloqué, <a href="assurance-visa.html" class="underline">assurances</a></li>
+            <li><a href="prequalification-dossier.html" class="underline">Pré-qualification</a> et coaching de départ</li>
+          </ul>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Domaine d'études ou d'activité <span class="text-red-600">*</span></label>
+          <select name="domaine" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+            <option value="">— Choisir —</option>
+            <option value="droit_sciences_po">Droit &amp; sciences politiques</option>
+            <option value="sante">Santé &amp; paramédical</option>
+            <option value="ingenierie_sciences">Ingénierie &amp; sciences</option>
+            <option value="business_economie">Business &amp; économie</option>
+            <option value="informatique_data">Informatique &amp; data</option>
+            <option value="arts_communication">Arts, communication &amp; design</option>
+            <option value="sciences_humaines">Sciences humaines &amp; éducation</option>
+            <option value="autre">Autre (précisez ci-dessous)</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend class="block text-sm font-semibold mb-2">Ce qui m'intéresse</legend>
+          <div class="grid sm:grid-cols-2 gap-2 text-sm">
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" name="interets" value="seminaires" class="mt-1" />
+              <span>Webinaires &amp; séminaires</span>
+            </label>
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" name="interets" value="mise_en_relation" class="mt-1" />
+              <span>Mise en relation par domaine</span>
+            </label>
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" name="interets" value="mentorat_recevoir" class="mt-1" />
+              <span>Recevoir du mentorat</span>
+            </label>
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" name="interets" value="mentorat_donner" class="mt-1" />
+              <span>Proposer du mentorat / témoigner</span>
+            </label>
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" name="interets" value="job" class="mt-1" />
+              <span>Bons plans job étudiant</span>
+            </label>
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" name="interets" value="logement" class="mt-1" />
+              <span>Bons plans logement / kot</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1">Quelques mots sur vous (optionnel)</label>
+          <textarea name="message" rows="4" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Année d'études, université, projet, expérience, attentes..."></textarea>
+        </div>
+
+        <label class="flex items-start gap-2 text-xs text-slate-600">
+          <input type="checkbox" name="consentement" required class="mt-0.5" />
+          <span>J'accepte d'être recontacté(e) par StudyAlready, la <strong>création d’un compte sécurisé</strong> (e-mail + mot de passe) et les informations liées au réseau. Voir la <a href="politique-confidentialite.html" class="underline">politique de confidentialité</a>. <span class="text-red-600">*</span></span>
+        </label>
+
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-4 rounded-lg transition shadow-md">Rejoindre le réseau</button>
+        <p id="rejoindreReseauStatus" class="text-sm text-center hidden"></p>
+        <p class="text-xs text-slate-500 text-center">Adhésion gratuite. Pas de spam : vous recevez surtout les invitations aux séminaires et les mises en relation pertinentes.</p>
+      </form>
+
+      <div class="mt-8 text-center">
+        <p class="text-sm text-slate-600">Pas envie de remplir le formulaire ?</p>
+        <a href="https://wa.me/32465339448?text=Bonjour%2C%20je%20souhaite%20rejoindre%20le%20r%C3%A9seau%20StudyAlready%20%28communaut%C3%A9%20%26%20s%C3%A9minaires%29." target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-2 border border-slate-300 text-brand-dark font-semibold px-5 py-3 rounded-full text-sm hover:border-brand-gold">Écrire sur WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-14 bg-slate-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center text-sm text-slate-600">
+      <div id="rejoindreParcoursMarketing">
+        <p>Le réseau est <strong>non commercial</strong> : c'est un outil d'entraide. Nos services payants (équivalence, visa, logement, accélérateur de job) restent <strong>indépendants</strong> de votre inscription au réseau.</p>
+        <a href="index.html#parcours-etudiants" class="mt-6 inline-block text-brand-dark font-semibold underline hover:text-brand-blue">Voir les deux parcours étudiants</a>
+      </div>
+      <p id="rejoindreParcoursCommunaute" class="hidden text-center">Le réseau est <strong>non commercial</strong> : c’est un outil d’entraide entre étudiants, à part des services payants que vous pouvez découvrir plus tard si vous le souhaitez.</p>
+    </div>
+  </section>
+
+  <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+    <div id="rejoindreFooterLinks" class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-4 mb-4">
+      <a href="index.html" class="hover:text-brand-gold">Accueil</a>
+      <a href="communaute.html" class="hover:text-brand-gold">Communauté</a>
+      <a href="evenements-seminaires.html" class="hover:text-brand-gold">Événements</a>
+      <a href="engagement-ethique.html" class="hover:text-brand-gold">Éthique</a>
+      <a href="mentions-legales.html" class="hover:text-brand-gold">Mentions légales</a>
+    </div>
+    <p id="rejoindreFooterCommunauteNote" class="hidden max-w-xl mx-auto px-4 mb-4 text-xs leading-relaxed">
+      Besoin du site complet (tarifs, équivalence FWB, etc.) plus tard : <a href="index.html" class="text-brand-gold hover:underline">studyalready.com</a>
+      · <a href="mentions-legales.html" class="hover:text-brand-gold underline">Mentions légales</a>
+      · <a href="politique-confidentialite.html" class="hover:text-brand-gold underline">Confidentialité</a>
+    </p>
+    <p>© <span id="year"></span> StudyAlready</p>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="/assets/js/vendor/supabase-umd-2.49.4.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/form-submit.js"></script>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/rejoindre-reseau-auth.js"></script>
+  <script src="assets/js/community-stats-public.js?v=20260524public"></script>
+  <script>
+    /* Pré-remplissage : ?parcours=belgique|hors-belgique|cameroun (legacy) et ?domaine= */
+    (function () {
+      function syncRejoindreLocationUI() {
+        var sel = document.getElementById('rejoindreParcours');
+        var paysWrap = document.getElementById('rejoindrePaysWrap');
+        var paysSel = document.getElementById('rejoindrePaysResidence');
+        var camPanel = document.getElementById('rejoindreServicesCameroun');
+        if (!sel) return;
+        var hors = sel.value === 'hors_belgique' || sel.value === 'au_cameroun';
+        if (paysWrap) paysWrap.classList.toggle('hidden', !hors);
+        if (paysSel) {
+          paysSel.required = hors;
+          if (!hors) paysSel.value = '';
+        }
+        if (camPanel) {
+          camPanel.classList.toggle('hidden', !(hors && paysSel && paysSel.value === 'CM'));
+        }
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        var sel = document.getElementById('rejoindreParcours');
+        var paysSel = document.getElementById('rejoindrePaysResidence');
+        if (sel) sel.addEventListener('change', syncRejoindreLocationUI);
+        if (paysSel) paysSel.addEventListener('change', syncRejoindreLocationUI);
+        syncRejoindreLocationUI();
+      });
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('vue') === 'communaute') {
+        try { sessionStorage.setItem('sa_espace_vue', 'communaute'); } catch (e) {}
+      }
+      var communaute = false;
+      try {
+        communaute = sessionStorage.getItem('sa_espace_vue') === 'communaute';
+      } catch (e) {}
+      if (communaute) {
+        var hm = document.getElementById('rejoindreHeroMarketing');
+        var hc = document.getElementById('rejoindreHeroCommunaute');
+        if (hm && hc) {
+          hm.classList.add('hidden');
+          hc.classList.remove('hidden');
+        }
+        var pm = document.getElementById('rejoindreParcoursMarketing');
+        var pc = document.getElementById('rejoindreParcoursCommunaute');
+        if (pm && pc) {
+          pm.classList.add('hidden');
+          pc.classList.remove('hidden');
+        }
+        var fl = document.getElementById('rejoindreFooterLinks');
+        var fn = document.getElementById('rejoindreFooterCommunauteNote');
+        if (fl && fn) {
+          fl.classList.add('hidden');
+          fn.classList.remove('hidden');
+        }
+        try {
+          if (window.location.search) {
+            window.history.replaceState(null, '', window.location.pathname + (window.location.hash || ''));
+          }
+        } catch (e2) {}
+      }
+
+      var parcours = params.get('parcours');
+      var domaine = params.get('domaine');
+      var selParcours = document.querySelector('select[name="parcours"]');
+      var selDomaine = document.querySelector('select[name="domaine"]');
+      var title = document.getElementById('formTitle');
+      var intro = document.getElementById('formIntro');
+      if (parcours && selParcours) {
+        var map = {
+          'belgique': 'deja_belgique_etudiant',
+          'hors-belgique': 'hors_belgique',
+          'cameroun': 'hors_belgique',
+          'ancien': 'deja_belgique_travailleur',
+          'au_cameroun': 'hors_belgique'
+        };
+        var val = map[parcours] || parcours.replace(/-/g, '_');
+        var opt = Array.prototype.find.call(selParcours.options, function (o) { return o.value === val; });
+        if (opt) selParcours.value = val;
+        if (parcours === 'belgique' && title && intro) {
+          title.textContent = 'Adhésion — étudiant déjà en Belgique';
+          intro.innerHTML = 'Bienvenue ! Quelques infos pour qu\'on vous mette en relation avec d\'autres étudiants de votre université et qu\'on vous invite aux séminaires. <span class="text-red-600">*</span> = obligatoire.';
+        }
+        if ((parcours === 'hors-belgique' || parcours === 'cameroun') && title) {
+          title.textContent = 'Adhésion — hors Belgique';
+        }
+        syncRejoindreLocationUI();
+        if (parcours === 'cameroun') {
+          var paysSel = document.getElementById('rejoindrePaysResidence');
+          if (paysSel) paysSel.value = 'CM';
+          syncRejoindreLocationUI();
+        }
+      }
+      if (domaine && selDomaine) {
+        var optD = Array.prototype.find.call(selDomaine.options, function (o) { return o.value === domaine; });
+        if (optD) selDomaine.value = domaine;
+      }
+    })();
+  </script>
+</body>
+</html>

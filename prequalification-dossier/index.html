@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <title>Pré-qualification de dossier FWB — Formulaire détaillé | StudyAlready</title>
+  <meta name="description" content="Décrivez votre diplôme (pays d'origine) et votre projet d'études en Belgique (FWB) : formulaire structuré pour une première analyse de dossier par StudyAlready." />
+  <meta name="keywords" content="pré-qualification dossier équivalence, analyse dossier FWB, diplôme Cameroun Belgique, formulaire études Belgique, StudyAlready" />
+  <link rel="canonical" href="https://www.studyalready.com/prequalification-dossier/" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#0a2540" />
+
+  <meta property="og:title" content="Pré-qualification de dossier FWB | StudyAlready" />
+  <meta property="og:description" content="Formulaire détaillé pour préparer votre accompagnement équivalence FWB." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.studyalready.com/prequalification-dossier/" />
+  <meta property="og:image" content="https://www.studyalready.com/assets/img/og-cover.svg" />
+  <meta property="og:locale" content="fr_BE" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 antialiased">
+
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
+
+  <main class="pt-24 pb-20">
+    <header class="bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white py-12 lg:py-16">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6">
+        <nav class="text-sm text-slate-300 mb-4" aria-label="Fil d'Ariane">
+          <a href="index.html" class="hover:text-brand-gold">Accueil</a>
+          <span class="mx-2">/</span>
+          <span class="text-white">Pré-qualification de dossier</span>
+        </nav>
+        <span class="inline-block text-xs font-bold uppercase tracking-wider bg-brand-gold text-brand-dark px-3 py-1 rounded-full">Axe accompagnement</span>
+        <h1 class="mt-4 font-display text-3xl sm:text-4xl font-extrabold leading-tight">Pré-qualification de votre <span class="text-brand-gold">dossier FWB</span></h1>
+        <p class="mt-4 text-slate-200 leading-relaxed">Ce formulaire détaillé nous permet d'analyser votre situation <strong class="text-white">avant le premier échange</strong> : moins de va-et-vient, des conseils plus précis. Comptez <strong class="text-white">8 à 12 minutes</strong> pour le remplir sérieusement.</p>
+        <p class="mt-3 text-sm text-slate-400">Vous préférez un message court ? Utilisez le <a href="index.html#contact" class="underline hover:text-brand-gold">formulaire de contact</a> sur la page d'accueil.</p>
+      </div>
+    </header>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 -mt-6">
+      <form id="prequalificationForm" method="POST" class="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-10 space-y-10">
+
+        <!-- 1. Coordonnées -->
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-lg text-brand-dark border-b border-brand-gold pb-2 w-full">1. Vos coordonnées</legend>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Nom complet <span class="text-red-600">*</span></label>
+            <input type="text" name="nom_complet" required maxlength="120" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" />
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">Email <span class="text-red-600">*</span></label>
+              <input type="email" name="email" required maxlength="120" autocomplete="email" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">WhatsApp ou téléphone <span class="text-red-600">*</span></label>
+              <input type="tel" name="telephone_whatsapp" required maxlength="40" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="+237 … ou +32 …" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Ville actuelle &amp; pays <span class="text-red-600">*</span></label>
+            <input type="text" name="ville_pays" required maxlength="120" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. Yaoundé, Cameroun" />
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">Date de naissance</label>
+              <input type="date" name="date_naissance" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">Nationalité</label>
+              <input type="text" name="nationalite" maxlength="80" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. camerounaise" />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 2. Diplôme -->
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-lg text-brand-dark border-b border-brand-gold pb-2 w-full">2. Votre diplôme (Cameroun)</legend>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Diplôme le plus élevé obtenu <span class="text-red-600">*</span></label>
+            <select name="diplome_type" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Choisir —</option>
+              <option>Baccalauréat général (série L / littéraire)</option>
+              <option>Baccalauréat scientifique (série C, D, TI…)</option>
+              <option>BTS / Brevet de technicien supérieur</option>
+              <option>DUT / DEUG / Licence / Bachelor</option>
+              <option>Master ou équivalent</option>
+              <option>GCE A Level (sous-système anglophone)</option>
+              <option>Autre (précisez ci-dessous)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Précision si « Autre »</label>
+            <input type="text" name="diplome_autre" maxlength="200" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Établissement d'obtention <span class="text-red-600">*</span></label>
+            <input type="text" name="etablissement_cam" required maxlength="200" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" />
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">Année d'obtention (AAAA) <span class="text-red-600">*</span></label>
+              <input type="text" name="annee_diplome" required maxlength="4" pattern="[0-9]{4}" inputmode="numeric" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="2023" />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1">Mention / résultat global</label>
+              <input type="text" name="mention_ou_grade" maxlength="80" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. Bien, 14/20, GPA…" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Filière suivie &amp; contenu du cursus <span class="text-red-600">*</span></label>
+            <textarea name="filiere_suivie" required rows="4" maxlength="2000" minlength="15" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. BTS Comptabilité-Gestion — matières principales, stages, projet de fin d'études…"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Matières fortes ou spécialités</label>
+            <textarea name="matieres_principales" rows="2" maxlength="1500" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Optionnel mais utile pour l'équivalence."></textarea>
+          </div>
+        </fieldset>
+
+        <!-- 3. Projet Belgique -->
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-lg text-brand-dark border-b border-brand-gold pb-2 w-full">3. Votre projet en Fédération Wallonie-Bruxelles</legend>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Formation ou domaine visé <span class="text-red-600">*</span></label>
+            <textarea name="formation_visee_belgique" required rows="4" maxlength="2000" minlength="15" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. Bachelier en droit à l'ULB, Master en informatique de gestion…"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Établissement(s) déjà identifiés</label>
+            <textarea name="etablissements_envisages" rows="2" maxlength="1500" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Si vous n'en avez pas encore, indiquez « à définir »."></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Rentrée souhaitée <span class="text-red-600">*</span></label>
+            <select name="annee_rentree_souhaitee" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Choisir —</option>
+              <option>Septembre 2026</option>
+              <option>Janvier / février 2027</option>
+              <option>Septembre 2027</option>
+              <option>2028 ou plus tard</option>
+              <option>Pas encore défini</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Où en êtes-vous avec l'équivalence FWB ? <span class="text-red-600">*</span></label>
+            <select name="statut_equivalence" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Choisir —</option>
+              <option>Je n'ai pas encore déposé de demande</option>
+              <option>Dossier déposé, en attente de décision</option>
+              <option>Équivalence déjà reçue (positive)</option>
+              <option>Équivalence refusée ou partielle — je veux un second avis</option>
+              <option>Je ne sais pas / besoin d'éclaircissement</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Avez-vous déjà contacté la FWB ou l'ARES vous-même ?</label>
+            <select name="deja_contact_fwb" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Choisir —</option>
+              <option>Non</option>
+              <option>Oui, par email ou courrier</option>
+              <option>Oui, en personne en Belgique</option>
+              <option>Je ne sais pas</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Délai ressenti</label>
+            <select name="delai_urgence" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Choisir —</option>
+              <option>Très urgent (moins de 2 mois)</option>
+              <option>Normal (2 à 6 mois)</option>
+              <option>Flexible (plus de 6 mois)</option>
+              <option>Pas encore défini</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <!-- 4. Documents -->
+        <fieldset class="space-y-3">
+          <legend class="font-display font-bold text-lg text-brand-dark border-b border-brand-gold pb-2 w-full">4. Documents dont vous disposez aujourd'hui</legend>
+          <p class="text-sm text-slate-600">Cochez tout ce qui s'applique (aucune obligation de tout avoir avant de nous écrire).</p>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" name="doc_copies" class="mt-1 rounded border-slate-300 text-brand-dark focus:ring-brand-gold" />
+            <span class="text-sm">Copies certifiées conformes disponibles</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" name="doc_originaux" class="mt-1 rounded border-slate-300 text-brand-dark focus:ring-brand-gold" />
+            <span class="text-sm">Originaux du diplôme en ma possession</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" name="doc_releves" class="mt-1 rounded border-slate-300 text-brand-dark focus:ring-brand-gold" />
+            <span class="text-sm">Relevés de notes complets (toutes années)</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" name="doc_traductions" class="mt-1 rounded border-slate-300 text-brand-dark focus:ring-brand-gold" />
+            <span class="text-sm">Traductions en français (assermentées ou non)</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" name="doc_motivation" class="mt-1 rounded border-slate-300 text-brand-dark focus:ring-brand-gold" />
+            <span class="text-sm">Lettre de motivation ou projet écrit</span>
+          </label>
+        </fieldset>
+
+        <!-- 5. Langue & budget -->
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-lg text-brand-dark border-b border-brand-gold pb-2 w-full">5. Français, budget, contraintes</legend>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Niveau de français (pour études en FWB) <span class="text-red-600">*</span></label>
+            <select name="niveau_francais" required class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Choisir —</option>
+              <option>Débutant — je dois renforcer avant la rentrée</option>
+              <option>Intermédiaire — je me débrouille à l'écrit</option>
+              <option>Avancé — à l'aise à l'oral et à l'écrit</option>
+              <option>Bilingue ou francophone</option>
+              <option>Je dois passer un test (DELF/DALF…) bientôt</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Budget global approximatif (études + vie, hors frais FWB)</label>
+            <select name="budget_approximatif" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none bg-white">
+              <option value="">— Préfère ne pas indiquer —</option>
+              <option>Moins de 5 000 € / an</option>
+              <option>5 000 à 10 000 € / an</option>
+              <option>10 000 à 15 000 € / an</option>
+              <option>Plus de 15 000 € / an</option>
+              <option>Financement famille / sponsors en cours</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Contraintes familiales ou personnelles</label>
+            <textarea name="personnes_a_charge" rows="2" maxlength="800" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Optionnel : personnes à charge, obligation de retour au pays, etc."></textarea>
+          </div>
+        </fieldset>
+
+        <!-- 6. Libre -->
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-lg text-brand-dark border-b border-brand-gold pb-2 w-full">6. Ce que vous voulez que nous sachions en plus</legend>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Questions, craintes, précisions</label>
+            <textarea name="questions_supplementaires" rows="5" maxlength="4000" class="w-full border border-slate-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-gold outline-none" placeholder="Ex. inquiétude sur les originaux, refus antérieur, visa déjà refusé, etc."></textarea>
+          </div>
+        </fieldset>
+
+        <!-- RGPD -->
+        <div class="bg-brand-cream border border-amber-100 rounded-xl p-5 space-y-4">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" name="consent_rgpd" value="1" required class="mt-1 rounded border-slate-300 text-brand-dark focus:ring-brand-gold" />
+            <span class="text-sm text-slate-800">Je consens au traitement de mes données par StudyAlready aux fins d'analyse de mon dossier et de recontact, conformément à la <a href="politique-confidentialite.html" class="text-brand-blue font-semibold underline">politique de confidentialité</a>. <span class="text-red-600">*</span></span>
+          </label>
+        </div>
+
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-4 rounded-xl transition shadow-lg text-lg">
+          Envoyer ma pré-qualification
+        </button>
+        <p id="prequalificationStatus" class="text-sm text-center hidden min-h-[1.25rem]"></p>
+        <p class="text-xs text-slate-500 text-center">Réponse visée sous <strong>48 h ouvrées</strong> (jours ouvrables en Belgique). Aucune garantie de résultat sur l'équivalence : seule la FWB statue.</p>
+      </form>
+    </div>
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm mt-8">
+    <p>
+      <a href="index.html" class="hover:text-brand-gold">Accueil</a>
+      <span class="mx-2">·</span>
+      <a href="equivalence.html" class="hover:text-brand-gold">Guide FWB</a>
+      <span class="mx-2">·</span>
+      <a href="communaute.html" class="hover:text-brand-gold">Communauté</a>
+      <span class="mx-2">·</span>
+      <a href="evenements-seminaires.html" class="hover:text-brand-gold">Événements</a>
+      <span class="mx-2">·</span>
+      <a href="index.html#contact" class="hover:text-brand-gold">Contact court</a>
+      <span class="mx-2">·</span>
+      <a href="mentions-legales.html" class="hover:text-brand-gold">Mentions légales</a>
+    </p>
+    <p class="mt-3 text-slate-500">© <span id="year"></span> StudyAlready — studyalready.com</p>
+  </footer>
+
+  <a href="https://wa.me/32465339448?text=Bonjour%20StudyAlready%2C%20j%27ai%20rempli%20la%20pr%C3%A9-qualification%20de%20dossier%20sur%20le%20site." target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-6 right-6 z-40 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-2xl flex items-center justify-center transition hover:scale-110">
+    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>
+  </a>
+
+  <script src="assets/js/config.js"></script>
+  <script src="/assets/js/vendor/supabase-umd-2.49.4.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/form-submit.js"></script>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

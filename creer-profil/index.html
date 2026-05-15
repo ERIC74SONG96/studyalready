@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Créer mon profil dans l'annuaire | StudyAlready</title>
+  <meta name="description" content="Créez votre profil StudyAlready : université (ULB, UCLouvain, UMons, ULiège…), faculté, année d'études, statut, domaine et spécialités. Inscription RGPD-friendly." />
+  <link rel="canonical" href="https://www.studyalready.com/creer-profil/" />
+  <meta name="robots" content="index,follow" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 antialiased">
+  <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200"></header>
+
+  <section class="pt-28 pb-12 bg-gradient-to-br from-brand-dark via-brand-blue to-brand-dark text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <p class="text-brand-gold uppercase text-xs font-semibold tracking-widest">Espace membres</p>
+      <h1 class="mt-3 font-display font-bold text-3xl sm:text-4xl leading-tight">Créer mon profil dans l'annuaire.</h1>
+      <p class="mt-4 text-slate-200 max-w-2xl">Renseignez quelques infos pour rejoindre l'<a href="annuaire.html" class="underline hover:text-brand-gold">annuaire StudyAlready</a>. Vous choisissez ce qui est public et ce qui reste privé. Modification ou retrait possible à tout moment sur simple demande.</p>
+    </div>
+  </section>
+
+  <section id="creerProfilExpertBanner" class="hidden pt-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="rounded-2xl border border-amber-300 bg-amber-50 p-5 text-sm text-amber-950">
+        <p class="font-display font-bold text-brand-dark">Profil diplômé / professionnel (mentor)</p>
+        <p class="mt-2">Statut <strong>Diplômé·e / Professionnel·le</strong> prérempli. Cochez <strong>mentorat</strong> et « contact via StudyAlready » pour être trouvable. <a href="devenir-professionnel.html" class="underline font-semibold text-brand-blue">Voir la page d’accueil pros</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rappel : différence avec l'adhésion simple -->
+  <section class="pt-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="rounded-2xl border border-blue-200 bg-blue-50/60 p-5 flex flex-col sm:flex-row items-start gap-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">i</div>
+        <div class="flex-1 text-sm text-slate-700">
+          <p><strong class="text-brand-dark">Vous êtes au bon endroit pour devenir visible dans l'annuaire.</strong></p>
+          <p class="mt-1.5">Si vous souhaitez simplement <strong>recevoir les invitations</strong> (séminaires, bons plans) <strong>sans apparaître publiquement</strong>, utilisez plutôt l'<a href="rejoindre-reseau.html" class="underline text-brand-blue font-semibold">adhésion simple au réseau</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <form id="creerProfilForm" method="POST" class="space-y-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-brand-dark">1. Identité</legend>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Prénom <span class="text-red-600">*</span></label>
+              <input type="text" name="prenom" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Initiale du nom <span class="text-red-600">*</span></label>
+              <input type="text" name="initial_nom" required maxlength="3" placeholder="Ex : N." class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+              <p class="mt-1 text-[11px] text-slate-500">Pour respecter votre vie privée, seule l'initiale est publique.</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Email <span class="text-red-600">*</span></label>
+              <input type="email" name="email" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+              <p class="mt-1 text-[11px] text-slate-500">Privé. Sert à la mise en relation interne.</p>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">WhatsApp (facultatif)</label>
+              <input type="tel" name="telephone" placeholder="+32 ... ou +237 ..." class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Lien LinkedIn (facultatif)</label>
+            <input type="url" name="linkedin" placeholder="https://linkedin.com/in/..." class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+          </div>
+        </fieldset>
+
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-brand-dark">2. Parcours académique</legend>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Statut <span class="text-red-600">*</span></label>
+              <select name="statut" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:ring-2 focus:ring-brand-gold outline-none">
+                <option value="">— Choisir —</option>
+                <option>Étudiant·e</option>
+                <option>Stagiaire</option>
+                <option>Diplômé·e / Professionnel·le</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Année d'études (si applicable)</label>
+              <input type="text" name="annee" placeholder="Ex : Master 1, Bachelier 2, Diplômé 2023" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Université / Haute école <span class="text-red-600">*</span></label>
+              <select name="universite" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:ring-2 focus:ring-brand-gold outline-none">
+                <option value="">— Choisir —</option>
+                <option>ULB</option>
+                <option>UCLouvain</option>
+                <option>ULiège</option>
+                <option>UMons</option>
+                <option>UNamur</option>
+                <option>USL-B</option>
+                <option>HE Léonard de Vinci</option>
+                <option>HEH</option>
+                <option>HELHa</option>
+                <option>HE2B</option>
+                <option>EPHEC</option>
+                <option>ICHEC</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Faculté / Filière <span class="text-red-600">*</span></label>
+              <input type="text" name="filiere" required placeholder="Ex : Droit, Médecine, Ingénieur civil…" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Domaine principal <span class="text-red-600">*</span></label>
+              <select name="domaine" required class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:ring-2 focus:ring-brand-gold outline-none">
+                <option value="">— Choisir —</option>
+                <option>Droit &amp; sciences politiques</option>
+                <option>Santé &amp; paramédical</option>
+                <option>Ingénierie &amp; sciences</option>
+                <option>Business &amp; économie</option>
+                <option>Informatique &amp; data</option>
+                <option>Arts, communication &amp; design</option>
+                <option>Sciences humaines &amp; éducation</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Ville actuelle</label>
+              <input type="text" name="ville" placeholder="Bruxelles, Mons, Liège, Yaoundé…" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-brand-dark">3. Aide proposée</legend>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Spécialités / mots-clés</label>
+            <input type="text" name="specialites" placeholder="Ex : Aide examens, conseils carrière, logement Ixelles, programmation Python…" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none" />
+            <p class="mt-1 text-[11px] text-slate-500">Séparez par des virgules. Maximum 3 affichées sur la carte.</p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Présentation (3-4 phrases)</label>
+            <textarea name="bio" rows="3" maxlength="400" placeholder="Qui êtes-vous, ce que vous aimez aider, vos disponibilités…" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Profil lié au droit / séjour (optionnel)</label>
+            <select name="tag_juridique" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:ring-2 focus:ring-brand-gold outline-none">
+              <option value="">— Pas de focus juridique / séjour —</option>
+              <option value="avocat_juriste">Avocat·e / juriste (professionnel·le)</option>
+              <option value="etudiant_droit">Étudiant·e en droit (entraide, pas cabinet)</option>
+              <option value="experience_visa_sejour">Expérience visa / titre de séjour / recours</option>
+            </select>
+            <p class="mt-1 text-[11px] text-slate-500">StudyAlready ne vérifie pas les titres professionnels. Pour un acte juridique officiel, voir <a href="besoin-d-aide.html#titre-sejour" class="underline text-brand-blue">Besoin d’aide ?</a>.</p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-2">Je suis ouvert·e à :</label>
+            <p class="text-[11px] text-slate-500 mb-2">Les membres peuvent filtrer l’annuaire (visa, titre de séjour, droit des étrangers).</p>
+            <div class="grid sm:grid-cols-2 gap-2 text-sm">
+              <label class="flex items-start gap-2 sm:col-span-2"><input type="checkbox" name="ouverture" value="visa_titre_sejour" class="mt-1" /><span><strong>Visa / titre de séjour</strong> — entraide sur le parcours (pas conseil juridique officiel)</span></label>
+              <label class="flex items-start gap-2 sm:col-span-2"><input type="checkbox" name="ouverture" value="droit_etrangers_recours" class="mt-1" /><span><strong>Droit des étrangers / recours</strong> — orientation ou retour d’expérience</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="seminaires" class="mt-1" /><span>Intervenir dans un séminaire</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="mentorat" class="mt-1" /><span>Mentorat ponctuel</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="aide_examens" class="mt-1" /><span>Aide examens / cours</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="logement" class="mt-1" /><span>Conseils logement / kot</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="job" class="mt-1" /><span>Bons plans job étudiant</span></label>
+              <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="reseau_pro" class="mt-1" /><span>Réseau pro / insertion</span></label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="space-y-4">
+          <legend class="font-display font-bold text-brand-dark">4. Confidentialité &amp; consentement</legend>
+          <div class="space-y-2 text-sm">
+            <label class="flex items-start gap-2"><input type="checkbox" name="consent_publication" value="oui" required class="mt-1" /><span>Je consens à la <strong>publication de mon profil</strong> dans l'annuaire (prénom + initiale, université, filière, domaine, statut, ville, spécialités, bio). <span class="text-red-600">*</span></span></label>
+            <label class="flex items-start gap-2"><input type="checkbox" name="contact_via_studyalready" value="oui" class="mt-1" /><span>J'accepte que les membres me <strong>contactent via StudyAlready</strong> (mon email et mon téléphone restent privés ; StudyAlready relaie les messages).</span></label>
+            <label class="flex items-start gap-2"><input type="checkbox" name="afficher_linkedin" value="oui" class="mt-1" /><span>Afficher mon <strong>lien LinkedIn</strong> sur la carte si je l'ai renseigné.</span></label>
+            <label class="flex items-start gap-2"><input type="checkbox" name="newsletter" value="oui" class="mt-1" /><span>Recevoir les <strong>invitations aux séminaires</strong> et les nouvelles du réseau.</span></label>
+            <label class="flex items-start gap-2"><input type="checkbox" name="rgpd" value="oui" required class="mt-1" /><span>J'ai lu la <a href="politique-confidentialite.html" class="underline">politique de confidentialité</a> et je sais que je peux demander <strong>modification ou retrait</strong> à tout moment via <a href="mailto:contact@studyalready.com" class="underline">contact@studyalready.com</a>. <span class="text-red-600">*</span></span></label>
+          </div>
+        </fieldset>
+
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <p id="creerProfilStatus" class="text-sm text-center hidden min-h-[1.5rem]" role="status" aria-live="polite"></p>
+
+        <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-3.5 rounded-lg text-sm transition shadow-md">Soumettre mon profil</button>
+        <p class="text-xs text-slate-500 text-center">Une fois le formulaire accepté, votre fiche apparaît dans l’<a href="annuaire.html" class="underline font-medium">annuaire</a> pour les autres membres (souvent après un rafraîchissement de la page).</p>
+      </form>
+
+      <div class="mt-8 rounded-2xl bg-white border border-slate-200 p-5 text-sm text-slate-600">
+        <p><strong class="text-brand-dark">À savoir.</strong> Votre fiche est enregistrée de façon sécurisée (hébergement en Europe) et apparaît dans l’<a href="annuaire.html" class="underline">annuaire</a> pour les membres de la communauté dès l’envoi du formulaire, si vous avez coché le consentement à la publication. L’e-mail n’est jamais affiché publiquement.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+    <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-4 mb-4">
+      <a href="index.html" class="hover:text-brand-gold">Accueil</a>
+      <a href="annuaire.html" class="hover:text-brand-gold">Annuaire</a>
+      <a href="communaute.html" class="hover:text-brand-gold">Communauté</a>
+      <a href="evenements-seminaires.html" class="hover:text-brand-gold">Événements</a>
+      <a href="politique-confidentialite.html" class="hover:text-brand-gold">Confidentialité</a>
+    </div>
+    <p>© <span id="year"></span> StudyAlready</p>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="/assets/js/vendor/supabase-umd-2.49.4.min.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/creer-profil-supabase.js?v=20260516pros"></script>
+  <script src="assets/js/header.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

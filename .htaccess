@@ -13,33 +13,9 @@ AddDefaultCharset UTF-8
 # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 # RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
-# ============== Masque URL (.html sur disque, URL propre à l'écran) ==============
-# Fichiers et liens restent en .html ; nécessite mod_rewrite chez LWS.
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-
-  # A) /page.html → /page (masque dans la barre d'adresse)
-  RewriteCond %{ENV:REDIRECT_STATUS} ^$
-  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
-  RewriteRule ^ / [R=301,L]
-  RewriteCond %{ENV:REDIRECT_STATUS} ^$
-  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
-  RewriteRule ^ /%1 [R=301,L,NE]
-
-  # B) /page → page.html (plusieurs syntaxes pour hébergement mutualisé)
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
-  RewriteRule ^(.+?)/?$ $1.html [L]
-
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^ %{REQUEST_FILENAME}.html [L]
-</IfModule>
-
-DirectoryIndex index.html
+# URLs propres : dossiers /page/index.html (pas de mod_rewrite requis).
+# Les fichiers page.html restent la référence ; régénérer avec scripts/generate-url-folders.py
+DirectoryIndex index.html index.htm
 
 # ============== EN-TÊTES DE SÉCURITÉ ==============
 <IfModule mod_headers.c>

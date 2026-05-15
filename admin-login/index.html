@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion admin | StudyAlready</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo-icon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {
+      colors: { brand: { dark: '#0a2540', blue: '#1e3a8a', gold: '#f5b800', cream: '#fff8e7' } },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Poppins', 'sans-serif'] }
+    } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="font-sans text-slate-800 bg-slate-50 antialiased min-h-screen flex flex-col">
+  <main class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <a href="index.html" class="inline-flex items-center gap-2 text-brand-dark hover:text-brand-blue">
+          <span class="font-display font-bold text-2xl">StudyAlready</span>
+        </a>
+        <p class="mt-2 text-sm text-slate-500">Espace administrateur</p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+        <h1 class="font-display font-bold text-2xl text-brand-dark mb-1">Connexion</h1>
+        <p class="text-sm text-slate-600 mb-6">Réservé à l'équipe StudyAlready.</p>
+
+        <form id="adminLoginForm" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1" for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1" for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password"
+                   class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue" />
+          </div>
+
+          <p id="adminLoginStatus" class="hidden text-sm"></p>
+
+          <button type="submit" id="adminLoginBtn"
+                  class="w-full bg-brand-dark hover:bg-brand-blue text-white font-semibold rounded-lg px-4 py-2.5 transition">
+            Se connecter
+          </button>
+        </form>
+
+        <p class="mt-6 text-xs text-slate-500 text-center">
+          Mot de passe oublié ? Réinitialisez-le depuis votre tableau de bord Supabase
+          (Authentication → Users → … → Reset password).
+        </p>
+      </div>
+
+      <p class="text-center text-xs text-slate-400 mt-6">
+        © <span id="year"></span> StudyAlready · <a href="index.html" class="underline hover:text-slate-600">Retour au site</a>
+      </p>
+    </div>
+  </main>
+
+  <script src="assets/js/config.js?v=20260515b"></script>
+  <script src="/assets/js/vendor/supabase-umd-2.49.4.min.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var c = window.STUDYALREADY_CONFIG || {};
+      var sb = (window.supabase && typeof window.supabase.createClient === 'function')
+        ? window.supabase.createClient(c.SUPABASE_URL, c.SUPABASE_ANON_KEY, {
+            auth: { persistSession: true, autoRefreshToken: true }
+          })
+        : null;
+
+      var form = document.getElementById('adminLoginForm');
+      var statusEl = document.getElementById('adminLoginStatus');
+      var btn = document.getElementById('adminLoginBtn');
+
+      function setStatus(text, cls) {
+        statusEl.classList.remove('hidden', 'text-red-600', 'text-green-600', 'text-slate-600');
+        statusEl.classList.add(cls || 'text-slate-600');
+        statusEl.textContent = text;
+      }
+
+      function setStatusHtml(html, cls) {
+        statusEl.classList.remove('hidden', 'text-red-600', 'text-green-600', 'text-slate-600');
+        statusEl.classList.add(cls || 'text-slate-600');
+        statusEl.innerHTML = html;
+      }
+
+      var params = new URLSearchParams(window.location.search || '');
+      if (params.get('raison') === 'non-admin') {
+        setStatusHtml(
+          '<strong>Accès refusé.</strong> Ce compte n’est pas enregistré comme administrateur dans Supabase (table <code class="text-xs bg-slate-100 px-1 rounded">public.admins</code>). ' +
+          'Ouvrez le SQL Editor et insérez votre <code class="text-xs bg-slate-100 px-1 rounded">user_id</code> dans cette table, puis reconnectez-vous.',
+          'text-red-600'
+        );
+      }
+
+      if (!sb) {
+        setStatus('Erreur : client Supabase indisponible (bloqueur de pub ?).', 'text-red-600');
+        if (btn) btn.disabled = true;
+        return;
+      }
+
+      var loginJumpDone = false;
+
+      function tryAdminOnce(retryIndex) {
+        if (loginJumpDone) return;
+        sb.auth.getSession().then(function (r) {
+          if (loginJumpDone) return;
+          var session = r && r.data && r.data.session;
+          if (session) {
+            tryAdminAutoJump(session);
+            return;
+          }
+          if (retryIndex >= 2) return;
+          var waitMs = retryIndex === 0 ? 400 : 900;
+          setTimeout(function () {
+            tryAdminOnce(retryIndex + 1);
+          }, waitMs);
+        });
+      }
+
+      function tryAdminAutoJump(session) {
+        if (loginJumpDone || !session) return;
+        sb.rpc('is_admin').then(function (a) {
+          if (loginJumpDone) return;
+          if (!a.error && a.data === true) {
+            loginJumpDone = true;
+            window.location.replace('admin.html');
+          }
+        });
+      }
+
+      tryAdminOnce(0);
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = document.getElementById('email').value.trim();
+        var password = document.getElementById('password').value;
+        if (!email || !password) return;
+
+        btn.disabled = true;
+        setStatus('Connexion en cours…', 'text-slate-600');
+
+        sb.auth.signInWithPassword({ email: email, password: password }).then(function (r) {
+          if (r.error) {
+            btn.disabled = false;
+            var msg = r.error.message || 'Identifiants invalides.';
+            if (/invalid login|invalid credentials/i.test(msg)) msg = 'Email ou mot de passe incorrect.';
+            if (/email not confirmed|confirm/i.test(msg)) {
+              msg = 'Email non confirmé. Dans Supabase : Authentication → Users → votre compte → confirmez l’email, ou cochez « Auto Confirm » si vous recréez le compte.';
+            }
+            setStatus(msg, 'text-red-600');
+            return;
+          }
+          return sb.auth.getSession().then(function () {
+            var uid = r.data && r.data.user && r.data.user.id;
+            if (!uid) {
+              btn.disabled = false;
+              setStatus('Connexion impossible.', 'text-red-600');
+              return;
+            }
+            return sb.rpc('is_admin').then(function (a) {
+              if (a.error) {
+                var msg = a.error.message || '';
+                if (/function .* does not exist/i.test(msg) || a.error.code === '42883') {
+                  setStatus('La migration SQL « 003_admin_dashboard.sql » n’a pas encore été exécutée dans Supabase. Lancez-la dans SQL Editor puis réessayez.', 'text-red-600');
+                } else {
+                  setStatus('Erreur vérification droits : ' + msg, 'text-red-600');
+                }
+                sb.auth.signOut();
+                btn.disabled = false;
+                return;
+              }
+              if (a.data !== true) {
+                setStatusHtml(
+                  'Connexion réussie, mais ce compte <strong>n’est pas administrateur</strong>. Dans Supabase → SQL Editor, exécutez par exemple :<br>' +
+                  '<code class="block mt-2 text-xs bg-slate-100 p-2 rounded break-all">' +
+                  'INSERT INTO public.admins (user_id, email, full_name) VALUES<br>' +
+                  '(\'' + uid + '\', \'' + email.replace(/'/g, "''") + '\', \'Admin\');' +
+                  '</code>',
+                  'text-red-600'
+                );
+                sb.auth.signOut();
+                btn.disabled = false;
+                return;
+              }
+              setStatus('Connecté ! Redirection…', 'text-green-600');
+              window.location.replace('admin.html');
+            });
+          });
+        });
+      });
+    })();
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
