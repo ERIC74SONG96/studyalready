@@ -61,7 +61,38 @@ function splitSuffix(url) {
   return { pathPart: url.slice(0, splitAt), suffix: url.slice(splitAt) };
 }
 
-function cleanInternalHtmlUrl(rawUrl) {
+function trimCleanRouteTrailingSlash(route) {
+  if (!route || route === '/') return route || '/';
+  return route.endsWith('/') ? route.slice(0, -1) : route;
+}
+
+function resolveCleanRoute(pathPart, sourcePath) {
+  let clean = pathPart.slice(0, -5);
+  if (clean === '' || clean === '/index' || clean === 'index' || clean.endsWith('/index')) {
+    clean = clean.replace(/\/?index$/, '') || '/';
+  }
+
+  if (clean.startsWith('/')) return trimCleanRouteTrailingSlash(clean);
+  if (clean.startsWith('../')) {
+    return trimCleanRouteTrailingSlash('/' + clean.replace(/^(\.\.\/)+/, ''));
+  }
+
+  if (sourcePath && sourcePath.startsWith('blog/') && !clean.startsWith('blog/')) {
+    return trimCleanRouteTrailingSlash('/blog/' + clean);
+  }
+
+  return trimCleanRouteTrailingSlash('/' + clean);
+}
+
+function cleanSiteUrl(url) {
+  return url.replace(/https:\/\/www\.studyalready\.com\/([^\s"'<>?#]+?)\.html(?=([?#"'\s<>]|$))/g, (_m, route) => {
+    return 'https://www.studyalready.com/' + route.replace(/\/index$/, '');
+  }).replace(/https:\/\/www\.studyalready\.com\/([^\s"'<>?#]+?)\/(?=([?#"'\s<>]|$))/g, (_m, route) => {
+    return 'https://www.studyalready.com/' + route;
+  });
+}
+
+function cleanInternalHtmlUrl(rawUrl, sourcePath) {
   const url = String(rawUrl || '').trim();
   if (!url || url.startsWith('#')) return rawUrl;
   if (/^(mailto:|tel:|sms:|https:\/\/wa\.me\/|javascript:)/i.test(url)) return rawUrl;
@@ -77,27 +108,22 @@ function cleanInternalHtmlUrl(rawUrl) {
   const { pathPart, suffix } = splitSuffix(localUrl);
   if (!pathPart.endsWith('.html')) return rawUrl;
 
-  let clean = pathPart.slice(0, -5);
-  if (clean === '' || clean === '/index' || clean === 'index' || clean.endsWith('/index')) {
-    clean = clean.replace(/\/?index$/, '') || '/';
-  }
-  if (!clean.startsWith('/') && (url.startsWith('/') || isAbsoluteSameOrigin)) {
-    clean = '/' + clean;
-  }
+  const clean = resolveCleanRoute(pathPart, sourcePath);
   if (isAbsoluteSameOrigin) {
     return sameOrigin.replace(/\/$/, '') + clean + suffix;
   }
   return clean + suffix;
 }
 
-function normalizeInternalLinks(html) {
+function normalizeInternalLinks(html, sourcePath) {
   return html.replace(/\b(href|action|content)=(["'])(.*?)\2/g, (match, attr, quote, value) => {
-    const clean = cleanInternalHtmlUrl(value);
+    const clean = cleanInternalHtmlUrl(value, sourcePath);
     return `${attr}=${quote}${clean}${quote}`;
   });
 }
 
 export function readStaticHtmlPage(sourcePath) {
   const abs = path.join(ROOT_DIR, sourcePath);
-  return normalizeInternalLinks(fs.readFileSync(abs, 'utf8'));
+  const html = fs.readFileSync(abs, 'utf8');
+  return cleanSiteUrl(normalizeInternalLinks(html, sourcePath));
 }

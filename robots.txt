@@ -2,7 +2,17 @@ User-agent: *
 Allow: /
 Disallow: /php/
 Disallow: /admin.html
+Disallow: /admin
+Disallow: /admin/
 Disallow: /admin-login.html
+Disallow: /admin-login
+Disallow: /admin-login/
+Disallow: /dashboard.html
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /espace-etudiant/dashboard.html
+Disallow: /espace-etudiant/dashboard
+Disallow: /espace-etudiant/dashboard/
 Disallow: /assets/docs/dossier-fwb-print.html
 Disallow: /assets/docs/cv-belge-print.html
 

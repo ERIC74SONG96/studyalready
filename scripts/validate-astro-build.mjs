@@ -41,6 +41,16 @@ if (/href=["'](?:\/)?tarifs-packs\.html/.test(equivalence)) {
   console.error('Les liens internes .html ne sont pas normalisés dans le build Astro.');
   failed = true;
 }
+if (/rel="canonical" href="https:\/\/www\.studyalready\.com\/[^"]+\/"/.test(equivalence)) {
+  console.error('Les canonicals du build Astro conservent un slash final non canonique.');
+  failed = true;
+}
+
+const blogArticle = fs.readFileSync(path.join(DIST_DIR, 'blog/equivalence-bts-cameroun-belgique/index.html'), 'utf8');
+if (/href=["']\/?gce-a-level-etudes-fwb/.test(blogArticle)) {
+  console.error('Les liens relatifs de blog ne sont pas préfixés par /blog/.');
+  failed = true;
+}
 
 if (failed) process.exit(1);
 console.log('Build Astro validé.');
