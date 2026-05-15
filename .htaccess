@@ -14,22 +14,29 @@ AddDefaultCharset UTF-8
 # RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
 # ============== URLs propres (sans .html) ==============
+# Nécessite mod_rewrite + AllowOverride (FileInfo) sur LWS.
+Options -Indexes +FollowSymLinks
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # Redirection 301 : *.html → URL sans extension (SEO + liens partagés)
+  # 301 : *.html → URL sans extension (uniquement requête navigateur, pas sous-requête interne)
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
   RewriteRule ^ / [R=301,L]
+
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
   RewriteRule ^ /%1 [R=301,L,NE]
 
-  # Servir le fichier .html correspondant
-  RewriteCond %{REQUEST_FILENAME} !-d
+  # /page → servir /page.html (cible absolue = fiable sur hébergement mutualisé)
   RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.+?)/?$ $1.html [L]
+  RewriteRule ^ %{REQUEST_FILENAME}.html [L]
 </IfModule>
+
+DirectoryIndex index.html index.htm
 
 # ============== EN-TÊTES DE SÉCURITÉ ==============
 <IfModule mod_headers.c>
@@ -63,4 +70,4 @@ AddDefaultCharset UTF-8
 </FilesMatch>
 
 # ============== PAGE D'ERREUR PERSONNALISÉE ==============
-ErrorDocument 404 /
+ErrorDocument 404 /404.html
