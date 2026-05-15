@@ -13,6 +13,7 @@ const PUBLIC_DIRS = [
 const PUBLIC_FILES = [
   '.htaccess',
   'google6b825c246d60bec6.html',
+  'google670b42c1f0efa7d1.html',
   'manifest.webmanifest',
   'offline.html',
   'robots.txt',
