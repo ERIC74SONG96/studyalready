@@ -82,7 +82,8 @@
         contact_via_studyalready: boolCheckbox(form, 'contact_via_studyalready'),
         afficher_linkedin: boolCheckbox(form, 'afficher_linkedin'),
         newsletter: boolCheckbox(form, 'newsletter'),
-        consent_rgpd: boolCheckbox(form, 'rgpd')
+        consent_rgpd: boolCheckbox(form, 'rgpd'),
+        tag_juridique: (fd.get('tag_juridique') || '').trim() || null
       };
 
       showStatus(statusEl, 'Envoi en cours…', 'text-slate-600');
@@ -124,6 +125,24 @@
           }
         });
     }, true);
+
+    try {
+      if (String(window.location.search || '').indexOf('expert=1') !== -1) {
+        var statutEl = form.querySelector('[name="statut"]');
+        var domEl = form.querySelector('[name="domaine"]');
+        var tagEl = form.querySelector('[name="tag_juridique"]');
+        if (statutEl) statutEl.value = 'Diplômé·e / Professionnel·le';
+        if (domEl) domEl.value = 'Droit & sciences politiques';
+        if (tagEl) tagEl.value = 'avocat_juriste';
+        form.querySelectorAll('input[name="ouverture"]').forEach(function (cb) {
+          if (cb.value === 'visa_titre_sejour' || cb.value === 'droit_etrangers_recours' || cb.value === 'mentorat') {
+            cb.checked = true;
+          }
+        });
+        var mentorat = form.querySelector('input[name="contact_via_studyalready"]');
+        if (mentorat) mentorat.checked = true;
+      }
+    } catch (e) {}
   });
 
   function escapeHtml(s) {

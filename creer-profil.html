@@ -152,8 +152,21 @@
             <textarea name="bio" rows="3" maxlength="400" placeholder="Qui êtes-vous, ce que vous aimez aider, vos disponibilités…" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold outline-none"></textarea>
           </div>
           <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Profil lié au droit / séjour (optionnel)</label>
+            <select name="tag_juridique" class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:ring-2 focus:ring-brand-gold outline-none">
+              <option value="">— Pas de focus juridique / séjour —</option>
+              <option value="avocat_juriste">Avocat·e / juriste (professionnel·le)</option>
+              <option value="etudiant_droit">Étudiant·e en droit (entraide, pas cabinet)</option>
+              <option value="experience_visa_sejour">Expérience visa / titre de séjour / recours</option>
+            </select>
+            <p class="mt-1 text-[11px] text-slate-500">StudyAlready ne vérifie pas les titres professionnels. Pour un acte juridique officiel, voir <a href="besoin-d-aide.html#titre-sejour" class="underline text-brand-blue">Besoin d’aide ?</a>.</p>
+          </div>
+          <div>
             <label class="block text-xs font-semibold text-slate-600 mb-2">Je suis ouvert·e à :</label>
+            <p class="text-[11px] text-slate-500 mb-2">Les membres peuvent filtrer l’annuaire (visa, titre de séjour, droit des étrangers).</p>
             <div class="grid sm:grid-cols-2 gap-2 text-sm">
+              <label class="flex items-start gap-2 sm:col-span-2"><input type="checkbox" name="ouverture" value="visa_titre_sejour" class="mt-1" /><span><strong>Visa / titre de séjour</strong> — entraide sur le parcours (pas conseil juridique officiel)</span></label>
+              <label class="flex items-start gap-2 sm:col-span-2"><input type="checkbox" name="ouverture" value="droit_etrangers_recours" class="mt-1" /><span><strong>Droit des étrangers / recours</strong> — orientation ou retour d’expérience</span></label>
               <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="seminaires" class="mt-1" /><span>Intervenir dans un séminaire</span></label>
               <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="mentorat" class="mt-1" /><span>Mentorat ponctuel</span></label>
               <label class="flex items-start gap-2"><input type="checkbox" name="ouverture" value="aide_examens" class="mt-1" /><span>Aide examens / cours</span></label>

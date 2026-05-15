@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  var LEGAL_OUVERTURES = ['visa_titre_sejour', 'droit_etrangers_recours'];
+  var TAG_JURIDIQUE_LABELS = {
+    avocat_juriste: 'Avocat·e / juriste',
+    etudiant_droit: 'Étudiant·e en droit',
+    experience_visa_sejour: 'Visa / séjour / recours'
+  };
+
   var UNIVERSITE_COLORS = {
     'ULB': '#c8102e',
     'UCLouvain': '#1d3a8a',
@@ -31,6 +38,51 @@
     if (statut === 'Diplômé·e / Professionnel·le') return 'bg-amber-100 text-amber-800';
     if (statut === 'Stagiaire') return 'bg-violet-100 text-violet-800';
     return 'bg-sky-100 text-sky-800';
+  }
+
+  function parseOuvertures(raw) {
+    if (Array.isArray(raw)) return raw;
+    if (typeof raw === 'string' && raw) {
+      try {
+        var p = JSON.parse(raw);
+        return Array.isArray(p) ? p : [];
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  function isLegalMember(m) {
+    if (!m) return false;
+    if (m.domaine === 'Droit & sciences politiques') return true;
+    var ouv = m.ouvertures || [];
+    var i;
+    for (i = 0; i < LEGAL_OUVERTURES.length; i++) {
+      if (ouv.indexOf(LEGAL_OUVERTURES[i]) !== -1) return true;
+    }
+    if (m.tag_juridique && TAG_JURIDIQUE_LABELS[m.tag_juridique]) return true;
+    var hay = [m.bio || '', (m.specialites || []).join(' ')].join(' ').toLowerCase();
+    return /\b(avocat|juriste|visa|titre de s[eé]jour|recours|étrangers?|immigration)\b/.test(hay);
+  }
+
+  function isExpertLegal(m) {
+    return m && m.statut === 'Diplômé·e / Professionnel·le' && isLegalMember(m);
+  }
+
+  function legalBadgesHtml(m) {
+    var parts = [];
+    var ouv = m.ouvertures || [];
+    if (ouv.indexOf('visa_titre_sejour') !== -1) {
+      parts.push('<span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-900 font-semibold mr-1 mb-1">Visa / titre de séjour</span>');
+    }
+    if (ouv.indexOf('droit_etrangers_recours') !== -1) {
+      parts.push('<span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-900 font-semibold mr-1 mb-1">Droit des étrangers</span>');
+    }
+    if (m.tag_juridique && TAG_JURIDIQUE_LABELS[m.tag_juridique]) {
+      parts.push('<span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-semibold mr-1 mb-1">' + escapeHTML(TAG_JURIDIQUE_LABELS[m.tag_juridique]) + '</span>');
+    }
+    return parts.join('');
   }
 
   function escapeHTML(s) {
@@ -69,7 +121,7 @@
               '<p class="text-xs text-slate-400 truncate">' + escapeHTML((m.annee || '') + (m.ville ? ' · ' + m.ville : '')) + '</p>' +
             '</div>' +
           '</div>' +
-          '<div class="mt-3"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide ' + badgeStatut(m.statut) + '">' + escapeHTML(m.statut || '') + '</span></div>' +
+          '<div class="mt-3 flex flex-wrap gap-1"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide ' + badgeStatut(m.statut) + '">' + escapeHTML(m.statut || '') + '</span>' + legalBadgesHtml(m) + '</div>' +
           '<p class="mt-3 text-sm text-slate-600 line-clamp-3 flex-1">' + escapeHTML(m.bio || '') + '</p>' +
           (specHTML ? '<div class="mt-3">' + specHTML + '</div>' : '') +
           '<div class="mt-4 flex gap-2 flex-wrap">' +
@@ -103,9 +155,15 @@
     if (filters.universite && m.universite !== filters.universite) return false;
     if (filters.domaine && m.domaine !== filters.domaine) return false;
     if (filters.statut && m.statut !== filters.statut) return false;
+    if (filters.aide === 'juridique' && !isLegalMember(m)) return false;
     if (filters.q) {
       var q = filters.q.toLowerCase();
-      var hay = [m.prenom, m.initial_nom, m.filiere, m.universite, m.ville, m.bio, (m.specialites || []).join(' ')].join(' ').toLowerCase();
+      var hay = [
+        m.prenom, m.initial_nom, m.filiere, m.universite, m.ville, m.bio,
+        (m.specialites || []).join(' '),
+        m.tag_juridique || '',
+        TAG_JURIDIQUE_LABELS[m.tag_juridique] || ''
+      ].join(' ').toLowerCase();
       if (hay.indexOf(q) === -1) return false;
     }
     return true;
@@ -120,7 +178,31 @@
     } else if (!Array.isArray(out.specialites)) {
       out.specialites = [];
     }
+    out.ouvertures = parseOuvertures(out.ouvertures);
+    out.tag_juridique = (out.tag_juridique || '').trim();
     return out;
+  }
+
+  function renderExpertsSection(membres) {
+    var grid = document.getElementById('annuaireExpertsGrid');
+    var empty = document.getElementById('annuaireExpertsEmpty');
+    if (!grid) return;
+    var experts = membres.filter(isExpertLegal);
+    if (experts.length === 0) {
+      grid.innerHTML = '';
+      if (empty) empty.classList.remove('hidden');
+      return;
+    }
+    if (empty) empty.classList.add('hidden');
+    grid.innerHTML = experts.map(renderCard).join('');
+  }
+
+  function updateLegalNotice(show) {
+    var el = document.getElementById('annuaireLegalNotice');
+    if (el) {
+      if (show) el.classList.remove('hidden');
+      else el.classList.add('hidden');
+    }
   }
 
   function parseProfilesPayload(raw) {
@@ -170,6 +252,7 @@
     var fDom = document.getElementById('filterDomaine');
     var fStatut = document.getElementById('filterStatut');
     var fQ = document.getElementById('filterQ');
+    var fAide = document.getElementById('filterAide');
     var btnReset = document.getElementById('filterReset');
 
     if (!grid) return;
@@ -233,10 +316,12 @@
         var qUniv = sp.get('universite');
         var qStat = sp.get('statut');
         var qSearch = sp.get('q');
+        var qAide = sp.get('aide');
         if (qDom && fDom) fDom.value = qDom;
         if (qUniv && fUniv) fUniv.value = qUniv;
         if (qStat && fStatut) fStatut.value = qStat;
         if (qSearch && fQ) fQ.value = qSearch;
+        if (qAide === 'juridique' && fAide) fAide.value = 'juridique';
       } catch (e) {}
 
       function render() {
@@ -244,8 +329,10 @@
           universite: fUniv ? fUniv.value : '',
           domaine: fDom ? fDom.value : '',
           statut: fStatut ? fStatut.value : '',
+          aide: fAide ? fAide.value : '',
           q: fQ ? fQ.value.trim() : ''
         };
+        updateLegalNotice(filters.aide === 'juridique');
         var filtered = membres.filter(function (m) { return matches(m, filters); });
         if (filtered.length === 0) {
           grid.innerHTML = '';
@@ -256,6 +343,9 @@
               if (membres.length === 0) {
                 emptyP.textContent =
                   'Aucun membre pour le moment. Les fiches apparaissent ici après envoi du formulaire « Créer mon profil », avec le consentement du membre.';
+              } else if (filters.aide === 'juridique') {
+                emptyP.textContent =
+                  'Aucun profil juridique / visa pour ces critères. Consultez « Besoin d’aide ? » pour CIRÉ, aide juridique gratuite (BAJ) et avocats.be.';
               } else {
                 emptyP.textContent = 'Aucun membre ne correspond à ces filtres pour le moment.';
               }
@@ -268,15 +358,18 @@
         if (countEl) countEl.textContent = filtered.length + ' membre' + (filtered.length > 1 ? 's' : '');
       }
 
-      [fUniv, fDom, fStatut].forEach(function (el) { if (el) el.addEventListener('change', render); });
+      [fUniv, fDom, fStatut, fAide].forEach(function (el) { if (el) el.addEventListener('change', render); });
       if (fQ) fQ.addEventListener('input', render);
       if (btnReset) btnReset.addEventListener('click', function () {
         if (fUniv) fUniv.value = '';
         if (fDom) fDom.value = '';
         if (fStatut) fStatut.value = '';
+        if (fAide) fAide.value = '';
         if (fQ) fQ.value = '';
+        updateLegalNotice(false);
         render();
       });
+      renderExpertsSection(membres);
 
       if (noteEl) {
         if (sb) {
