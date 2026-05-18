@@ -358,6 +358,11 @@ function cleanInternalHtmlUrl(rawUrl, sourcePath) {
 
 function normalizeInternalLinks(html, sourcePath) {
   return html.replace(/\b(href|action|content)=(["'])(.*?)\2/g, (match, attr, quote, value) => {
+    if ((attr === 'href' || attr === 'action') && value.startsWith('#')) {
+      const route = routeFromSourcePath(sourcePath);
+      const prefix = route === '/' ? '' : route;
+      return `${attr}=${quote}${prefix}${value}${quote}`;
+    }
     const clean = cleanInternalHtmlUrl(value, sourcePath);
     return `${attr}=${quote}${clean}${quote}`;
   });
