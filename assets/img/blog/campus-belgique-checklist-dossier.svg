@@ -17,23 +17,23 @@
 
   <g font-family="Inter, Arial, sans-serif" fill="#0a2540">
     <circle cx="128" cy="248" r="20" fill="#16a34a"/>
-    <text x="128" y="256" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff"></text>
+    <text x="128" y="256" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">OK</text>
     <text x="165" y="256" font-size="28" font-weight="700">Admission ou preinscription verifiee</text>
 
     <circle cx="128" cy="322" r="20" fill="#16a34a"/>
-    <text x="128" y="330" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff"></text>
+    <text x="128" y="330" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">OK</text>
     <text x="165" y="330" font-size="28" font-weight="700">Formulaire VOW complet et coherent</text>
 
     <circle cx="128" cy="396" r="20" fill="#16a34a"/>
-    <text x="128" y="404" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff"></text>
+    <text x="128" y="404" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">OK</text>
     <text x="165" y="404" font-size="28" font-weight="700">Pieces legalisees et preuves de paiement</text>
 
     <circle cx="128" cy="470" r="20" fill="#16a34a"/>
-    <text x="128" y="478" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff"></text>
+    <text x="128" y="478" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">OK</text>
     <text x="165" y="478" font-size="28" font-weight="700">Authentification OBC/GCE selon votre profil</text>
 
     <circle cx="128" cy="544" r="20" fill="#16a34a"/>
-    <text x="128" y="552" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff"></text>
+    <text x="128" y="552" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">OK</text>
     <text x="165" y="552" font-size="28" font-weight="700">Dossier relu 48h avant rendez-vous TLScontact</text>
   </g>
 
