@@ -146,6 +146,73 @@ function exposeBlogArticleContent(html, sourcePath) {
     });
 }
 
+function injectCampusBelgiqueImages(html, sourcePath) {
+  const isCampusArticle = sourcePath === 'blog/campus-belgique-cameroun-visa-impact/index.html'
+    || sourcePath === 'blog/campus-belgique-cameroun-visa-impact.html';
+  if (!isCampusArticle) return html;
+
+  let next = html;
+  const coverSrc = '/assets/img/blog/campus-belgique-cameroun-visa-impact.svg';
+  const processSrc = '/assets/img/blog/campus-belgique-processus-visa-2026.svg';
+  const checklistSrc = '/assets/img/blog/campus-belgique-checklist-dossier.svg';
+
+  if (!next.includes(coverSrc)) {
+    const coverBlock = `
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 -mt-8 relative z-10">
+      <figure class="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-slate-200 bg-white">
+        <img src="${coverSrc}" alt="Schéma du parcours visa études 2026 entre Visa On Web, TLScontact et l’Ambassade de Belgique" class="w-full h-auto block" loading="eager" decoding="async" />
+        <figcaption class="px-5 py-3 text-xs sm:text-sm text-slate-600 bg-slate-50 border-t border-slate-200">
+          Schéma de lecture du nouveau circuit 2026 : VOW, dépôt TLScontact, vérification documentaire et entretien consulaire.
+        </figcaption>
+      </figure>
+    </div>
+`;
+    next = next.replace(/(\s*<\/header>\s*\n)(\s*<div id=["']blogArticleGate["'])/i, `$1${coverBlock}\n$2`);
+  }
+
+  if (!next.includes('À retenir')) {
+    const summaryBlock = `
+      <p>Depuis la suppression de « Campus Belgique », beaucoup de familles cherchent un repère simple pour comprendre ce qui change réellement. Cette lecture est organisée pour aller à l’essentiel : <strong>ordre des étapes</strong>, <strong>points de vigilance</strong> et <strong>risques concrets</strong> qui expliquent les retards ou refus.</p>
+
+      <div class="not-prose bg-brand-cream border-l-4 border-brand-gold p-5 rounded-r-xl my-8">
+        <p class="font-semibold text-brand-dark">À retenir</p>
+        <ul class="mt-2 space-y-1 text-slate-700 text-sm">
+          <li><strong>Campus Belgique n’est plus l’étape centrale</strong> : la procédure est désormais directe.</li>
+          <li><strong>Le parcours passe par VOW puis TLScontact</strong>, avec vérification documentaire obligatoire.</li>
+          <li><strong>La complétude du dossier est décisive</strong> : un dossier incomplet peut être transmis « en l’état ».</li>
+        </ul>
+      </div>
+`;
+    next = next.replace(/(\s*<\/nav>\s*\n)(\s*<h2 id=["']tournant["'])/i, `$1${summaryBlock}\n$2`);
+  }
+
+  if (!next.includes(processSrc)) {
+    const processFigure = `
+      <figure class="not-prose my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white">
+        <img src="${processSrc}" alt="Schéma du processus visa études 2026 : VOW, rendez-vous TLScontact, dépôt, vérification et décision" class="w-full h-auto block" loading="lazy" decoding="async" />
+        <figcaption class="px-5 py-3 text-xs sm:text-sm text-slate-600 bg-slate-50 border-t border-slate-200">
+          Vue d’ensemble du parcours : du formulaire VOW à la décision finale.
+        </figcaption>
+      </figure>
+`;
+    next = next.replace(/(<p>Ce modèle[\s\S]*?<\/p>)/i, `$1\n${processFigure}`);
+  }
+
+  if (!next.includes(checklistSrc)) {
+    const checklistFigure = `
+      <figure class="not-prose my-8 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white">
+        <img src="${checklistSrc}" alt="Checklist de complétude avant dépôt du dossier visa études" class="w-full h-auto block" loading="lazy" decoding="async" />
+        <figcaption class="px-5 py-3 text-xs sm:text-sm text-slate-600 bg-slate-50 border-t border-slate-200">
+          Checklist pratique pour limiter le risque de dossier incomplet au guichet.
+        </figcaption>
+      </figure>
+`;
+    next = next.replace(/(<p>La page officielle rappelle aussi[\s\S]*?<\/p>)/i, `$1\n${checklistFigure}`);
+  }
+
+  return next;
+}
+
 function structuredScript(data) {
   return `\n  <script type="application/ld+json">\n${JSON.stringify(data, null, 2)}\n  </script>`;
 }
@@ -369,12 +436,15 @@ export function readStaticHtmlPage(sourcePath) {
     versionCriticalAssets(
       addPreloads(
         injectStructuredData(
-          exposeBlogArticleContent(
-            injectStaticHeader(
-              replaceSocialImage(
-                cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
-                sourcePath
-              )
+          injectCampusBelgiqueImages(
+            exposeBlogArticleContent(
+              injectStaticHeader(
+                replaceSocialImage(
+                  cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
+                  sourcePath
+                )
+              ),
+              sourcePath
             ),
             sourcePath
           ),
