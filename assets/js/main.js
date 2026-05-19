@@ -192,9 +192,24 @@ document.addEventListener('DOMContentLoaded', function () {
     var menuBtn = document.getElementById('mobileMenuBtn');
     var mobileMenu = document.getElementById('mobileMenu');
     if (menuBtn && mobileMenu) {
-      menuBtn.addEventListener('click', function () { mobileMenu.classList.toggle('hidden'); });
+      var setMenuOpen = function (isOpen) {
+        mobileMenu.classList.toggle('hidden', !isOpen);
+        menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      };
+      setMenuOpen(!mobileMenu.classList.contains('hidden'));
+      menuBtn.addEventListener('click', function () {
+        setMenuOpen(mobileMenu.classList.contains('hidden'));
+      });
       mobileMenu.addEventListener('click', function (ev) {
-        if (ev.target.closest('a')) mobileMenu.classList.add('hidden');
+        if (ev.target.closest('a')) setMenuOpen(false);
+      });
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape') setMenuOpen(false);
+      });
+      document.addEventListener('click', function (ev) {
+        if (mobileMenu.classList.contains('hidden')) return;
+        if (mobileMenu.contains(ev.target) || menuBtn.contains(ev.target)) return;
+        setMenuOpen(false);
       });
     }
   }
@@ -307,6 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var p = (window.location.pathname || '').toLowerCase();
       if (p.indexOf('admin') !== -1) return;
       if (document.getElementById('saFloatWa')) return;
+      if (document.querySelector('a[href^="https://wa.me/32465339448"][class*="fixed"]')) return;
       var a = document.createElement('a');
       a.id = 'saFloatWa';
       a.href = 'https://wa.me/32465339448';
