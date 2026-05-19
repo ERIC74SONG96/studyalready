@@ -42,7 +42,7 @@
               link('/tarifs-packs', 'Tarifs &amp; packs', 'block px-4 py-2 hover:bg-brand-cream text-brand-dark font-semibold') +
               link('/analyseur-admission', 'Analyseur d\'admission', 'block px-4 py-2 hover:bg-amber-50 text-amber-800 font-semibold') +
               link('/notre-dossier-fwb', 'Notre dossier FWB', 'block px-4 py-2 hover:bg-slate-50') +
-              link('/inscription-universitaire', 'Inscription universitaire', 'block px-4 py-2 hover:bg-slate-50') +
+              link('/inscription-universitaire', 'Aide admission universitaire', 'block px-4 py-2 hover:bg-slate-50') +
               link('/compte-bloque', 'Compte bloqué', 'block px-4 py-2 hover:bg-slate-50') +
               link('/assurance-visa', 'Assurance visa &amp; santé', 'block px-4 py-2 hover:bg-slate-50') +
               link('/logement-etudiant', 'Logement étudiant', 'block px-4 py-2 hover:bg-slate-50') +
@@ -105,7 +105,7 @@
           '<a href="/tarifs-packs" class="block py-1.5 text-brand-dark font-semibold">Tarifs &amp; packs</a>' +
           '<a href="/analyseur-admission" class="block py-1.5 text-amber-800 font-semibold">Analyseur d\'admission</a>' +
           '<a href="/notre-dossier-fwb" class="block py-1.5">Notre dossier FWB</a>' +
-          '<a href="/inscription-universitaire" class="block py-1.5">Inscription universitaire</a>' +
+          '<a href="/inscription-universitaire" class="block py-1.5">Aide admission universitaire</a>' +
           '<a href="/compte-bloque" class="block py-1.5">Compte bloqué</a>' +
           '<a href="/assurance-visa" class="block py-1.5">Assurance visa &amp; santé</a>' +
           '<a href="/logement-etudiant" class="block py-1.5">Logement étudiant</a>' +

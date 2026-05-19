@@ -169,7 +169,7 @@ function staticHeaderHtml() {
               <a href="/tarifs-packs" class="block px-4 py-2 hover:bg-brand-cream text-brand-dark font-semibold">Tarifs &amp; packs</a>
               <a href="/analyseur-admission" class="block px-4 py-2 hover:bg-amber-50 text-amber-800 font-semibold">Analyseur d'admission</a>
               <a href="/notre-dossier-fwb" class="block px-4 py-2 hover:bg-slate-50">Notre dossier FWB</a>
-              <a href="/inscription-universitaire" class="block px-4 py-2 hover:bg-slate-50">Inscription universitaire</a>
+              <a href="/inscription-universitaire" class="block px-4 py-2 hover:bg-slate-50">Aide admission universitaire</a>
               <a href="/compte-bloque" class="block px-4 py-2 hover:bg-slate-50">Compte bloqué</a>
               <a href="/assurance-visa" class="block px-4 py-2 hover:bg-slate-50">Assurance visa &amp; santé</a>
               <a href="/logement-etudiant" class="block px-4 py-2 hover:bg-slate-50">Logement étudiant</a>
