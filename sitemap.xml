@@ -2,211 +2,242 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.studyalready.com/</loc>
+    <lastmod>2026-05-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/equivalence</loc>
+    <loc>https://www.studyalready.com/accelerateur-job</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/tarifs-packs</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.93</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://www.studyalready.com/analyseur-admission</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.92</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/mentions-legales</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/politique-confidentialite</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.35</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/politique-cookies</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/conditions-generales</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.35</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/engagement-ethique</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/positionnement-etudiants-belgique</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.45</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/inscription-universitaire</loc>
-    <lastmod>2026-05-12</lastmod>
+    <loc>https://www.studyalready.com/annuaire</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.92</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/liste-etablissements-enseignement-belgique</loc>
-    <lastmod>2026-05-14</lastmod>
+    <loc>https://www.studyalready.com/assurance-visa</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/besoin-d-aide</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog/bac-13-moyenne-etudier-belgique</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog/belgique-etudes-job-actualites</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog/campus-belgique-cameroun-visa-impact</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog/equivalence-bts-cameroun-belgique</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog/gce-a-level-etudes-fwb</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog/ku-leuven-bourse-afrique</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/blog/recuperer-originaux-equivalence-fwb</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/communaute</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://www.studyalready.com/compte-bloque</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/assurance-visa</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/logement-etudiant</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/pack-accueil</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/preparer-voyage</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.86</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/services-bancaires</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.87</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/accelerateur-job</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/communaute</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.82</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/evenements-seminaires</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/rejoindre-reseau</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.78</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/annuaire</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/devenir-professionnel</loc>
-    <lastmod>2026-05-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.82</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/creer-profil</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.78</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/besoin-d-aide</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/assets/docs/StudyAlready-Modele-CV-Belge.pdf</loc>
-    <lastmod>2026-05-11</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/espace-etudiant/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/espace-etudiant/dashboard</loc>
-    <lastmod>2026-05-11</lastmod>
+    <loc>https://www.studyalready.com/conditions-generales</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.35</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/creer-evenement</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/creer-profil</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/devenir-professionnel</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/engagement-ethique</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/equivalence</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/evenements-seminaires</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/inscription-universitaire</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/liste-etablissements-enseignement-belgique</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/logement-etudiant</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/mentions-legales</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.35</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/mise-en-relation</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://www.studyalready.com/notre-dossier-fwb</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/offres-etudiants</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/pack-accueil</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/politique-confidentialite</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.35</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/politique-cookies</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.35</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/positionnement-etudiants-belgique</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.studyalready.com/preparer-voyage</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://www.studyalready.com/prequalification-dossier</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.88</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.studyalready.com/qui-sommes-nous</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/blog/equivalence-bts-cameroun-belgique</loc>
-    <lastmod>2026-05-11</lastmod>
+    <loc>https://www.studyalready.com/rejoindre-reseau</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/blog/gce-a-level-etudes-fwb</loc>
-    <lastmod>2026-05-11</lastmod>
+    <loc>https://www.studyalready.com/services-bancaires</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.studyalready.com/blog/recuperer-originaux-equivalence-fwb</loc>
-    <lastmod>2026-05-11</lastmod>
+    <loc>https://www.studyalready.com/tarifs-packs</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://www.studyalready.com/blog/belgique-etudes-job-actualites</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.75</priority>
   </url>
 </urlset>

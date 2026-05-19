@@ -356,6 +356,51 @@ function cleanInternalHtmlUrl(rawUrl, sourcePath) {
   return clean + suffix;
 }
 
+function canonicalForRoute(route) {
+  return route === '/' ? 'https://www.studyalready.com/' : `https://www.studyalready.com${route}`;
+}
+
+function shouldNoindexRoute(route) {
+  if (
+    route === '/404' ||
+    route === '/admin' ||
+    route === '/admin-login' ||
+    route === '/dashboard' ||
+    route === '/espace-etudiant' ||
+    route === '/espace-etudiant/dashboard' ||
+    route === '/jobs-etudiants'
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function upsertSeoMeta(html, sourcePath) {
+  const route = routeFromSourcePath(sourcePath);
+  const canonical = canonicalForRoute(route);
+  const robots = shouldNoindexRoute(route) ? 'noindex,nofollow' : 'index,follow';
+
+  let next = html;
+  if (/<link\s+rel=["']canonical["']/i.test(next)) {
+    next = next.replace(/<link\s+rel=["']canonical["'][^>]*>/i, `<link rel="canonical" href="${canonical}" />`);
+  } else {
+    next = next.replace('</head>', `  <link rel="canonical" href="${canonical}" />\n</head>`);
+  }
+
+  if (/<meta\s+name=["']robots["']/i.test(next)) {
+    next = next.replace(/<meta\s+name=["']robots["'][^>]*>/i, `<meta name="robots" content="${robots}" />`);
+  } else {
+    next = next.replace('</head>', `  <meta name="robots" content="${robots}" />\n</head>`);
+  }
+
+  if (/<meta\s+property=["']og:url["']/i.test(next)) {
+    next = next.replace(/<meta\s+property=["']og:url["'][^>]*>/i, `<meta property="og:url" content="${canonical}" />`);
+  }
+
+  next = next.replace(/("mainEntityOfPage"\s*:\s*")[^"]+(")/g, `$1${canonical}$2`);
+  return next;
+}
+
 function normalizeInternalLinks(html, sourcePath) {
   return html.replace(/\b(href|action|content)=(["'])(.*?)\2/g, (match, attr, quote, value) => {
     if ((attr === 'href' || attr === 'action') && value.startsWith('#')) {
@@ -374,13 +419,16 @@ export function readStaticHtmlPage(sourcePath) {
   return addImageDefaults(
     versionCriticalAssets(
       addPreloads(
-        injectStructuredData(
-          exposeBlogArticleContent(
-            injectStaticHeader(
-              replaceSocialImage(
-                cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
-                sourcePath
-              )
+        upsertSeoMeta(
+          injectStructuredData(
+            exposeBlogArticleContent(
+              injectStaticHeader(
+                replaceSocialImage(
+                  cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
+                  sourcePath
+                )
+              ),
+              sourcePath
             ),
             sourcePath
           ),
