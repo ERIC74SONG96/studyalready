@@ -322,7 +322,7 @@ function injectStructuredData(html, sourcePath) {
       itemListElement: [
         { '@type': 'Offer', name: 'Pack équivalence', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
         { '@type': 'Offer', name: 'Pack équivalence + aide admission', price: '200', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
-        { '@type': 'Offer', name: 'Pack admission seul', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
+        { '@type': 'Offer', name: 'Inscription universitaire (pack admission seul)', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
         { '@type': 'Offer', name: 'Pack entretien + préparation', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
         { '@type': 'Offer', name: 'Pack préparation visa', price: '100', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' }
       ]
