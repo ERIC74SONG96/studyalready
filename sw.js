@@ -1,5 +1,5 @@
 /* StudyAlready PWA cache - reseaux instables, experience mobile. */
-const CACHE_VERSION = 'studyalready-v9';
+const CACHE_VERSION = 'studyalready-v10';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const PAGE_CACHE = `${CACHE_VERSION}-pages`;
 
