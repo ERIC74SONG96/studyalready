@@ -3,6 +3,9 @@
 À chaque nouvelle soumission (formulaire ou profil annuaire), un email
 récapitulatif est envoyé automatiquement à l'admin StudyAlready.
 
+Depuis la migration `032_autoreply_form_submission_pdf.sql`, le demandeur
+reçoit aussi une auto-réponse email avec un lien vers le PDF StudyAlready.
+
 ## Architecture (sans Edge Function, 100% SQL)
 
 ```
@@ -76,6 +79,16 @@ que vous n'avez pas vérifié de domaine).
 3. Envoyer
 4. ✉ Dans **30 secondes max**, un email arrive sur votre boîte avec
    le contenu de la demande et un bouton "Ouvrir le dashboard".
+
+## Activer l'auto-réponse client + PDF
+
+1. Supabase Dashboard → **SQL Editor** → **New query**
+2. Exécuter `supabase/migrations/032_autoreply_form_submission_pdf.sql`
+3. Faire un test depuis le formulaire de contact avec un email réel
+4. Vérifier que :
+   - vous recevez l'alerte admin habituelle ;
+   - le client reçoit un email de confirmation avec le bouton
+     **Télécharger le PDF StudyAlready**.
 
 ## Si l'email n'arrive pas
 
