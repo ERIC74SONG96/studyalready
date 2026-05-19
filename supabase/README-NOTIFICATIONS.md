@@ -3,6 +3,10 @@
 À chaque nouvelle soumission (formulaire ou profil annuaire), un email
 récapitulatif est envoyé automatiquement à l'admin StudyAlready.
 
+Optionnel: avec la migration `032_autoreply_form_submission_next_steps.sql`,
+le client reçoit aussi un email automatique qui explique la suite
+(analyse du dossier + lien PDF a completer et renvoyer).
+
 ## Architecture (sans Edge Function, 100% SQL)
 
 ```
@@ -78,6 +82,15 @@ que vous n'avez pas vérifié de domaine).
    le contenu de la demande et un bouton "Ouvrir le dashboard".
 
 ## Si l'email n'arrive pas
+
+## Activer l'email client "suite des etapes"
+
+1. Supabase Dashboard → **SQL Editor** → **New query**
+2. Exécuter `supabase/migrations/032_autoreply_form_submission_next_steps.sql`
+3. Tester un formulaire avec une vraie adresse email
+4. Vérifier :
+   - l'admin reçoit toujours l'alerte "Nouvelle demande"
+   - le client reçoit l'email "Demande bien recue, voici la suite"
 
 ### Vérifier l'historique Resend
 
