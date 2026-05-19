@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
       formId: 'contactForm',
       statusId: 'formStatus',
       formType: 'contact',
-      successMessage: 'Merci ! Votre message est bien arrivé. Réponse sous 48 h.'
+      successMessage: 'Merci ! Votre message est bien arrivé. Suite : téléchargez, remplissez puis renvoyez le PDF StudyAlready : https://www.studyalready.com/assets/docs/StudyAlready-Dossier-FWB.pdf'
     });
     SA.bind({
       formId: 'prequalificationForm',
