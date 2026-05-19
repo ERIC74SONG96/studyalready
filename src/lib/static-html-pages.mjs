@@ -97,6 +97,37 @@ function routeFromSourcePath(sourcePath) {
   return '/' + sourcePath.replace(/\/index\.html$/, '').replace(/\.html$/, '');
 }
 
+function ensureCanonicalLink(html, sourcePath) {
+  const route = routeFromSourcePath(sourcePath);
+  const canonical = `https://www.studyalready.com${route === '/' ? '' : route}`;
+
+  if (/<link\b[^>]*rel=["']canonical["']/i.test(html)) {
+    return html
+      .replace(
+        /(<link\b[^>]*rel=["']canonical["'][^>]*href=["'])([^"']+)(["'][^>]*>)/i,
+        `$1${canonical}$3`
+      )
+      .replace(
+        /(<link\b[^>]*href=["'])([^"']+)(["'][^>]*rel=["']canonical["'][^>]*>)/i,
+        `$1${canonical}$3`
+      );
+  }
+
+  return html.replace('</head>', `  <link rel="canonical" href="${canonical}" />\n</head>`);
+}
+
+function ensureRobotsMeta(html) {
+  if (/<meta\b[^>]*name=["']robots["']/i.test(html)) return html;
+  return html.replace(
+    '</head>',
+    '  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />\n</head>'
+  );
+}
+
+function ensureSeoBaseline(html, sourcePath) {
+  return ensureRobotsMeta(ensureCanonicalLink(html, sourcePath));
+}
+
 function ogSlugFromSourcePath(sourcePath) {
   const route = routeFromSourcePath(sourcePath);
   return route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '--');
@@ -203,7 +234,7 @@ function staticHeaderHtml() {
         <li class="hidden" data-sa-profile-slot data-sa-dashboard-href="/espace-etudiant/dashboard"></li>
       </ul>
       <a href="/#contact" class="hidden sm:inline-flex items-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark font-semibold px-5 py-2.5 rounded-full text-sm transition shadow-sm">Contact</a>
-      <button id="mobileMenuBtn" class="lg:hidden text-brand-dark" aria-label="Menu">
+      <button id="mobileMenuBtn" class="lg:hidden text-brand-dark" aria-label="Menu principal" aria-controls="mobileMenu" aria-expanded="false">
         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </nav>
@@ -378,7 +409,7 @@ export function readStaticHtmlPage(sourcePath) {
           exposeBlogArticleContent(
             injectStaticHeader(
               replaceSocialImage(
-                cleanSiteUrl(normalizeInternalLinks(html, sourcePath)),
+                ensureSeoBaseline(cleanSiteUrl(normalizeInternalLinks(html, sourcePath)), sourcePath),
                 sourcePath
               )
             ),
