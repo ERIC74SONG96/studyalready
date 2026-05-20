@@ -161,6 +161,12 @@
       ]
     }
   ],
+  "rewrites": [
+    {
+      "source": "/offres-etudiants/job/:id",
+      "destination": "/api/job-share?id=:id"
+    }
+  ],
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/accelerateur-job.html", "destination": "/accelerateur-job", "permanent": true },
