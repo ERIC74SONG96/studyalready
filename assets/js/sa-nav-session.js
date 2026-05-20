@@ -56,6 +56,33 @@
     return getPersistedSupabaseAuth() != null;
   }
 
+var SA_ROLE_HINT_KEY = 'sa_role_hint_v1';
+
+function readRoleHint() {
+  if (typeof localStorage === 'undefined') return null;
+  try {
+    var raw = localStorage.getItem(SA_ROLE_HINT_KEY);
+    if (!raw) return null;
+    var parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') return null;
+    return parsed;
+  } catch (e) {
+    return null;
+  }
+}
+
+function isAdminHintForUser(user) {
+  if (!user || !user.id) return false;
+  var hint = readRoleHint();
+  if (!hint) return false;
+  return hint.user_id === user.id && hint.is_admin === true;
+}
+
+function resolveDashboardHref(defaultHref, auth) {
+  if (auth && isAdminHintForUser(auth.user)) return '/admin';
+  return defaultHref;
+}
+
   function escapeHtml(s) {
     return String(s)
       .replace(/&/g, '&amp;')
@@ -139,9 +166,10 @@
       document.querySelectorAll('[data-sa-profile-slot]').forEach(function (slot) {
         var href = slot.getAttribute('data-sa-dashboard-href');
         if (!href) return;
+        var displayHref = resolveDashboardHref(href, auth);
         var variant = slot.getAttribute('data-sa-profile-variant') || 'desktop';
         if (show) {
-          slot.innerHTML = buildLinkHtml(href, variant, displayLabel);
+          slot.innerHTML = buildLinkHtml(displayHref, variant, displayLabel);
           if (variant === 'desktop') {
             slot.className = 'lg:flex items-center min-w-0';
           } else if (variant === 'mobile') {
