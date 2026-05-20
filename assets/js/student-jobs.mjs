@@ -302,7 +302,7 @@ function setImportMsg(text, isError) {
 }
 
 function shareLinksForPost(postId, title) {
-  const pageUrl = `${CANONICAL_JOBS_PAGE}#job-${postId}`;
+  const pageUrl = `${CANONICAL_JOBS_PAGE}/job/${postId}`;
   const shortTitle = String(title || 'Offre')
     .replace(/\s+/g, ' ')
     .trim()
