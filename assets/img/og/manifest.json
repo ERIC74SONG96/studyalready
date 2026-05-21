@@ -1,0 +1,237 @@
+[
+  {
+    "slug": "home",
+    "route": "/",
+    "file": "og-cover.png"
+  },
+  {
+    "slug": "404",
+    "route": "/404",
+    "file": "og/404.png"
+  },
+  {
+    "slug": "accelerateur-job",
+    "route": "/accelerateur-job",
+    "file": "og/accelerateur-job.png"
+  },
+  {
+    "slug": "admin-login",
+    "route": "/admin-login",
+    "file": "og/admin-login.png"
+  },
+  {
+    "slug": "analyseur-admission",
+    "route": "/analyseur-admission",
+    "file": "og/analyseur-admission.png"
+  },
+  {
+    "slug": "annuaire",
+    "route": "/annuaire",
+    "file": "og/annuaire.png"
+  },
+  {
+    "slug": "assurance-visa",
+    "route": "/assurance-visa",
+    "file": "og/assurance-visa.png"
+  },
+  {
+    "slug": "besoin-d-aide",
+    "route": "/besoin-d-aide",
+    "file": "og/besoin-d-aide.png"
+  },
+  {
+    "slug": "blog--bac-13-moyenne-etudier-belgique",
+    "route": "/blog/bac-13-moyenne-etudier-belgique",
+    "file": "og/blog--bac-13-moyenne-etudier-belgique.png"
+  },
+  {
+    "slug": "blog--belgique-etudes-job-actualites",
+    "route": "/blog/belgique-etudes-job-actualites",
+    "file": "og/blog--belgique-etudes-job-actualites.png"
+  },
+  {
+    "slug": "blog--campus-belgique-cameroun-visa-impact",
+    "route": "/blog/campus-belgique-cameroun-visa-impact",
+    "file": "og/blog--campus-belgique-cameroun-visa-impact.png"
+  },
+  {
+    "slug": "blog--equivalence-bts-cameroun-belgique",
+    "route": "/blog/equivalence-bts-cameroun-belgique",
+    "file": "og/blog--equivalence-bts-cameroun-belgique.png"
+  },
+  {
+    "slug": "blog--gce-a-level-etudes-fwb",
+    "route": "/blog/gce-a-level-etudes-fwb",
+    "file": "og/blog--gce-a-level-etudes-fwb.png"
+  },
+  {
+    "slug": "blog",
+    "route": "/blog",
+    "file": "og/blog.png"
+  },
+  {
+    "slug": "blog--ku-leuven-bourse-afrique",
+    "route": "/blog/ku-leuven-bourse-afrique",
+    "file": "og/blog--ku-leuven-bourse-afrique.png"
+  },
+  {
+    "slug": "blog--recuperer-originaux-equivalence-fwb",
+    "route": "/blog/recuperer-originaux-equivalence-fwb",
+    "file": "og/blog--recuperer-originaux-equivalence-fwb.png"
+  },
+  {
+    "slug": "communaute",
+    "route": "/communaute",
+    "file": "og/communaute.png"
+  },
+  {
+    "slug": "compte-bloque",
+    "route": "/compte-bloque",
+    "file": "og/compte-bloque.png"
+  },
+  {
+    "slug": "conditions-generales",
+    "route": "/conditions-generales",
+    "file": "og/conditions-generales.png"
+  },
+  {
+    "slug": "creer-evenement",
+    "route": "/creer-evenement",
+    "file": "og/creer-evenement.png"
+  },
+  {
+    "slug": "creer-profil",
+    "route": "/creer-profil",
+    "file": "og/creer-profil.png"
+  },
+  {
+    "slug": "dashboard",
+    "route": "/dashboard",
+    "file": "og/dashboard.png"
+  },
+  {
+    "slug": "devenir-professionnel",
+    "route": "/devenir-professionnel",
+    "file": "og/devenir-professionnel.png"
+  },
+  {
+    "slug": "engagement-ethique",
+    "route": "/engagement-ethique",
+    "file": "og/engagement-ethique.png"
+  },
+  {
+    "slug": "equivalence",
+    "route": "/equivalence",
+    "file": "og/equivalence.png"
+  },
+  {
+    "slug": "espace-etudiant--dashboard",
+    "route": "/espace-etudiant/dashboard",
+    "file": "og/espace-etudiant--dashboard.png"
+  },
+  {
+    "slug": "espace-etudiant",
+    "route": "/espace-etudiant",
+    "file": "og/espace-etudiant.png"
+  },
+  {
+    "slug": "evenements-seminaires",
+    "route": "/evenements-seminaires",
+    "file": "og/evenements-seminaires.png"
+  },
+  {
+    "slug": "home",
+    "route": "/",
+    "file": "og/home.png"
+  },
+  {
+    "slug": "inscription-universitaire",
+    "route": "/inscription-universitaire",
+    "file": "og/inscription-universitaire.png"
+  },
+  {
+    "slug": "jobs-etudiants",
+    "route": "/jobs-etudiants",
+    "file": "og/jobs-etudiants.png"
+  },
+  {
+    "slug": "liste-etablissements-enseignement-belgique",
+    "route": "/liste-etablissements-enseignement-belgique",
+    "file": "og/liste-etablissements-enseignement-belgique.png"
+  },
+  {
+    "slug": "logement-etudiant",
+    "route": "/logement-etudiant",
+    "file": "og/logement-etudiant.png"
+  },
+  {
+    "slug": "mentions-legales",
+    "route": "/mentions-legales",
+    "file": "og/mentions-legales.png"
+  },
+  {
+    "slug": "mise-en-relation",
+    "route": "/mise-en-relation",
+    "file": "og/mise-en-relation.png"
+  },
+  {
+    "slug": "notre-dossier-fwb",
+    "route": "/notre-dossier-fwb",
+    "file": "og/notre-dossier-fwb.png"
+  },
+  {
+    "slug": "offres-etudiants",
+    "route": "/offres-etudiants",
+    "file": "og/offres-etudiants.png"
+  },
+  {
+    "slug": "pack-accueil",
+    "route": "/pack-accueil",
+    "file": "og/pack-accueil.png"
+  },
+  {
+    "slug": "politique-confidentialite",
+    "route": "/politique-confidentialite",
+    "file": "og/politique-confidentialite.png"
+  },
+  {
+    "slug": "politique-cookies",
+    "route": "/politique-cookies",
+    "file": "og/politique-cookies.png"
+  },
+  {
+    "slug": "positionnement-etudiants-belgique",
+    "route": "/positionnement-etudiants-belgique",
+    "file": "og/positionnement-etudiants-belgique.png"
+  },
+  {
+    "slug": "preparer-voyage",
+    "route": "/preparer-voyage",
+    "file": "og/preparer-voyage.png"
+  },
+  {
+    "slug": "prequalification-dossier",
+    "route": "/prequalification-dossier",
+    "file": "og/prequalification-dossier.png"
+  },
+  {
+    "slug": "qui-sommes-nous",
+    "route": "/qui-sommes-nous",
+    "file": "og/qui-sommes-nous.png"
+  },
+  {
+    "slug": "rejoindre-reseau",
+    "route": "/rejoindre-reseau",
+    "file": "og/rejoindre-reseau.png"
+  },
+  {
+    "slug": "services-bancaires",
+    "route": "/services-bancaires",
+    "file": "og/services-bancaires.png"
+  },
+  {
+    "slug": "tarifs-packs",
+    "route": "/tarifs-packs",
+    "file": "og/tarifs-packs.png"
+  }
+]

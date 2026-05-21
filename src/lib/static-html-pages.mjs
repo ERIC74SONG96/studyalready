@@ -135,11 +135,16 @@ function ogSlugFromSourcePath(sourcePath) {
 
 function replaceSocialImage(html, sourcePath) {
   const slug = ogSlugFromSourcePath(sourcePath);
-  const url = `https://www.studyalready.com/assets/img/og/${slug}.svg`;
+  const url =
+    slug === 'home'
+      ? 'https://www.studyalready.com/assets/img/og-cover.png'
+      : `https://www.studyalready.com/assets/img/og/${slug}.png`;
   return html
     .replace(/(<meta\s+property=["']og:image["']\s+content=["'])([^"']+)(["'][^>]*>)/i, `$1${url}$3`)
     .replace(/(<meta\s+name=["']twitter:image["']\s+content=["'])([^"']+)(["'][^>]*>)/i, `$1${url}$3`)
-    .replace(/https:\/\/www\.studyalready\.com\/assets\/img\/og-cover\.svg/g, url);
+    .replace(/https:\/\/www\.studyalready\.com\/assets\/img\/og-cover\.svg/g, 'https://www.studyalready.com/assets/img/og-cover.png')
+    .replace(/https:\/\/www\.studyalready\.com\/assets\/img\/og\/[^"']+\.svg/g, url)
+    .replace(/https:\/\/www\.studyalready\.com\/assets\/img\/blog\/[^"']+\.svg/g, url);
 }
 
 function addPreloads(html) {
@@ -297,7 +302,7 @@ function injectStructuredData(html, sourcePath) {
       '@type': 'LocalBusiness',
       name: 'StudyAlready',
       url: 'https://www.studyalready.com',
-      image: 'https://www.studyalready.com/assets/img/og/home.svg',
+      image: 'https://www.studyalready.com/assets/img/og/home.png',
       email: 'contact@studyalready.com',
       telephone: '+32465339448',
       areaServed: ['BE', 'CM', 'SN', 'CI', 'BJ'],

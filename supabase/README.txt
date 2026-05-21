@@ -21,3 +21,5 @@ Contexte inscription / personnalisation : migration 011_user_site_context.sql (t
 Sécurité (Security Advisor) : exécuter 033_fix_admin_students_view_security.sql puis 034_security_advisor_zero_warnings.sql. Dans Authentication → Providers → Email, activer « Prevent use of leaked passwords » (dernier avertissement Auth, hors SQL).
 
 Onglet admin « Étudiants » vide ou erreur vue : exécuter 035_fix_admin_students_dashboard.sql (remplace admin_students_view par RPC list_admin_students).
+
+Aperçus de liens (WhatsApp / Facebook) : `npm run og` génère les PNG 1200×630 (`assets/img/og-cover.png`, `assets/img/og/*.png`) et met à jour les balises Open Graph dans les HTML.

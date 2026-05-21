@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/generate-sitemap.mjs && astro build && node scripts/copy-astro-public.mjs && node scripts/generate-og-images.mjs",
+    "og:sync": "node scripts/sync-open-graph.mjs",
+    "og:png": "python scripts/generate-og-png.py",
+    "og": "npm run og:png && npm run og:sync",
+    "build": "node scripts/generate-sitemap.mjs && npm run og:png && astro build && node scripts/copy-astro-public.mjs && node scripts/generate-og-images.mjs && npm run og:sync",
     "preview": "astro preview",
     "check": "node scripts/validate-astro-build.mjs"
   },

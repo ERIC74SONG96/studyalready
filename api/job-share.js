@@ -2,7 +2,7 @@ const SUPABASE_URL = 'https://nevdhyekybmtvejhwhxz.supabase.co';
 const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ldmRoeWVreWJtdHZlamh3aHh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1MTA4MzUsImV4cCI6MjA5NDA4NjgzNX0.drps-e29P2HfISCRsqglnbsi3YjYqw3_jIj2F4WYBOc';
 const JOBS_PAGE_URL = 'https://www.studyalready.com/offres-etudiants';
-const FALLBACK_OG_IMAGE = 'https://www.studyalready.com/assets/img/og/offres-etudiants.svg';
+const FALLBACK_OG_IMAGE = 'https://www.studyalready.com/assets/img/og/offres-etudiants.png';
 const BUCKET = 'job-offers';
 
 const OFFER_CATEGORY_LABELS = {
