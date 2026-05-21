@@ -459,19 +459,17 @@
     if (!tbody) return;
     tbody.innerHTML = '<tr><td colspan="6" class="px-3 py-6 text-center text-slate-500">Chargement…</td></tr>';
 
-    var q = sb.from('admin_students_view').select('*').order('signup_date', { ascending: false }).limit(500);
     var searchEl = $('filterStudentSearch');
     var search = searchEl ? searchEl.value.trim() : '';
-    if (search) {
-      var pattern = '%' + search.replace(/[%_]/g, '\\$&') + '%';
-      q = q.or('email.ilike.' + pattern + ',full_name.ilike.' + pattern);
-    }
 
-    q.then(function (r) {
+    sb.rpc('list_admin_students', {
+      p_search: search || null,
+      p_limit: 500
+    }).then(function (r) {
       if (r.error) {
         var msg = r.error.message || '';
-        if (/admin_students_view/i.test(msg) || /relation .* does not exist/i.test(msg)) {
-          msg = 'La vue admin_students_view n’existe pas encore. Exécutez la migration <code class="bg-slate-100 px-1 rounded text-xs">006_student_dossiers.sql</code> dans Supabase.';
+        if (/list_admin_students|admin_students_view|user_account_meta/i.test(msg) || /relation .* does not exist|42883/i.test(msg)) {
+          msg = 'Base Supabase : exécutez <code class="bg-slate-100 px-1 rounded text-xs">035_fix_admin_students_dashboard.sql</code> dans le SQL Editor, puis actualisez cette page.';
         }
         tbody.innerHTML = '<tr><td colspan="6" class="px-3 py-6 text-center text-red-600">' + msg + '</td></tr>';
         return;
@@ -513,7 +511,7 @@
     modal.classList.remove('hidden');
 
     Promise.all([
-      sb.from('admin_students_view').select('*').eq('user_id', userId).maybeSingle(),
+      sb.rpc('get_admin_student', { p_user_id: userId }).maybeSingle(),
       sb.from('student_dossiers').select('*').eq('user_id', userId).order('updated_at', { ascending: false }),
       sb.from('dossier_messages').select('*').eq('user_id', userId).order('created_at', { ascending: true }),
       sb.from('dossier_documents').select('*').eq('user_id', userId).order('created_at', { ascending: false }),

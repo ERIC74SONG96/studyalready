@@ -17,3 +17,7 @@ Rejoindre le réseau (rejoindre-reseau.html) : crée un compte Mon espace + form
 Offres job étudiant (offres-etudiants.html ; jobs-etudiants.html redirige) — migrations 014 (lien + image) et 015 (catégories) : exécuter migrations/010_student_job_posts.sql puis créer dans Storage un bucket PUBLIC nommé « job-offers » (sinon le téléversement d’images échoue).
 
 Contexte inscription / personnalisation : migration 011_user_site_context.sql (table public.user_site_context). Si la table est vide alors que des comptes existent déjà, exécuter une fois 012_backfill_user_site_context.sql dans le SQL Editor.
+
+Sécurité (Security Advisor) : exécuter 033_fix_admin_students_view_security.sql puis 034_security_advisor_zero_warnings.sql. Dans Authentication → Providers → Email, activer « Prevent use of leaked passwords » (dernier avertissement Auth, hors SQL).
+
+Onglet admin « Étudiants » vide ou erreur vue : exécuter 035_fix_admin_students_dashboard.sql (remplace admin_students_view par RPC list_admin_students).
