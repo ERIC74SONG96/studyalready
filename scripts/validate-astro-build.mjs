@@ -59,12 +59,22 @@ if (/id=["']blogArticleFull["'][^>]*class=["'][^"']*\bhidden\b/.test(blogArticle
   console.error('Le contenu complet du blog reste masqué dans le HTML généré.');
   failed = true;
 }
-if (!/https:\/\/www\.studyalready\.com\/assets\/img\/og\/blog--equivalence-bts-cameroun-belgique\.svg/.test(blogArticle)) {
-  console.error('L’image Open Graph générée de l’article blog n’est pas référencée.');
+if (!/assets\/img\/og\/blog--equivalence-bts-cameroun-belgique\.png/.test(blogArticle)) {
+  console.error('L’image Open Graph PNG de l’article blog n’est pas référencée.');
   failed = true;
 }
-if (/assets\/img\/og-cover\.svg/.test(blogArticle)) {
-  console.error('Le JSON-LD de l’article conserve encore l’ancienne image OG générique.');
+if (/assets\/img\/og-cover\.svg|assets\/img\/og\/[^"']+\.svg/.test(blogArticle)) {
+  console.error('Le HTML conserve encore une image OG en SVG (non supportée par WhatsApp).');
+  failed = true;
+}
+
+const homeOg = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf8');
+if (!/og-cover\.png|assets\/img\/og\/home\.png/.test(homeOg)) {
+  console.error('La page d’accueil ne référence pas une image OG en PNG.');
+  failed = true;
+}
+if (!fs.existsSync(path.join(DIST_DIR, 'assets/img/og-cover.png'))) {
+  console.error('Fichier dist/assets/img/og-cover.png absent.');
   failed = true;
 }
 
