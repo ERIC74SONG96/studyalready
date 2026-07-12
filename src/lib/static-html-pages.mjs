@@ -304,7 +304,6 @@ function injectStructuredData(html, sourcePath) {
       url: 'https://www.studyalready.com',
       image: 'https://www.studyalready.com/assets/img/og/home.png',
       email: 'contact@studyalready.com',
-      telephone: '+32465339448',
       areaServed: ['BE', 'CM', 'SN', 'CI', 'BJ'],
       priceRange: '€€',
       sameAs: [

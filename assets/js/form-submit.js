@@ -156,7 +156,7 @@
       '" class="underline font-semibold text-brand-dark">' +
       escapeHtml(em) +
       '</a> ' +
-      'ou <a href="https://wa.me/32465339448" target="_blank" rel="noopener" class="underline font-semibold">WhatsApp</a>.'
+      '.'
     );
   }
 

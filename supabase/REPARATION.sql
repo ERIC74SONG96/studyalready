@@ -53,7 +53,7 @@ BEGIN
   INSERT INTO public.dossier_messages (dossier_id, user_id, sender, message)
   VALUES (
     v_dossier_id, NEW.id, 'admin',
-    'Bienvenue dans votre espace StudyAlready ! Vous pouvez nous ecrire directement ici, partager des documents et suivre l''avancement de votre dossier. Pour toute urgence, le WhatsApp +32 465 33 94 48 reste le plus rapide.'
+    'Bienvenue dans votre espace StudyAlready ! Vous pouvez nous ecrire directement ici, partager des documents et suivre l''avancement de votre dossier. Pour toute urgence, écrivez-nous à contact@studyalready.com.'
   );
 
   RETURN NEW;

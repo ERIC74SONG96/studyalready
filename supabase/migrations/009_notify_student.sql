@@ -178,7 +178,7 @@ BEGIN
               'Lire le message -></a>' ||
           '</p>' ||
           '<p style="margin-top:20px;color:#64748b;font-size:12px;line-height:1.5">Vous pouvez repondre directement depuis votre espace. ' ||
-          'Pour les urgences, contactez-nous sur <a href="https://wa.me/32465339448" style="color:#1e3a8a">WhatsApp +32 465 33 94 48</a>.</p>' ||
+          'Pour les urgences, contactez-nous sur <a href="mailto:contact@studyalready.com">contact@studyalready.com</a>.</p>' ||
         '</div>' ||
         '<p style="text-align:center;color:#94a3b8;font-size:11px;margin-top:12px">Email automatique - vous le recevez parce que vous avez un compte sur studyalready.com</p>' ||
       '</div>';

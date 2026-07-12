@@ -61,7 +61,7 @@ BEGIN
       v_dossier_id,
       u.id,
       'admin',
-      'Bienvenue dans votre espace StudyAlready ! Vous pouvez nous écrire directement ici, partager des documents et suivre l''avancement de votre dossier. Pour toute urgence, le WhatsApp +32 465 33 94 48 reste le plus rapide.'
+      'Bienvenue dans votre espace StudyAlready ! Vous pouvez nous écrire directement ici, partager des documents et suivre l''avancement de votre dossier. Pour toute urgence, écrivez-nous à contact@studyalready.com.'
     );
 
     v_count := v_count + 1;
