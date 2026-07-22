@@ -21,9 +21,24 @@ const sb =
       : null;
 
 const $ = (id) => document.getElementById(id);
+const SA_ROLE_HINT_KEY = 'sa_role_hint_v1';
 const escapeHtml = (s) =>
   String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+function writeAdminRoleHint(userId, isAdmin) {
+  if (typeof localStorage === 'undefined' || !userId) return;
+  try {
+    localStorage.setItem(
+      SA_ROLE_HINT_KEY,
+      JSON.stringify({
+        user_id: String(userId),
+        is_admin: isAdmin === true,
+        updated_at: Date.now(),
+      })
+    );
+  } catch (_e) {}
+}
 
 function fmtDate(d) {
   if (!d) return '';
@@ -237,9 +252,11 @@ async function boot() {
   try {
     const { data: isAdm, error: admErr } = await sb.rpc('is_admin');
     if (!admErr && isAdm === true) {
+      writeAdminRoleHint(session.user.id, true);
       window.location.replace('/admin');
       return;
     }
+    if (!admErr) writeAdminRoleHint(session.user.id, false);
   } catch (_e) {
     /* reste sur l'espace personnel */
   }

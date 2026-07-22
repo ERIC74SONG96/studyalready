@@ -45,6 +45,29 @@ function clearAllGoTrueAuthLocalStorage() {
   } catch (e) {}
 }
 
+var SA_ROLE_HINT_KEY = 'sa_role_hint_v1';
+
+function writeAdminRoleHint(userId, isAdmin) {
+  if (typeof localStorage === 'undefined' || !userId) return;
+  try {
+    localStorage.setItem(
+      SA_ROLE_HINT_KEY,
+      JSON.stringify({
+        user_id: String(userId),
+        is_admin: isAdmin === true,
+        updated_at: Date.now(),
+      })
+    );
+  } catch (e) {}
+}
+
+function clearAdminRoleHint() {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.removeItem(SA_ROLE_HINT_KEY);
+  } catch (e) {}
+}
+
 /* Après navigation post-déconnexion : purge synchrone AVANT createClient(),
    sinon la session peut être relue depuis localStorage encore présent. */
 (function espaceEarlyPostLogoutCleanup() {
@@ -80,22 +103,28 @@ function redirectAfterAuth(sb) {
       home = window.location.origin + '/';
     }
   } catch (e0) {}
+  var user = null;
   return sb.auth
     .getSession()
     .then(function (sessRes) {
-      var u = sessRes && sessRes.data && sessRes.data.session && sessRes.data.session.user;
-      if (u) return syncUserSiteContextRow(sb, u);
-      return Promise.resolve();
-    })
-    .then(function () {
+      user = sessRes && sessRes.data && sessRes.data.session && sessRes.data.session.user;
       return sb.rpc('is_admin');
     })
     .then(function (a) {
       if (!a.error && a.data === true) {
+        writeAdminRoleHint(user && user.id, true);
         window.location.replace('/admin');
-      } else {
-        window.location.replace(home);
+        return true;
       }
+      if (!a.error && user && user.id) {
+        writeAdminRoleHint(user.id, false);
+      }
+      if (user) return syncUserSiteContextRow(sb, user).then(function () { return false; });
+      return false;
+    })
+    .then(function (adminRedirected) {
+      if (adminRedirected === true) return;
+      window.location.replace(home);
     })
     .catch(function () {
       window.location.replace(home);
@@ -817,26 +846,42 @@ if (pageId === 'dashboard') {
         return;
       }
       var u = s.user;
-      var um = u.user_metadata || {};
-      var persona = um.espace_persona;
-      if (!persona || ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'].indexOf(persona) === -1) {
-        persona = null;
-        try {
-          var ps = sessionStorage.getItem('sa_espace_persona');
-          if (ps && ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'].indexOf(ps) !== -1) {
-            persona = ps;
+      var showStudentIdentity = function () {
+        var um = u.user_metadata || {};
+        var persona = um.espace_persona;
+        if (!persona || ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'].indexOf(persona) === -1) {
+          persona = null;
+          try {
+            var ps = sessionStorage.getItem('sa_espace_persona');
+            if (ps && ['cameroun', 'belgique_etudiant', 'travailleur', 'visiteur'].indexOf(ps) !== -1) {
+              persona = ps;
+            }
+          } catch (ePs) {}
+          if (!persona) persona = 'cameroun';
+        }
+        var meta = um.full_name || '';
+        var display = meta.trim();
+        if (!display) {
+          if (persona === 'visiteur') display = 'Invité(e)';
+          else display = 'Membre';
+        }
+        if (nameEl) nameEl.textContent = display;
+        if (emailEl) emailEl.textContent = u.email || '';
+      };
+
+      sb.rpc('is_admin')
+        .then(function (a) {
+          if (!a.error && a.data === true) {
+            writeAdminRoleHint(u.id, true);
+            window.location.replace('/admin');
+            return;
           }
-        } catch (ePs) {}
-        if (!persona) persona = 'cameroun';
-      }
-      var meta = um.full_name || '';
-      var display = meta.trim();
-      if (!display) {
-        if (persona === 'visiteur') display = 'Invité(e)';
-        else display = 'Membre';
-      }
-      if (nameEl) nameEl.textContent = display;
-      if (emailEl) emailEl.textContent = u.email || '';
+          if (!a.error) writeAdminRoleHint(u.id, false);
+          showStudentIdentity();
+        })
+        .catch(function () {
+          showStudentIdentity();
+        });
     });
   }
 
@@ -866,6 +911,7 @@ if (pageId === 'dashboard') {
           }
         })
         .then(function () {
+          clearAdminRoleHint();
           clearSupabaseAuthStorageForUrl(getConfig().SUPABASE_URL);
           clearAllGoTrueAuthLocalStorage();
           try {

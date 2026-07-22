@@ -24,6 +24,28 @@
   var $ = function (id) { return document.getElementById(id); };
   var gate = $('adminGate');
   var app = $('adminApp');
+  var SA_ROLE_HINT_KEY = 'sa_role_hint_v1';
+
+  function writeAdminRoleHint(userId, isAdmin) {
+    if (typeof localStorage === 'undefined' || !userId) return;
+    try {
+      localStorage.setItem(
+        SA_ROLE_HINT_KEY,
+        JSON.stringify({
+          user_id: String(userId),
+          is_admin: isAdmin === true,
+          updated_at: Date.now()
+        })
+      );
+    } catch (e) {}
+  }
+
+  function clearAdminRoleHint() {
+    if (typeof localStorage === 'undefined') return;
+    try {
+      localStorage.removeItem(SA_ROLE_HINT_KEY);
+    } catch (e) {}
+  }
 
   function showFatal(msg) {
     gate.classList.remove('hidden');
@@ -94,6 +116,7 @@
     if (gateDecided) return;
     gateDecided = true;
     if (!session) {
+      clearAdminRoleHint();
       window.location.replace('/admin-login');
       return;
     }
@@ -107,11 +130,13 @@
         return;
       }
       if (a.data !== true) {
+        writeAdminRoleHint(session && session.user ? session.user.id : '', false);
         sb.auth.signOut().then(function () {
           window.location.replace('/admin-login?raison=non-admin');
         });
         return;
       }
+      writeAdminRoleHint(session.user.id, true);
       $('adminWho').textContent = session.user.email || '';
       gate.classList.add('hidden');
       app.classList.remove('hidden');
@@ -173,6 +198,7 @@
             }
           } catch (e2) {}
         }
+        clearAdminRoleHint();
         clearAdminAuthLocalStorage();
         try {
           sb.auth.signOut({ scope: 'global' });
